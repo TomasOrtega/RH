@@ -36,15 +36,15 @@ def rangeOpens (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ)) 
     have := h
     exact IsOpenImmersion.isOpen_range _⟩
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The image open of the restricted map is defined by its range on points. Membership means that the point has a preimage in the restricted source.
 -/
 theorem mem_rangeOpens_iff (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (b : ↥B) : b ∈ rangeOpens γ W h ↔ ∃ w : W.toScheme, (W.ι ≫ γ).base w = b :=
   Iff.rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The image of the inclusion of the image open is that open itself, whose points are exactly the range of the restricted map.
 -/
 theorem range_ι_comp_eq_range_rangeOpens_ι (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ)) :
     Set.range ⇑(W.ι ≫ γ).base = Set.range ⇑(rangeOpens γ W h).ι.base :=
@@ -55,8 +55,8 @@ noncomputable def isoRangeOpens (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersio
   letI : IsOpenImmersion (W.ι ≫ γ) := h
   IsOpenImmersion.isoOfRangeEq (W.ι ≫ γ) (rangeOpens γ W h).ι (range_ι_comp_eq_range_rangeOpens_ι γ W h)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two open immersions have the same image. The forward image isomorphism is the factorization of the restricted map through the inclusion of its image open. Composing this factorization with the inclusion recovers the restricted map.
 -/
 theorem isoRangeOpens_hom_ι (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ)) :
     (isoRangeOpens γ W h).hom ≫ (rangeOpens γ W h).ι = W.ι ≫ γ := by
@@ -67,8 +67,8 @@ theorem isoRangeOpens_hom_ι (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (
     exact hx
   exact IsOpenImmersion.lift_fac (rangeOpens γ W h).ι (W.ι ≫ γ) hsub
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image isomorphism factors the inclusion of the image open through the original restricted map. Composing with that map gives the inclusion.
 -/
 theorem isoRangeOpens_inv_comp (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ)) :
     (isoRangeOpens γ W h).inv ≫ W.ι ≫ γ = (rangeOpens γ W h).ι := by
@@ -77,16 +77,16 @@ theorem isoRangeOpens_inv_comp (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion
       (range_ι_comp_eq_range_rangeOpens_ι γ W h)).inv ≫ W.ι ≫ γ = (rangeOpens γ W h).ι
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Postcompose the forward image-isomorphism identity with the given morphism. Associativity yields the displayed composite.
 -/
 theorem isoRangeOpens_hom_ι_assoc (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (f : B ⟶ C) :
     (isoRangeOpens γ W h).hom ≫ (rangeOpens γ W h).ι ≫ f = W.ι ≫ γ ≫ f := by
   rw [← Category.assoc, isoRangeOpens_hom_ι, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse image isomorphism followed by the original restricted map is the image-open inclusion. Postcomposing that identity with the given morphism proves the result.
 -/
 theorem isoRangeOpens_inv_comp_assoc (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (f : B ⟶ C) :
@@ -98,10 +98,8 @@ theorem isoRangeOpens_inv_comp_assoc (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImm
     simp only [Category.assoc]
   rw [hassoc, key]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Surjectivity gives a preimage of the target point. Around that preimage choose an open on which the map is an open immersion. The point is the image of the preimage regarded as a point of this open, so it belongs to the associated image open.
 -/
 theorem exists_mem_rangeOpens (γ : A ⟶ B)
     (hγ : MaxContactFunctoriality.IsLocalIsomorphism γ) [AlgebraicGeometry.Surjective γ]
@@ -117,10 +115,8 @@ theorem exists_mem_rangeOpens (γ : A ⟶ B)
   have h1 : (U.ι ≫ γ).base w = γ.base (U.ι.base w) := by simp
   rw [h1, hw, ha]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an element of the first ideal. Its image lies in the image ideal of the second by inclusion. Applying the left inverse sends this element into the ideal obtained by extending the second ideal along the composite. The composite is the identity, so the original element belongs to the second ideal.
 -/
 private theorem le_of_map_le_of_leftInverse {R S : Type u} [CommRing R] [CommRing S]
     (ψ : R →+* S) (ψ' : S →+* R) (hinv : ∀ x, ψ' (ψ x) = x) {A C : Ideal R}
@@ -133,8 +129,8 @@ private theorem le_of_map_le_of_leftInverse {R S : Type u} [CommRing R] [CommRin
   rw [h3, Ideal.map_id] at h2
   exact h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open the distinguished opens of the indicated functions form a cover by hypothesis. The affine correspondence between basic opens and localizations says their union is the whole open exactly when the functions generate the unit ideal.
 -/
 private theorem span_eq_top_of_forall_mem_basicOpen {X : Scheme.{u}} {V : X.Opens}
     (hV : IsAffineOpen V) (S : Set Γ(X, V))
@@ -146,10 +142,8 @@ private theorem span_eq_top_of_forall_mem_basicOpen {X : Scheme.{u}} {V : X.Open
   obtain ⟨f, hfS, hxf⟩ := hcov x hx
   exact TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨f, hfS⟩, hxf⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the smaller open factors through the larger open. Pullback along that factorization preserves the given inclusion of the two restricted ideals and gives their restrictions to the smaller open.
 -/
 private theorem comap_ι_le_comap_ι_of_le {X : Scheme.{u}} {I J : X.IdealSheafData}
     {V W : X.Opens} (hVW : V ≤ W) (hIJ : I.comap W.ι ≤ J.comap W.ι) :
@@ -166,14 +160,8 @@ private theorem comap_ι_le_comap_ι_of_le {X : Scheme.{u}} {I J : X.IdealSheafD
   rw [← h1, ← h2]
   exact Scheme.IdealSheafData.comap_mono _ hIJ
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the pullback inclusion on the whole affine open viewed as a scheme. Under the section-ring isomorphism for the open immersion, these two ideals are the images of the original ideals on the affine open. Applying the inverse ring isomorphism reflects their inclusion.
 -/
 private theorem ideal_le_ideal_of_comap_ι_le {X : Scheme.{u}} {I J : X.IdealSheafData}
     (V : X.affineOpens)
@@ -217,14 +205,8 @@ private theorem ideal_le_ideal_of_comap_ι_le {X : Scheme.{u}} {I J : X.IdealShe
   simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring on the basic open is the localization at powers of the defining function. Membership of the image in the extended ideal writes it as a fraction with numerator in the ideal and denominator some power of the function. Clear that denominator in the localization, then multiply by a further power to obtain the equality in the original ring. The resulting power times the original element is a multiple of an ideal element and hence belongs to the ideal.
 -/
 private theorem exists_pow_smul_mem_of_map_mem {X : Scheme.{u}} (V : X.affineOpens)
     (C : Ideal Γ(X, (V : X.Opens))) (f a : Γ(X, (V : X.Opens)))
@@ -253,14 +235,8 @@ private theorem exists_pow_smul_mem_of_map_mem {X : Scheme.{u}} (V : X.affineOpe
   rw [smul_eq_mul, hmul]
   exact Ideal.mul_mem_left _ _ hc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Work on an affine open and take an element of the first section ideal. Refine the given cover there by basic opens subordinate to its members. The defining functions of these basic opens generate the unit ideal. On each basic open the assumed comparison restricts to inclusion of the section ideals, so the element lies in the localization of the second ideal. Clearing denominators puts a power of each defining function times the element in the second ideal. Since the basic opens cover the affine, those powers also generate the unit ideal, so the element itself belongs to the second ideal. This proves inclusion on every affine open.
 -/
 theorem le_of_forall_comap_ι_le {ι : Type v} (U : ι → B.Opens)
     (hU : ∀ b : ↥B, ∃ i, b ∈ U i) (J K : B.IdealSheafData)
@@ -289,19 +265,15 @@ theorem le_of_forall_comap_ι_le {ι : Type v} (U : ι → B.Opens)
   rw [← K.map_ideal_basicOpen V f] at ha''
   exact exists_pow_smul_mem_of_map_mem V (K.ideal V) f a ha''
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two pullbacks compose to pullback along the inverse followed by the forward isomorphism. This is the identity on the original target and fixes the ideal.
 -/
 private theorem comap_inv_comap_hom {X Y : Scheme.{u}} (e : X ≅ Y) (I : Y.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
   rw [← Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The image opens of the local isomorphisms cover the target by surjectivity. On each image open, pull the two restricted ideals back along its isomorphism from the corresponding source open. These are the restrictions of the already compared pulled-back ideals. Pulling their inclusion back along the inverse recovers inclusion on the image open. The open-cover criterion for inclusion now gives the result on the target.
 -/
 theorem le_of_comap_le (γ : A ⟶ B)
     (hγ : MaxContactFunctoriality.IsLocalIsomorphism γ) [AlgebraicGeometry.Surjective γ]
@@ -330,16 +302,16 @@ theorem le_of_comap_le (γ : A ⟶ B)
       Scheme.IdealSheafData.comap_mono (isoRangeOpens γ W hW).inv h1
     rwa [comap_inv_comap_hom, comap_inv_comap_hom] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The open inclusion is smooth, and the given morphism is smooth. Their composite is smooth.
 -/
 private theorem smooth_ι_comp {X Y : Scheme.{u}} (U : X.Opens) (g : X ⟶ Y)
     (hg : AlgebraicGeometry.Smooth g) : AlgebraicGeometry.Smooth (U.ι ≫ g) := by
   have : AlgebraicGeometry.Smooth g := hg
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Precompose the smooth composite with the inverse isomorphism, which is smooth. The inverse cancels the forward isomorphism, leaving the desired map.
 -/
 private theorem smooth_of_smooth_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y) (k : Y ⟶ Z)
     (hk : AlgebraicGeometry.Smooth (e.hom ≫ k)) : AlgebraicGeometry.Smooth k := by
@@ -347,10 +319,8 @@ private theorem smooth_of_smooth_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y)
   have h2 : AlgebraicGeometry.Smooth (e.inv ≫ e.hom ≫ k) := inferInstance
   rwa [← Category.assoc, e.inv_hom_id, Category.id_comp] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Cover the target of the local isomorphism by its image opens, using surjectivity. On each corresponding source open the composite with the given morphism is smooth by restriction. Its identification with the image-open restriction is through an isomorphism, so the image-open restriction is smooth. Smoothness is local on the source, giving smoothness of the map out of the target.
 -/
 theorem smooth_of_smooth_comp_of_isLocalIsomorphism {S : Scheme.{u}} (γ : A ⟶ B) (f : B ⟶ S)
     [IsZariskiLocalAtSource (@AlgebraicGeometry.Smooth.{u})]
@@ -370,10 +340,8 @@ theorem smooth_of_smooth_comp_of_isLocalIsomorphism {S : Scheme.{u}} (γ : A ⟶
     exact smooth_ι_comp (U b) (γ ≫ f) h
   exact IsZariskiLocalAtSource.of_iSup_eq_top _ htop hsm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Around the image of a point under the first projection choose an open on which the original map is an open immersion. Its inverse image under that projection is an open neighborhood of the point. The second projection restricted to this neighborhood is the base change of the chosen open immersion, hence an open immersion.
 -/
 private theorem isLocalIsomorphism_pullback_snd {X Y W : Scheme.{u}} (g : X ⟶ Y)
     (hg : MaxContactFunctoriality.IsLocalIsomorphism g) (t : W ⟶ Y) :
@@ -391,10 +359,8 @@ private theorem isLocalIsomorphism_pullback_snd {X Y W : Scheme.{u}} (g : X ⟶ 
   rw [← hsq.isoPullback_hom_snd]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The closed subscheme of the pulled-back ideal is isomorphic to the fiber product of the original closed subscheme with the cover. Transport the given smooth composite to this fiber product. Commutativity expresses it through the projection to the original closed subscheme. That projection is a surjective local isomorphism by base change, so smoothness descends to the original closed subscheme's structural map.
 -/
 theorem smooth_subschemeι_comp_of_smooth_comap_comp {S : Scheme.{u}} (γ : A ⟶ B) (f : B ⟶ S)
     (Z : B.IdealSheafData)
@@ -415,8 +381,8 @@ theorem smooth_subschemeι_comp_of_smooth_comap_comp {S : Scheme.{u}} (γ : A �
   exact smooth_of_smooth_comp_of_isLocalIsomorphism (Limits.pullback.snd γ Z.subschemeι) (Z.subschemeι ≫ f)
     (isLocalIsomorphism_pullback_snd γ hγ Z.subschemeι) h2
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the original chart to the smaller open. Its composite to the base is the smaller open inclusion followed by the cover map and structural map. Precompose with the inverse image isomorphism. The resulting inclusion followed by the cover map is the image-open inclusion, yielding the required compatibility over the base.
 -/
 private theorem isoRangeOpens_inv_comp_map_comp_affineSpaceFinToSpec {X Y : Scheme.{u}} {k : Type u} [Field k]
     (q : Y ⟶ Spec (CommRingCat.of k)) (γ : X ⟶ Y) {V W : X.Opens} (hWV : W ≤ V)
@@ -435,8 +401,8 @@ private theorem isoRangeOpens_inv_comp_map_comp_affineSpaceFinToSpec {X Y : Sche
     _ = (isoRangeOpens γ W hW).inv ≫ W.ι ≫ γ ≫ q := by rw [h1]
     _ = (rangeOpens γ W hW).ι ≫ q := isoRangeOpens_inv_comp_assoc γ W hW q
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The transported chart is the composite of an isomorphism, an open inclusion, and the original étale chart. Each map is étale, so the composite is étale.
 -/
 private theorem etale_isoRangeOpens_inv_comp_map {X Y : Scheme.{u}} {k : Type u} [Field k]
     (q : Y ⟶ Spec (CommRingCat.of k)) (γ : X ⟶ Y) {V W : X.Opens} (hWV : W ≤ V)
@@ -454,10 +420,8 @@ private noncomputable def etaleChartOnRangeOpens {X Y : Scheme.{u}} {k : Type u}
   comp_struct := isoRangeOpens_inv_comp_map_comp_affineSpaceFinToSpec q γ hWV hW c
   isEtale := etale_isoRangeOpens_inv_comp_map q γ hWV hW c
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate ideal of the transported chart is the pullback from the coordinate subspace along the transported chart map. Factor the map through the inverse image isomorphism, the open restriction, and the original chart. Pulling back in those steps gives the same ideal.
 -/
 private theorem coordIdeal_etaleChartOnRangeOpens {X Y : Scheme.{u}} {k : Type u} [Field k]
     (q : Y ⟶ Spec (CommRingCat.of k)) (γ : X ⟶ Y) {V W : X.Opens} (hWV : W ≤ V)
@@ -479,12 +443,8 @@ private theorem coordIdeal_etaleChartOnRangeOpens {X Y : Scheme.{u}} {k : Type u
       (Category.assoc (isoRangeOpens γ W hW).inv (X.homOfLE hWV) c.map)
   exact ((e1.trans e2).trans e3).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the image open factors through the inverse image isomorphism to the smaller source open, its inclusion into the larger open, the larger open inclusion, and the cover map. Pullback along this composite equals the stated successive restrictions and transports.
 -/
 private theorem restrictIdeal_rangeOpens {X Y : Scheme.{u}} (γ : X ⟶ Y) {V W : X.Opens}
     (hWV : W ≤ V) (hW : IsOpenImmersion (W.ι ≫ γ)) (J : Y.IdealSheafData) :
@@ -513,22 +473,8 @@ private theorem restrictIdeal_rangeOpens {X Y : Scheme.{u}} (γ : X ⟶ Y) {V W 
       = (((J.comap γ).comap V.ι).comap (X.homOfLE hWV)).comap (isoRangeOpens γ W hW).inv
   exact ((e1.trans e2).trans (e3.trans e4)).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point on the center downstairs choose a preimage on the pulled-back center by surjectivity and the support formula. Take a strict normal crossing chart there and shrink it to an open where the cover map is an open immersion. The image open contains the original point, and its isomorphism with the smaller source open transports the chart. The pulled-back list preserves the original indices. Restrictions of unit entries stay unit, assigned boundary coordinate ideals transport to the same coordinate ideals in the new chart, and the center coordinate ideal transports in the same way. The distinctness of the boundary assignments is unchanged. This gives the required chart downstairs.
 -/
 theorem hasStrictNormalCrossingsWith_of_comap {k : Type u} [Field k] (p : B ⟶ Spec (CommRingCat.of k))
     (γ : A ⟶ B) [AlgebraicGeometry.Surjective γ]
@@ -583,12 +529,8 @@ theorem hasStrictNormalCrossingsWith_of_comap {k : Type u} [Field k] (p : B ⟶ 
     rw [restrictIdeal_rangeOpens γ hWV hW (L[i]'hi), h1, coordIdeal_etaleChartOnRangeOpens]
   · rw [restrictIdeal_rangeOpens γ hWV hW Z, hZV, coordIdeal_etaleChartOnRangeOpens]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the structural map is the given smooth map composed with an isomorphism. At each successor, the center is in strict normal crossing position and the transition is its blowup. The smoothness theorem for such a blowup over the smooth previous stage makes the next structural map smooth. Induct through the chosen index.
 -/
 private theorem smooth_markedBlowupSequenceData_projectionToBase_comp {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -610,12 +552,8 @@ private theorem smooth_markedBlowupSequenceData_projectionToBase_comp {k : Type 
       rw [he]
       exact smooth_comp_of_isBlowupAlongIdealSheaf (t.center_snc j hj) (t.isBlowup j hj)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero this is the initial compatibility of the strict pullback. At the next stage the projection to the base factors through the blowup map and the previous projection. Commute the comparison through the blowup square, then apply the inductive compatibility at the preceding stage. The resulting composite is the upstairs projection followed by the original base map.
 -/
 private theorem strictPullbackComparisonMap_comp_projectionToBase {k : Type u} [Field k] {X X' : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X} {I : X.IdealSheafData} {m : ℕ}
@@ -644,10 +582,8 @@ private theorem strictPullbackComparisonMap_comp_projectionToBase {k : Type u} [
         _ = (t.map j ≫ t.proj j) ≫ g := (Category.assoc _ _ _).symm
         _ = t.proj (j + 1) ≫ g := by rw [t.proj_succ j]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The upstairs center is in strict normal crossing position and its support lies in the order locus. The local order criterion therefore puts the upstairs ideal inside the marked power of that center. By the ideal comparison, the center pullback identity, and preservation of powers under pullback, this is the pullback of the desired inclusion. The stage comparison is a surjective local isomorphism, so the inclusion descends.
 -/
 private theorem controlledTransform_le_center_pow {k : Type u} [Field k] [CharZero k] {X X' : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X}
@@ -677,18 +613,8 @@ private theorem controlledTransform_le_center_pow {k : Type u} [Field k] [CharZe
     _ = (d.center i ^ m).comap (t.strictPullbackComparisonMap D i (le_of_lt hi)) :=
         (Scheme.IdealSheafData.comap_pow (d.center i) (t.strictPullbackComparisonMap D i (le_of_lt hi)) m).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the two ideals are pullbacks of the original ideal along equal composites. At a successor the inductive comparison descends the inclusion of the downstairs ideal in the appropriate center power. Thus the next downstairs controlled transform satisfies the exceptional-power factorization. Pull it back along the next comparison map. Pullback commutes with products and powers, and the exceptional ideals agree by pullback. The comparison square and the inductive equality identify the two total transforms upstairs. Both candidate ideals have the same product with the exceptional power, so cancellation by this locally nonzerodivisor-generated ideal proves equality.
 -/
 private theorem ideal_eq_comap_controlledTransform {k : Type u} [Field k] [CharZero k] {X X' : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X}
@@ -758,20 +684,8 @@ private theorem ideal_eq_comap_controlledTransform {k : Type u} [Field k] [CharZ
       exact eq_of_isLocallyGeneratedByNonZeroDivisor_pow_mul_eq_mul
         (isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal (t.isBlowup j hj)) m key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked ideals upstairs are pullbacks of the downstairs controlled transforms. The center-power inclusions descend at every stage, giving exceptional divisibility and the required order bound on each downstairs center. The comparison maps are surjective local isomorphisms, and the structural maps commute with them. Smoothness of the upstairs centers thus descends to the downstairs centers. Their boundaries and centers also agree by pullback, so the strict normal crossing conditions descend by the local chart argument. These four properties give the marking.
 -/
 private theorem isMarked_of_strictPullbackBlowupSeq {k : Type u} [Field k] [CharZero k]
     {X X' : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) (g : X' ⟶ X)
@@ -831,8 +745,8 @@ private theorem isMarked_of_strictPullbackBlowupSeq {k : Type u} [Field k] [Char
     rw [hc, hb, hpr]
     exact t.center_snc i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The cover map is flat, and the marked cover sequence starts from the pullback of the balanced tuned ideal and boundary at the tuned mark. The strict pullback data give the stage comparisons, which are local isomorphisms by hypothesis. Apply descent of marking to these data and the local Noetherian stages to obtain the stated marking downstairs.
 -/
 theorem isMarked_balancedTunedIdeal_of_isStrictPullbackBlowupSeq (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (Afam : ℕ → PrincipalizationAssignment.{u}) (T : MarkedIdealWithBoundary.{u})

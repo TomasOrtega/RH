@@ -51,15 +51,15 @@ def dropTrivialBoundaryBaseFieldHom (T : MarkedIdealWithBoundary.{u}) (L : Type 
 def coverBaseFieldHom (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L]
     (f : A.base →+* L) : (MaxContactCoverData.coverTriple A hv).base →+* L := f
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural morphism of the cover triple sends a point first to the original scheme by the cover map and then to the spectrum of the base field.
 -/
 theorem coverTriple_structureMorphism_eq (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (MaxContactCoverData.coverTriple T hv).structMap = MaxContactCoverData.coverMap T hv ≫ T.structMap :=
   MaxContactCoverData.coverTriple_structureMorphism T hv
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map of spectra induced by the field homomorphism is surjective, since each spectrum has one point. The first projection of the field-extension square is its base change, which remains surjective.
 -/
 theorem surjective_baseChange_fst (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) :
@@ -68,10 +68,8 @@ theorem surjective_baseChange_fst (T : MarkedIdealWithBoundary.{u}) (L : Type u)
     (CategoryTheory.IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base L f)).flip
     (FunctorialResolution.EmbeddedResolution.instSurjectiveSpecMapOfFieldHom T.base L f)
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Any point in the order locus after field extension has order at least the old mark. The order identity gives the same bound at its image in the original scheme. That image would lie in the empty original order locus.
 -/
 theorem orderAtLeastLocus_baseChange_eq_empty (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L)
@@ -113,8 +111,8 @@ def MaxContactHypersurfaceBaseChange : Prop :=
         InStrictNormalCrossingPosition (S.baseChange L f).structMap
           [H.comap (pullback.fst S.structMap (specMapOfFieldHom S.base L f))])
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reassociate the first two maps with the third and replace the inner composite by the given equal map. The assumed equality then gives the result.
 -/
 private theorem comp_assoc_eq_of_eq_comp {X Y Z W V : Scheme.{u}}
     (p : X ⟶ Y) (q : Y ⟶ W) (b : Y ⟶ Z) (c : Z ⟶ W) (r : X ⟶ V) (s : V ⟶ W)
@@ -123,8 +121,8 @@ private theorem comp_assoc_eq_of_eq_comp {X Y Z W V : Scheme.{u}}
   rw [Category.assoc, ← hq]
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map of the cover triple factors through the original scheme. Substitute this factorization into the commutativity identity for the field extension of the cover. Associativity gives the required identity for the two proposed projections.
 -/
 theorem coverBaseChangeMap_condition (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L]
     (f : A.base →+* L) :
@@ -162,8 +160,8 @@ abbrev coverBaseChangeFiber (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissib
     (f : A.base →+* L) (hv' : (A.baseChange L f).IsAdmissible) : Scheme.{u} :=
   pullback (MaxContactCoverData.coverMap (A.baseChange L f) hv') (coverBaseChangeMap A hv L f)
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+If the proposition holds, its decision is true. If it fails, its decision is false. These two cases give the equivalence.
 -/
 private theorem decide_eq_true_iff_self (p : Prop) (i : Decidable p) :
     (@decide p i = true) ↔ p := by
@@ -171,8 +169,8 @@ private theorem decide_eq_true_iff_self (p : Prop) (i : Decidable p) :
   | isTrue h => exact ⟨fun _ => h, fun _ => rfl⟩
   | isFalse h => exact ⟨fun hb => Bool.noConfusion hb, fun hp => absurd hp h⟩
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+When the proposition holds, its decision is true and its negated decision is false. When it fails, its decision is false and its negated decision is true. Thus truth of the negated decision is equivalent to failure of the proposition.
 -/
 private theorem not_decide_eq_true_iff_not (p : Prop) (i : Decidable p) :
     ((!(@decide p i)) = true) ↔ ¬ p := by
@@ -180,8 +178,8 @@ private theorem not_decide_eq_true_iff_not (p : Prop) (i : Decidable p) :
   | isTrue h => exact ⟨fun hb => Bool.noConfusion hb, fun hn => absurd h hn⟩
   | isFalse h => exact ⟨fun _ => h, fun _ => rfl⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The nontrivial part keeps exactly entries for which the unit-ideal test fails. The proposed test is true for exactly these entries, so the two filters agree on the whole list.
 -/
 private theorem nontrivialPart_eq_filter {X : Scheme.{u}}
     {q : X.IdealSheafData → Bool} (hq : ∀ D : X.IdealSheafData, q D = true ↔ D ≠ ⊤)
@@ -193,10 +191,8 @@ private theorem nontrivialPart_eq_filter {X : Scheme.{u}}
   rw [hq D]
   exact not_decide_eq_true_iff_not _ _
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Induct on the original list. Both operations give the empty list in the base case. At the head, the two tests agree by hypothesis, so both keep the pulled-back head or both discard it. The induction hypothesis identifies their outputs on the tail.
 -/
 private theorem filter_map_comap {X Y : Scheme.{u}} (g : X ⟶ Y)
     (p : Y.IdealSheafData → Bool) (q : X.IdealSheafData → Bool)
@@ -210,10 +206,8 @@ private theorem filter_map_comap {X Y : Scheme.{u}} (g : X ⟶ Y)
       · simp [hpq D, hD, ih]
       · simp [hpq D, hD, ih]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Surjectivity implies that an ideal is nonunit exactly when its pullback is nonunit. The two filters therefore commute with entrywise pullback. Replace each nontrivial part in the assumed equality by its filter expression and use this commutation to obtain the claimed list.
 -/
 private theorem filter_eq_map_filter_of_nontrivialPart_eq {X Y : Scheme.{u}} (g : X ⟶ Y)
     [AlgebraicGeometry.Surjective g]
@@ -236,10 +230,8 @@ private theorem filter_eq_map_filter_of_nontrivialPart_eq {X Y : Scheme.{u}} (g 
   rw [← h1]
   exact filter_map_comap g p q hpq E
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The field-extension projection is surjective, so a boundary ideal pulls back to the unit ideal exactly when it was already unit. Thus removing unit entries commutes with pulling back the boundary. The replacement boundary has the same nontrivial entries as the base-changed boundary, so trimming gives the same list in either case. The two triples share the other data.
 -/
 theorem dropTrivialBoundary_withBoundary_baseChange (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) (E' : List (T.baseChange L f).scheme.IdealSheafData)
@@ -266,15 +258,15 @@ theorem dropTrivialBoundary_withBoundary_baseChange (T : MarkedIdealWithBoundary
   exact congrArg (fun E : List (T.baseChange L f).scheme.IdealSheafData =>
     (T.baseChange L f).withBoundary E) hb
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Successive ideal pullbacks compose to pullback along the composite of their three maps, in the order from the final source to the original target.
 -/
 private theorem comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : S ⟶ Y) (p : Y ⟶ X)
     (I : X.IdealSheafData) : ((I.comap p).comap c).comap q = I.comap (q ≫ c ≫ p) := by
   simp [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+For each entry of the original list, the three successive pullbacks equal pullback along the composite. The lists of these entries therefore agree.
 -/
 private theorem map_comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : S ⟶ Y) (p : Y ⟶ X)
     (E : List X.IdealSheafData) :
@@ -285,8 +277,8 @@ private theorem map_comap_comap_comap {Q S Y X : Scheme.{u}} (q : Q ⟶ S) (c : 
   | nil => rfl
   | cons D Es ih => simp only [List.map_cons, comap_comap_comap, ih]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Substitute the two descriptions as successive pullbacks of the original ideal. The final pullback on each side is then pullback of that ideal along the corresponding triple composite. Those composites agree by hypothesis.
 -/
 private theorem comap_eq_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (c₂ : S₂ ⟶ Y₂) (p₂ : Y₂ ⟶ X)
@@ -298,8 +290,8 @@ private theorem comap_eq_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
   subst h₂
   rw [comap_comap_comap, comap_comap_comap, hk]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Express both lists as entrywise pullback of the original list along triple composites. The given equality of those composites identifies the resulting entries and the lists.
 -/
 private theorem map_comap_eq_map_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (c₂ : S₂ ⟶ Y₂) (p₂ : Y₂ ⟶ X)
@@ -312,8 +304,8 @@ private theorem map_comap_eq_map_comap_of_comp_eq {Q S₁ S₂ Y₁ Y₂ X : Sch
   subst h₂
   rw [map_comap_comap_comap, map_comap_comap_comap, hk]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Write both structural maps as the given maps to the intermediate scheme followed by its structural map. The assumed equality of the composites into the intermediate scheme then gives equality after composing with its structural map.
 -/
 private theorem comp_structureMorphism_eq_of_comp_eq {Q S₁ S₂ Y W : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y) (c₂ : S₂ ⟶ Y) (sY : Y ⟶ W)
@@ -324,8 +316,8 @@ private theorem comp_structureMorphism_eq_of_comp_eq {Q S₁ S₂ Y W : Scheme.{
   subst h₂
   rw [← Category.assoc, hpc, Category.assoc]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace the composite along the first path to the intermediate scheme by the given equal one. After reassociating, replace the remaining two maps by their stated equal composite. This gives the second path.
 -/
 private theorem comp_comp_eq_comp_comp {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     (q₁ : Q ⟶ S₁) (q₂ : Q ⟶ S₂) (c₁ : S₁ ⟶ Y₁) (p₁ : Y₁ ⟶ X) (cc : S₂ ⟶ Y₁)
@@ -334,8 +326,8 @@ private theorem comp_comp_eq_comp_comp {Q S₁ S₂ Y₁ Y₂ X : Scheme.{u}}
     q₁ ≫ c₁ ≫ p₁ = q₂ ≫ c₂ ≫ p₂ := by
   rw [← Category.assoc, hpc, Category.assoc, hcf]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The field, scheme, and mark are common to the two triples. The indicated equalities identify the structural maps, ideals, and boundary lists, so all of their data agree.
 -/
 private theorem markedIdealWithBoundary_mk_congr (k : Type u) [Field k] (Y : Scheme.{u})
     (q q' : Y ⟶ Spec (CommRingCat.of k)) (I I' : Y.IdealSheafData) (m : ℕ)
@@ -346,18 +338,8 @@ private theorem markedIdealWithBoundary_mk_congr (k : Type u) [Field k] (Y : Sch
   subst hE
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the chosen cover of the extended triple with the field extension of the original cover on their common fiber product. Their projections to the extended original scheme agree by the fiber product identity, so the structural maps to the extension field's spectrum agree. The two maps from the fiber product to the original scheme also agree by the defining equations of the cover base-change map. Tuning commutes with field extension, so both ideals on the fiber product are pullbacks of the original tuned ideal along that same map. The boundaries are entrywise pullbacks of the original boundary along the same map. The field and mark are common to the two constructions, yielding equality of triples.
 -/
 theorem pullbackAlong_coverBaseChangeFiber_eq (hderiv : DerivIdealSheafIterateCommBaseChange.{u})
     (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L] [CharZero L]
@@ -467,32 +449,32 @@ theorem pullbackAlong_coverBaseChangeFiber_eq (hderiv : DerivIdealSheafIterateCo
   exact markedIdealWithBoundary_mk_congr L (coverBaseChangeFiber A hv L f hv') _ _ _ _
     (MaxContactCoverData.coverTriple (A.baseChange L f) hv').mult _ _ hsm hide hbd
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is a base change of the opposite flat map. Flatness is stable under base change.
 -/
 private theorem flat_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
     (hb : AlgebraicGeometry.Flat b) : AlgebraicGeometry.Flat fst :=
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Flat) sq.flip hb
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is obtained by base change from the surjective map. Surjectivity of scheme morphisms is stable under base change.
 -/
 private theorem surjective_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
     (hb : AlgebraicGeometry.Surjective b) : AlgebraicGeometry.Surjective fst :=
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) sq.flip hb
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is a base change of the given smooth morphism, hence is smooth.
 -/
 private theorem smooth_fst_of_isPullback {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd : W ⟶ Y}
     {a : X ⟶ Z} {b : Y ⟶ Z} (sq : CategoryTheory.IsPullback fst snd a b)
     (hb : AlgebraicGeometry.Smooth b) : AlgebraicGeometry.Smooth fst :=
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) sq.flip hb
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the stated equalities of morphisms into the square. It is the given pullback square.
 -/
 private theorem isPullback_congr_hom {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd snd' : W ⟶ Y}
     {a a' : X ⟶ Z} {b : Y ⟶ Z} (h : CategoryTheory.IsPullback fst snd a b)
@@ -501,8 +483,8 @@ private theorem isPullback_congr_hom {W X Y Z : Scheme.{u}} {fst : W ⟶ X} {snd
   subst ha
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The defining map to the field extension of the original scheme has the two projections specified by the universal property. Paste the proposed square with the field-extension square of the original scheme. The outer rectangle is the field-extension pullback for the cover because its structural map factors through the original scheme. The lower square is a pullback, so cancellation of pullback squares gives the proposed square.
 -/
 private theorem isPullback_coverBaseChangeMap (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible)
     (L : Type u) [Field L] (f : A.base →+* L) :
@@ -527,8 +509,8 @@ private theorem isPullback_coverBaseChangeMap (A : MarkedIdealWithBoundary.{u}) 
       (specMapOfFieldHom (MaxContactCoverData.coverTriple A hv).base L (coverBaseFieldHom A hv L f)))
     hsnd (coverTriple_structureMorphism_eq A hv)
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Changing the boundary preserves all admissibility data that depend on the scheme, structural map, ideal, or mark. The new singleton satisfies strict normal crossings by the given condition, so the new triple is admissible.
 -/
 private theorem isAdmissible_withBoundary_singleton (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (H : S.scheme.IdealSheafData) (hsnc : InStrictNormalCrossingPosition S.structMap [H]) :
@@ -536,12 +518,8 @@ private theorem isAdmissible_withBoundary_singleton (S : MarkedIdealWithBoundary
   ⟨hV.charZero, hV.locallyOfFiniteType, hV.nonzeroOnComponents, hV.one_le_mult,
     hV.quasiCompact, hV.smooth, hsnc⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Compose the given strict pullback relations along each path from the common cover. The two commutative squares identify one composite base map with the other followed by the original base change. Consequently the sequence on the common cover is a strict pullback of both the upstairs sequence and the base change of the downstairs sequence along the same flat surjection. Faithfully flat descent of sequence isomorphisms identifies those two sequences. Transport the canonical strict pullback relation along this isomorphism.
 -/
 private theorem isStrictPullback_descend_of_flat_surjective_cover
     {XA XB XC XC' XCb XQ : Scheme.{u}}
@@ -573,10 +551,8 @@ private theorem isStrictPullback_descend_of_flat_surjective_cover
   have heqv : dB.Isomorphic (dA.baseChange hh) := M1.isomorphic_of_isomorphic M3 (SequenceOfBlowups.isomorphic_refl u)
   exact (isStrictPullbackSequenceOfBlowups_baseChange dA hh).of_isomorphic_pullback heqv.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original cover triple is admissible and has order bounded by its mark. After field extension, admissibility and the order bound persist, as do maximal contact and strict normal crossing position for the pulled-back hypersurface. The two cover dimensions lie within their respective reference dimensions. Apply field-extension compatibility of reduction along the hypersurface. The original reduction along it is the chosen cover sequence.
 -/
 private theorem isStrictPullbackBlowupSeq_coverTriple_baseChange
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
@@ -627,24 +603,10 @@ private theorem isStrictPullbackBlowupSeq_coverTriple_baseChange
     (BoundarySeparationByMaxContact.inStrictNormalCrossingPosition_coverMaxContactIdeal hstar P A hHyp)
     hadm.1 hadm.2 hinherit
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Form the common fiber product of the chosen cover after field extension and the field extension of the original cover. Both projections are smooth, flat, and surjective because they come from the open covers by base change. The two triples agree after pullback to the common fiber product, and admissibility follows from smooth pullback with the given quasi-compactness. Use there the pullback of the chosen hypersurface from the cover after extension. It is of maximal contact and is in strict normal crossing position, and these properties transfer across the equality of triples.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+Apply smooth-surjective functoriality of hypersurface reduction along both projections, using this same hypersurface upstairs. It gives a common strict pullback of the two cover reductions. Field-extension functoriality compares the reduction on the field extension of the original cover with the original cover reduction. The given descent relations compare each chosen cover reduction with its base sequence. The faithfully flat comparison of these paths now gives the strict pullback between the two base sequences.
 -/
 theorem isStrictPullbackBlowupSeq_baseChange_of_cover
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -899,8 +861,8 @@ theorem isStrictPullbackBlowupSeq_baseChange_of_cover
     hfA hfl1 hfg' hsu1 hsg' pullback.condition hsqc.w.symm
     _ _ _ _ _ _ hX hY hZ hd hd'
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples and then the two comparison morphisms on their common scheme. The given condition for every descent witness now applies to the indicated witness and yields the strict pullback.
 -/
 private theorem isStrictPullback_of_eq_of_heq
     (hinv : ComapIsoInvariance.{u}) (Fam : ℕ → PrincipalizationAssignment.{u})
@@ -922,16 +884,8 @@ private theorem isStrictPullback_of_eq_of_heq
   subst hψ2
   exact hcrit d hd
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Field extension preserves pointwise order, and replacing the boundary leaves the ideal and mark unchanged. This gives the order bound for the modified triple. If the original order locus is empty, the new one is empty too, so both reductions have length zero and satisfy strict pullback. Otherwise the new locus is nonempty because the field-extension projection is surjective and preserves order. For each triple, choose the marked descent of the cover reduction after removing unit boundary entries. The two descended sequences are the underlying sequences of the desired reductions. Trimming commutes with field extension for boundaries with the same nontrivial entries. Identify the trimmed upstairs triple with the field extension of the trimmed downstairs triple and apply the strict pullback theorem for the cover descents.
 -/
 theorem isStrictPullbackBlowupSeq_baseChange_withBoundary
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})

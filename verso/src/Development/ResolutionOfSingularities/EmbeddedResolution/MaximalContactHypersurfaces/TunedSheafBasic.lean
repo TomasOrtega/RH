@@ -13,8 +13,8 @@ open AlgebraicGeometry CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open, the section ideal of a product is the product of the section ideals. Monotonicity of ideal multiplication gives the desired inclusion on each open, hence on the sheaves.
 -/
 private theorem mul_le_mul_idealSheafData {X : Scheme.{u}} {A B C D : X.IdealSheafData}
     (h1 : A ≤ B) (h2 : C ≤ D) : A * C ≤ B * D := by
@@ -24,8 +24,8 @@ private theorem mul_le_mul_idealSheafData {X : Scheme.{u}} {A B C D : X.IdealShe
     exact Ideal.mul_mono (h1 U) (h2 U)
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open, evaluation of a power gives the corresponding power of its section ideal. An ideal’s higher power is contained in its lower power, since the higher power is the lower one times an ideal. The affine inclusions give the sheaf inclusion.
 -/
 private theorem idealSheafData_pow_antitone_of_le {X : Scheme.{u}} (I : X.IdealSheafData) {a b : ℕ}
     (h : b ≤ a) : I ^ a ≤ I ^ b := by
@@ -35,10 +35,8 @@ private theorem idealSheafData_pow_antitone_of_le {X : Scheme.{u}} (I : X.IdealS
     exact Ideal.pow_le_pow_right h
   exact hU
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+For the empty list both products are the unit ideal. For a nonempty list, apply the pointwise containment to its first entry and use induction on the tail. Monotonicity of multiplication combines these two inclusions.
 -/
 private theorem listProd_map_le_listProd_map {X : Scheme.{u}} (f g : ℕ → X.IdealSheafData) :
     ∀ L : List ℕ, (∀ j ∈ L, f j ≤ g j) → (L.map f).prod ≤ (L.map g).prod := by
@@ -52,8 +50,8 @@ private theorem listProd_map_le_listProd_map {X : Scheme.{u}} (f g : ℕ → X.I
       simp only [List.map_cons, List.prod_cons]
       exact mul_le_mul_idealSheafData (h a (by simp)) (ih fun j hj => h j (by simp [hj]))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The range list of length one contains only zero. Its mapped product is the indicated value at zero multiplied by the empty product, so it equals that value.
 -/
 private theorem listProd_map_range_one {X : Scheme.{u}} (f : ℕ → X.IdealSheafData) :
     ((List.range 1).map f).prod = f 0 := by
@@ -63,19 +61,15 @@ private theorem listProd_map_range_one {X : Scheme.{u}} (f : ℕ → X.IdealShea
 private def extendExponentsByZero (m s : ℕ) (t : Fin m → Fin (s + 1)) (j : ℕ) : ℕ :=
   if h : j < m then (t ⟨j, h⟩ : ℕ) else 0
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An index below the cutoff belongs to the finite index set. At such an index, extension by zero returns the original exponent.
 -/
 private theorem extendExponentsByZero_apply_of_lt (m s : ℕ) (t : Fin m → Fin (s + 1)) (j : ℕ) (hj : j < m) :
     extendExponentsByZero m s t j = (t ⟨j, hj⟩ : ℕ) :=
   dif_pos hj
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If all exponents in the sum are already at most the threshold, truncating them changes nothing. Otherwise, an exponent above the threshold becomes exactly the threshold when truncated. Its weight is at least one because its index is below the mark, so that term alone contributes at least the threshold. All other terms are nonnegative.
 -/
 private theorem le_sum_mul_min_of_le_sum (m s : ℕ) (c : ℕ → ℕ)
     (hc : s ≤ ∑ j ∈ Finset.range m, (m - j) * c j) :
@@ -98,8 +92,8 @@ private theorem le_sum_mul_min_of_le_sum (m s : ℕ) (c : ℕ → ℕ)
     intro i _
     exact Nat.zero_le _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exponent function satisfies the required weight bound. Its product is therefore one of the ideals in the supremum defining the tuned sheaf, and lies in that supremum.
 -/
 theorem prod_pow_derivIdealSheafIterate_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -111,12 +105,8 @@ theorem prod_pow_derivIdealSheafIterate_le_tunedSheaf (k : Type u) [Field k] [Is
   exact le_iSup (fun c : {c : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * c j} =>
     ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨c, hc⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+For a term in the original supremum, truncate every exponent in the finite range at the threshold. The weighted sum remains large enough by the truncation estimate. Lowering an ideal’s exponent enlarges its power, so the original product lies in the product for the resulting bounded exponent vector. This proves containment in the bounded supremum. Conversely every bounded exponent vector extends by zero to an exponent function admitted in the original supremum, so each bounded term occurs there.
 -/
 private theorem tunedSheaf_eq_iSup_fin (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -150,8 +140,8 @@ private theorem tunedSheaf_eq_iSup_fin (k : Type u) [Field k] [IsNoetherianRing 
   · rintro ⟨t, ht⟩
     exact le_iSup_of_le ⟨extendExponentsByZero m s t, ht⟩ le_rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open the power of the sheaf gives the same power of the section ideal. A positive power of a ring ideal lies in that ideal because it contains the ideal as a factor. Apply this on each affine open.
 -/
 theorem idealSheafData_pow_le_self {X : Scheme.{u}} (I : X.IdealSheafData) {c : ℕ}
     (hc : 1 ≤ c) : I ^ c ≤ I := by
@@ -161,10 +151,8 @@ theorem idealSheafData_pow_le_self {X : Scheme.{u}} (I : X.IdealSheafData) {c : 
     exact Ideal.pow_le_self (by omega)
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+With mark one the only derivative order in a product is zero, with weight one. An admitted exponent is therefore at least one, and the corresponding ideal power is contained in the original ideal. Choosing exponent one gives the original ideal itself as a term in the supremum, proving equality.
 -/
 theorem tunedSheaf_one_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData) :
@@ -186,22 +174,16 @@ theorem tunedSheaf_one_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Sche
         ((List.range 1).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod)
       ⟨fun _ => 1, by simp⟩)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The balanced tuning exponent at mark one is one. The balanced sheaf therefore agrees with the tuned sheaf of mark and threshold one, which equals the original ideal.
 -/
 theorem balancedTunedSheaf_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData) :
     balancedTunedSheaf k p I 1 = I := by
   rw [balancedTunedSheaf_eq, tuningExponent_one, tunedSheaf_one_one]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Absence of points of order at least the mark implies that the derivative iterate one below the mark is the unit ideal. Choose the exponent function supported only at that derivative index with value equal to the threshold. That index has weight one, so its product is admitted. The selected factor and all zero-exponent factors are unit ideals, so their product is the unit ideal. The supremum is therefore the unit ideal.
 -/
 theorem tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -240,8 +222,8 @@ theorem tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [
       ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod)
       ⟨fun j => if j = m - 1 then s else 0, hsum⟩))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The balanced tuned sheaf uses the prescribed tuning exponent as its threshold. Apply the empty-order-locus argument at this threshold to obtain the unit ideal.
 -/
 theorem balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -251,10 +233,8 @@ theorem balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Fi
   rw [balancedTunedSheaf_eq]
   exact tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty k p I hm (tuningExponent m) h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the bounded exponent presentation on both schemes. Smooth pullback commutes with each derivative iterate and preserves powers of ideal sheaves, so it carries each downstairs factor to the corresponding factor upstairs. It also preserves products and the supremum over the same bounded exponent vectors. Thus pullback gives exactly the tuned sheaf of the pulled-back ideal.
 -/
 theorem tunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -276,8 +256,8 @@ theorem tunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Sche
   exact congrArg List.prod
     (congrArg (fun F : ℕ → Y.IdealSheafData => List.map F (List.range m)) hfun)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both balanced tuned sheaves use the tuning exponent of the same mark, so their thresholds agree. The smooth pullback identity for tuned sheaves at that threshold gives the claim.
 -/
 theorem balancedTunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]

@@ -22,29 +22,29 @@ open scoped TensorProduct
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The category of opens is ordered by inclusion, so the two arrows with the same endpoints are equal. Their opposite arrows and their images under the presheaf are therefore equal.
 -/
 private theorem presheaf_map_op_eq_map_op {X : Scheme.{u}} {A B : X.Opens} (f g : B ⟶ A) :
     X.presheaf.map f.op = X.presheaf.map g.op := by
   rw [Subsingleton.elim f g]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse and forward maps of the canonical section-ring isomorphism are mutually inverse. Taking the underlying ring maps gives the stated composition identity.
 -/
 private theorem topIso_hom_comp_inv {X : Scheme.{u}} (U : X.Opens) :
     (U.topIso.hom.hom).comp (U.topIso.inv.hom) = RingHom.id _ := by
   rw [← CommRingCat.hom_comp, Iso.inv_hom_id, CommRingCat.hom_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The forward map followed by its inverse is the identity on the domain. This equality of ring isomorphism composites gives the equality of their underlying ring maps.
 -/
 private theorem topIso_inv_comp_hom {X : Scheme.{u}} (U : X.Opens) :
     (U.topIso.inv.hom).comp (U.topIso.hom.hom) = RingHom.id _ := by
   rw [← CommRingCat.hom_comp, Iso.hom_inv_id, CommRingCat.hom_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map of sections induced by the inclusion, from the ambient open to the whole open subscheme, uses the same restriction as the inverse section-ring identification. Any parallel restriction arrows between the two opens coincide, so the maps agree.
 -/
 private theorem appLE_opensι_top_eq_topIso_inv {X : Scheme.{u}} (U : X.Opens)
     (h : (⊤ : (↑U : Scheme.{u}).Opens) ≤ U.ι ⁻¹ᵁ U) :
@@ -52,8 +52,8 @@ private theorem appLE_opensι_top_eq_topIso_inv {X : Scheme.{u}} (U : X.Opens)
   rw [Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]
   exact presheaf_map_op_eq_map_op _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section map for the open inclusion on these opens is the inverse of the canonical section identification. Composing it with the forward identification therefore gives the identity.
 -/
 private theorem topIso_hom_comp_appLE_ι {X : Scheme.{u}} (U : X.Opens)
     (h : (⊤ : (↑U : Scheme.{u}).Opens) ≤ U.ι ⁻¹ᵁ U) :
@@ -61,12 +61,8 @@ private theorem topIso_hom_comp_appLE_ι {X : Scheme.{u}} (U : X.Opens)
   rw [appLE_opensι_top_eq_topIso_inv]
   exact topIso_hom_comp_inv U
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Express the differentials in the given basis. The change-of-basis matrix is the identity except in the column for the replaced coordinate, where the column is the coefficient vector of the new differential. Expanding the determinant along this column, the only nonzero cofactor is the diagonal one, equal to one. Thus the determinant is the corresponding coefficient.
 -/
 private theorem basis_det_D_update_eq_coeff {k : Type*} {S : Type*} [CommRing k] [CommRing S] [Algebra k S]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι S (KaehlerDifferential k S))
@@ -89,14 +85,8 @@ private theorem basis_det_D_update_eq_coeff {k : Type*} {S : Type*} [CommRing k]
 
 section
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiplication by any element of the maximal ideal sends the maximal ideal into its square, so it acts by zero on its cotangent quotient. Accordingly the quotient map to the cotangent space factors through the residue-field tensor product. It sends the indicated pure tensor to the class of the chosen element modulo the square. This class is nonzero by hypothesis, so the tensor is nonzero.
 -/
 private theorem one_tmul_ne_zero_of_notMem_maximalIdeal_sq {A : Type*} [CommRing A] [IsLocalRing A]
     (a : A) (ha : a ∈ IsLocalRing.maximalIdeal A)
@@ -137,10 +127,8 @@ private theorem one_tmul_ne_zero_of_notMem_maximalIdeal_sq {A : Type*} [CommRing
   rw [h1] at key
   exact (Ideal.toCotangent_eq_zero (IsLocalRing.maximalIdeal A) ⟨a, ha⟩).mp key
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The indicated element gives a nonzero cotangent class in the residue-field tensor of the maximal ideal, so this single vector is linearly independent. The conormal map to the residue-field fiber of the module of differentials is injective under the stated smoothness hypotheses. It sends the cotangent class to the indicated differential, preserving linear independence.
 -/
 theorem linearIndependent_one_tmul_D_of_notMem_maximalIdeal_sq
     (k : Type*) (A : Type*) [CommRing k] [CommRing A] [Algebra k A] [IsLocalRing A]
@@ -172,16 +160,8 @@ section
 
 variable (k : Type u) [Field k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine open is identified with its own affine open subscheme, and the corresponding section-ring isomorphism identifies the chart’s single coordinate with the generator of its principal coordinate ideal. The restricted ideal on the whole open subscheme corresponds to the given section ideal under this isomorphism. Thus containment of the coordinate ideal implies membership of the original coordinate. Conversely, membership gives containment of the principal ideal on the whole affine open subscheme. Extending along restriction maps gives containment on its affine opens, hence containment of sheaves.
 -/
 theorem coordIdeal_singleton_le_restrictIdeal_iff {U : X.Opens} (hU : IsAffineOpen U) {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) (J : X.IdealSheafData) :
@@ -227,8 +207,8 @@ def IsMaxContactCoord (I : X.IdealSheafData) (m : ℕ) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) : Prop :=
   c.coordIdeal {j} ≤ restrictIdeal (maxContactIdeal k p I m) U
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+By definition a maximal-contact coordinate is one whose principal coordinate ideal lies in the restricted maximal-contact ideal. This is the stated equivalence.
 -/
 theorem isMaxContactCoord_iff (I : X.IdealSheafData) (m : ℕ) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) :
@@ -236,16 +216,16 @@ theorem isMaxContactCoord_iff (I : X.IdealSheafData) (m : ℕ) {U : X.Opens} {n 
       c.coordIdeal {j} ≤ restrictIdeal (maxContactIdeal k p I m) U :=
   Iff.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At mark one the maximal-contact ideal has derivative count zero and equals the original ideal. Substitute this into the coordinate containment that defines maximal contact.
 -/
 theorem isMaxContactCoord_one_iff (I : X.IdealSheafData) {U : X.Opens} {n : ℕ}
     (c : EtaleChart p U n) (j : Fin n) :
     IsMaxContactCoord k p I 1 c j ↔ c.coordIdeal {j} ≤ restrictIdeal I U := by
   rw [isMaxContactCoord_iff, maxContactIdeal_one k p I]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact condition is containment of the singleton coordinate ideal in the restricted maximal-contact ideal. On an affine open, such containment is equivalent to membership of its generator in the section ideal.
 -/
 theorem isMaxContactCoord_iff_coord_mem (I : X.IdealSheafData) (m : ℕ) {U : X.Opens}
     (hU : IsAffineOpen U) {n : ℕ} (c : EtaleChart p U n) (j : Fin n) :
@@ -254,8 +234,8 @@ theorem isMaxContactCoord_iff_coord_mem (I : X.IdealSheafData) (m : ℕ) {U : X.
 
 variable [CharZero k] [AlgebraicGeometry.Smooth p]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For a positive mark, the support of the derivative iterate one below the mark is exactly the locus where the original order is at least the mark. The maximal-contact ideal is this iterate, so the given point is in its support.
 -/
 theorem mem_support_maxContactIdeal_of_mem_orderAtLeastLocus (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : x ∈ orderAtLeastLocus I m) :
@@ -265,8 +245,8 @@ theorem mem_support_maxContactIdeal_of_mem_orderAtLeastLocus (I : X.IdealSheafDa
     rw [h]; exact hx
   exact hx'
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a point where the ideal has the specified finite order, iterating derivatives through that many steps subtracts the number of steps from the order. The maximal-contact ideal uses one fewer step than the positive mark. Its order is therefore one.
 -/
 theorem orderAt_maxContactIdeal_eq_one (I : X.IdealSheafData) {m : ℕ} (hm : 1 ≤ m) {x : X}
     (hx : orderAt I x = (m : ℕ∞)) :
@@ -274,8 +254,8 @@ theorem orderAt_maxContactIdeal_eq_one (I : X.IdealSheafData) {m : ℕ} (hm : 1 
   have h := orderAt_derivIdealSheafIterate_eq_sub k p I x hx (Nat.sub_le m 1)
   rw [maxContactIdeal_eq_derivIdealSheafIterate, h, show m - (m - 1) = 1 from by omega, Nat.cast_one]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact ideal has order one at this point. The order criterion says its stalk lies in the first power of the maximal ideal, which is the maximal ideal itself.
 -/
 theorem stalkIdeal_maxContactIdeal_le_maximalIdeal (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : orderAt I x = (m : ℕ∞)) :
@@ -287,12 +267,8 @@ theorem stalkIdeal_maxContactIdeal_le_maximalIdeal (I : X.IdealSheafData) {m : �
   rw [pow_one] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact ideal has order one at the point. Its stalk is contained in the maximal ideal but lies outside containment in the square. On the affine open, the stalk ideal is generated by germs of sections of the section ideal. If all those germs belonged to the square, the whole stalk ideal would lie in the square and have order at least two. Thus some section has germ in the maximal ideal and outside its square.
 -/
 theorem exists_section_maxContactIdeal_notMem_maximalIdeal_sq (I : X.IdealSheafData) {m : ℕ}
     (hm : 1 ≤ m) {x : X} (hx : orderAt I x = (m : ℕ∞)) {U : X.Opens} (hU : IsAffineOpen U)
@@ -321,42 +297,8 @@ theorem exists_section_maxContactIdeal_notMem_maximalIdeal_sq (I : X.IdealSheafD
   rw [h1] at h3
   simp at h3
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an affine étale chart at the point and a section of the maximal-contact ideal whose germ lies in the maximal ideal outside its square. Its differential has nonzero image in the residue-field fiber by the cotangent argument. Write its differential in the basis of differentials of the original coordinates. Some coefficient has unit germ, since otherwise every term would vanish in the fiber. Shrink to the affine basic open where that coefficient is invertible. There replace the corresponding coordinate by the chosen section. The determinant relative to the original differential basis equals the invertible coefficient. The Jacobian criterion then gives an étale coordinate map, using finite presentation of the section algebra. The replacement belongs to the maximal-contact section ideal after restriction, so it is a maximal-contact coordinate. Its germ at the original point is the germ of the chosen section and lies in the maximal ideal.
 -/
 theorem exists_isMaxContactCoord (I : X.IdealSheafData) {m : ℕ} (hm : 1 ≤ m) (x : X)
     (hx : orderAt I x = (m : ℕ∞)) :

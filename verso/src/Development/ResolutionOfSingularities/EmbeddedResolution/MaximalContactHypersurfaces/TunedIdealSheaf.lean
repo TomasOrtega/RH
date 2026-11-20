@@ -17,10 +17,8 @@ open AlgebraicGeometry CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For the empty list, global evaluation on the affine open gives the unit section ideal. For a nonempty list, evaluation preserves the product of the first factor with the tail product. Applying induction to the tail gives the desired product of section ideals.
 -/
 private theorem ideal_listProd_map {X : Scheme.{u}} (g : ℕ → X.IdealSheafData) (l : List ℕ)
     (U : X.affineOpens) :
@@ -36,16 +34,16 @@ private theorem ideal_listProd_map {X : Scheme.{u}} (g : ℕ → X.IdealSheafDat
         simp only [Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]
       rw [List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, hmul, ih]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Extension along the ring map preserves multiplication and the unit ideal. Applying this property successively to the finite product over the range gives the product of the extended ideals.
 -/
 private theorem ideal_map_prod_range {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (g : ℕ → Ideal R) (n : ℕ) :
     Ideal.map φ (∏ j ∈ Finset.range n, g j) = ∏ j ∈ Finset.range n, Ideal.map φ (g j) :=
   map_prod (Ideal.mapHom φ) g (Finset.range n)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Expand the tuning monomial as the product of powers of derivative iterates. Ideal extension preserves the product and each power. The assumed compatibility with every derivative iterate identifies each extended factor with the corresponding factor for the extended ideal.
 -/
 private theorem map_tuningMonomial_of_map_derivIdealIterate (k : Type u) [CommRing k] {R S : Type u}
     [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (φ : R →+* S) (J : Ideal R) (m : ℕ)
@@ -56,10 +54,8 @@ private theorem map_tuningMonomial_of_map_derivIdealIterate (k : Type u) [CommRi
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [Ideal.map_pow, h j]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exponent functions meeting the weight condition are the same in both rings. Each product term downstairs extends to the corresponding term upstairs because derivative iterates, powers, and products commute with extension here. Every extended term lies in the tuned ideal upstairs, proving one containment. Conversely each qualifying term upstairs is such an extension and therefore lies in the extension of the tuned ideal downstairs.
 -/
 private theorem map_tunedIdeal_of_map_derivIdealIterate (k : Type u) [CommRing k] {R S : Type u}
     [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (φ : R →+* S) (J : Ideal R) (m s : ℕ)
@@ -76,12 +72,8 @@ private theorem map_tunedIdeal_of_map_derivIdealIterate (k : Type u) [CommRing k
     rw [← map_tuningMonomial_of_map_derivIdealIterate k φ J m c h]
     exact Ideal.map_mono (tuningMonomial_le_tunedIdeal k J m s c hc)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the exponent function that is zero except at the derivative index one below the mark, where it has the given exponent. This index has weight one, so the term meets the threshold exactly. Its product is the requested power of that derivative iterate.
 -/
 private theorem pow_derivIdealIterate_pred_le_tunedIdeal (k : Type u) [CommRing k] {S : Type u}
     [CommRing S] [Algebra k S] (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) (t : ℕ) :
@@ -102,10 +94,8 @@ private theorem pow_derivIdealIterate_pred_le_tunedIdeal (k : Type u) [CommRing 
   rw [← hmono]
   exact tuningMonomial_le_tunedIdeal k J m t _ (le_of_eq hw.symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluating on the affine open preserves the product and every power. Each derivative sheaf iterate evaluates to the derivative iterate of the section ideal. These evaluated factors in range order are exactly the product defining the tuning monomial in the section ring.
 -/
 private theorem ideal_prod_derivIdealSheafIterate_pow (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -124,10 +114,8 @@ private theorem ideal_prod_derivIdealSheafIterate_pow (k : Type u) [CommRing k] 
   simp only [ideal_listProd_map, hpow, derivIdealSheafIterate_ideal]
   exact key
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Restriction to the basic open extends the original affine section ideal to the section ideal there. The same is true for each derivative sheaf iterate. Thus extension along the restriction map commutes with the ring derivative iterates of this ideal. The compatibility of tuning with such extension gives the required ideal on the basic open.
 -/
 private theorem map_tunedIdeal_basicOpen (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -163,12 +151,8 @@ private noncomputable def tunedIdealSheafOfSections (k : Type u) [CommRing k] [I
   ideal U := @tunedIdeal k _ _ _ (sectionsAlgebra k p U.1) (I.ideal U) m s
   map_ideal_basicOpen := map_tunedIdeal_basicOpen k p I m s
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The tuned ring ideals on affine opens are compatible with basic-open restriction and thus form an ideal sheaf. Each qualifying product of derivative sheaves evaluates to a tuning monomial on each open, which is contained in the local tuned ring ideal. Taking the supremum gives one inclusion. Conversely, every qualifying tuning monomial in the section ring is the evaluation of a product appearing in the definition of the tuned sheaf. These monomials generate the local tuned ring ideal, proving the reverse inclusion.
 -/
 @[simp] theorem tunedSheaf_ideal (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
@@ -199,10 +183,8 @@ Establish an intermediate fact. Rewrite the conclusion using the stated equaliti
         ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (d.1 j))).prod) ⟨c, hc⟩
     exact hmono U
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate on an arbitrary affine open. The power of the derivative iterate becomes the corresponding power of the ring-level iterate, and the tuned sheaf becomes the tuned ring ideal. The latter contains the monomial with nonzero exponent only at the derivative index one below the mark, giving the asserted containment.
 -/
 private theorem derivIdealSheafIterate_pow_le_tunedSheaf (k : Type u) [CommRing k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -221,10 +203,8 @@ private theorem derivIdealSheafIterate_pow_le_tunedSheaf (k : Type u) [CommRing 
       (I.ideal U) m hm t
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+On affine sections, the tuned ideal at threshold one is contained in the derivative ideal one below the mark by the ring-level threshold-one estimate. Conversely, the first power of that iterate is one of the qualifying tuned monomials. These inclusions give equality of sheaves.
 -/
 private theorem tunedSheaf_one_eq_derivIdealSheafIterate (k : Type u) [CommRing k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -240,20 +220,8 @@ private theorem tunedSheaf_one_eq_derivIdealSheafIterate (k : Type u) [CommRing 
   · have h := derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm 1
     rwa [pow_one] at h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open the ring-level derivative bound puts the derivative of the successor-threshold tuned ideal in the preceding tuned ideal. For the reverse inclusion, work on stalks. At a point of maximal order, choose a maximal-contact coordinate. It belongs to the required original derivative ideal, and its coordinate derivation sends it to one. The ring-level reverse containment using this derivation applies on the chart and hence on the stalk. At a point of smaller order, the original derivative iterate one below the mark has unit stalk. The successor-threshold tuned sheaf contains a power of that iterate and so has unit stalk as well. Its derivative then has unit stalk. This gives the reverse containment at every point.
 -/
 theorem derivIdealSheaf_tunedSheaf_succ : DerivIdealSheafTunedSheafSucc.{u} := by
   intro k _ _ _ X p _ _ I m hm hmax s
@@ -317,14 +285,8 @@ theorem derivIdealSheaf_tunedSheaf_succ : DerivIdealSheafTunedSheafSucc.{u} := b
           (stalkIdeal_mono (derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm (s + 1)) x) h2
       exact le_trans le_top h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A derivative step of a positive-threshold tuned sheaf lowers the threshold by one. Induction gives the tuned sheaf at the original threshold minus the number of steps, as long as the steps do not exceed the threshold. Performing one fewer step than the positive threshold leaves threshold one, where the tuned sheaf equals the derivative iterate one below the original mark.
 -/
 theorem maxContactIdealTunedSheafEq : MaxContactIdealTunedSheafEq.{u} := by
   intro k _ _ _ X p _ _ I m hm hmax s hs
@@ -348,10 +310,8 @@ theorem maxContactIdealTunedSheafEq : MaxContactIdealTunedSheafEq.{u} := by
   have he2 : s - (s - 1) = 1 := by omega
   rw [hstep, he2, tunedSheaf_one_eq_derivIdealSheafIterate k p I m hm]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Check the product containment on each affine open. Evaluation preserves the product, and the differentiated tuned sheaves evaluate to the corresponding derivatives of the tuned section ideal. The ring-level maximal-contact invariance estimate for this tuned ideal gives the containment on every affine open.
 -/
 theorem isMaxContactInvariantTunedSheaf :
     IsMaxContactInvariantTunedSheaf.{u} := by

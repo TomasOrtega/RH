@@ -12,8 +12,8 @@ open AlgebraicGeometry CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct through the list. If the chosen number is the first entry, it divides the least common multiple of that entry and the tail’s least common multiple. If it lies in the tail, it divides the tail’s least common multiple by induction, which in turn divides the full one. An empty list has no member to check.
 -/
 private theorem dvd_foldr_lcm : ∀ (l : List ℕ) (w : ℕ), w ∈ l → w ∣ l.foldr Nat.lcm 1
   | [], w, h => absurd h (by simp)
@@ -24,14 +24,14 @@ private theorem dvd_foldr_lcm : ∀ (l : List ℕ) (w : ℕ), w ∈ l → w ∣ 
         exact Nat.dvd_lcm_left _ _
       · exact dvd_trans (dvd_foldr_lcm l w h) (Nat.dvd_lcm_right _ _)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The list defining this least common multiple contains all integers from one through the bound. The chosen integer lies in that list and therefore divides its least common multiple.
 -/
 theorem dvd_lcmUpTo (m w : ℕ) (hw : 1 ≤ w) (hwm : w ≤ m) : w ∣ lcmUpTo m :=
   dvd_foldr_lcm _ w (List.mem_range'_1.mpr ⟨hw, by omega⟩)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The empty list gives one. For a positive-length list starting at a positive number, the tail starts at the next positive number and has positive least common multiple by induction. The least common multiple of these two positive numbers is positive.
 -/
 private theorem foldr_lcm_consecutive_pos :
     ∀ (n s : ℕ), 0 < s → 0 < (List.range' s n).foldr Nat.lcm 1
@@ -41,14 +41,14 @@ private theorem foldr_lcm_consecutive_pos :
       show 0 < Nat.lcm s ((List.range' (s + 1) n).foldr Nat.lcm 1)
       exact Nat.pos_of_ne_zero (Nat.lcm_ne_zero (by omega) (by omega))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The number is defined as the least common multiple of a consecutive list starting at one. The positivity result for such a list applies, including the empty list.
 -/
 theorem lcmUpTo_pos (m : ℕ) : 0 < lcmUpTo m :=
   foldr_lcm_consecutive_pos m 1 Nat.one_pos
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Infinity is above the indicated successor, so the hypothesis makes the extended natural number finite. An ordinary natural number below that successor is at most its predecessor, which gives the bound.
 -/
 private theorem le_of_not_natCast_succ_le {a : ℕ∞} {s : ℕ}
     (h : ¬ (((s + 1 : ℕ)) : ℕ∞) ≤ a) : a ≤ (s : ℕ∞) := by
@@ -59,8 +59,8 @@ private theorem le_of_not_natCast_succ_le {a : ℕ∞} {s : ℕ}
     have hns : n ≤ s := by omega
     exact_mod_cast hns
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the sheaves on an affine open. The section ideals are the corresponding tuned ring ideals, and evaluation preserves products. The least common multiple of one through the mark is positive and divisible by every weight in the range. The ring-level tuned product equality therefore gives equality on each affine open.
 -/
 theorem tunedSheaf_mul_eq_add : TunedSheafMulEqAdd.{u} := by
   intro k hk hchar hnoeth X p hsmooth hft I m hm hmax r t ht
@@ -71,8 +71,8 @@ theorem tunedSheaf_mul_eq_add : TunedSheafMulEqAdd.{u} := by
   exact @tunedIdeal_mul_eq_tunedIdeal_add k _ _ _ (sectionsAlgebra k p U.1) (I.ideal U) m (lcmUpTo m)
     (lcmUpTo_pos m) (fun w hw1 hw2 => dvd_lcmUpTo m w hw1 hw2) r t ht
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On every affine open, the section ideal of the power is the power of the tuned ring ideal. The chosen common multiple is positive and divisible by every weight from one through the mark. Apply the ring-level equality for positive powers to obtain the section ideal at the multiplied threshold. This gives the sheaf equality.
 -/
 theorem tunedSheaf_pow_eq_mul : TunedSheafPowEqMul.{u} := by
   intro k hk hchar hnoeth X p hsmooth hft I m hm hmax r hr j hj
@@ -82,8 +82,8 @@ theorem tunedSheaf_pow_eq_mul : TunedSheafPowEqMul.{u} := by
   exact @tunedIdeal_pow_eq_tunedIdeal_mul k _ _ _ (sectionsAlgebra k p U.1) (I.ideal U) m (lcmUpTo m)
     (lcmUpTo_pos m) (fun w hw1 hw2 => dvd_lcmUpTo m w hw1 hw2) r hr j hj
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the derivative-balance inequality on an arbitrary affine open. Derivative iterates and powers evaluate to the corresponding constructions on section ideals, and the tuned sheaf evaluates to the tuned ring ideal. The chosen common multiple is positive and divisible by all required weights, so the ring-level derivative power bound supplies the desired inclusion.
 -/
 theorem isDerivBalanced_tunedSheaf_mul_lcmUpTo : IsDerivBalancedTunedSheafMulLcm.{u} := by
   intro k hk hchar hnoeth X p hsmooth hft I m hm hmax r hr i hi
@@ -94,18 +94,8 @@ theorem isDerivBalanced_tunedSheaf_mul_lcmUpTo : IsDerivBalancedTunedSheafMulLcm
   exact @derivIdealIterate_tunedIdeal_pow_le k _ _ _ (sectionsAlgebra k p U.1) (I.ideal U) m
     (lcmUpTo m) (lcmUpTo_pos m) (fun w hw1 hw2 => dvd_lcmUpTo m w hw1 hw2) r hr i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given maximal-contact identity equates the derivative iterate one below the tuned threshold with the original derivative iterate one below the mark. The support of either iterate is its corresponding order locus, proving equality of the loci. For the bound, the original ideal has order at most the mark at every point, so its iterate one below the mark has order below two. This follows from the order-locus identity for differentiation. If the tuned ideal had order at least one above its threshold, differentiation one below the threshold would leave order at least two. The maximal-contact identity would then put the original iterate at order at least two, a contradiction. Thus the tuned order is bounded by its threshold everywhere.
 -/
 theorem orderAtLeastLocus_tunedSheaf_eq_and_order_le : CoSupportTunedSheafEqAndOrderLE.{u} := by
   intro k hk hchar hnoeth X p hsmooth hft I m hm hmax s hs

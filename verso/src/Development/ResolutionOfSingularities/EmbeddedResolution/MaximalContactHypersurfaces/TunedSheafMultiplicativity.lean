@@ -7,8 +7,8 @@ open AlgebraicGeometry CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pair the factors at each position in the two list products. Commutativity allows this grouping. The product of those two powers is the power with the sum of their exponents, giving the displayed list product.
 -/
 private theorem listProd_map_pow_mul_listProd_map_pow {M : Type u} [CommMonoid M] (f : ℕ → M) (c d : ℕ → ℕ) :
     ∀ L : List ℕ, ((L.map fun j => f j ^ c j).prod * (L.map fun j => f j ^ d j).prod)
@@ -17,16 +17,14 @@ private theorem listProd_map_pow_mul_listProd_map_pow {M : Type u} [CommMonoid M
   rw [← List.prod_map_mul]
   simp [pow_add]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The supremum of ideal sheaves is evaluated on each affine open by taking the supremum of the section ideals. Applying this description to the given family gives the formula.
 -/
 private theorem ideal_iSup {X : Scheme.{u}} {ι : Type v} (f : ι → X.IdealSheafData)
     (U : X.affineOpens) : (⨆ i, f i).ideal U = ⨆ i, (f i).ideal U := by simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open the section ideal of the product is the product of the section ideals, and each supremum is computed on section ideals. Multiplication of ideals distributes over the suprema. The resulting pairwise products all lie in the target section ideal by hypothesis, so their supremum does too.
 -/
 private theorem iSup_mul_iSup_le {X : Scheme.{u}} {ι : Type v} {κ : Type w}
     (f : ι → X.IdealSheafData) (g : κ → X.IdealSheafData) (h : X.IdealSheafData)
@@ -39,8 +37,8 @@ private theorem iSup_mul_iSup_le {X : Scheme.{u}} {ι : Type v} {κ : Type w}
   refine iSup_le fun j => ?_
   exact Scheme.IdealSheafData.le_def.mp (H i j) U
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Each exponent function admitted at the successor threshold has weight at least the original threshold. Its product term therefore also occurs in the supremum at the original threshold. Taking the supremum proves the containment.
 -/
 theorem tunedSheaf_succ_le : TunedSheafSuccLe.{u} := by
   intro k _ _ _ X p _ _ I m _ _ s
@@ -48,10 +46,8 @@ theorem tunedSheaf_succ_le : TunedSheafSuccLe.{u} := by
   refine iSup_le fun c => ?_
   exact le_iSup_of_le ⟨c.1, le_trans (Nat.le_succ s) c.2⟩ le_rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Expand both tuned sheaves as suprema of products of derivative ideal powers. It suffices to bound each pair of product terms. Their product is the term obtained by adding the exponent functions. The weighted sum of the added exponents is the sum of their weights and is therefore at least the sum of the two thresholds. This term appears in the target supremum, giving the containment.
 -/
 theorem tunedSheaf_mul_le_add : TunedSheafMulLeAdd.{u} := by
   intro k _ _ _ X p _ _ I m _ _ s t

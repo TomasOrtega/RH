@@ -25,18 +25,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose finitely many generators of the first ideal. For each generator, membership of its image in the extended second ideal gives a fraction with numerator in the second ideal. Clear the denominator and then a further multiplier from the multiplicative set to obtain membership downstairs. Multiply the resulting multipliers for all generators. This product still lies in the multiplicative set and sends each generator into the second ideal, so it sends the whole first ideal there.
 -/
 private theorem exists_mem_mul_mem_of_map_le {R S : Type u} [CommRing R] [CommRing S]
     [Algebra R S] (M : Submonoid R) (hM : IsLocalization M S) (A B : Ideal R)
@@ -79,10 +69,8 @@ private theorem exists_mem_mul_mem_of_map_le {R S : Type u} [CommRing R] [CommRi
       rw [smul_eq_mul, mul_left_comm]
       exact Ideal.mul_mem_left B c hy
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each element of the first ideal, the image of its product with the multiplier belongs to the extended second ideal. Multiplying by the inverse of the image of the multiplier shows that the image of the original element belongs to that ideal. These images generate the extended first ideal.
 -/
 private theorem map_le_map_of_isUnit_mul_mem {R S : Type u} [CommRing R] [CommRing S]
     (φ : R →+* S) (w : R) (hw : IsUnit (φ w)) (A B : Ideal R)
@@ -96,20 +84,8 @@ private theorem map_le_map_of_isUnit_mul_mem {R S : Type u} [CommRing R] [CommRi
   rw [map_mul, ← mul_assoc, mul_comm t (φ w), ht, one_mul] at h4
   exact Ideal.mem_comap.mpr h4
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood and view the two equal stalk ideals as extensions of their section ideals to the localization at the point. The section ideals are finitely generated by Noetherianity. Clear denominators on generators in each direction to find two multipliers outside the point prime, one sending each ideal into the other. Their product stays outside the prime and has the same two membership properties. On its basic open the product is invertible in every stalk. Canceling it after extension in both directions proves equality of the two stalk ideals throughout this neighborhood.
 -/
 theorem exists_opens_stalkIdeal_eq {X : Scheme.{u}} [IsLocallyNoetherian X]
     (I J : X.IdealSheafData) (x : X) (h : stalkIdeal I x = stalkIdeal J x) :
@@ -164,18 +140,14 @@ theorem exists_opens_stalkIdeal_eq {X : Scheme.{u}} [IsLocallyNoetherian X]
     (map_le_map_of_isUnit_mul_mem (X.presheaf.germ U y hyU).hom (u₁ * u₂) hyunit _ _ hv1)
     (map_le_map_of_isUnit_mul_mem (X.presheaf.germ U y hyU).hom (u₁ * u₂) hyunit _ _ hv2)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The prime complement is the multiplicative set of elements outside the prime. Membership in it therefore says the element does not belong to the prime.
 -/
 private theorem notMem_of_mem_primeCompl {R : Type*} [CommRing R] {m : Ideal R} [m.IsPrime]
     {x : R} (hx : x ∈ m.primeCompl) : x ∉ m := hx
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The element’s image belongs to the extended second ideal. Write it as a fraction with numerator in that ideal and denominator outside the prime. Cross-multiply and use another element outside the prime to make the equality hold downstairs. The product of these two multipliers is outside the prime by primality and sends the given element into the second ideal.
 -/
 private theorem exists_notMem_mul_mem_of_map_le {R : Type*} [CommRing R] (S : Type*) [CommRing S]
     [Algebra R S] (m : Ideal R) [hmp : m.IsPrime] [IsLocalization m.primeCompl S]
@@ -201,14 +173,8 @@ private theorem exists_notMem_mul_mem_of_map_le {R : Type*} [CommRing R] (S : Ty
     rw [hEq]
     exact Ideal.mul_mem_left _ _ b.2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose an element of the first ideal lies outside the second. The multipliers that send it into the second ideal form an ideal. This ideal is proper because it excludes one, so choose a maximal ideal containing it. The hypothesis gives a multiplier outside that maximal ideal sending the element into the second ideal, contrary to the containment of all such multipliers.
 -/
 private theorem le_of_forall_isMaximal_exists_mul_mem {R : Type*} [CommRing R] {A B : Ideal R}
     (h : ∀ m : Ideal R, m.IsMaximal → ∀ a ∈ A, ∃ t : R, t ∉ m ∧ t * a ∈ B) : A ≤ B := by
@@ -242,12 +208,8 @@ private theorem le_of_forall_isMaximal_exists_mul_mem {R : Type*} [CommRing R] {
   obtain ⟨t, htm, htB⟩ := h m hm a ha
   exact htm (hCm ((hCmem t).mpr htB))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each maximal ideal of the affine section ring corresponds to a point of the affine open. There the given stalk containment is containment after localizing at that maximal ideal. For each section of the first ideal, clearing denominators gives a multiplier outside that maximal ideal taking the section into the second ideal. The maximal-ideal criterion for containment yields the desired inclusion of section ideals.
 -/
 private theorem ideal_le_of_stalkIdeal_le {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (W : Y.affineOpens) (h : ∀ x : ↥Y, x ∈ W.1 → stalkIdeal A x ≤ stalkIdeal B x) :
@@ -271,8 +233,8 @@ private theorem ideal_le_of_stalkIdeal_le {Y : Scheme.{u}} (A B : Y.IdealSheafDa
   rw [halg, ← stalkIdeal_eq_map_germ A x W hy, ← stalkIdeal_eq_map_germ B x W hy]
   exact h x hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Stalk equality on the affine open gives stalk containment in both directions. Apply the section-ideal containment result twice to obtain equality of the section ideals.
 -/
 private theorem ideal_eq_of_stalkIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (W : Y.affineOpens) (h : ∀ x : ↥Y, x ∈ W.1 → stalkIdeal A x = stalkIdeal B x) :
@@ -280,14 +242,8 @@ private theorem ideal_eq_of_stalkIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafDa
   le_antisymm (ideal_le_of_stalkIdeal_le A B W fun x hx => le_of_eq (h x hx))
     (ideal_le_of_stalkIdeal_le B A W fun x hx => le_of_eq (h x hx).symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every affine open of the open subscheme has an affine image in the original scheme, contained in the chosen open. The two ideals have equal stalks there by hypothesis, so their section ideals on this image agree. Pullback along the inclusion extends these equal section ideals to the corresponding affine open of the open subscheme. Hence the restricted ideal sheaves agree on every affine open.
 -/
 theorem restrictIdeal_eq_of_stalkIdeal_eq {X : Scheme.{u}} (I J : X.IdealSheafData) (U : X.Opens)
     (h : ∀ y : X, y ∈ U → stalkIdeal I y = stalkIdeal J y) :

@@ -4,8 +4,8 @@ import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHy
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The pointwise difference plus the smaller exponent function recovers the larger exponent function. The tuning weight is an additive weighted sum, so the weight of the difference plus the smaller weight is the larger weight. Subtracting gives the desired equality.
 -/
 theorem tuningWeight_sub (m : ℕ) (c c' : ℕ → ℕ) (h : ∀ j, c' j ≤ c j) :
     tuningWeight m (fun j => c j - c' j) = tuningWeight m c - tuningWeight m c' := by
@@ -14,10 +14,8 @@ theorem tuningWeight_sub (m : ℕ) (c c' : ℕ → ℕ) (h : ∀ j, c' j ≤ c j
     rw [← tuningWeight_fun_add m (fun j => c j - c' j) c', h2]
   omega
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Only the term at the chosen index contributes to the weighted sum, because all other exponent entries are zero. That term is the given exponent times its weight.
 -/
 private theorem tuningWeight_ite (m j q : ℕ) (hj : j ∈ Finset.range m) :
     tuningWeight m (fun i => if i = j then q else 0) = (m - j) * q := by
@@ -29,36 +27,8 @@ private theorem tuningWeight_ite (m j q : ℕ) (hj : j ∈ Finset.range m) :
   · intro hcon
     exact absurd hj hcon
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the requested number of blocks of weight equal to the common multiple. The zero function gives the zero-block case. In a positive case the total weight is at least the number of available indices times the common multiple, so the list of indices is nonempty. If every individual contribution were smaller than the common multiple, their sum would be at most the number of indices times one less than that multiple, a contradiction. Choose an index making a contribution at least the common multiple. Its weight divides the common multiple, so take exactly the number of copies needed at that index. There are enough copies because the index’s total contribution is large enough. Removing these copies reduces the tuning weight by one block and leaves the lower bound required by the induction hypothesis. Restore the removed block to the smaller selection obtained by induction. The selection stays within the original exponents and has exactly the requested weight.
 -/
 theorem exists_le_tuningWeight_eq_mul (m L r : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (c : ℕ → ℕ)
@@ -161,8 +131,8 @@ section
 
 variable (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Algebra k S]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
+/- English proof (authored)
+At exponent zero the zeroth power and the tuned ideal at weight zero are both the unit ideal. At a successor, multiply the induction containment by the original tuned ideal. The product rule adds the weight thresholds, giving the threshold equal to the next exponent times the original threshold.
 -/
 theorem tunedIdeal_pow_le (J : Ideal S) (m a n : ℕ) :
     tunedIdeal k J m a ^ n ≤ tunedIdeal k J m (n * a) := by
@@ -176,14 +146,8 @@ theorem tunedIdeal_pow_le (J : Ideal S) (m a n : ℕ) :
         _ = tunedIdeal k J m ((n + 1) * a) := by
             rw [(by ring : n * a + a = (n + 1) * a)]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The product rule gives one inclusion. For the reverse, take a monomial contributing to the ideal at the sum threshold. Its weight is large enough to select a subexponent of the first threshold exactly, by the block selection result and the lower bound on the second threshold. The remaining exponents have weight at least the second threshold by additivity. The original monomial ideal is the product belonging to these two exponent functions. Each lies in the corresponding tuned ideal, giving the reverse inclusion.
 -/
 theorem tunedIdeal_mul_eq_tunedIdeal_add (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r t : ℕ) (ht : (m - 1) * L ≤ t) :
@@ -208,12 +172,8 @@ theorem tunedIdeal_mul_eq_tunedIdeal_add (J : Ideal S) (m L : ℕ) (hL : 0 < L)
       omega
     exact h9 (r * L) t (tuningWeight m c) hc
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the positive power, where the case of power one is immediate. For the next power, the induction hypothesis gives the tuned ideal at the previous multiplied threshold. This threshold is at least the lower bound required by the product equality, because the preceding exponent is positive and the original threshold is large enough. Multiplying by the original tuned ideal adds one more copy of the threshold, proving the equality.
 -/
 theorem tunedIdeal_pow_eq_tunedIdeal_mul (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r : ℕ) (hr : m - 1 ≤ r) (j : ℕ) (hj : 1 ≤ j) :
@@ -239,8 +199,8 @@ theorem tunedIdeal_pow_eq_tunedIdeal_mul (J : Ideal S) (m L : ℕ) (hL : 0 < L)
           _ = tunedIdeal k J m ((n + 1) * (r * L)) := by
               rw [(by ring : r * L + n * (r * L) = (n + 1) * (r * L))]
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derivative iterate is contained in the tuned ideal whose threshold is the original threshold minus the derivative count. Raise this containment to the original threshold and use the general product bound for powers of a tuned ideal. This puts the result inside the tuned ideal at the product of the two thresholds. The difference is positive by the index hypothesis, so the equality for powers of the original tuned ideal rewrites this final bound as the asserted power.
 -/
 theorem derivIdealIterate_tunedIdeal_pow_le (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r : ℕ) (hr : m - 1 ≤ r) (i : ℕ) (hi : i < r * L) :

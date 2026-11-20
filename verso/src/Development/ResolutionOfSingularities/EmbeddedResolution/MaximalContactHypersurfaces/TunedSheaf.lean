@@ -18,8 +18,8 @@ variable {X : Scheme.{u}}
 def OrderLE (I : X.IdealSheafData) (m : ℕ) : Prop :=
   ∀ x : X, orderAt I x ≤ (m : ℕ∞)
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The order bound on the ideal sheaf is defined by requiring the same bound at every point of the scheme. This gives the equivalence.
 -/
 theorem orderLE_iff (I : X.IdealSheafData) (m : ℕ) :
     OrderLE I m ↔ ∀ x : X, orderAt I x ≤ (m : ℕ∞) := Iff.rfl
@@ -30,34 +30,34 @@ structure MaxOrderEq (I : X.IdealSheafData) (m : ℕ) : Prop where
 
 def lcmUpTo (m : ℕ) : ℕ := (List.range' 1 m).foldr Nat.lcm 1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The common multiple is defined by taking the least common multiple successively over the list of integers from one through the bound, starting with one. This is the stated formula.
 -/
 theorem lcmUpTo_eq_foldr (m : ℕ) : lcmUpTo m = (List.range' 1 m).foldr Nat.lcm 1 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At bound one the list contains only one. Taking the least common multiple of this entry and the initial value one gives one.
 -/
 theorem lcmUpTo_one : lcmUpTo 1 = 1 := rfl
 
 def tuningExponent (m : ℕ) : ℕ := if m ≤ 1 then 1 else (m - 1) * lcmUpTo m
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+For a mark at most one, the first case of the definition applies and assigns exponent one.
 -/
 theorem tuningExponent_of_le_one {m : ℕ} (h : m ≤ 1) : tuningExponent m = 1 := by
   unfold tuningExponent
   exact if_pos h
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+A mark of at least two is above one. The definition therefore selects the product of one less than the mark and the least common multiple up to the mark.
 -/
 theorem tuningExponent_of_two_le {m : ℕ} (h : 2 ≤ m) : tuningExponent m = (m - 1) * lcmUpTo m := by
   unfold tuningExponent
   exact if_neg (by omega)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The mark one satisfies the case for marks at most one, so its tuning exponent is one.
 -/
 theorem tuningExponent_one : tuningExponent 1 = 1 := tuningExponent_of_le_one le_rfl
 
@@ -67,8 +67,8 @@ noncomputable def tunedSheaf (k : Type u) [CommRing k] [IsNoetherianRing k] {X :
   ⨆ c : {c : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * c j},
     ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tuned sheaf is defined as the supremum of products of derivative ideal powers whose exponent functions have weight at least the threshold. The displayed sum assigns weight equal to the mark minus the derivative index, which gives exactly the defining supremum.
 -/
 theorem tunedSheaf_eq_iSup (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
@@ -82,8 +82,8 @@ noncomputable def balancedTunedSheaf (k : Type u) [CommRing k] [IsNoetherianRing
     (m : ℕ) : X.IdealSheafData :=
   tunedSheaf k p I m (tuningExponent m)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The balanced construction is defined by choosing the tuning exponent of the mark as the threshold of the tuned sheaf. The identity follows by substitution.
 -/
 theorem balancedTunedSheaf_eq (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
@@ -153,8 +153,8 @@ def CoSupportTunedSheafEqAndOrderLE : Prop :=
     ∀ s : ℕ, 1 ≤ s →
       orderAtLeastLocus (tunedSheaf k p I m s) s = orderAtLeastLocus I m ∧ OrderLE (tunedSheaf k p I m s) s
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assumed property supplies both equality of the order loci and the pointwise order bound at the given positive threshold. Take its order-bound conclusion.
 -/
 theorem CoSupportTunedSheafEqAndOrderLE.orderLE (h : CoSupportTunedSheafEqAndOrderLE.{u}) (k : Type u) [Field k]
     [CharZero k] [IsNoetherianRing k] (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k))

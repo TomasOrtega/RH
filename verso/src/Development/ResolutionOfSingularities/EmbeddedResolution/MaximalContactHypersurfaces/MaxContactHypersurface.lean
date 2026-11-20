@@ -22,8 +22,8 @@ def IsMaxContactHypersurface (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafD
       (∃ (n : ℕ) (c : EtaleChart p U n) (j : Fin n),
         restrictIdeal H U = c.coordIdeal {j} ∧ IsMaxContactCoord k p A m c j))
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The definition requires an affine neighborhood at every point. Either the neighborhood avoids the order locus and the hypersurface is absent there, or the hypersurface is defined by a maximal-contact coordinate of an étale chart. Expanding the definition gives the equivalence.
 -/
 theorem isMaxContactHypersurface_iff (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafData) :
     IsMaxContactHypersurface k p A m H ↔
@@ -40,12 +40,8 @@ section
 variable {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
   {p : X ⟶ Spec (CommRingCat.of k)} [LocallyOfFiniteType p] [AlgebraicGeometry.Smooth p]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take a point of the stated order locus and a neighborhood from the maximal-contact condition. The neighborhood cannot be disjoint from that locus. Thus the hypersurface is defined there by a maximal-contact coordinate. This coordinate belongs to the maximal-contact ideal, so the principal section ideal of the hypersurface lies in that ideal. Extending to the stalk preserves the inclusion. The maximal-contact ideal has a proper stalk at every point of the order locus, so the hypersurface stalk is also proper. Hence the point belongs to the hypersurface support.
 -/
 theorem IsMaxContactHypersurface.orderAtLeastLocus_subset_support {A : X.IdealSheafData} {m : ℕ}
     {H : X.IdealSheafData} (h : IsMaxContactHypersurface k p A m H) (hm : 1 ≤ m) :

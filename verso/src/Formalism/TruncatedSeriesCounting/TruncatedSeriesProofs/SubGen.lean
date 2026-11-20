@@ -6,38 +6,10 @@ noncomputable section
 namespace Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains
 
 open Formalism.WachCohomologyFacts.PLenBound in
-/- English proof (translation)
-Introduce `O _ _ _ M _ _ _ _ ℓ e F P h`. Establish `hA : ∀ n : ℕ, Module.length O (O ⧸ Ideal.span {ℓ ^ n}) ≤ (n : ℕ∞) * Module.length O (O ⧸ Ideal.span {ℓ})`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+/- English proof (authored)
+First bound the length of O/(ℓ^n) by n times the length of O/(ℓ). At n = 0 the quotient is zero. For the induction step the natural map O/(ℓ^(n+1)) → O/(ℓ^n) is onto. Its kernel is a quotient of O/(ℓ), via multiplication by ℓ^n, since each representative in the kernel is a multiple of ℓ^n. Length additivity gives the bound at n+1.
 
-Establish `: Subsingleton (O ⧸ Ideal.span {ℓ ^ 0})`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`. Use `infer_instance`. Simplify using `[Module.length_eq_zero]`. Consider the case `succ n ih`.
-
-Establish `hle : Ideal.span {ℓ ^ (n + 1)} ≤ Ideal.span {ℓ ^ n}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow ℓ (Nat.le_succ n))`. Set `g : (O ⧸ Ideal.span {ℓ ^ (n + 1)}) →ₗ[O] (O ⧸ Ideal.span {ℓ ^ n})` to `Submodule.mapQ _ _ LinearMap.id (fun x hx => hle hx)`. Establish `hg : Function.Surjective g`. Introduce `y`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
-
-Conclude with `⟨Submodule.Quotient.mk a, rfl⟩`. Set `f0 : (O ⧸ Ideal.span {ℓ}) →ₗ[O] (O ⧸ Ideal.span {ℓ ^ (n + 1)})` to `(Ideal.span {ℓ}).liftQ (ℓ ^ n • (Ideal.span {ℓ ^ (n + 1)}).mkQ) (by`. Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[LinearMap.mem_ker, LinearMap.smul_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton']`.
-
-Conclude with `⟨c, by rw [smul_eq_mul]; ring⟩)`. Establish `hf0 : ∀ x, f0 x ∈ LinearMap.ker g`. Introduce `x`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[LinearMap.mem_ker]`.
-
-Simplify using `only [f0, g, Submodule.liftQ_apply, LinearMap.smul_apply, Submodule.mkQ_apply, map_smul, Submodule.mapQ_apply, LinearMap.id_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton']`. Conclude with `⟨a, by rw [smul_eq_mul, mul_comm]⟩`. Establish `hf1 : Function.Surjective (f0.codRestrict (LinearMap.ker g) hf0)`. Introduce and unpack `⟨y, hy⟩`.
-
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[LinearMap.mem_ker]`. Establish `ha : a ∈ Ideal.span {ℓ ^ n}` using `(Submodule.Quotient.mk_eq_zero _).mp hy`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearMap.codRestrict_apply, f0, Submodule.liftQ_apply, LinearMap.smul_apply, Submodule.mkQ_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, smul_eq_mul, mul_comm]`. Establish `hker : Module.length O (LinearMap.ker g) ≤ Module.length O (O ⧸ Ideal.span {ℓ})` using `Module.length_le_of_surjective _ hf1`. Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker g).subtype g (Submodule.injective_subtype _) hg (LinearMap.exact_subtype_ker_map g)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, bF⟩` from `Submodule.basisOfPid (Module.Free.chooseBasis O M) F`. Establish `hk : k ≤ Module.finrank O M`.
-
-Establish `h1` using `Submodule.finrank_le F`. Rewrite `h1` using `[Module.finrank_eq_card_basis bF, Fintype.card_fin]`. Conclude with `h1`. Use `set Q := P.comap F.subtype with hQ`. Establish `hPF : ∀ y : F, ℓ ^ e • y ∈ Q`.
-
-Introduce `y`. Rewrite using `[hQ, Submodule.mem_comap, map_smul]`. Conclude with `h _ y.2`. Set `φ : Fin k → (O ⧸ Ideal.span {ℓ ^ e}) →ₗ[O] (↥F ⧸ Q)` to `fun i => (Ideal.span {ℓ ^ e}).liftQ (LinearMap.toSpanSingleton O (↥F ⧸ Q) (Q.mkQ (bF i))) (by`. Introduce `a ha`.
-
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mul_smul]`. Conclude with `Q.smul_mem c (hPF _))`. Set `ψ : (Fin k → O ⧸ Ideal.span {ℓ ^ e}) →ₗ[O] (↥F ⧸ Q)` to `∑ i, (φ i).comp (LinearMap.proj i)`. Establish `hψ : Function.Surjective ψ`.
-
-Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `⟨fun i => Submodule.Quotient.mk (bF.repr x i), ?_⟩` and prove the remaining obligations. Establish `hx : (Submodule.Quotient.mk x : ↥F ⧸ Q) = ∑ i, bF.repr x i • Submodule.Quotient.mk (bF i)` using `by conv_lhs => rw [← bF.sum_repr x]`. Rewrite using `[← Submodule.mkQ_apply, map_sum]`.
-
-Simplify using `only [map_smul, Submodule.mkQ_apply]`. Rewrite using `[hx]`. Simplify using `only [ψ, φ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply]`. Establish `hB : Module.length O (↥F ⧸ Q) ≤ (k : ℕ∞) * Module.length O (O ⧸ Ideal.span {ℓ ^ e})`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Module.length_pi_of_fintype]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Conclude with `hA e`. Use `_ ≤ ((Module.finrank O M * e : ℕ) : ℕ∞) * Module.length O (O ⧸ Ideal.span {ℓ}) := by`.
-
-Use `push_cast`. Rewrite using `[mul_assoc]`. Use `gcongr`.
+Now put Q = F∩P. Over the principal ideal domain, F has a finite basis of size k at most the rank of M. The classes of its basis elements generate F/Q, and the assumption says ℓ^e kills every class. Sending one standard generator to each basis class therefore gives a surjection from k copies of O/(ℓ^e) onto F/Q. Add the lengths of these copies, apply the bound at n = e, and replace k by the rank of M.
 -/
 theorem submodule_generator_count : SubGen := by
   intro O _ _ _ M _ _ _ _ ℓ e F P h

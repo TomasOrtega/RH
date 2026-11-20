@@ -6,22 +6,16 @@ namespace Formalism.TruncatedSeriesCounting.WachCoordinates
 
 open Finset
 
-/- English proof (translation)
-Introduce `| 0` and use `by simp | n + 1 => by rw [sum_range_succ, add_mul, geom_sum_range_mul_one_sub x n, pow_succ]; ring`.
+/- English proof (authored)
+Use induction on n. The empty sum yields zero on both sides. Increasing n by one adds x^n(1−x) to the product. Combining it with the inductive value 1−x^n gives 1−x^(n+1).
 -/
 private theorem geom_sum_range_mul_one_sub (x : ℝ) :
     ∀ n : ℕ, Finset.sum (range n) (fun i => x ^ i) * (1 - x) = 1 - x ^ n := fun
   | 0 => by simp
   | n + 1 => by rw [sum_range_succ, add_mul, geom_sum_range_mul_one_sub x n, pow_succ]; ring
 
-/- English proof (translation)
-Establish `hx1' : 0 < 1 - x` using `by linarith`. Establish `hgeo : Summable (fun a : ℕ => (B + D) * x ^ a)` using `(summable_geometric_of_lt_one hx0 hx1).mul_left (B + D)`. Establish `hsum : Summable f` using `Summable.of_nonneg_of_le hf0 hfB hgeo`. Establish `hsplit : Finset.sum (range j) f + ∑' a, f (a + j) = ∑' a, f a`. Conclude with `hsum.sum_add_tsum_nat_add j`.
-
-Establish `hshift : Summable (fun a => f (a + j))`. Conclude with `(summable_nat_add_iff j).mpr hsum`. Establish `hg2 : HasSum (fun a : ℕ => (B + D) * x ^ j * x ^ a) ((B + D) * x ^ j * (1 - x)⁻¹)` using `(hasSum_geometric_of_lt_one hx0 hx1).mul_left _`. Establish `h2 : ∑' a, f (a + j) ≤ (B + D) * x ^ j * (1 - x)⁻¹` using `hasSum_le (fun a => by`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h1 : Finset.sum (range j) f ≤ (A + D) * Finset.sum (range j) (fun a => x ^ a)`. Rewrite using `[mul_sum]`. Conclude with `sum_le_sum fun a ha => hfA a (mem_range.mp ha)`. Establish `hS' : Finset.sum (range j) (fun a => x ^ a) = (1 - x ^ j) * (1 - x)⁻¹`. Rewrite using `[← geom_sum_range_mul_one_sub x j, mul_assoc, mul_inv_cancel₀ hx1'.ne', mul_one]`.
-
-Establish `hpos : 0 ≤ A * x ^ j * (1 - x)⁻¹` using `mul_nonneg (mul_nonneg hA0 (pow_nonneg hx0 _)) (inv_nonneg.mpr hx1'.le)`. Rewrite using `[← hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+/- English proof (authored)
+The nonnegative sequence is summable by its geometric majorant. Split the sum before index j. The first j terms contribute at most (A+D)(1−x^j)/(1−x). The tail contributes at most (B+D)x^j/(1−x), by shifting the index and summing the geometric series. Adding gives (A+Bx^j+D−Ax^j)/(1−x). Drop the nonnegative subtracted term Ax^j/(1−x).
 -/
 theorem tsum_le_two_level (x A B D : ℝ) (j : ℕ) (f : ℕ → ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1)
     (hA0 : 0 ≤ A) (hf0 : ∀ a, 0 ≤ f a) (hfB : ∀ a, f a ≤ (B + D) * x ^ a)
@@ -55,22 +49,8 @@ theorem tsum_le_two_level (x A B D : ℝ) (j : ℕ) (f : ℕ → ℝ) (hx0 : 0 �
     _ = (A + B * x ^ j + D) * (1 - x)⁻¹ - A * x ^ j * (1 - x)⁻¹ := by rw [hS']; ring
     _ ≤ (A + B * x ^ j + D) * (1 - x)⁻¹ := by linarith
 
-/- English proof (translation)
-Substitute `hld` using the available equality. Substitute `hq` using the available equality. Establish `hd1 : 0 < d - 1` using `by linarith`. Establish `hd0 : 0 < d` using `by linarith`. Establish `hl0 : 0 < d + 1` using `by linarith`.
-
-Establish `hdd : 0 < (d - 1) * d` using `mul_pos hd1 hd0`. Establish `hst : s * (d + 1) / d ^ 2 ≤ (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d))`. Establish `h1 : s * (d + 1) / d ^ 2 ≤ (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2`. Establish `e : (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2 - s * (d + 1) / d ^ 2 = ((2 * G + 2 * h * y + C + 3) * (d / (d - 1)) - s) * ((d + 1) / d ^ 2)` using `by ring`. Establish `: 0 ≤ ((2 * G + 2 * h * y + C + 3) * (d / (d - 1)) - s) * ((d + 1) / d ^ 2)` using `mul_nonneg (by linarith) (div_nonneg hl0.le (sq_nonneg d))`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2 = (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d))`. Establish `hd1' : d - 1 ≠ 0` using `hd1.ne'`. Establish `hd0' : d ≠ 0` using `hd0.ne'`. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht0 : 0 ≤ (d + 1) / ((d - 1) * d)` using `div_nonneg hl0.le hdd.le`. Establish `htc : (d + 1) / ((d - 1) * d) ≤ 3 / 2`. Establish `key : d + 1 ≤ 3 / 2 * ((d - 1) * d)`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ d - 2) (by linarith : (0:ℝ) ≤ 3 * d + 1)]`.
-
-Conclude with `(div_le_iff₀ hdd).mpr key`. Establish `htG : (d + 1) / ((d - 1) * d) ≤ 10 / (d + 1)`. Establish `key : (d + 1) * (d + 1) ≤ 10 * ((d - 1) * d)`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ d - 2) (by linarith : (0:ℝ) ≤ 9 * d + 6)]`. Conclude with `(div_le_div_iff₀ hdd hl0).mpr key`.
-
-Establish `hth : (d + 1) / ((d - 1) * d) ≤ 3 / d`. Establish `key : (d + 1) * d ≤ 3 * ((d - 1) * d)`. Use polynomial arithmetic with `[mul_nonneg hd0.le (by linarith : (0:ℝ) ≤ d - 2)]`. Conclude with `(div_le_div_iff₀ hdd hd0).mpr key`. Establish `e1 : 2 * G * ((d + 1) / ((d - 1) * d)) ≤ 20 * (G / (d + 1))`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hhy : 0 ≤ h * y` using `mul_nonneg hh0 hy0`. Establish `e2 : 2 * h * y * ((d + 1) / ((d - 1) * d)) ≤ 20 * (h * y / d)`. Establish `hq0 : 0 ≤ h * y / d` using `div_nonneg hhy hd0.le`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `e3 : (C + 3) * ((d + 1) / ((d - 1) * d)) ≤ (C + 3) * (3 / 2)` using `mul_le_mul_of_nonneg_left htc (by linarith)`. Establish `expand : (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d)) + C = 2 * G * ((d + 1) / ((d - 1) * d)) + 2 * h * y * ((d + 1) / ((d - 1) * d)) + (C + 3) * ((d + 1) / ((d - 1) * d)) + C` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Insert the bound on s and the value q = d/(d−1) into the estimate for r. This gives r ≤ (2G+2hy+C+3)F+C, where F = (d+1)/(d(d−1)). For d ≥ 2, clearing positive denominators shows F ≤ 10/(d+1), F ≤ 3/d, and F ≤ 3/2. For the 10/(d+1) and 3/2 bounds, the differences are 11+(d−2)(9d+6) and (d−2)(3d+1)/2, respectively. The 3/d bound reduces to d+1 ≤ 3(d−1). Apply these bounds to the G, hy, and C+3 terms, respectively. Then C ≤ 3+L bounds (C+3)·3/2+C by 12+5L/2 ≤ 20(L+1).
 -/
 theorem rr_arith (l d G h y C L s r q : ℝ) (hld : l = d + 1) (hd2 : 2 ≤ d) (hG0 : 0 ≤ G)
     (hh0 : 0 ≤ h) (hy0 : 0 ≤ y) (hC0 : 0 ≤ C) (hCL : C ≤ 3 + L) (hL0 : 0 ≤ L)
@@ -126,24 +106,8 @@ theorem rr_arith (l d G h y C L s r q : ℝ) (hld : l = d + 1) (hd2 : 2 ≤ d) (
         + (C + 3) * ((d + 1) / ((d - 1) * d)) + C := by ring
   linarith
 
-/- English proof (translation)
-Introduce `ℓ hℓ n _ H G h j cut s r hh hH hG hs hr`. Establish `hL3 : (3:ℝ) ≤ (ℓ:ℝ)` using `by exact_mod_cast hℓ`. Establish `hb : (1:ℝ) < (ℓ:ℝ)` using `by linarith`. Establish `hh1 : (1:ℝ) ≤ (h:ℝ)` using `by exact_mod_cast hh`. Establish `hlog0 : 0 ≤ Real.logb ℓ (2 * h + 1)` using `Real.logb_nonneg hb (by linarith)`.
-
-Establish `hceil` using `Nat.ceil_lt_add_one (R := ℝ) (a := 1 + Real.logb ℓ (2 * h + 1)) (by linarith)`. Establish `hlog3 : Real.logb ℓ 3 ≤ 1`. Rewrite using `[← Real.logb_self_eq_one hb]`. Conclude with `(Real.logb_le_logb hb (by norm_num) (by linarith)).mpr hL3`. Establish `hlogmul : Real.logb ℓ (2 * h + 1) ≤ Real.logb ℓ 3 + Real.logb ℓ h`.
-
-Rewrite using `[← Real.logb_mul (by norm_num) (by linarith)]`. Conclude with `(Real.logb_le_logb hb (by linarith) (by nlinarith)).mpr (by linarith)`. Establish `hL0 : 0 ≤ Real.logb ℓ h` using `Real.logb_nonneg hb hh1`. Establish `hC0 : (0:ℝ) ≤ (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ)` using `Nat.cast_nonneg _`. Establish `hCL : (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) ≤ 3 + Real.logb ℓ h` using `by linarith`.
-
-Establish `hd2 : (2:ℝ) ≤ (ℓ:ℝ) - 1` using `by linarith`. Establish `hdpos : (0:ℝ) < (ℓ:ℝ) - 1` using `by linarith`. Establish `hx0 : (0:ℝ) ≤ 1 / ((ℓ:ℝ) - 1)` using `by positivity`. Establish `hx1 : 1 / ((ℓ:ℝ) - 1) < 1` using `by rw [div_lt_one hdpos]; linarith`. Establish `hser` using `tsum_le_two_level (1 / ((ℓ:ℝ) - 1)) (2 * G) (2 * h) ((⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) + 3) j (fun a : ℕ => ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ) + (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) + 3) / ((ℓ : ℝ) - 1) ^ a) hx0 hx1 (by positivity) (fun a => by positivity) (fun a => by`.
-
-Establish `h' : ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ)) ≤ 2 * h`. Conclude with `hH (cut + ((a + 1 : ℕ) : ZMod n))` after adjusting the coercions. Rewrite using `[one_div, inv_pow, ← div_eq_mul_inv]`. Conclude with `div_le_div_of_nonneg_right (by linarith) (pow_nonneg hdpos.le a))`. Use the proof step `(fun a ha => by`.
-
-Establish `h' : ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ)) ≤ 2 * G`. Conclude with `hG (a + 1) (by omega) (by omega)` after adjusting the coercions. Rewrite using `[one_div, inv_pow, ← div_eq_mul_inv]`. Conclude with `div_le_div_of_nonneg_right (by linarith) (pow_nonneg hdpos.le a))`. Establish `hsA` using `hs.trans hser`.
-
-Establish `hq : (1 - 1 / ((ℓ:ℝ) - 1))⁻¹ = ((ℓ:ℝ) - 1) / ((ℓ:ℝ) - 1 - 1)`. Establish `hd0 : (ℓ:ℝ) - 1 ≠ 0` using `by linarith`. Establish `hd1 : (ℓ:ℝ) - 1 - 1 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Establish `hyd : (h:ℝ) / ((ℓ:ℝ) - 1) ^ (j + 1) = (h:ℝ) * (1 / ((ℓ:ℝ) - 1)) ^ j / ((ℓ:ℝ) - 1)`.
-
-Establish `hd0 : (ℓ:ℝ) - 1 ≠ 0` using `by linarith`. Rewrite using `[pow_succ, one_div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hyd]`. Establish `key` using `rr_arith (ℓ:ℝ) ((ℓ:ℝ) - 1) (G:ℝ) (h:ℝ) ((1 / ((ℓ:ℝ) - 1)) ^ j) (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) (Real.logb ℓ h) s r (1 - 1 / ((ℓ:ℝ) - 1))⁻¹ (by ring) hd2 (Nat.cast_nonneg _) (by linarith) (pow_nonneg hx0 j) hC0 hCL hL0 hq (by linarith) hr`.
-
-Conclude with `key`.
+/- English proof (authored)
+Let d = ℓ−1, x = 1/d, L = log base ℓ of h, and C be the ceiling of 1+log base ℓ of 2h+1. Since h ≥ 1, we have 2h+1 ≤ 3h and log base ℓ of 3 ≤ 1. The ceiling bound gives C ≤ 3+L. Apply the two-level geometric estimate with initial coefficient 2G, tail coefficient 2h, and common offset C+3. This gives s ≤ (2G+2hx^j+C+3)/(1−x). Apply rr_arith with y = x^j and q = 1/(1−x) = d/(d−1). Its term hy/d equals h/d^(j+1), giving the desired remainder bound.
 -/
 theorem remainder_bound_of_tsum : RrBound := by
   intro ℓ hℓ n _ H G h j cut s r hh hH hG hs hr

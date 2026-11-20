@@ -14,14 +14,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Work in the quotient by I, where f vanishes. The Leibniz rule then gives the residue of δ(cf) as the product of the residues of c and δ(f). For y₁ and y₂ the diagonal products with the indicated derivations equal one, while the two off-diagonal products equal zero. The product of the diagonal terms equals the product of the off-diagonal terms by commutativity. Thus one equals zero in the quotient and belongs to I.
 -/
 private theorem one_mem_of_mul_mem_of_dual_derivations {k : Type u} [Field k] {B : Type u} [CommRing B]
     [Algebra k B] (I : Ideal B) (y₁ y₂ f a b : B) (δ₁ δ₂ : Derivation k B B)
@@ -55,10 +49,8 @@ private theorem one_mem_of_mul_mem_of_dual_derivations {k : Type u} [Field k] {B
   rw [map_one]
   exact hone
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Each of the two coordinates is a multiple of the generator h. Formal étaleness provides the two partial derivations that take value one on their own coordinate and zero on the other. Apply the quotient argument for two multiples of a common generator to conclude that the ideal contains one.
 -/
 private theorem one_mem_of_coord_mem_span_singleton_of_ne {k : Type u} [Field k] {m : ℕ} {B : Type u} [CommRing B]
     [Algebra (MvPolynomial (ULift.{u} (Fin m)) k) B] [Algebra k B]
@@ -85,8 +77,8 @@ private theorem one_mem_of_coord_mem_span_singleton_of_ne {k : Type u} [Field k]
     (EtaleCoordinates.partialDeriv_coord_of_ne k (ULift.{u} (Fin m)) B _ _ hne'.symm)
     (EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin m)) B (ULift.up j₂))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Two affine opens with the same underlying open are equal as affine opens. Under this equality their section rings and ideal values agree, so the vanishing transfers.
 -/
 private theorem ideal_eq_bot_of_opens_eq {X : Scheme.{u}} (D : X.IdealSheafData)
     (W₁ W₂ : X.affineOpens) (hW : (W₁ : X.Opens) = (W₂ : X.Opens))
@@ -94,8 +86,8 @@ private theorem ideal_eq_bot_of_opens_eq {X : Scheme.{u}} (D : X.IdealSheafData)
   obtain rfl : W₁ = W₂ := Subtype.ext hW
   exact h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The equality of the underlying opens identifies the affine opens and their section rings. The generator on the second open therefore generates the ideal on the first open as well.
 -/
 private theorem exists_ideal_eq_span_singleton_of_opens_eq {X : Scheme.{u}} (D : X.IdealSheafData)
     (W₁ W₂ : X.affineOpens) (hW : (W₁ : X.Opens) = (W₂ : X.Opens))
@@ -104,32 +96,8 @@ private theorem exists_ideal_eq_span_singleton_of_opens_eq {X : Scheme.{u}} (D :
   obtain rfl : W₁ = W₂ := Subtype.ext hW
   exact h
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the smooth-center chart theorem to write the divisor ideal as a coordinate ideal indexed by S. The Cartier property also gives a neighborhood of x with an equation f that is a nonzerodivisor. Choose a common basic open containing x, principal in both neighborhoods. On it the restricted chart coordinates indexed by S generate the same ideal as the restriction of f. If S were empty, f would become zero there. Then some power of the element defining this basic open would annihilate f, so that power would be zero by the nonzerodivisor property. Inverting it would give the zero ring, impossible on an open containing x. If S contained two distinct indices, the two chart coordinates would belong to the same principal ideal on the common open. The chart remains formally étale after localization, so the dual partial derivations force this ideal to contain one. The ideal is contained in the prime of x because x lies in the divisor support, which rules this out. Thus S consists of one index and the original chart has the required single coordinate.
 -/
 theorem exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton {X : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -243,24 +211,8 @@ theorem exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton {X : Scheme.{u}}
       (le_antisymm (Finset.card_le_one.mpr hcard1) (Finset.card_pos.mpr hSne))
   exact ⟨U, m, c, j, hxU, by rw [hDU, hj]⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
-
-Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
-
-Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
-
-Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The only member of the list is smooth by hypothesis. A point on the divisor has an étale chart where the divisor ideal is generated by one coordinate, and that coordinate gives the required assignment. At a point outside the divisor choose an étale chart inside the open complement of its support. The restricted ideal has empty support and hence is the unit ideal, which gives the assignment with no coordinate. In both cases the conditions concerning distinct list entries are vacuous.
 -/
 theorem inStrictNormalCrossingPosition_singleton_of_isSmoothDivisor {X : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

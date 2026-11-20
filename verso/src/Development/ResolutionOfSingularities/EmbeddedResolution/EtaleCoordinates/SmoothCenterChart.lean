@@ -18,25 +18,23 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The image ideal in A contains the images of all elements of I. Thus the map from R to A induces a map on the stated quotients. By its construction the class of r goes to the class of its image in A.
 -/
 private theorem algebraMap_quotient_map_mk {R : Type u} [CommRing R] {A : Type u} [CommRing A] [Algebra R A]
     (I : Ideal R) (r : R) :
     algebraMap (R ⧸ I) (A ⧸ Ideal.map (algebraMap R A) I) (Ideal.Quotient.mk I r)
       = Ideal.Quotient.mk (Ideal.map (algebraMap R A) I) (algebraMap R A r) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The structure map from k to R/I is the structure map to R followed by the quotient map. It therefore sends a scalar to the class of its image in R.
 -/
 private theorem algebraMap_quotient_apply {k R : Type u} [CommRing k] [CommRing R] [Algebra k R]
     (I : Ideal R) (a : k) :
     algebraMap k (R ⧸ I) a = Ideal.Quotient.mk I (algebraMap k R a) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extending I to the localization and then taking the quotient gives the localization of R/I at the image of the original multiplicative set. Localization is formally étale and hence formally smooth. Its structure map from k agrees with the composite through R/I, so composition with the assumed formally smooth map from k to R/I gives the claim.
 -/
 private theorem formallySmooth_quotient_map_of_isLocalization (k : Type u) [CommRing k] {R : Type u} [CommRing R]
     [Algebra k R] (M : Submonoid R) (A : Type u) [CommRing A] [Algebra R A] [IsLocalization M A]
@@ -54,8 +52,8 @@ private theorem formallySmooth_quotient_map_of_isLocalization (k : Type u) [Comm
       algebraMap_quotient_apply (Ideal.map (algebraMap R A) I) a, IsScalarTower.algebraMap_apply k R A]
   exact Algebra.FormallySmooth.comp k (R ⧸ I) (A ⧸ Ideal.map (algebraMap R A) I)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The R-algebra isomorphism from L to M carries the image of each element of R in L to its image in M. The composite through L therefore gives the same map from R to M, and extension of ideals along this composite is successive extension.
 -/
 private theorem map_algebraMap_eq_map_map_of_algEquiv {R L M : Type u} [CommRing R] [CommRing L]
     [CommRing M] [Algebra R L] [Algebra R M] (e : L ≃ₐ[R] M) (J : Ideal R) :
@@ -65,8 +63,8 @@ private theorem map_algebraMap_eq_map_map_of_algEquiv {R L M : Type u} [CommRing
   refine congrArg (fun φ : R →+* M => Ideal.map φ J) ?_
   exact RingHom.ext fun r => (e.commutes r).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The map from sections on U to global sections of the open subscheme U is induced by restricting to the image of that whole subscheme. The image is U itself, so the restriction on X is the identity. The resulting map is the canonical identification in the direction from sections on U to its global sections.
 -/
 private theorem ι_appLE_eq_topIso_inv {X : Scheme.{u}} (U : X.Opens)
     (e : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U) : U.ι.appLE U ⊤ e = U.topIso.inv := by
@@ -74,8 +72,8 @@ private theorem ι_appLE_eq_topIso_inv {X : Scheme.{u}} (U : X.Opens)
   refine congrArg (fun h => X.presheaf.map h) ?_
   exact Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal sheaf attached to J assigns to an affine open the extension of J along restriction to that open. At the whole affine scheme that restriction is the identity, so its ideal is J.
 -/
 private theorem ofIdealTop_ideal_top {Y : Scheme.{u}} (J : Ideal Γ(Y, ⊤))
     (hY : IsAffineOpen (⊤ : Y.Opens)) :
@@ -85,8 +83,8 @@ private theorem ofIdealTop_ideal_top {Y : Scheme.{u}} (J : Ideal Γ(Y, ⊤))
   rw [h1, op_id, CategoryTheory.Functor.map_id]
   exact Ideal.map_id J
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under the affine-space identification with the spectrum of the polynomial ring, the map on global sections pulls a variable back to its coordinate function. On constants it is pullback along the structure map to the spectrum of k. These values uniquely specify polynomial evaluation at the coordinate functions.
 -/
 private theorem affineSpaceGlobalSectionsHom_eq_eval₂Hom (k : Type u) [Field k] (m : ℕ) :
     affineSpaceGlobalSectionsHom k m =
@@ -98,15 +96,15 @@ private theorem affineSpaceGlobalSectionsHom_eq_eval₂Hom (k : Type u) [Field k
   rw [AffineSpace.SpecIso_hom_appTop, ← Category.assoc, Iso.inv_hom_id, Category.id_comp,
     CommRingCat.hom_ofHom]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the evaluation description of the map on global sections to the indexed variable. Its value is the coordinate section with that index.
 -/
 private theorem affineSpaceGlobalSectionsHom_X (k : Type u) [Field k] (m : ℕ) (i : ULift.{u} (Fin m)) :
     affineSpaceGlobalSectionsHom k m (MvPolynomial.X i) = AffineSpace.coord (Spec (CommRingCat.of k)) i := by
   rw [affineSpaceGlobalSectionsHom_eq_eval₂Hom, MvPolynomial.eval₂Hom_X']
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Apply the evaluation description to a constant polynomial. Its value is the coefficient mapped from k to the global sections of the base spectrum and then pulled back to affine space.
 -/
 private theorem affineSpaceGlobalSectionsHom_C (k : Type u) [Field k] (m : ℕ) (b : k) :
     affineSpaceGlobalSectionsHom k m (MvPolynomial.C b) =
@@ -144,8 +142,8 @@ private def affineSpaceGlobalSectionsEquiv (k : Type u) [Field k] (m : ℕ) :
   map_mul' := (affineSpaceGlobalSectionsHom k m).map_mul
   map_add' := (affineSpaceGlobalSectionsHom k m).map_add
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The scalar action on sections over U is defined by first viewing the scalar as a global section of the spectrum of k, then pulling it back to X and restricting to U. The displayed map is this same composite evaluated on the scalar.
 -/
 theorem sectionsAlgebraMap_apply_eq (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (a : k) :
@@ -155,8 +153,8 @@ theorem sectionsAlgebraMap_apply_eq (k : Type u) [CommRing k] {X : Scheme.{u}}
   rw [sectionsAlgebraMap_eq]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Naturality of the pullback on sections says that restriction from X to U commutes with pulling back along f and restricting to the inverse image of U. Compose this square with the pullback of global sections along p. The composite pullback is the one along the structural morphism of W, giving the equality.
 -/
 private theorem appLE_top_comp_app (k : Type u) [CommRing k] {X W : Scheme.{u}}
     (f : W ⟶ X) (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) :
@@ -168,8 +166,8 @@ private theorem appLE_top_comp_app (k : Type u) [CommRing k] {X W : Scheme.{u}}
   rw [Category.assoc]
   exact congrArg (fun t => p.app ⊤ ≫ t) hn
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the naturality equality for the two composites to the global section of the spectrum of k represented by a. The scalar structure maps are precisely those composites, so the resulting equality is the desired compatibility.
 -/
 private theorem app_sectionsAlgebraMap (k : Type u) [CommRing k] {X W : Scheme.{u}}
     (f : W ⟶ X) (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (a : k) :
@@ -180,10 +178,8 @@ private theorem app_sectionsAlgebraMap (k : Type u) [CommRing k] {X W : Scheme.{
     (fun φ : Γ(Spec (CommRingCat.of k), ⊤) ⟶ Γ(W, f ⁻¹ᵁ U) =>
       φ.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a)) (appLE_top_comp_app k f p U)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Under the affine identification of U with the spectrum of its section ring, x corresponds to the stated prime. A prime lies in the principal open of g exactly when it avoids g. The affine identification carries that principal open to the basic open of g in X, so x belongs to it.
 -/
 theorem mem_basicOpen_of_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (g : Γ(X, U))
@@ -197,10 +193,8 @@ theorem mem_basicOpen_of_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
   have h4 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen g := h3
   rwa [h1] at h4
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On U, the support of Z is the common zero locus of its section ideal. An element outside the prime of x would give a basic open containing x. If that element were in the ideal of Z, this would contradict membership in its common zero locus. Every element of the ideal therefore lies in the prime.
 -/
 theorem ideal_le_primeIdealOf {X : Scheme.{u}} (Z : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (hxZ : x ∈ Z.support) :
@@ -213,12 +207,8 @@ theorem ideal_le_primeIdealOf {X : Scheme.{u}} (Z : X.IdealSheafData) {U : X.Ope
   rw [Scheme.mem_zeroLocus_iff] at h
   exact h f hf hx'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open subscheme U is affine, so it suffices to compare the ideals on its global section ring. Transporting the section ideal of Z to that ring carries its generators to the pullbacks of the specified coordinate sections, by the definition of chart coordinates. The coordinate-subspace ideal is generated by those coordinate sections in affine space. Pullback along the chart extends that ideal to the span of their pullbacks. Thus both sheaves have the same global ideal.
 -/
 theorem restrictIdeal_eq_coordIdeal_of_ideal_eq_span {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
@@ -244,14 +234,8 @@ theorem restrictIdeal_eq_coordIdeal_of_ideal_eq_span {X : Scheme.{u}} {k : Type 
     ι_appLE_eq_topIso_inv, Ideal.map_span, Ideal.map_span]
   exact congrArg Ideal.span hsets
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Form the map from U to affine space using the given tuple of sections. Identify the global sections of affine space with the polynomial ring and those of the open subscheme U with the original sections over U. Under these identifications its map on global sections agrees with f on variables by construction. It agrees on constants because the map to affine space is over the spectrum of k and f respects the prescribed scalar map. Since constants and variables generate the polynomial ring, the two maps agree. Both schemes are affine, so the étaleness of f implies étaleness of the scheme map.
 -/
 theorem etale_homOfVector_of_ringHom_etale {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
@@ -304,8 +288,8 @@ theorem etale_homOfVector_of_ringHom_etale {X : Scheme.{u}} {k : Type u} [Field 
   exact hresp.right _ (affineSpaceGlobalSectionsEquiv k m).symm
     (hresp.left f U.topIso.commRingCatIsoToRingEquiv.symm hf)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map to affine space associated to the given tuple is étale by the affine criterion for the given ring map. This makes it an étale chart. Pullback of each coordinate recovers the corresponding entry of the tuple, and the identification of global sections of the open subscheme with sections on U gives the desired equality.
 -/
 theorem exists_etaleChart_coord_eq {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
@@ -320,34 +304,8 @@ theorem exists_etaleChart_coord_eq {X : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleChart.coord_def, EtaleChart.ofCoords_map, AffineSpace.homOfVector_appTop_coord]
   exact Iso.inv_hom_id_apply U.topIso (y (ULift.up j))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Start with an affine étale chart around x and write R for its section ring and I for the center ideal. The prime q of x contains I because x is in the support. The center over this open is affine with section ring R/I, since its closed immersion induces a surjection with kernel I. This quotient is formally smooth over k by smoothness of the center. Localization at q preserves formal smoothness of the quotient by the extended ideal. Apply the local normal form to obtain a principal localization at an element outside q and a new tuple for which polynomial evaluation is formally étale. The selected entries of the tuple generate the localized center ideal. The localization is the section ring of a basic open containing x. Transport the evaluation map to this section ring. The ring is of finite type over k and hence of finite type over the polynomial ring under evaluation. The polynomial ring is Noetherian, so evaluation is of finite presentation, making it étale. The chart defined by this étale evaluation has the new tuple as coordinates. On the basic open the center ideal is the extension of I, which is therefore generated by the selected coordinates.
 -/
 theorem exists_chart_ideal_eq_span_coord {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z : X.IdealSheafData)
@@ -498,8 +456,8 @@ theorem exists_chart_ideal_eq_span_coord {X : Scheme.{u}} {k : Type u} [Field k]
   exact congrArg (fun h : ULift.{u} (Fin m) → Γ(X, X.basicOpen g) =>
     h '' (↑T : Set (ULift.{u} (Fin m)))) himg
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Take the affine chart where the section ideal of the center is generated by a subset of the coordinates. On this affine open the equality of section ideals identifies the restricted ideal sheaf with the pullback of the corresponding coordinate-subspace ideal. The open contains x and gives the claimed chart.
 -/
 theorem exists_chart_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -510,10 +468,8 @@ theorem exists_chart_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [
   obtain ⟨U, hU, m, c, S, hxU, hspan⟩ := exists_chart_ideal_eq_span_coord p Z x hx
   exact ⟨U, m, c, S, hxU, hU, restrictIdeal_eq_coordIdeal_of_ideal_eq_span hU c Z S hspan⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At each point of the center choose an étale chart in which its ideal is a coordinate ideal, using smoothness of the ambient scheme and the center. For the empty divisor list there are no divisor coordinates or compatibility conditions. The coordinate description of the center is the remaining condition and holds on the chosen chart.
 -/
 theorem hasStrictNormalCrossingsWith_nil_of_smooth {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z : X.IdealSheafData)

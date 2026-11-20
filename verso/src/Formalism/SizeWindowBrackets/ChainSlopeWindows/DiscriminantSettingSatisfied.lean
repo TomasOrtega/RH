@@ -6,10 +6,8 @@ namespace Formalism.LFunctionChainParameters.SmallOrderPrimeLosses
 open Finset Classical
 open Formalism.LFunctionChainParameters.DeficitSplitLemmas Formalism.LFunctionChainParameters.LErr Formalism.LFunctionChainParameters.PrimeWindowSizeBounds
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+Setting β and the initial scale to zero leaves every common window condition intact. For the two new upper bounds, the reciprocal of x² is nonnegative and remains nonnegative after multiplication by K ≥ 1. Thus both zero parameters meet their lower and upper bounds. Conversely, discard the bounds on these two parameters to recover the discriminant conditions.
 -/
 theorem discriminant_windows_iff : WindowsDIff := by
   intro P e K
@@ -25,8 +23,8 @@ theorem discriminant_windows_iff : WindowsDIff := by
     exact ⟨hε, hε1, he, hK, nx, nE, kx, kE, N0, NE, t0, tE, px, pE, La0, Laz, r0, rE, Sc0, ScS, η0, ηS,
       ρ0, ρx, th0, thx, x_sq_le_threshold, dx, C0, CK, Co0, CoK, Y1, YX, bo0, bosb⟩
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+The discriminant conditions are precisely the ordinary window conditions with the bounds on β and the initial scale omitted. The other inequalities are inherited directly.
 -/
 theorem discriminant_windows_of : WindowsDOf := by
   rintro P e K ⟨hε, hε1, he, hK, nx, nE, kx, kE, N0, NE, t0, tE, px, pE, La0, Laz, r0, rE, Sc0, ScS, η0, ηS,
@@ -34,26 +32,14 @@ theorem discriminant_windows_of : WindowsDOf := by
   exact ⟨hε, hε1, he, hK, nx, nE, kx, kE, N0, NE, t0, tE, px, pE, La0, Laz, r0, rE, Sc0, ScS, η0, ηS,
     ρ0, ρx, th0, thx, x_sq_le_threshold, dx, C0, CK, Co0, CoK, Y1, YX, bo0, bosb⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The logarithm of a natural number in the stated real convention is nonnegative, including zero at the zero input. The denominator is also nonnegative, so their quotient is nonnegative.
 -/
 lemma logdiv_nonneg (p : ℕ) : 0 ≤ Real.log (p : ℝ) / (p : ℝ) :=
   div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For each served prime, every omitted top index must be marked bad, and any prime with such an omission belongs to the designated prime set. Thus for primes in that set the omission count is at most the bad count, and for other primes it is zero. Multiply by the nonnegative weights and extend the resulting sum to the full designated set. Factoring out 4am leaves the assumed weighted count, which is at most R.
 -/
 theorem out_discriminant_bound : OutD := by
   intro τ Ps PR cl TT TTp BAD m a R hm ha hT2 hBad
@@ -99,14 +85,8 @@ theorem out_discriminant_bound : OutD := by
     mul_le_mul_of_nonneg_left hT2 (by positivity)
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The second-prime estimate bounds the loss by summing 4amT log(p)/p over candidates whose indicator threshold is exceeded. Each such term is exactly the contribution from the indicator part of the weighted sum multiplied by 2amT. The remaining signature contributions are nonnegative, so the loss is bounded by 2amT times the full weighted sum. Use its bound by R.
 -/
 theorem second_discriminant_bound : SecondD := by
   intro Ps cand cl Sig θ m T a R hm hT ha hSig hW hcl
@@ -128,12 +108,8 @@ theorem second_discriminant_bound : SecondD := by
   have h3 := mul_le_mul_of_nonneg_left hW hc
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Multiply the pointwise bound on the index by the nonnegative logarithm of p. The resulting term is the signature part of the weighted candidate sum scaled by amT. The indicator contribution is nonnegative, so including it can only increase the upper bound. Summing and using the assumed candidate bound yields amTR.
 -/
 theorem io_discriminant_bound : IoD := by
   intro cand Sig io θ m T a R hm hT ha hW hio
@@ -153,12 +129,8 @@ theorem io_discriminant_bound : IoD := by
   have h3 := mul_le_mul_of_nonneg_left hW hc
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Write z = x to the power ε and r = 1/x. Since a = xb, the coefficient 4a times x to the power −2 + ε is 4bzr. The large-x estimate bounds 100zr by the slope allowance. Multiply by the nonnegative factor 4b/100 to get the desired bound by b times that allowance. Scaling by mT gives the claimed size estimate.
 -/
 lemma sizeOut_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) (hm : 0 ≤ m)
     (hT : 1 ≤ T) : tOutD P m T ≤ sg P K * unitU P m T := by
@@ -177,10 +149,8 @@ lemma sizeOut_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write r = 1/x. The coefficient 2a/x⁹ is 2br⁸ because a = xb. Since 0 < r ≤ 1, r⁷ ≤ 1. The large-x estimate at exponent zero bounds 100r by the slope allowance. Thus 2br⁸, which is (2b/100)r⁷ times 100r, is at most b times the allowance.
 -/
 lemma size_ninth_power_bound {P : Par} {e K : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) :
     2 * P.a * (P.x ^ 9)⁻¹ ≤ sg P K * P.b := by
@@ -196,8 +166,8 @@ lemma size_ninth_power_bound {P : Par} {e K : ℝ} (hW : Windows P e K) (hL : La
         rw [F.xr]
         exact F.close_sg (by linarith) (by linarith) (F.zr0 0) (F.zr_sg (by norm_num))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The ninth-power bound controls the coefficient 2a/x⁹ by b times the slope allowance. Multiplication by the nonnegative mT gives the bound in the normalized size unit.
 -/
 lemma sizeSecond_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) (hm : 0 ≤ m)
     (hT : 1 ≤ T) : tSecondD P m T ≤ sg P K * unitU P m T := by
@@ -205,10 +175,8 @@ lemma sizeSecond_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : Large
   have := scale2 hm hT (size_ninth_power_bound hW hL)
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The coefficient a/x⁹ is nonnegative and no larger than 2a/x⁹. The ninth-power estimate bounds the latter by b times the slope allowance. Multiplying by mT yields the index bound.
 -/
 lemma sizeIo_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) (hm : 0 ≤ m)
     (hT : 1 ≤ T) : tIoD P m T ≤ sg P K * unitU P m T := by
@@ -221,12 +189,8 @@ lemma sizeIo_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Expand the total size into its eleven contributions. Apply the separate bounds for floors, the auxiliary-prime count, the low and high prime ranges, the order terms, the omitted terms, the band and high terms, the discriminant and the second-prime term. Adding the coefficients gives twice log(4) times the first-prime constant plus thirteen times the slope allowance, all multiplying the common unit.
 -/
 lemma size_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) (hm : 0 ≤ m)
     (hT : 1 ≤ T) : tDetD P m T ≤ (2 * Real.log 4 * P.C + 13 * sg P K) * unitU P m T := by
@@ -244,22 +208,8 @@ lemma size_core {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x 
   unfold tDetD
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the larger of zero and the constant in the first-kind estimate. The window and large-x assumptions give the auxiliary inequalities, and the nonempty top set ensures that its size is at least one. At any unit, apply the basic loss estimate, then bound the omitted, first-kind and second-kind contributions by their corresponding prime estimates. Their sum is controlled by the total size bound. Separately apply the weighted candidate estimate to the index sum and use the ninth-power size bound. These give the explicit inequalities. Since twice log(4) is at most three, the first-prime constant is nonnegative, and the slope allowance is at most one, the explicit bounds imply the two simpler bounds in the same nonnegative unit.
 -/
 lemma joint_core : ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ (P : Par) (e K : ℝ), P.Cord = Cord → Windows P e K →
     LargeX P.x P.ε e K →
@@ -311,8 +261,8 @@ lemma joint_core : ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ (P : Par) (e K : ℝ), P.C
   · have := mul_le_mul_of_nonneg_right F.sg1 hU
     linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the nonnegative constant furnished by the joint estimate. Set β and the initial scale to zero and transfer the discriminant conditions to the ordinary window conditions by the equivalence. All parameters occurring in the prime constraints and conclusions are preserved by this change. The simpler pair of joint bounds gives the conclusion.
 -/
 theorem joint_discriminant_bound : LossBoundsUnderSizeWindows := by
   obtain ⟨Cord, h0, h⟩ := joint_core
@@ -320,10 +270,8 @@ theorem joint_discriminant_bound : LossBoundsUnderSizeWindows := by
   intro P e K hC hW hL ι κ τ U Ps cand PR J TT BAD Sig io D hS
   exact (h (clr P) e K hC ((discriminant_windows_iff P e K).1 hW) hL ι κ τ U Ps cand PR J TT BAD Sig io D hS).2
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Keep the nonnegative constant from the joint discriminant bound. For the given ε, e and K, the eventual large-x estimate supplies a threshold above which its hypotheses hold. Substitute the specified value of the parameter ε, and apply the joint bound to each set of windows above the threshold.
 -/
 theorem joint_discriminant_eventually : LossBoundsEventually := by
   obtain ⟨Cord, h0, h⟩ := joint_discriminant_bound

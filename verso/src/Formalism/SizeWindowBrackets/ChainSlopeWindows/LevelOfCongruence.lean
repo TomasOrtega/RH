@@ -29,24 +29,24 @@ def K0v5 : ℝ :=
 def K7v5 : ℝ :=
   C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * (C.cCount * (m : ℝ) * D.L) + C.cSl1 * Xpp + 1
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The absolute deviation estimate bounds the exponent minus its center by the allowed error. Add back the center and factor out m.
 -/
 lemma exponent_le_upper (hE : EComp5 D C) (u0 : U0) (u : W u0) :
     D.Ee u0 u ≤ (m : ℝ) * (D.sumA * D.lg + C.cE * D.B0) := by
   have := (abs_le.mp (hE u0 u)).2
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The absolute deviation estimate bounds the exponent minus its center below by the negative of the allowed error. Add back the center and factor out m.
 -/
 lemma exponent_ge_lower (hE : EComp5 D C) (u0 : U0) (u : W u0) :
     (m : ℝ) * (D.sumA * D.lg - C.cE * D.B0) ≤ D.Ee u0 u := by
   have := (abs_le.mp (hE u0 u)).1
   linarith
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The two pointwise losses are each bounded by the same constant. Monotonicity of the uniform mean bounds their means by the mean of that constant, which equals the constant.
 -/
 lemma losses_of_losses5 [Nonempty U0] (h : LossBounds D C) : D.Losses C := by
   refine ⟨?_, ?_⟩
@@ -56,12 +56,8 @@ lemma losses_of_losses5 [Nonempty U0] (h : LossBounds D C) : D.Losses C := by
   · have := umean_mono (X := D.IO) (Y := fun _ : U0 => D.LoP C) (fun u0 => (h u0).2)
     rwa [umean_const] at this
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+At each index take the lower bound on its quotient mean slope and the lower comparison with the reference lattice slope. Use the divisor bound to control the difference between the weighted logarithmic term and its global divisor contribution, and use the count lower bound multiplied by the nonnegative total place weight. The exponent upper bound enters with a minus sign. Combining these estimates gives the same index-independent lower bound after subtracting the local loss. Taking the mean with the positive degree weights gives the stated inequality.
 -/
 lemma s_lower5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C) (hCount : Count5 D C)
     (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp) (u0 : U0) :
@@ -81,10 +77,8 @@ lemma s_lower5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C) (hCount
   try dsimp only
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Bound the exponent at the second index from above and at the first index from below. Their common center cancels, leaving twice the exponent error. The height comparison bounds the remaining difference by the weighted count difference plus the height error. Factor the total place weight out of that count difference and apply its uniform bound. The three error contributions form the variation budget.
 -/
 lemma Vvar_bound5 (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCount : Count5 D C)
     (u0 : U0) (u u' : W u0) :
@@ -99,14 +93,8 @@ lemma Vvar_bound5 (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCo
   unfold Data.Vvar
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Fix an index for the maximal shifted slope and compare it with the shifted mean slope at an arbitrary second index. Use the quotient upper bound at the first index and the quotient lower bound at the second. The common gain and positive correction cancel in the difference. The reference slope bounds and the variation estimate bound what remains by the common budget plus the second index's loss. Average over the second index with the positive weights, then maximize over the first. Subtracting the shifted mean gives the result.
 -/
 lemma u_function_le_mean (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCount : Count5 D C)
     (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp) (u0 : U0) :
@@ -132,8 +120,8 @@ lemma u_function_le_mean (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp 
     (fun u _ => by have := hs u; linarith)
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+Substitute the definition of the count lower bound into the divisor expression. Its terms involving m times the logarithmic congruence parameter cancel the added term. The existing divisor identity identifies the remaining uncorrected expression with the main term. What remains is the count correction multiplied by the total place weight.
 -/
 lemma key_identity5 (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.w u0 j ρ) :
     D.SDiv - D.sumA * Lam5 D C u0 + (m : ℝ) * D.sumA * D.lg =
@@ -143,16 +131,8 @@ lemma key_identity5 (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.
   unfold Lam5
   linear_combination h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Use the lower bound on the mean slope to isolate the gain in the assumed slope inequality. The divisor identity replaces the combined divisor and count terms by the main term and the fixed errors. For the logarithmic error, use the upper bounds on the shifted spread and height in the logarithmic estimate. Bound the other error by replacing η, the squared-error parameter and the height by their upper bounds, using monotonicity of the square root and nonnegativity. Both errors are nonnegative, so the reciprocal deletion factor can be increased to the one using the upper bound on deletion. Adding the resulting terms gives the gain estimate.
 -/
 lemma Ga_bound5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C)
     (hH : D.HComp C) (hCount : Count5 D C) (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp)
@@ -203,10 +183,8 @@ lemma Ga_bound5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C)
   unfold K5v5 at hsl
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The only word-dependent term in the local loss is a nonnegative coefficient times the logarithm of its count. Use the count upper bound at each word and add the remaining fixed terms. Taking the positive weighted mean preserves this common upper bound.
 -/
 lemma weighted_mean_lower_bound_le (hS : D.HidaSetting C) (hCount : Count5 D C) (u0 : U0) :
     wmean (D.d u0) (Lo5 D C Xpp u0) ≤ C.cSl1 * D.IO u0 + K7v5 D C Xpp := by
@@ -221,16 +199,8 @@ lemma weighted_mean_lower_bound_le (hS : D.HidaSetting C) (hCount : Count5 D C) 
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Apply the gain estimate at the unit. The loss hypothesis bounds its index term and the excess of its requested amount over the gain. The averaged local loss is at most the uniform loss expression by the bound just proved. Since its coefficient in the logarithmic error is nonnegative, the same replacement is valid there. Combining the terms gives the pointwise result with the stated error.
 -/
 theorem each_unit_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
@@ -256,16 +226,8 @@ theorem each_unit_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
   unfold ErrX5at UBar5
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Insert the bound on the average local loss into the gain estimate before averaging over units. Its index contribution has a nonnegative coefficient equal to the local loss coefficient times one plus the logarithmic multiplier. Apply linearity and monotonicity of the uniform mean to the gain bounds. Add the mean of the excess over gain to recover the mean requested amount. The two aggregate loss hypotheses bound this excess mean and the mean index, yielding the stated uniform error.
 -/
 theorem weighted_mean_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
@@ -305,8 +267,8 @@ theorem weighted_mean_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
   unfold errorTermWith UBar5 MLo5
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The pointwise loss assumptions give the two aggregate loss bounds by monotonicity of the uniform mean. The weighted mean result then applies with these aggregate bounds and the remaining hypotheses.
 -/
 theorem uniform_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}

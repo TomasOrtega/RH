@@ -12,14 +12,8 @@ open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData 
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+A thick node has positive weight because its lower bound is b > 0. Any other permitted node either is among the listed top places, where its lower bound is bₜ plus the nonnegative offset and bₜ ≥ b′ > 0, or has lower bound w″ > 0. The thick upper bound is already b + η + 1. At a non-thick top place, the upper bound is at most b′ + κb′ + b′/x + η ≤ 2b′. At any other non-thick place, the upper bound is w″ + η ≤ b′/x + η ≤ b′, which also gives the required bound.
 -/
 theorem node_sizes_of_windows : NodeSizesOfWindows (H := H) := by
   intro m TT T2 x b b' η κ w'' off bt w ⟨hb, hb', hη, hκ, hx, hoff0, hoff, hw0, hw'', hbt, hsum⟩ ⟨hthick, htop, hthin⟩
@@ -45,12 +39,8 @@ theorem node_sizes_of_windows : NodeSizesOfWindows (H := H) := by
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The ratio b′/x is positive and at most b′/3. Either that ratio or its floor is nonnegative and bounded above by the ratio. The group has at least one element, so dividing the ratio by the group order gives a positive thin width no larger than b′/x. The three contributions to the remaining constraint are bounded by b′/4, b′/3 and b′/4. Their sum is at most b′.
 -/
 theorem window_sizes_explicit : WindowSizesText := by
   intro H _ _ _ TT x b b' η κ off bt hx hb hb' hη hη4 hκ hκ4 hoff hbt
@@ -70,8 +60,8 @@ theorem window_sizes_explicit : WindowSizesText := by
   · have : κ * b' ≤ 1 / 4 * b' := mul_le_mul_of_nonneg_right hκ4 hb'.le
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The explicit parameter bounds furnish the window-size conditions with thin width b′ divided by x times the group order, with both factors in the denominator. Apply the node-size estimate to these conditions and the assumed local windows.
 -/
 theorem node_sizes_explicit : NodeSizesText := by
   intro H _ _ _ m TT T2 x b b' η κ off bt w h1 h2 h3 h4 h5 h6 h7 h8 h9 hw
@@ -87,19 +77,19 @@ section Conj
 
 open Matrix Formalism.LFunctionChainParameters.HilbertSchmidtNormSquare
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The conjugated matrix is obtained by applying complex conjugation to each entry. Its entry at row i and column j is therefore the conjugate of the corresponding original entry.
 -/
 lemma cj_apply {m n : Type} (M : Matrix m n ℂ) (i : m) (j : n) : cj M i j = starRingEnd ℂ (M i j) := rfl
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At each entry, conjugating twice returns the original complex number. Equality of all entries gives the matrix identity.
 -/
 lemma cj_cj {m n : Type} (M : Matrix m n ℂ) : cj (cj M) = M := by
   ext i j; simp [cj_apply]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Complex conjugation preserves subtraction. Apply that identity to each entry of the difference to obtain the matrix equality.
 -/
 lemma cj_sub {m n : Type} (M N : Matrix m n ℂ) : cj (M - N) = cj M - cj N := by
   ext i j; simp [cj_apply]
@@ -116,8 +106,8 @@ section Host
 open Formalism.LFunctionChainParameters.LHost
 open Formalism.FrobeniusOrbits (HostHyp HGrp hcl)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Under the coprimality hypothesis, the construction takes the residue of m as a unit and sends it to its quotient class, written in additive notation.
 -/
 lemma hOf_of_coprime {e m : ℕ} (h : m.Coprime (2 ^ (e + 2))) :
     hOf e m = Additive.ofMul (hcl e (ZMod.unitOfCoprime m h)) := dif_pos h
@@ -127,8 +117,8 @@ variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Project the proposed equality to the second coordinate of the first factor. It would identify zero with one in the two-element group, which is impossible.
 -/
 lemma sg_ne {H : Type} [AddCommGroup H] : (0 : E0 × H) ≠ sg := by
   intro h
@@ -140,23 +130,21 @@ variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
 end
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The exponent e + 2 is positive, so coprimality with 2 to that power is equivalent to coprimality with 2. A natural number is coprime to 2 exactly when it is odd.
 -/
 lemma odd_iff_cop (e m : ℕ) : Odd m ↔ m.Coprime (2 ^ (e + 2)) := by
   rw [Nat.coprime_pow_right_iff (by omega), Nat.coprime_two_right]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The residue of 1 gives the identity unit. Its quotient class is the multiplicative identity, hence zero in the additive notation.
 -/
 lemma hOf_one (e : ℕ) : hOf e 1 = 0 := by
   rw [hOf_of_coprime (Nat.coprime_one_left _), unitOfCoprime_one]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both odd factors and their product are coprime to the modulus. The unit represented by the product is the product of the units represented by the factors, as seen on their underlying residues. Passing to the quotient preserves products, which are written as sums in the additive group.
 -/
 lemma hOf_mul (e : ℕ) {a b : ℕ} (ha : Odd a) (hb : Odd b) : hOf e (a * b) = hOf e a + hOf e b := by
   have ca := (odd_iff_cop e a).1 ha
@@ -167,8 +155,8 @@ lemma hOf_mul (e : ℕ) {a b : ℕ} (ha : Odd a) (hb : Odd b) : hOf e (a * b) = 
   rw [this]
   rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+When the character is trivial on the quotient factor, the value is one by definition. Otherwise the input 1 is odd, and its quotient class is zero. The additive character takes zero to one.
 -/
 lemma omV_one (e : ℕ) (ψ : AddChar (E0 × HA e) ℂ) : omV e ψ 1 = 1 := by
   unfold omV
@@ -177,10 +165,8 @@ lemma omV_one (e : ℕ) (ψ : AddChar (E0 × HA e) ℂ) : omV e ψ 1 = 1 := by
   · rw [hOf_one]; exact AddChar.map_zero_eq_one ψ
   · exact absurd odd_one h2
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+When the character is trivial on the quotient factor, the function is constantly one. Otherwise an even factor causes both the product value and the corresponding factor value to vanish. When both factors are odd, the quotient class of their product is the sum of the classes, and evaluation by the additive character turns that sum into multiplication.
 -/
 lemma omV_mul (e : ℕ) (ψ : AddChar (E0 × HA e) ℂ) (a b : ℕ) : omV e ψ (a * b) = omV e ψ a * omV e ψ b := by
   unfold omV
@@ -194,8 +180,8 @@ lemma omV_mul (e : ℕ) (ψ : AddChar (E0 × HA e) ℂ) (a b : ℕ) : omV e ψ (
     · rw [if_neg hb, if_neg (fun h => hb (Nat.odd_mul.1 h).2), mul_zero]
   · rw [if_neg ha, if_neg (fun h => ha (Nat.odd_mul.1 h).1), zero_mul]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+For the trivial parameter the function is constantly one. In the other case its value at 1 is the Jacobi symbol with numerator 1, which equals one.
 -/
 lemma laV_one (s : ℂ) (l : ℕ) : laV s l 1 = 1 := by
   unfold laV
@@ -203,10 +189,8 @@ lemma laV_one (s : ℂ) (l : ℕ) : laV s l 1 = 1 := by
   · rfl
   · simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+In the trivial case the function is constantly one. Otherwise use multiplicativity of the Jacobi symbol in its numerator. Embedding the symbol values into the complex numbers preserves the multiplication.
 -/
 lemma laV_mul (s : ℂ) (l a b : ℕ) : laV s l (a * b) = laV s l a * laV s l b := by
   unfold laV

@@ -19,30 +19,8 @@ variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 end
 
 open Formalism.LFunctionChainParameters.DeficitSplitLemmas in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Split the place sum according to whether the assigned prime belongs to the rounding set. Outside the set the differences are nonpositive. In the set they are at most one, so the total is bounded by twice the sum of the corresponding place weights. Group these weights by prime to get twice the sum of their logarithms. The primes at most X″ contribute at most twice log(4) times X″ by the Chebyshev bound. Every larger prime is among the three specified exceptions, whose doubled logarithms together are at most 6X″. Add both parts.
 -/
 theorem rounding_rd_holds : RoundingRd := by
   classical
@@ -113,18 +91,8 @@ theorem rounding_rd_holds : RoundingRd := by
   linarith
 
 open Filter Asymptotics in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+For sufficiently large x ≥ 1, the growth of x to the power δ gives |A| ≤ κ times that power divided by two. Also log(x) grows more slowly than the same power, so B log(x) is at most the other half of κ times that power. Since A ≤ exp(|A|), the expression A times x to the power B is bounded above by exp(|A| + B log(x)). The two preceding bounds control this exponential by the one in the claim.
 -/
 theorem ev_exp (A B κ δ : ℝ) (hκ : 0 < κ) (hδ : 0 < δ) :
     ∃ x₀ : ℝ, 1 ≤ x₀ ∧ ∀ x, x₀ ≤ x → A * x ^ B ≤ Real.exp (κ * x ^ δ) := by
@@ -158,26 +126,8 @@ theorem ev_exp (A B κ δ : ℝ) (hκ : 0 < κ) (hδ : 0 < δ) :
     _ = Real.exp (|A| + B * Real.log x) := by rw [hxB, Real.exp_add]
     _ ≤ Real.exp (κ * x ^ δ) := Real.exp_le_exp.2 (by linarith)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Take a common sufficiently large threshold for two applications of exponential domination. The logarithmic lower bound on T and m ≥ 1 give T ≥ exp(x to the power ε divided by two). Combining this with f ≤ x to the power e and the first domination estimate bounds the deficit by the square of x to the power −c_H divided by 2(C₁ + 1), with the full quotient squared. Thus C₁ times its square root is at most half of x to the power −c_H. The second domination estimate bounds sixteen times exp of minus x to the power ε/8 by x to the power −c_H. The assumed square-root bound and √2 ≤ 2 therefore give the same half bound for four times the square root of twice the other error. Add the half bounds.
 -/
 theorem sigma_window_eventual : SgWindowEv := by
   intro ε cH C1 e hε hC1
@@ -237,10 +187,8 @@ theorem sigma_window_eventual : SgWindowEv := by
   linarith
 
 open Filter in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Since ε/7 > 0, eventually x to that power is at least six. Its exponential is at least one plus the power, hence at least seven. Taking the reciprocal gives an upper bound of 1/7 for the exponential decay and thus for the deletion parameter.
 -/
 theorem deletion_eventual_holds : DelEv := by
   intro ε hε
@@ -254,14 +202,8 @@ theorem deletion_eventual_holds : DelEv := by
   linarith
 
 open Formalism.LFunctionChainParameters.LErr in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The definitions simplify the window to xn times exp of x to the power ε/3. Use the bound on m to bound the desired left side by c times x to the power 1/2 + ε/2 + ε. Exponential domination makes this at most the exponential factor for all sufficiently large x. Since x ≥ 1 and n ≥ 1, multiplication by xn only increases that upper bound.
 -/
 theorem round_window_eventual : RoundWindowEv := by
   intro ε c hε hc

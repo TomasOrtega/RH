@@ -6,10 +6,8 @@ open Finset
 
 variable {ι κ : Type*} [DecidableEq ι]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the local signed sum into its gain, positive correction and negative correction. Distribute the place weight and split each finite sum by linearity, keeping the threshold with the gain. Interchange the two finite sums for each correction to match the stated totals.
 -/
 theorem weightedSlopeExcess_decomposition (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
     (tau : ι → ℝ) : ClaimSg W J l gain F E tau := by
@@ -22,12 +20,8 @@ theorem weightedSlopeExcess_decomposition (W : Finset ι) (J : Finset κ) (l : �
   simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Group the weighted local contributions by their assigned prime. The index contribution is constant over each fiber, so factor it out of the fiber sum. The remaining sum of local weights is log(p) by hypothesis. Multiplying the grouped result by two gives the identity.
 -/
 theorem unit_weight_partition (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ) (l io : ι → ℝ)
     (iop : ℕ → ℝ) : ClaimUnit W P pr l io iop := by
@@ -44,18 +38,8 @@ theorem unit_weight_partition (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ)
   refine Eq.trans ?_ hmain
   first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum])
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Since T > 2, the base 1 − 1/(T − 1) lies strictly between zero and one. Cancelling the positive degree d_M gives the degree ratio as the f-th power of this base. The power is positive and at most one, so the deficit is nonnegative and less than one. Bernoulli's inequality bounds the deficit above by f/(T − 1), which is at most 2f/T since T > 2. The degree identity follows by multiplying the ratio by d_M.
 -/
 theorem deficit_bounds (f : ℕ) (T dM du : ℝ) : ClaimDe f T dM du := by
   unfold ClaimDe
@@ -86,12 +70,8 @@ theorem deficit_bounds (f : ℕ) (T dM du : ℝ) : ClaimDe f T dM du := by
   rw [hdu]
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+The degree relation and deficit bound imply d_u ≥ d_M/2 > 0. Each length is at most d_M times λ, so its ratio to d_u is at most 2λ. Multiplying each ratio by twice its nonnegative weight and summing gives at most 4λ times the sum of the weights, which is log(T).
 -/
 theorem truncatedLength_bound (WT : Finset ι) (l len : ι → ℝ) (dM du de lam T : ℝ) :
     ClaimT WT l len dM du de lam T := by
@@ -110,24 +90,8 @@ theorem truncatedLength_bound (WT : Finset ι) (l len : ι → ℝ) (dM du de la
           mul_nonneg (mul_nonneg h1 hlam) (sub_nonneg.2 hdu2)]
     _ = 4 * lam * Real.log T := by rw [← Finset.mul_sum, hsum]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The rounding bound shows that the weighted excess using the modified local gains is at least the original weighted excess minus the rounding budget. Split the error sum into truncated and ordinary places. At truncated places the threshold is zero, so their contribution is bounded by the truncated length budget. At an ordinary place, substitute d_u = (1 − δ)d_M into the length bound. After subtracting the threshold, the normalized length is at most the local index term divided by 1 − δ plus δ/(1 − δ) times the threshold. Sum with the nonnegative weights. The index sum can be increased to the sum over all places, and the threshold sum already equals its full sum because the truncated thresholds vanish. Insert these bounds and the signed decomposition of the original excess into the assumed formula for the new mean slope.
 -/
 private theorem le_muN_of_hypLow {W WT : Finset ι} {J : Finset κ} {l : ι → ℝ} {gain F E : κ → ι → ℝ}
     {tau io len sg' : ι → ℝ} {dM du de muMu muN PT Rd X : ℝ}
@@ -193,16 +157,8 @@ private theorem le_muN_of_hypLow {W WT : Finset ι} {J : Finset κ} {l : ι → 
   rw [hmuN]
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Use the lower bound just proved with the total index term equal to 2Q. The nonnegative place weights and local indices give Q ≥ 0. Since δ ≤ 1/2, the index deduction is at most 4Q and δ/(1 − δ) is at most 2δ. The nonnegative threshold total is at most b², and δ ≤ 2f/T, so the threshold deduction is at most 4fb²/T. By hypothesis, that term together with the difference between the original and intermediate mean slopes is at most one. Replace the truncation and rounding terms by their respective upper bounds to obtain the simplified inequality.
 -/
 private theorem le_muN_of_hypLow_of_hypLow2 {W WT : Finset ι} {J : Finset κ} {l : ι → ℝ}
     {gain F E : κ → ι → ℝ} {tau io len sg' : ι → ℝ} {dM du de muMu muN PT Rd : ℝ}
@@ -239,10 +195,8 @@ private theorem le_muN_of_hypLow_of_hypLow2 {W WT : Finset ι} {J : Finset κ} {
       _ = 4 * f / T * b ^ 2 := by ring
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The auxiliary hypotheses identify the total index contribution with twice the stated index parameter. Pull the factor of two outside the finite sum to put this equality in the form required by the preceding lower bound. Applying that bound gives the claim.
 -/
 theorem lower_bound_simplified (W WT : Finset ι) (J : Finset κ) (l : ι → ℝ)
     (gain F E : κ → ι → ℝ) (tau io len sg' : ι → ℝ) (dM du de muMu muN PT Rd : ℝ)
@@ -255,12 +209,8 @@ theorem lower_bound_simplified (W WT : Finset ι) (J : Finset κ) (l : ι → �
   obtain ⟨-, -, -, -, -, -, a7, -, -⟩ := H2
   exact a7.symm.trans (by first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum]))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The modified local gain is bounded above by the original local gain at each place. Subtract the same threshold and sum with the nonnegative place weights to compare the two weighted excesses. Use the assumed upper bounds on the new and intermediate maximal slopes, then substitute the signed decomposition of the original excess.
 -/
 theorem claimHigh_valid (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → ι → ℝ)
     (tau sg' : ι → ℝ) (muMaxM muMaxMu muMaxN : ℝ) :

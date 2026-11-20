@@ -8,12 +8,8 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring of the basic open is the localization at f, with the same action of the base ring after restriction. The section ideals of P and I on the basic open are extensions of their ideals on U. The section ring on U is Noetherian, so the ideal of P is finitely generated, and its module of differentials is finitely presented. The localization formula for logarithmic derivative ideals now identifies the extended ideal with the ideal assigned to the basic open.
 -/
 private theorem map_logDerivIdeal_basicOpen (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -46,8 +42,8 @@ noncomputable def logDerivIdealSheaf (k : Type u) [CommRing k] [IsNoetherianRing
   ideal U := @logDerivIdeal k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) (I.ideal U)
   map_ideal_basicOpen := map_logDerivIdeal_basicOpen k p P I
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+On an affine open, the logarithmic derivative ideal sheaf is defined by applying the ring-level operation to the two section ideals, using the base algebra structure on the section ring.
 -/
 @[simp] theorem logDerivIdealSheaf_ideal (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -56,8 +52,8 @@ Both sides reduce to the same expression.
       @logDerivIdeal k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) (I.ideal U) :=
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+An inclusion of inputs gives an inclusion on every affine open. With P fixed, the ring-level logarithmic operation preserves each of those inclusions. This gives the inclusion of ideal sheaves.
 -/
 theorem logDerivIdealSheaf_mono (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (P : X.IdealSheafData) :
@@ -66,8 +62,8 @@ theorem logDerivIdealSheaf_mono (k : Type u) [CommRing k] [IsNoetherianRing k] {
   exact @logDerivIdeal_le_logDerivIdeal k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U)
     (I.ideal U) (J.ideal U) (h U)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open the tangent derivations used for the logarithmic ideal are among all the derivations used for the ordinary derivative ideal. The latter contains the original ideal and all of the logarithmic generators, giving the inclusion.
 -/
 theorem logDerivIdealSheaf_le_derivIdealSheaf (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -82,16 +78,16 @@ noncomputable def logDerivIdealSheafIterate (k : Type u) [CommRing k] [IsNoether
   | 0, I => I
   | (r + 1), I => logDerivIdealSheaf k p P (logDerivIdealSheafIterate k p P r I)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The zero-th iterate is the original ideal sheaf by definition.
 -/
 @[simp] theorem logDerivIdealSheafIterate_zero (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
     (P I : X.IdealSheafData) : logDerivIdealSheafIterate k p P 0 I = I :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive definition applies the logarithmic derivative ideal sheaf operation once more at a successor.
 -/
 theorem logDerivIdealSheafIterate_succ (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -100,8 +96,8 @@ theorem logDerivIdealSheafIterate_succ (k : Type u) [CommRing k] [IsNoetherianRi
       logDerivIdealSheaf k p P (logDerivIdealSheafIterate k p P r I) :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The first iterate applies the operation to the zero-th iterate, which is I.
 -/
 theorem logDerivIdealSheafIterate_one (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -109,10 +105,8 @@ theorem logDerivIdealSheafIterate_one (k : Type u) [CommRing k] [IsNoetherianRin
     logDerivIdealSheafIterate k p P 1 I = logDerivIdealSheaf k p P I :=
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on r. At zero the outer iterate is the identity. At a successor apply one more logarithmic derivative step to both sides and use the recursive definition.
 -/
 theorem logDerivIdealSheafIterate_add (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -126,8 +120,8 @@ theorem logDerivIdealSheafIterate_add (k : Type u) [CommRing k] [IsNoetherianRin
       have hrs : r + 1 + s = (r + s) + 1 := by omega
       rw [hrs, logDerivIdealSheafIterate_succ, logDerivIdealSheafIterate_succ, ih]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero both sides are the original section ideal. At a successor take the sections of the logarithmic derivative ideal sheaf of the preceding iterate. This applies the ring operation to the section ideal at the previous step, which is the preceding ring-level iterate by induction.
 -/
 @[simp] theorem logDerivIdealSheafIterate_ideal (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -142,10 +136,8 @@ Proceed by induction. Treat this case separately. Rewrite the conclusion using t
       rw [logDerivIdealSheafIterate_succ, logDerivIdealSheaf_ideal, ih,
         @logDerivIdealIterate_succ k _ _ _ (sectionsAlgebra k p U.1) (P.ideal U) r (I.ideal U)]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The zero-th iterate is the identity and preserves inclusions. At each successor the logarithmic operation preserves the inclusion between the preceding iterates, so induction proves monotonicity.
 -/
 theorem logDerivIdealSheafIterate_mono (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -161,8 +153,8 @@ theorem logDerivIdealSheafIterate_mono (k : Type u) [CommRing k] [IsNoetherianRi
       rw [logDerivIdealSheafIterate_succ, logDerivIdealSheafIterate_succ]
       exact logDerivIdealSheaf_mono k p P (ih h)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the two iterates agree. At a successor the logarithmic derivative sheaf of the previous logarithmic iterate lies in its ordinary derivative sheaf. By induction that ordinary derivative sheaf lies in the ordinary derivative sheaf of the preceding ordinary iterate, using monotonicity. This is the desired bound.
 -/
 theorem logDerivIdealSheafIterate_le_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]

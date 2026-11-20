@@ -9,17 +9,15 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An isomorphism of rings has an inverse ring homomorphism. The underlying functions are inverse, so the forward function is bijective.
 -/
 private theorem bijective_hom_of_iso {A B : CommRingCat.{u}} (i : A ≅ B) :
     Function.Bijective i.hom.hom :=
   ConcreteCategory.bijective_of_isIso i.hom
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Every image of an element of J is sent back into J by the inverse, so the extended ideal is contained in the inverse image under the inverse map. Conversely an element of that inverse image is the forward image of its own inverse, which lies in J. This proves equality.
 -/
 private theorem map_eq_comap_of_inverse {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (ψ : B →+* A) (h1 : ∀ a, ψ (φ a) = a) (h2 : ∀ b, φ (ψ b) = b) (J : Ideal A) :
@@ -34,10 +32,8 @@ private theorem map_eq_comap_of_inverse {A B : Type u} [CommRing A] [CommRing B]
     have hmem := Ideal.mem_map_of_mem φ hx
     rwa [h2 x] at hmem
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion identifies an affine source open with its image. On their section rings the map in the statement is the induced isomorphism. The pulled-back section ideal is the inverse image along the inverse ring isomorphism, which equals extension along the forward one.
 -/
 private theorem ideal_comap_eq_map_appLE {X Y : Scheme.{u}} (I : Y.IdealSheafData) (f : X ⟶ Y)
     [IsOpenImmersion f] (V : X.affineOpens) (hU : IsAffineOpen (f ''ᵁ (V : X.Opens)))
@@ -55,8 +51,8 @@ private theorem ideal_comap_eq_map_appLE {X Y : Scheme.{u}} (I : Y.IdealSheafDat
     fun b => CommRingCat.hom_inv_apply (f.appIso (V : X.Opens)) b
   exact (map_eq_comap_of_inverse _ _ h1 h2 _).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open immersion identifies V with its open image. The resulting map of section rings is an isomorphism and is therefore bijective.
 -/
 private theorem bijective_appLE_image_of_isOpenImmersion {Z W : Scheme.{u}} (f : W ⟶ Z) [IsOpenImmersion f]
     (V : W.Opens) (e : V ≤ f ⁻¹ᵁ (f ''ᵁ V)) :
@@ -65,8 +61,8 @@ private theorem bijective_appLE_image_of_isOpenImmersion {Z W : Scheme.{u}} (f :
   rw [h]
   exact bijective_hom_of_iso (f.appIso V)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pulling a base scalar section to U and then to V is the same as pulling it back along the composite structural map to V. This follows from composition of the section maps.
 -/
 private theorem appLE_sectionsAlgebraMap (K : Type u) [CommRing K] {Z W : Scheme.{u}}
     (q : Z ⟶ Spec (CommRingCat.of K)) (f : W ⟶ Z) (U : Z.Opens) (V : W.Opens)
@@ -78,8 +74,8 @@ private theorem appLE_sectionsAlgebraMap (K : Type u) [CommRing K] {Z W : Scheme
       Scheme.Hom.appLE_comp_appLE]
   exact DFunLike.congr_fun key a
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The bijective ring map is a localization away from one. The scalar compatibility makes it a localization of the given base algebra. Use the localization formula for iterated logarithmic derivative ideals.
 -/
 private theorem map_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K]
     {S S' : Type u} [CommRing S] [CommRing S'] [Algebra K S] [Algebra K S']
@@ -95,10 +91,8 @@ private theorem map_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K]
     IsLocalization.away_of_isUnit_of_bijective (hr := isUnit_one) (H := hφ)
   exact logDerivIdealIterate_map_away K (1 : S) hP r J
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring on the source side of the ring map is Noetherian and its differential module is finitely presented. In particular P is finitely generated. The section map respects scalars by composition of structural maps. Apply the transport formula for a bijective ring map with these hypotheses.
 -/
 private theorem map_appLE_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K] [IsNoetherianRing K]
     {Z W : Scheme.{u}} (q : Z ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType q]
@@ -130,10 +124,8 @@ variable (k : Type u) [CommRing k] [IsNoetherianRing k] {X Y : Scheme.{u}}
   (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
   (g : Y ⟶ X) [IsOpenImmersion g] [LocallyOfFiniteType (g ≫ p)]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the image affine open of V. The section map from the image to V is an isomorphism, and the ideals of the pulled-back sheaves are extensions along this map. Both sheaf iterates on these opens are the corresponding ring iterates. Transport the ambient ring iterate along the section isomorphism, which sends it to the iterate for the extended boundary and input ideals.
 -/
 theorem logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion
     (P A : X.IdealSheafData) (r : ℕ) (V : Y.affineOpens) :
@@ -151,8 +143,8 @@ theorem logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion
     ideal_comap_eq_map_appLE A g V hU e]
   exact map_appLE_logDerivIdealIterate_of_bijective k p g ⟨g ''ᵁ (V : Y.Opens), hU⟩ V e hbij _ _ r
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two ideal sheaves have the same ideals on every affine open by the section comparison for the open immersion. This determines equality of the sheaves.
 -/
 theorem logDerivIdealSheafIterate_comap_of_isOpenImmersion
     (P A : X.IdealSheafData) (r : ℕ) :

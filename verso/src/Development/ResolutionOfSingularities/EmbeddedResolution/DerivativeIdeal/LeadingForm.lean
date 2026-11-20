@@ -9,10 +9,8 @@ open IsLocalRing
 def multiIndicesOfDegree (h r : ℕ) : Finset (Fin h → ℕ) :=
   (Fintype.piFinset fun _ : Fin h => Finset.range (r + 1)).filter fun β => ∑ i, β i = r
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The definition keeps precisely the bounded multi-indices of total degree r. If the sum is r, then every entry is at most r because the entries are nonnegative. Thus the bound in the definition follows from the degree condition.
 -/
 theorem mem_multiIndicesOfDegree {h r : ℕ} (β : Fin h → ℕ) :
     β ∈ multiIndicesOfDegree h r ↔ ∑ i, β i = r := by
@@ -26,18 +24,8 @@ theorem mem_multiIndicesOfDegree {h r : ℕ} (β : Fin h → ℕ) :
       exact Finset.single_le_sum (f := β) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)
     omega
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on r. At zero the only required derivative is the identity, so f already lies in the maximal ideal. For a step from r to r + 1, each first derivative of f lies in the r-th power. Its derivatives of total order r are derivatives of f of total order r + 1 because the coordinate derivations commute. They therefore vanish in the residue field. By induction every first derivative of f lies in the (r + 1)-st power. Apply the Euler congruence in degree r + 1 and use the invertibility of r + 1 to conclude that f lies in the (r + 2)-nd power.
 -/
 private theorem mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -76,10 +64,8 @@ private theorem mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem {k R : Type*} [
     rw [hx] at hres
     exact hres
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If f lies in the (r + 1)-st power, every derivative of order r lies in the maximal ideal by the power bound for mixed derivatives. For the converse, the finite index set contains all multi-indices of degree r. The vanishing criterion proved by induction and the Euler argument then puts f in the next power.
 -/
 theorem mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -102,10 +88,8 @@ theorem mem_maximalIdeal_pow_succ_iff_multiIndexDeriv_mem {k R : Type*} [CommRin
     exact mem_maximalIdeal_pow_succ_of_multiIndexDeriv_mem x D hx hD hDD hunit r f hf
       (fun β hb => hall β ((mem_multiIndicesOfDegree β).mpr hb))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two containments for successive powers translate to order at least n and order strictly below n + 1. An extended natural number between those bounds is exactly n.
 -/
 private theorem idealOrder_eq_of_le_of_not_le {R : Type*} [CommRing R] [IsLocalRing R] {n : ℕ}
     {I : Ideal R} (h1 : I ≤ IsLocalRing.maximalIdeal R ^ n)
@@ -123,18 +107,16 @@ private theorem idealOrder_eq_of_le_of_not_le {R : Type*} [CommRing R] [IsLocalR
 
 private def ofDigitsFin (N : ℕ) {h : ℕ} (β : Fin h → ℕ) : ℕ := ∑ i, β i * N ^ (i : ℕ)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The weighted sum defining the digit value distributes over coordinatewise addition. Splitting the finite sum gives the sum of the two digit values.
 -/
 private theorem ofDigits_add (N : ℕ) {h : ℕ} (β γ : Fin h → ℕ) :
     ofDigitsFin N (fun i => β i + γ i) = ofDigitsFin N β + ofDigitsFin N γ := by
   simp only [ofDigitsFin, add_mul]
   rw [Finset.sum_add_distrib]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The first digit has weight one. Each tail weight is the corresponding weight for the shortened tuple multiplied by N. Separate the first term and factor out N from the tail.
 -/
 private theorem ofDigits_fin_succ (N : ℕ) {n : ℕ} (δ : Fin (n + 1) → ℕ) :
     ofDigitsFin N δ = δ 0 + (ofDigitsFin N fun i : Fin n => δ i.succ) * N := by
@@ -145,14 +127,8 @@ private theorem ofDigits_fin_succ (N : ℕ) {n : ℕ} (δ : Fin (n + 1) → ℕ)
   · refine Finset.sum_congr rfl fun i _ => ?_
     rw [Fin.val_succ, pow_succ, mul_assoc]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of digits. For a nonempty tuple compare the two values modulo N. This identifies the first digits because they are less than N. Subtract this common digit and cancel the positive factor N to identify the tail values. The induction hypothesis identifies all the remaining digits.
 -/
 private theorem ofDigits_injective_of_lt (N : ℕ) (hN : 0 < N) : ∀ (h : ℕ) (β γ : Fin h → ℕ),
     (∀ i, β i < N) → (∀ i, γ i < N) → ofDigitsFin N β = ofDigitsFin N γ → β = γ := by
@@ -180,8 +156,8 @@ private theorem ofDigits_injective_of_lt (N : ℕ) (hN : 0 < N) : ∀ (h : ℕ) 
     · intro j
       exact congrFun h2 j
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+The tuples of degree r form a finite set because each coordinate lies between zero and r. Its subset satisfying P is nonempty. Choose a member of that subset minimizing the weighted digit value.
 -/
 private theorem exists_ofDigits_le_of_sum_eq {h : ℕ} (P : (Fin h → ℕ) → Prop) (r N : ℕ)
     (hex : ∃ β : Fin h → ℕ, (∑ i, β i = r) ∧ P β) :
@@ -196,10 +172,8 @@ private theorem exists_ofDigits_le_of_sum_eq {h : ℕ} (P : (Fin h → ℕ) → 
   exact ⟨β₀, hmem.1, hmem.2, fun β hβ hPβ =>
     hmin β (Finset.mem_filter.mpr ⟨(mem_multiIndicesOfDegree β).mpr hβ, hPβ⟩)⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The sum of all terms except the distinguished one belongs to I. If the whole sum belonged to I as well, subtracting that sum of the remaining terms would put the distinguished term in I, a contradiction.
 -/
 private theorem sum_notMem_of_unique_notMem {R : Type*} [CommRing R] {I : Ideal R} {ι : Type*}
     [DecidableEq ι] (t : Finset ι) (F : ι → R) (a : ι) (ha : a ∈ t) (hFa : F a ∉ I)
@@ -213,36 +187,8 @@ private theorem sum_notMem_of_unique_notMem {R : Type*} [CommRing R] {I : Ideal 
   rw [← h2, add_sub_cancel_right] at h3
   exact h3
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+By the mixed-derivative criterion choose degree r and degree s derivatives of f and g with nonzero residues. Among such indices for each factor choose indices β₀ and γ₀ of minimal weighted digit value in base r + s + 1. Let α be their coordinatewise sum. The residue of the α-th derivative of the product is given by the mixed Leibniz sum over splits α = β + γ of degrees r and s, since all other splits vanish modulo the maximal ideal. For the selected split both derivatives and the positive binomial coefficient are units, so its term survives. For any other split whose first derivative survives, the value of β is strictly larger than that of β₀ by minimality and uniqueness of the base representation. Additivity of the weighted values then makes the value of γ strictly smaller than that of γ₀, so its derivative vanishes. Thus the selected term is the only nonzero residue and the α-th derivative does not vanish. The power bound on derivatives excludes membership of the product in the (r + s + 1)-st power.
 -/
 private theorem mul_notMem_maximalIdeal_pow_add_succ {k R : Type*} [CommRing k] [CommRing R]
     [IsLocalRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -355,24 +301,8 @@ private theorem mul_notMem_maximalIdeal_pow_add_succ {k R : Type*} [CommRing k] 
         exact absurd (hγ₀min _ hγsum hcon2) (by omega)
       exact Ideal.mul_mem_left _ _ hgmem
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If either ideal is zero the product is zero and both sides are infinite. Otherwise let r and s be the finite orders of I and J. Their product lies in the (r + s)-th power of the maximal ideal. Choose an element of each ideal failing to lie in the power one higher than its order. The nonvanishing result for the product of their leading terms gives an element of IJ outside the (r + s + 1)-st power. The two power bounds imply that the order is exactly r + s.
 -/
 theorem idealOrder_mul {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)
@@ -435,10 +365,8 @@ theorem idealOrder_mul {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
       rw [idealOrder_eq_of_le_of_not_le h2 h1, hr, hs]
       exact Nat.cast_add r s
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At exponent zero the power is the unit ideal, with order zero. At a successor the next power is the previous power multiplied by I. Apply the order formula for a product and use induction to obtain the stated multiple.
 -/
 theorem idealOrder_pow {k R : Type*} [CommRing k] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [Algebra k R] {h : ℕ} (x : Fin h → R) (D : Fin h → Derivation k R R)

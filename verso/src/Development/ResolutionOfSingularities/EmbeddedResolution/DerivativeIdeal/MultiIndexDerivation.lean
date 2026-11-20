@@ -10,18 +10,16 @@ def multiIndexDeriv {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin h → �
   Fin.foldr h (fun i y => (⇑(D i))^[α i] y) x
 
 @[simp]
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
+/- English proof (authored)
+There are no derivations to apply. The empty composition is the identity.
 -/
 theorem multiIndexDeriv_of_isEmpty (D : Fin 0 → Derivation k R R) (α : Fin 0 → ℕ) :
     multiIndexDeriv D α = id := by
   funext x
   simp [multiIndexDeriv]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The empty composition fixes x. In a nonempty list the composition of the tail fixes x by induction, and the first map fixes that value by hypothesis.
 -/
 private theorem foldr_eq_self_of_forall_eq_self {A : Type*} :
     ∀ (n : ℕ) (f : Fin n → A → A), (∀ (i : Fin n) (y : A), f i y = y) →
@@ -37,8 +35,8 @@ private theorem foldr_eq_self_of_forall_eq_self {A : Type*} :
       exact hf 0 x
 
 @[simp]
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Every entry of the zero multi-index prescribes zero applications of its derivation. Each factor in the composition is the identity, so the composite fixes f.
 -/
 theorem multiIndexDeriv_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) :
     multiIndexDeriv D (0 : Fin h → ℕ) f = f := by
@@ -47,15 +45,15 @@ theorem multiIndexDeriv_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) 
     (fun i y => by simp) f
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The function constantly zero is the zero multi-index. Apply the identity for that index.
 -/
 theorem multiIndexDeriv_fun_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) :
     multiIndexDeriv D (fun _ => 0) f = f :=
   multiIndexDeriv_zero D f
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+At n equal to zero the right side is the unit ideal. For positive n, the product of J with its preceding power is exactly the n-th power.
 -/
 private theorem mul_pow_sub_one_le (J : Ideal R) (n : ℕ) :
     J * J ^ (n - 1) ≤ J ^ n := by
@@ -68,14 +66,8 @@ private theorem mul_pow_sub_one_le (J : Ideal R) (n : ℕ) :
       show J * J ^ m ≤ J ^ (m + 1)
       exact le_of_eq (by rw [mul_comm, ← pow_succ])
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on n. At zero the derivative lands in the unit ideal. In the successor step write the higher power as the product of the preceding power and J. For a product ab from these two factors, the term a times the derivative of b lies in the preceding power. The other term lies in J times the power given by induction for the derivative of a, which is contained in the same preceding power. Additivity handles sums of such products.
 -/
 private theorem derivation_mem_pow_sub_one (J : Ideal R) (D : Derivation k R R) :
     ∀ (n : ℕ) (f : R), f ∈ J ^ n → D f ∈ J ^ (n - 1) := by
@@ -104,12 +96,8 @@ private theorem derivation_mem_pow_sub_one (J : Ideal R) (D : Derivation k R R) 
         rw [map_add]
         exact Submodule.add_mem _ hx hy
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+With zero iterations the original containment is unchanged. Each application lowers the available ideal-power exponent by one, with truncation at zero. Apply the one-derivative estimate and the induction hypothesis to get the exponent n minus the total number of applications.
 -/
 private theorem iterate_derivation_mem_pow_sub (J : Ideal R) (D : Derivation k R R) :
     ∀ (m n : ℕ) (f : R), f ∈ J ^ n → (⇑D)^[m] f ∈ J ^ (n - m) := by
@@ -128,14 +116,8 @@ private theorem iterate_derivation_mem_pow_sub (J : Ideal R) (D : Derivation k R
       rw [h3] at h2
       exact h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the ordered family of derivations. The empty family makes no change. In a nonempty family the tail reduces the exponent by the sum of its iteration counts. Applying the first derivation its prescribed number of times reduces the exponent by that additional count. Truncated subtraction in succession is subtraction of their sum.
 -/
 private theorem foldr_iterate_mem_pow_sub (J : Ideal R) :
     ∀ (h : ℕ) (D : Fin h → Derivation k R R) (α : Fin h → ℕ) (n : ℕ) (f : R), f ∈ J ^ n →
@@ -160,16 +142,16 @@ private theorem foldr_iterate_mem_pow_sub (J : Ideal R) :
       rw [Fin.foldr_succ, hs]
       exact h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The mixed derivative is the ordered composition of the iterated derivatives. The power estimate for that composition subtracts the sum of all entries of the multi-index.
 -/
 theorem multiIndexDeriv_mem_pow_sub {h : ℕ} (D : Fin h → Derivation k R R) (J : Ideal R) (n : ℕ)
     {f : R} (hf : f ∈ J ^ n) (α : Fin h → ℕ) :
     multiIndexDeriv D α f ∈ J ^ (n - ∑ i, α i) := by
   exact foldr_iterate_mem_pow_sub J h D α n f hf
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Multiplication by the image of a natural number is repeated addition. Since a derivation is additive, it commutes with this multiplication.
 -/
 private theorem derivation_natCast_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m : ℕ) (x : S) : D ((m : S) * x) = (m : S) * D x := by
@@ -177,8 +159,8 @@ private theorem derivation_natCast_mul {B S : Type*} [CommRing B] [CommRing S] [
   have h2 : ((m : S) * D x) = m • D x := by rw [nsmul_eq_mul]
   rw [h1, h2, map_nsmul]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The identity map commutes with multiplication by the natural scalar. The single-derivation compatibility is preserved by composing with another application, so induction gives the result.
 -/
 private theorem iterate_derivation_natCast_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m c : ℕ) (x : S) :
@@ -189,8 +171,8 @@ private theorem iterate_derivation_natCast_mul {B S : Type*} [CommRing B] [CommR
       simp only [Function.iterate_succ_apply']
       rw [ih, derivation_natCast_mul]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The identity preserves the finite sum. Each further derivative is additive and commutes with the sum, proving the identity by induction.
 -/
 private theorem iterate_derivation_sum {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m : ℕ) {ι : Type*} (s : Finset ι) (F : ι → S) :
@@ -201,16 +183,8 @@ private theorem iterate_derivation_sum {B S : Type*} [CommRing B] [CommRing S] [
       simp only [Function.iterate_succ_apply']
       rw [ih, map_sum]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Separate the last term in the first sum and the first term in the second. The remaining terms have the same products after shifting the index by one. Their coefficients add by Pascal’s identity, giving the interior binomial coefficients for n + 1. Each boundary term already has coefficient one.
 -/
 private theorem sum_choose_succ_mul_eq {S : Type*} [CommRing S] (u v : ℕ → S) (n : ℕ) :
     (∑ i ∈ Finset.range (n + 1), ((n.choose i : ℕ) : S) * (u (i + 1) * v (n - i)))
@@ -251,14 +225,8 @@ private theorem sum_choose_succ_mul_eq {S : Type*} [CommRing S] (u v : ℕ → S
   rw [e1, e2, e3, e4, e5]
   ring
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At order zero the product is unchanged. Differentiate the formula at order n. The derivative commutes with the finite sum and the natural coefficients, and the Leibniz rule adds one application to either factor in each term. Reindex and combine the two sums by Pascal’s identity, obtaining the coefficients for order n + 1.
 -/
 private theorem iterate_derivation_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (n : ℕ) (x y : S) :
@@ -286,8 +254,8 @@ private theorem iterate_derivation_mul {B S : Type*} [CommRing B] [CommRing S] [
       rw [Finset.sum_add_distrib]
       exact sum_choose_succ_mul_eq (fun i => (⇑D)^[i] x) (fun i => (⇑D)^[i] y) n
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+By definition the composition for a nonempty index first acts with the tail of the family and then applies the first derivation the specified number of times.
 -/
 private theorem multiIndexDeriv_succ {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     {m : ℕ} (D : Fin (m + 1) → Derivation B S S) (α : Fin (m + 1) → ℕ) (x : S) :
@@ -295,8 +263,8 @@ private theorem multiIndexDeriv_succ {B S : Type*} [CommRing B] [CommRing S] [Al
       = (⇑(D 0))^[α 0] (multiIndexDeriv (fun i => D i.succ) (fun i => α i.succ) x) := by
   simp only [multiIndexDeriv, Fin.foldr_succ]
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At the first position the reconstructed tuple agrees with β by its choice of head. At each later position it agrees by the definition of the tail. Hence the functions agree at every index.
 -/
 private theorem fin_cons_self_tail {m : ℕ} (β : Fin (m + 1) → ℕ) :
     Fin.cons (β 0) (fun i => β i.succ) = β := by
@@ -314,12 +282,8 @@ private def finSuccFunEquivProd (m : ℕ) : (Fin (m + 1) → ℕ) ≃ ℕ × (Fi
     rcases p with ⟨a, b⟩
     simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A tuple of allowed values consists uniquely of an allowed first value and a tuple of allowed tail values. Reindex the sum by this bijection and then sum over the first value and the tail in succession.
 -/
 private theorem sum_piFinset_succ {M : Type*} [AddCommMonoid M] {m : ℕ}
     (s : Fin (m + 1) → Finset ℕ) (F : (Fin (m + 1) → ℕ) → M) :
@@ -342,18 +306,8 @@ private theorem sum_piFinset_succ {M : Type*} [AddCommMonoid M] {m : ℕ}
   · intro β _
     exact congrArg F (fin_cons_self_tail β).symm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of derivations in the family. With no derivations the only split is empty and the product stays unchanged. For a nonempty family, expand the tail derivative of the product by induction. Apply the prescribed iterate of the first derivation to each term, taking the natural coefficient outside and using the one-variable Leibniz formula on the two factors. Combining the split of the first count with each tail split gives all allowed multi-indices. The coefficient is the product of their coordinate binomial coefficients. The order of application in both factors is the same as in the original mixed derivative.
 -/
 theorem multiIndexDeriv_mul {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin h → ℕ) (f g : R) :
     multiIndexDeriv D α (f * g) =
@@ -415,14 +369,8 @@ theorem multiIndexDeriv_mul {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin
         (fun β => ((∏ i, (α i).choose (β i) : ℕ) : R) * multiIndexDeriv D β f *
           multiIndexDeriv D (fun i => α i - β i) g)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The mixed Leibniz formula expands the product derivative over all splits of α. Remove those splits whose first part has total order r. In every remaining term, either the first part has order less than r or the second part has order less than s, since their orders add to r + s. The corresponding derivative then lies in a positive power of J by the order estimate. Thus each remaining product, and hence their sum, lies in J.
 -/
 theorem multiIndexDeriv_mul_sub_sum_mem {h : ℕ} (D : Fin h → Derivation k R R) (J : Ideal R)
     (r s : ℕ) (α : Fin h → ℕ) (hα : ∑ i, α i = r + s) {f g : R}
@@ -459,10 +407,8 @@ theorem multiIndexDeriv_mul_sub_sum_mem {h : ℕ} (D : Fin h → Derivation k R 
       exact Ideal.pow_le_self hpos.ne' hmem
     exact Ideal.mul_mem_left _ _ hy
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The result for an empty composition is immediate. In a nonempty composition commute E past the first map by hypothesis, then commute it past the composition of the tail by induction.
 -/
 private theorem foldr_comm_of_comm {A : Type*} (E : A → A) :
     ∀ (n : ℕ) (F : Fin n → A → A), (∀ (i : Fin n) (y : A), E (F i y) = F i (E y)) →
@@ -477,16 +423,8 @@ private theorem foldr_comm_of_comm {A : Type*} (E : A → A) :
       rw [Fin.foldr_succ, Fin.foldr_succ, hF 0,
         ih (fun i => F i.succ) (fun i y => hF i.succ y) x]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the size of the family. In the nonempty case split off the first derivation and apply induction to the tail. The first derivation commutes with each tail derivation and hence with every iterate and their ordered composite. Its powers can therefore move past the tail factors. Group its applications into the two prescribed counts, using the addition rule for powers of a single map. The resulting two successive mixed derivatives have indices β and α in that order.
 -/
 private theorem multiIndexDeriv_add_of_comm_forall :
     ∀ (n : ℕ) (D : Fin n → Derivation k R R),
@@ -535,8 +473,8 @@ private theorem multiIndexDeriv_add_of_comm_forall :
         hcomm (β 0) (fun i : Fin n => α i.succ)
           (multiIndexDeriv (fun i : Fin n => D i.succ) (fun i : Fin n => β i.succ) x)]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply composition of mixed derivatives for a family of pairwise commuting derivations.
 -/
 theorem multiIndexDeriv_add {h : ℕ} (D : Fin h → Derivation k R R)
     (hD : ∀ i j : Fin h, ∀ x : R, D i (D j x) = D j (D i x)) (α β : Fin h → ℕ) (x : R) :
@@ -546,26 +484,20 @@ theorem multiIndexDeriv_add {h : ℕ} (D : Fin h → Derivation k R R)
 def unitMultiIndex {h : ℕ} (i : Fin h) : Fin h → ℕ := fun j => if j = i then 1 else 0
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The unit multi-index is defined to have value one at its designated index and zero elsewhere.
 -/
 theorem unitMultiIndex_apply {h : ℕ} (i j : Fin h) :
     unitMultiIndex i j = if j = i then 1 else 0 := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+All entries except the designated one are zero, and the remaining entry is one. Thus the sum is one.
 -/
 theorem sum_unitMultiIndex {h : ℕ} (i : Fin h) : ∑ j, unitMultiIndex i j = 1 := by
   simp [unitMultiIndex]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+All factors except the distinguished one are identities. This follows recursively by removing the first factor. If it is the distinguished factor, the tail is an identity composition. If it is an identity, the tail contains the distinguished factor and gives the desired map by induction.
 -/
 private theorem foldr_eq_of_eq_id_of_ne {A : Type*} :
     ∀ (n : ℕ) (F : Fin n → A → A) (i : Fin n) (f : A → A),
@@ -599,10 +531,8 @@ private theorem foldr_eq_of_eq_id_of_ne {A : Type*} :
           rw [hinner]
           exact hne 0 (Ne.symm (Fin.succ_ne_zero j)) (f x)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A unit multi-index prescribes one application at i and zero elsewhere. The ordered composition is therefore the derivation at i.
 -/
 theorem multiIndexDeriv_unitMultiIndex {h : ℕ} (D : Fin h → Derivation k R R) (i : Fin h) (x : R) :
     multiIndexDeriv D (unitMultiIndex i) x = D i x := by
@@ -614,8 +544,8 @@ theorem multiIndexDeriv_unitMultiIndex {h : ℕ} (D : Fin h → Derivation k R R
   · intro y
     simp [unitMultiIndex]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The addition rule for commuting derivations splits the mixed derivative into the unit-index derivative followed by the derivative with index α. The unit-index derivative is the single application at i.
 -/
 theorem multiIndexDeriv_add_unitMultiIndex_apply_first {h : ℕ} (D : Fin h → Derivation k R R)
     (hD : ∀ i j : Fin h, ∀ x : R, D i (D j x) = D j (D i x)) (α : Fin h → ℕ) (i : Fin h) (x : R) :

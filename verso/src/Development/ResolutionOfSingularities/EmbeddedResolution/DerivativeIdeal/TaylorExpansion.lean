@@ -6,20 +6,8 @@ section
 
 variable {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of applications. The formula at zero has only the original product. At each successor, apply additivity and the Leibniz rule to every term. Each term produces one term with an extra derivative on the first factor and one with an extra derivative on the second. In the interior, Pascal’s identity combines the two neighboring coefficients. The two endpoint products have coefficient one. This proves the iterated product rule with coefficients acting by repeated addition.
 -/
 private theorem iterate_deriv_mul_eq_sum_nsmul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =
@@ -85,8 +73,8 @@ private theorem iterate_deriv_mul_eq_sum_nsmul (D : Derivation A R R) (n : ℕ) 
             (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g) := by
             rw [e1, e2]; ring
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the repeated-addition formula, an integer count acting on a ring element is multiplication by its image in the ring. Replace each repeated-addition coefficient by that scalar factor.
 -/
 theorem iterate_deriv_mul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =
@@ -107,20 +95,16 @@ def truncatedSeries (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (
   ∑ j ∈ Finset.range N, algebraMap ℚ S ((j.factorial : ℚ)⁻¹) * σ ((⇑D)^[j] f) * β ^ j
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the truncated series is the sum over degrees below N, with coefficient the image of the iterated derivative divided by its factorial, multiplied by the corresponding power of β.
 -/
 theorem truncatedSeries_apply (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f : R) :
     truncatedSeries σ D β N f =
       ∑ j ∈ Finset.range N, algebraMap ℚ S ((j.factorial : ℚ)⁻¹) * σ ((⇑D)^[j] f) * β ^ j :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+All positive iterates of D on f vanish because the first is zero and D fixes zero. Since N is positive, the sum contains the constant term. This is the only term left, and it equals σ(f).
 -/
 theorem truncatedSeries_of_deriv_eq_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (hN : 1 ≤ N) (f : R) (hf : D f = 0) : truncatedSeries σ D β N f = σ f := by
@@ -138,10 +122,8 @@ theorem truncatedSeries_of_deriv_eq_zero (σ : R →+* S) (D : Derivation A R R)
   · intro h
     exact absurd (Finset.mem_range.mpr (by omega : 0 < N)) h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Subtracting σ(f) removes the degree-zero term since N is positive. Every remaining term has a positive power of β, hence has β as a factor. Their sum lies in the principal ideal generated by β.
 -/
 theorem truncatedSeries_sub_mem_span_singleton (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (hN : 1 ≤ N) (f : R) :
@@ -157,10 +139,8 @@ theorem truncatedSeries_sub_mem_span_singleton (σ : R →+* S) (D : Derivation 
   rw [Ideal.mem_span_singleton]
   exact dvd_mul_of_dvd_right (dvd_pow_self β j.succ_ne_zero) _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Start with the binomial identity that the coefficient times the two factorials of the split sizes equals the factorial of j. The factorials are nonzero in the rationals, so dividing by their product and by the factorial of j gives the equation there. Apply the algebra map to the target ring.
 -/
 private theorem factorial_inv_mul_choose {S' : Type*} [CommRing S'] [Algebra ℚ S'] (j i : ℕ)
     (h : i ≤ j) :
@@ -179,17 +159,15 @@ private theorem factorial_inv_mul_choose {S' : Type*} [CommRing S'] [Algebra ℚ
   have h2 := congrArg (algebraMap ℚ S') key
   simpa only [map_mul, map_natCast] using h2
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The coefficient is defined as the image of the iterated derivative multiplied by the image of the inverse factorial.
 -/
 private theorem coeff_eq {A' R' S' : Type*} [CommRing A'] [CommRing R'] [CommRing S']
     [Algebra A' R'] [Algebra ℚ S'] (σ : R' →+* S') (D : Derivation A' R' R') (i : ℕ) (f : R') :
     coeff σ D i f = algebraMap ℚ S' ((i.factorial : ℚ)⁻¹) * σ ((⇑D)^[i] f) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+At each degree j expand the derivative of the product by the iterated Leibniz rule. The ring map transports this sum and its products to S. For each split i and j − i, the binomial coefficient divided by j factorial becomes the product of the inverses of the two split factorials. Thus the coefficient of β to the j-th power is the sum of products of the two individual Taylor coefficients.
 -/
 theorem truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f g : R) :
     truncatedSeries σ D β N (f * g) =
@@ -205,8 +183,8 @@ theorem truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N 
   simp only [coeff_eq, map_mul, map_natCast]
   linear_combination (σ ((⇑D)^[i] f) * σ ((⇑D)^[j - i] g) * β ^ j) * key
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every iterate of D sends zero to zero, including the identity iterate. Each term is consequently zero after applying σ, so the sum vanishes.
 -/
 theorem truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) :
     truncatedSeries σ D β N 0 = 0 := by
@@ -216,12 +194,8 @@ theorem truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N
   rw [Function.iterate_fixed hz j]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Every iterate of the additive derivation preserves addition. Apply this to every coefficient and use additivity of σ, then distribute the scalar factors and split the finite sum.
 -/
 theorem truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (f g : R) :
     truncatedSeries σ D β N (f + g) = truncatedSeries σ D β N f + truncatedSeries σ D β N g := by
@@ -237,20 +211,16 @@ theorem truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N 
   rw [key j, map_add]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Every derivation kills one. The series of an element killed by the derivation equals its constant term when N is positive, and σ sends one to one.
 -/
 theorem truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (hN : 1 ≤ N) :
     truncatedSeries σ D β N 1 = 1 := by
   have h1 : D (1 : R) = 0 := by simp
   rw [truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1, map_one]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both sums run over pairs with 0 ≤ i ≤ j < N. The first groups by the larger index j, and the second groups by the smaller index i. Equivalently, increasing N adds the same terms with j equal to the old bound on both sides.
 -/
 private theorem sum_range_sum_range_succ_eq_sum_sum_Ico {T : Type*} [AddCommMonoid T] (N : ℕ) (h : ℕ → ℕ → T) :
     ∑ j ∈ Finset.range N, ∑ i ∈ Finset.range (j + 1), h i j
@@ -281,8 +251,8 @@ private theorem sum_range_sum_range_succ_eq_sum_sum_Ico {T : Type*} [AddCommMono
       Finset.sum_range_succ (fun i => h i N) N
     rw [hL, hR1, hR2, hR3, ih, hlast, add_assoc]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Set j = i + k. The interval from i up to, but excluding, N corresponds to 0 ≤ k < N − i, and j − i becomes k. This changes the summand to exactly the one on the right.
 -/
 private theorem sum_Ico_mul_pow_eq_sum_range {T : Type*} [CommRing T] (a b : ℕ → T) (β : T) (N i : ℕ) :
     ∑ j ∈ Finset.Ico i N, a i * b (j - i) * β ^ j
@@ -292,18 +262,8 @@ private theorem sum_Ico_mul_pow_eq_sum_range {T : Type*} [CommRing T] (a b : ℕ
   have hk : i + k - i = k := by omega
   simp only [hk]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Expand the product of the two truncated sums into terms indexed by pairs i,k each below N. The convolution sum uses precisely the pairs with i + k < N, by setting the total degree to i + k. Their difference is the negative of the terms with i + k at least N. Each of those terms contains β to a power at least N and hence is a multiple of β to the N-th power. They all lie in J, as does their signed sum.
 -/
 private theorem sum_convolution_sub_mul_mem {T : Type*} [CommRing T] (β : T) (N : ℕ) (J : Ideal T)
     (hβ : β ^ N ∈ J) (a b : ℕ → T) :
@@ -353,8 +313,8 @@ private theorem sum_convolution_sub_mul_mem {T : Type*} [CommRing T] (β : T) (N
     exact Ideal.mul_mem_right _ _ hβ
   exact Ideal.mul_mem_left _ _ hpow
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the convolution formula for the Taylor series of the product and express each individual Taylor series as the sum of its coefficients times powers of β. The difference is the convolution error, which belongs to J because β to the N-th power does.
 -/
 theorem truncatedSeries_mul_sub_mem (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hβ : β ^ N ∈ J) (f g : R) :
@@ -367,8 +327,8 @@ theorem truncatedSeries_mul_sub_mem (σ : R →+* S) (D : Derivation A R R) (β 
   exact sum_convolution_sub_mul_mem β N J hβ (fun i => coeff σ D i f)
     (fun i => coeff σ D i g)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The truncated series of one is one for positive N, and its class in the quotient is one.
 -/
 private theorem mk_truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hN : 1 ≤ N) :
@@ -377,8 +337,8 @@ private theorem mk_truncatedSeries_one (σ : R →+* S) (D : Derivation A R R) (
   rw [truncatedSeries_of_deriv_eq_zero σ D β N hN 1 h1]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The difference between the truncated series of the product and the product of the two series lies in J. Their classes are therefore equal, and the quotient map carries a product to the product of its classes.
 -/
 private theorem mk_truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (hβ : β ^ N ∈ J) (f g : R) :
@@ -393,16 +353,16 @@ private theorem mk_truncatedSeries_mul (σ : R →+* S) (D : Derivation A R R) (
     Ideal.Quotient.eq.mpr h
   rw [h2, map_mul]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The truncated series of zero is zero, and its class in the quotient is zero.
 -/
 private theorem mk_truncatedSeries_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) :
     Ideal.Quotient.mk J (truncatedSeries σ D β N 0) = 0 := by
   rw [truncatedSeries_zero, map_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The truncated series preserves addition. The quotient map also preserves addition, giving the displayed equality.
 -/
 private theorem mk_truncatedSeries_add (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (J : Ideal S) (f g : R) :
@@ -420,8 +380,8 @@ def truncatedSeriesRingHom (σ : R →+* S) (D : Derivation A R R) (β : S) (N :
     map_add' := mk_truncatedSeries_add σ D β N J }
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ring homomorphism is defined by evaluating the truncated series and taking its class modulo J. This gives its value at f.
 -/
 theorem truncatedSeriesRingHom_apply (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ) (J : Ideal S)
     (hN : 1 ≤ N) (hβ : β ^ N ∈ J) (f : R) :

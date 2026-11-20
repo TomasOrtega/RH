@@ -20,8 +20,8 @@ section
 
 variable {P : Scheme.{u}}
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On the given affine open, the kernel ideal sheaf is defined by the kernel of pullback to the inverse image. The map of sections with that whole inverse image as its target is exactly the pullback map.
 -/
 private theorem ker_ideal_eq_ker_appLE {A B : Scheme.{u}} (f : A ⟶ B) [QuasiCompact f]
     (V : B.affineOpens) :
@@ -29,8 +29,8 @@ private theorem ker_ideal_eq_ker_appLE {A B : Scheme.{u}} (f : A ⟶ B) [QuasiCo
   simp only [Scheme.Hom.appLE_eq_app]
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two target opens using their equality. The maps then pull back to the same open and have the same source ring and target ring, so their kernels agree.
 -/
 private theorem ker_appLE_congr {A B : Scheme.{u}} (f : A ⟶ B) (W : B.Opens)
     {V₁ V₂ : A.Opens} (h : V₁ = V₂) (e₁ : V₁ ≤ f ⁻¹ᵁ W) (e₂ : V₂ ≤ f ⁻¹ᵁ W) :
@@ -38,12 +38,8 @@ private theorem ker_appLE_congr {A B : Scheme.{u}} (f : A ⟶ B) (W : B.Opens)
   subst h
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse image of U under the composite closed immersion is obtained by taking the two inverse images in succession. The pullback on sections is the composite of the two pullback maps. On the affine inverse image in H, the ideal of Z is the kernel of the second map. The kernel of the composite is therefore its inverse image under the first pullback map.
 -/
 theorem ker_comp_subschemeι_ideal_eq_comap (H : P.IdealSheafData) (Z : H.subscheme.IdealSheafData)
     {U : P.Opens} (hU : IsAffineOpen U) :
@@ -80,15 +76,15 @@ theorem ker_comp_subschemeι_ideal_eq_comap (H : P.IdealSheafData) (Z : H.subsch
   ext x
   simp only [RingHom.mem_ker, Ideal.mem_comap, RingHom.comp_apply]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Pullback of sections along a composite is the successive pullback, first along g from U and then along f from the inverse image of U under g. Evaluating on x gives the formula.
 -/
 private theorem comp_app_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (U : C.Opens) (x : Γ(C, U)) :
     ((f ≫ g).app U).hom x = (f.app (g ⁻¹ᵁ U)).hom ((g.app U).hom x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For the closed subscheme H, the section map on an affine open is the quotient by its defining ideal, followed by the section-ring identification. A section in that ideal has zero class and thus pulls back to zero.
 -/
 private theorem subschemeι_app_apply_eq_zero {P : Scheme.{u}} (H : P.IdealSheafData)
     (U : P.affineOpens) (x : Γ(P, U.1)) (hx : x ∈ H.ideal U) :
@@ -98,10 +94,8 @@ private theorem subschemeι_app_apply_eq_zero {P : Scheme.{u}} (H : P.IdealSheaf
     congrArg (fun g => CommRingCat.Hom.hom g x) (Scheme.IdealSheafData.subschemeι_app H U)
   rw [hpt, Ideal.Quotient.eq_zero_iff_mem.mpr hx, map_zero]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For each affine open in P, an element of the ideal of H pulls back to zero on H. Its further pullback to Z is also zero. This proves the inclusion in the kernel ideal on every affine open.
 -/
 theorem le_ker_comp_subschemeι (H : P.IdealSheafData) (Z : H.subscheme.IdealSheafData) :
     H ≤ (Z.subschemeι ≫ H.subschemeι).ker := by
@@ -115,12 +109,8 @@ theorem le_ker_comp_subschemeι (H : P.IdealSheafData) (Z : H.subscheme.IdealShe
 
 variable {k : Type u} [Field k]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite kernel is the inverse image of the section ideal of Z under restriction to H. Write J for the ideal generated by the original coordinates indexed by S. The given description of Z says its ideal is the image of J. Restriction to H is surjective with kernel generated by the coordinate at j₀. The inverse image of the image of J is J plus that kernel, and this sum is generated by the coordinates indexed by S together with j₀.
 -/
 theorem ker_comp_subschemeι_ideal_eq_span_coord (p : P ⟶ Spec (CommRingCat.of k)) (H : P.IdealSheafData)
     (Z : H.subscheme.IdealSheafData) {U : P.Opens} (hU : IsAffineOpen U) {n : ℕ}
@@ -168,12 +158,8 @@ section
 
 variable {X : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Each chart gives a basis of the same module of Kähler differentials over k on the affine open. The section ring is nonzero because it maps to the nonzero stalk at x. Over this ring the finite rank is the number of basis vectors. Both chart dimensions therefore equal the same rank.
 -/
 theorem etaleChart_numCoords_eq (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] {U : X.Opens} (hU : IsAffineOpen U) (x : X)
@@ -207,10 +193,8 @@ section
 
 variable {P : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Restrict the ambient chart to the coordinate hypersurface H, omitting the coordinate indexed by j₁. The resulting chart has n − 1 coordinates. Choose a common affine neighborhood of y on H inside its domain and the domain of the second chart. Both chart restrictions have the same number of coordinates by the rank comparison for étale charts. Since j₁ is an index of the ambient chart, n is positive, so m′ + 1 = n.
 -/
 theorem etaleChart_numCoords_add_one_of_hypersurface (p : P ⟶ Spec (CommRingCat.of k))
     (H : P.IdealSheafData)
@@ -250,16 +234,16 @@ def HasLocalCoordsOnSmoothHypersurface (p : P ⟶ Spec (CommRingCat.of k)) (H : 
             (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom (c.coord j)) ''
               (S : Set (Fin n)))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Functoriality identifies the composite of the first two presheaf maps with the map of the composite arrow. Between fixed opens there is at most one inclusion arrow, so the composite arrow equals the third arrow. Precomposing with h preserves the equality.
 -/
 private theorem comp_presheaf_map_comp_map {X₁ : Scheme.{u}} {R : CommRingCat.{u}}
     {A B C : (X₁.Opens)ᵒᵖ} (h : R ⟶ X₁.presheaf.obj A) (g₁ : A ⟶ B) (g₂ : B ⟶ C) (g₃ : A ⟶ C) :
     (h ≫ X₁.presheaf.map g₁) ≫ X₁.presheaf.map g₂ = h ≫ X₁.presheaf.map g₃ := by
   rw [Category.assoc, ← Functor.map_comp, X₁.presheaf_map_eq_of_parallel (g₁ ≫ g₂) g₃]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both sides first pull back from U to its full inverse image. On the right the subsequent restriction to A passes through B. Functoriality of restriction makes that composite the restriction directly to A.
 -/
 private theorem appLE_eq_appLE_comp_presheaf_map {X₁ Y₁ : Scheme.{u}} (f : X₁ ⟶ Y₁) (U : Y₁.Opens)
     {A B : X₁.Opens} (e : A ≤ f ⁻¹ᵁ U) (e' : B ≤ f ⁻¹ᵁ U) (hAB : A ≤ B) :
@@ -269,8 +253,8 @@ private theorem appLE_eq_appLE_comp_presheaf_map {X₁ Y₁ : Scheme.{u}} (f : X
   rw [h1, h2]
   exact (comp_presheaf_map_comp_map (f.app U) (homOfLE e').op (homOfLE hAB).op (homOfLE e).op).symm
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The preimage of V in its open subscheme is the whole subscheme. The resulting map from sections on V to global sections of that subscheme is the canonical section-ring identification in the indicated direction.
 -/
 private theorem ι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -278,12 +262,8 @@ private theorem ι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Op
   simp
   exact X₁.presheaf_map_eq_of_parallel _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback from V to W along the inclusion is the inverse of the canonical identification on global sections followed by restriction to W. The inverse cancels the identification applied to the global pullback of x along g. What remains is the pullback of x along g restricted to W, as claimed.
 -/
 private theorem ι_appLE_apply_topIso_hom {X₁ Y₁ : Scheme.{u}} (V : X₁.Opens)
     (g : V.toScheme ⟶ Y₁) {W : V.toScheme.Opens} (e1 : W ≤ V.ι ⁻¹ᵁ V)
@@ -306,15 +286,15 @@ private theorem ι_appLE_apply_topIso_hom {X₁ Y₁ : Scheme.{u}} (V : X₁.Ope
   simp only [CommRingCat.hom_comp, RingHom.comp_apply]
   rw [Iso.hom_inv_id_apply]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The sheaf defined by a global ideal assigns to an affine open the extension of that ideal along restriction. At the whole affine scheme this restriction is the identity and the ideal stays J.
 -/
 private theorem ofIdealTop_ideal_top {Y : Scheme.{u}} [IsAffine Y] (J : Ideal Γ(Y, ⊤)) :
     (Scheme.IdealSheafData.ofIdealTop J).ideal ⟨⊤, isAffineOpen_top Y⟩ = J := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart coordinate is the global pullback of the corresponding affine-space coordinate, transported to sections over U. Pulling this section back to W cancels that transport and restricts the global pullback to W.
 -/
 private theorem ι_appLE_coord {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {U : X₁.Opens} {m : ℕ} (c : EtaleChart q U m)
@@ -326,12 +306,8 @@ private theorem ι_appLE_coord {X₁ : Scheme.{u}} {K : Type u} [Field K]
   rw [EtaleChart.coord_def]
   exact ι_appLE_apply_topIso_hom U c.map e1 e2 _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open of the open subscheme U, the restricted ideal is generated by the images of the given chart coordinates. The ideal of the coordinate subspace in affine space is generated by its corresponding global coordinate sections. Pulling it back to the same affine open gives the identical generators, because the chart coordinates are those pullbacks viewed as sections on U. The ideals therefore agree on all affine opens.
 -/
 private theorem restrictIdeal_eq_coordIdeal_of_isAffineOpen_ideal_eq_span {X₁ : Scheme.{u}} {K : Type u}
     [Field K] {q : X₁ ⟶ Spec (CommRingCat.of K)} {U : X₁.Opens} {m : ℕ}
@@ -361,12 +337,8 @@ private theorem restrictIdeal_eq_coordIdeal_of_isAffineOpen_ideal_eq_span {X₁ 
   refine congrArg Ideal.span (Set.image_congr fun j _ => ?_)
   exact ι_appLE_coord c eW eW' j
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the support in V has a preimage in the corresponding open of the closed subscheme. Its section ring maps to the nonzero stalk at that preimage and is therefore nonzero. The section ideal is the kernel of the map to this ring. Since one maps to one, the kernel is proper.
 -/
 private theorem ideal_ne_top_of_mem_support {Y : Scheme.{u}} (I : Y.IdealSheafData) {V : Y.Opens}
     (hV : IsAffineOpen V) {x : Y} (hxV : x ∈ V) (hx : x ∈ I.support) :
@@ -392,14 +364,8 @@ private theorem ideal_ne_top_of_mem_support {Y : Scheme.{u}} (I : Y.IdealSheafDa
     rwa [map_one] at h'
   exact one_ne_zero hzero
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical section-ring isomorphism from sections on V to global sections of its open subscheme carries the ideal on V to the global ideal of the restricted sheaf. This image contains one by hypothesis. Pulling one back along the isomorphism shows that the original ideal contains one, hence is the unit ideal.
 -/
 private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (h : restrictIdeal I V = ⊤) :
@@ -428,10 +394,8 @@ private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (I : Y.Ide
   have ha1 : a = 1 := hinj (by rw [hfa, map_one])
   exact ha1 ▸ haI
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restriction to V factors through restriction to U. Pullback of the unit ideal along the inclusion of V is the unit ideal, giving the result.
 -/
 private theorem restrictIdeal_eq_top_of_le_of_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData) {U V : Y.Opens}
     (hVU : V ≤ U) (h : restrictIdeal I U = ⊤) : restrictIdeal I V = ⊤ := by
@@ -442,8 +406,8 @@ private theorem restrictIdeal_eq_top_of_le_of_eq_top {Y : Scheme.{u}} (I : Y.Ide
   rw [e1, h']
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pull back the equality on U along the inclusion of the smaller open subscheme. On one side this restricts I to V. On the other side it composes the coordinate-subspace pullback with the inclusion, giving the coordinate ideal of the restricted chart.
 -/
 private theorem restrictIdeal_eq_coordIdeal_restrict {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {U V : X₁.Opens} (hVU : V ≤ U) {m : ℕ}
@@ -456,18 +420,8 @@ private theorem restrictIdeal_eq_coordIdeal_restrict {X₁ : Scheme.{u}} {K : Ty
     Scheme.IdealSheafData.comap_comp, ← h', ← Scheme.IdealSheafData.comap_comp,
     Scheme.homOfLE_ι]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Set the j-th variable equal to zero while fixing the other variables and the coefficients. The image of the stated product is zero because it belongs to the ideal of the j-th variable. The image of the s-th variable is unchanged and nonzero. The polynomial ring is a domain, so the image of r is zero. This substitution acts as the identity modulo the ideal of the j-th variable, which gives membership of r in that ideal.
 -/
 private theorem mem_span_X_of_mul_X_mem {σ : Type u} {K : Type u} [Field K]
     {j s : σ} (hjs : j ≠ s) (r : MvPolynomial σ K)
@@ -512,8 +466,8 @@ private theorem mem_span_X_of_mul_X_mem {σ : Type u} {K : Type u} [Field K]
   rw [RingHom.comp_apply, hψr, map_zero] at h3
   exact Ideal.Quotient.eq_zero_iff_mem.mp h3.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Lift the two classes to polynomials and subtract. The s-th variable times the difference of the lifts lies in the ideal of the j-th variable. The cancellation criterion for distinct variables puts the difference itself in that ideal, so the classes are equal.
 -/
 private theorem quotient_span_X_mul_X_cancel {σ : Type u} {K : Type u} [Field K] {j s : σ} (hjs : j ≠ s)
     (a b : MvPolynomial σ K ⧸ Ideal.span {(MvPolynomial.X j : MvPolynomial σ K)})
@@ -526,12 +480,8 @@ private theorem quotient_span_X_mul_X_cancel {σ : Type u} {K : Type u} [Field K
   rw [← map_mul, ← map_mul, Ideal.Quotient.eq, ← mul_sub] at h
   exact Ideal.Quotient.eq.mpr (mem_span_X_of_mul_X_mem hjs (a' - b') h)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pass to the quotient of A by the extended ideal. It is étale, hence flat, over the source quotient because it arises by base change of the given étale map. Multiplication by the class of w on the source quotient is injective by hypothesis. Flatness preserves that injectivity after tensoring with the target quotient. The product assumption therefore forces the class of x to be zero.
 -/
 private theorem mem_map_of_mul_mem_of_etale {Pr A : Type u} [CommRing Pr] [CommRing A]
     {f : Pr →+* A} (hf : f.Etale) (I : Ideal Pr) (w : Pr)
@@ -556,10 +506,8 @@ private theorem mem_map_of_mul_mem_of_etale {Pr A : Type u} [CommRing Pr] [CommR
     exact hy
   exact Ideal.Quotient.eq_zero_iff_mem.mp (hregA hsmul)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the polynomial quotient by the j-th variable, multiplication by the distinct s-th variable is injective. The affine chart map is étale, so this injectivity holds on the section-ring quotient by the j-th chart coordinate as well. The hypothesis says the image of the s-th coordinate sends one to zero in this quotient. Injectivity forces one to vanish there, so the defining principal ideal is the unit ideal.
 -/
 private theorem span_coord_eq_top_of_mem_span {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {V : X₁.Opens} (hV : IsAffineOpen V) {m : ℕ}
@@ -594,44 +542,8 @@ private theorem span_coord_eq_top_of_mem_span {X₁ : Scheme.{u}} {K : Type u} [
   rw [hmapspan] at hfin
   exact (Ideal.eq_top_iff_one _).mpr hfin
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the composite center, take the local coordinates provided by the hypothesis and denote the H-index by j₀. If an old divisor carried that same index, its ideal would coincide with the ideal of H on the chart. Compare with a chart for the strict normal crossing position of H and the old divisors on a common affine neighborhood of the point. The ideal of H is proper there because it lies in the ideal of the composite center. Both equal ideals must therefore have coordinate labels in the comparison chart. Those labels are distinct by injectivity, but equality of their principal ideals would force the ideal to be the unit ideal by cancellation for distinct chart coordinates. This contradiction shows that j₀ is unused by the old labels. Add it as the label of H and keep all the tail labels. The ideal of the composite center is generated by the lifted coordinates defining Z together with the H-coordinate, by taking the inverse image along the quotient by H. This is a coordinate ideal in the given chart, and the combined divisor labeling is injective.
 -/
 theorem hasStrictNormalCrossingsWith_ker_cons_of_hasLocalCoordsOnSmoothHypersurface [CharZero k] (p : P ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (H : P.IdealSheafData) (N : List P.IdealSheafData)

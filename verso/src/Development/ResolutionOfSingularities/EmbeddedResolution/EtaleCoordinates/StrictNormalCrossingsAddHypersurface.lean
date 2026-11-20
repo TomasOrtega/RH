@@ -22,14 +22,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+In the original basis the matrix of the modified tuple is the identity with column j replaced by the coordinate vector of v. Expanding the determinant in that column leaves only its j-th entry, since all the other columns are standard basis vectors.
 -/
 theorem det_update_eq_repr {K V : Type*} [CommRing K] [AddCommGroup V] [Module K V]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (e : Module.Basis ι K V) (j : ι) (v : V) :
@@ -53,20 +47,8 @@ theorem det_update_eq_repr {K V : Type*} [CommRing K] [AddCommGroup V] [Module K
   rw [Module.Basis.det_apply, hm]
   exact key _
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The replacement is a combination of the original generators, so the modified ideal is contained in the original one. All original generators except y(j) remain among the new generators. Subtract their contributions from the replacement and multiply by the inverse of a(j) to recover y(j). This gives the reverse containment.
 -/
 theorem span_image_update_sum_eq {R : Type*} [CommRing R] {ι : Type*} [DecidableEq ι]
     (y : ι → R) (S : Finset ι) (a : ι → R) (j : ι) (hj : j ∈ S) (ha : IsUnit (a j)) :
@@ -119,10 +101,8 @@ theorem span_image_update_sum_eq {R : Type*} [CommRing R] {ι : Type*} [Decidabl
   · rintro _ ⟨i, hi, rfl⟩
     exact SetLike.mem_coe.mpr (key2 i (Finset.mem_coe.mp hi))
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Localization base-changes the module of Kähler differentials from S to S′. The basis furnished by the original étale coordinates therefore induces a basis over S′. In it, the column for the differential of each localized v is the image of its old column. Determinants commute with the localization homomorphism, so the determinant in this basis is a unit by hypothesis.
 -/
 theorem exists_basis_isUnit_det_of_isLocalization {k : Type*} [Field k] {ι : Type*} [Fintype ι]
     [DecidableEq ι] {S : Type*} [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
@@ -152,10 +132,8 @@ theorem exists_basis_isUnit_det_of_isLocalization {k : Type*} [Field k] {ι : Ty
   rw [← EtaleCoordinates.algebraMap_det_basisKaehler k ι S S' v]
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify U with the spectrum of its section ring. The basic open of f corresponds to the primes omitting f. The prime of x contains f, so x is outside that open.
 -/
 theorem notMem_basicOpen_of_mem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (f : Γ(X, U))
@@ -170,8 +148,8 @@ theorem notMem_basicOpen_of_mem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
   rw [hU.fromSpec_preimage_basicOpen] at h2
   exact (PrimeSpectrum.mem_basicOpen f _).mp h2 hf
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The germ map from the section ring of the affine open identifies the stalk at x with localization at its corresponding prime. Under localization at a prime, the extension of that prime is the maximal ideal of the local ring.
 -/
 private theorem map_germ_primeIdealOf_eq_maximalIdeal {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) :
@@ -187,8 +165,8 @@ private theorem map_germ_primeIdealOf_eq_maximalIdeal {X : Scheme.{u}} {U : X.Op
       (X.presheaf.stalk x)
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open, the support is the common zero locus of the section ideal. Each of its sections belongs to the prime of x and therefore vanishes at x. Hence x belongs to the support.
 -/
 theorem mem_support_of_ideal_le_primeIdealOf {X : Scheme.{u}} (D : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U)
@@ -197,8 +175,8 @@ theorem mem_support_of_ideal_le_primeIdealOf {X : Scheme.{u}} (D : X.IdealSheafD
   refine le_trans (Ideal.map_mono h) ?_
   exact le_of_eq (map_germ_primeIdealOf_eq_maximalIdeal hU hx)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The whole open subscheme V maps onto V in X. Its pullback on sections over V is therefore the identity restriction on the corresponding open of X, read as the canonical identification with global sections of the open subscheme.
 -/
 private theorem appLE_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -206,10 +184,8 @@ private theorem appLE_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
   simp
   exact Scheme.presheaf_map_eq_of_parallel ..
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extend the equality of the ideals along the inverse section-ring isomorphism. Extension is compatible with composition, so both ideals return to their original values and are equal.
 -/
 private theorem eq_of_ideal_map_topIso_inv_eq {X₁ : Scheme.{u}} (V : X₁.Opens)
     {J₁ J₂ : Ideal Γ(X₁, V)}
@@ -223,12 +199,8 @@ private theorem eq_of_ideal_map_topIso_inv_eq {X₁ : Scheme.{u}} (V : X₁.Open
     rw [Ideal.map_map, hid, Ideal.map_id]
   rw [← key J₁, hJ, key J₂]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the pullback of D to the open subscheme U′ on its global section ring. It is the extension of the ideal on U via the restriction to U′ followed by the canonical section-ring isomorphism. It is also the extension of the ideal on U′ via this isomorphism alone. Cancel the isomorphism to identify the ideal on U′ with extension of the ideal on U along restriction. Extension of a span is the span of the images of its generators.
 -/
 theorem ideal_eq_span_image_map_of_le {X : Scheme.{u}} (D : X.IdealSheafData) {U U' : X.Opens}
     (hU : IsAffineOpen U) (hU' : IsAffineOpen U') (h : U' ≤ U) (s : Set Γ(X, U))
@@ -267,22 +239,8 @@ def IsCoordLabeling {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (Com
 def LabelingInjective {m : ℕ} (lab : ℕ → Option (Fin m)) (n : ℕ) : Prop :=
   ∀ i i' : ℕ, i < n → i' < n → ∀ j : Fin m, lab i = some j → lab i' = some j → i = i'
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Choose one local chart for the center Z and the old divisors N, and a second for H and N. Take an affine neighborhood of x in their intersection and restrict both charts to it. Coordinate ideal and unit ideal descriptions survive restriction, as do the coordinate labels. The inclusion of ideals from H to Z puts x in the support of H, so the second chart must assign H a coordinate. Injectivity of its labeling prevents any divisor in N from using that coordinate. With the second chart’s tail labels shifted by one, these data give the claimed pair.
 -/
 theorem exists_etaleCharts_of_inStrictNormalCrossingPosition_cons {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z H : X.IdealSheafData) (N : List X.IdealSheafData)
@@ -342,14 +300,8 @@ theorem exists_etaleCharts_of_inStrictNormalCrossingPosition_cons {X : Scheme.{u
     have hzero := hinj₂ (i + 1) hi' 0 hlen0 j0 hcon hj0
     omega
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The combinations indexed by S form an ideal, with addition and multiplication by ring elements acting on their coefficients. They contain each y(j) for j in S by using a coefficient supported at j. Thus the span lies in this ideal and z has a representation of the desired form.
 -/
 private theorem exists_coeffs_of_mem_span_image {R : Type*} [CommRing R] {ι : Type*}
     [DecidableEq ι] (y : ι → R) (S : Finset ι) (z : R)
@@ -379,8 +331,8 @@ private theorem exists_coeffs_of_mem_span_image {R : Type*} [CommRing R] {ι : T
       simp [hij]
   exact hle hz
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On the affine open, identify the sections of the restricted ideal sheaf with the ideal on the given section ring. The pullback of the coordinate hyperplane ideal is generated by the image of its single coordinate. Hence the section ideal of I is generated by that chart coordinate.
 -/
 private theorem ideal_eq_span_coord_of_restrictIdeal_eq {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
@@ -389,30 +341,8 @@ private theorem ideal_eq_span_coord_of_restrictIdeal_eq {X : Scheme.{u}} {k : Ty
     I.ideal ⟨U, hU⟩ = Ideal.span ({c.coord j} : Set Γ(X, U)) := by
   rw [c.ideal_eq_span_coord hU I {j} h, Finset.coe_singleton, Set.image_singleton]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
+/- English proof (authored)
+Write the H-coordinate in the second chart as a combination of the Z-coordinates in the first chart using the inclusion of ideals. All the Z-coordinates vanish at x. Use the partial derivation of the second chart in the H-direction, which takes the H-coordinate to one. If a Z-coordinate is labeled by an old divisor, then that divisor contains x because its generator vanishes there. Its second-chart generator is thus a coordinate distinct from the H-coordinate and vanishing at x. The first-chart generator is a multiple of this second-chart generator, so its derivative in the H-direction vanishes at x by the Leibniz rule. Differentiate the expression for the H-coordinate and reduce modulo the prime of x. The terms differentiating coefficients vanish because they contain Z-coordinates. The terms differentiating labeled coordinates vanish by the preceding argument. Since the result is one, at least one unlabeled coefficient lies outside the prime.
 -/
 theorem exists_coord_eq_sum_coeff_not_mem_of_le {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] {U : X.Opens}
@@ -521,8 +451,8 @@ theorem exists_coord_eq_sum_coeff_not_mem_of_le {X : Scheme.{u}} {k : Type u} [F
       · exact Ideal.mul_mem_right _ _ (hcP j hj)
     exact (hU.primeIdealOf ⟨x, hx⟩).isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The differential basis for the formally étale algebra consists of the differentials of the images of the polynomial variables. The hypothesis identifies this polynomial structure with the coordinate map of the chart, so the image of each variable is the corresponding chart coordinate.
 -/
 theorem basisKaehler_apply_eq_D_coord {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -537,14 +467,8 @@ theorem basisKaehler_apply_eq_D_coord {X : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleCoordinates.basisKaehler_apply, EtaleCoordinates.coord_def, hc,
     EtaleChart.coordRingHom_X]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The polynomial map respects k, and the section ring of the smooth scheme on the affine open is of finite type over k. The same generators give finite type over the polynomial ring. That ring is Noetherian, so the map is finitely presented. Together with formal étaleness this gives étaleness.
 -/
 theorem ringHom_etale_of_formallyEtale {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] {V : X.Opens}
@@ -583,36 +507,8 @@ theorem ringHom_etale_of_formallyEtale {X : Scheme.{u}} {k : Type u} [Field k]
     ⟨hf, hFP⟩
   exact hEt
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Replace coordinate j by the stated linear combination of the coordinates in S. In the old basis of differentials, the determinant of the new tuple equals the j-th partial derivative of the replacement, by expansion in the changed column. The Leibniz rule makes it congruent to a(j) modulo the prime of x because all the coordinates in S vanish there. Hence both the determinant and a(j) lie outside the prime. Take the affine basic open of their product. It contains x and makes both factors units. Localization preserves the coordinate differential basis and carries this determinant to the new determinant. The unit determinant criterion makes evaluation at the new tuple formally étale, and finite presentation from ambient smoothness makes it étale. The associated chart has the required coordinates and a(j) is a unit there.
 -/
 theorem exists_etaleChart_update_coord {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] {U : X.Opens}
@@ -779,38 +675,8 @@ theorem exists_etaleChart_update_coord {X : Scheme.{u}} {k : Type u} [Field k]
   · exact ((hc' j).trans (hw (ULift.up j))).trans
       (congrArg (algebraMap Γ(X, U) Γ(X, X.basicOpen g)) hvj)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
-
-It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of Z choose the common affine neighborhood with one chart for Z and the old divisors and another chart for H and the old divisors. Express the equation of H as a combination of the coordinates defining Z. Choose an index j in this combination that is unused by the old divisor labels and whose coefficient lies outside the prime of the point. After shrinking, replace the old coordinate at j by the equation of H to obtain an étale chart where that coefficient is a unit. Solving the combination for the old coordinate shows that the new coordinates at the same index set still generate the ideal of Z. H now has coordinate j. The old divisor coordinates retain their ideals because their indices are distinct from j, and the old unit ideals remain unit ideals after restriction. Add the label j for H and retain the tail labels. The enlarged labeling is injective, giving strict normal crossings with the new list.
 -/
 theorem hasStrictNormalCrossingsWith_cons_of_le {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z H : X.IdealSheafData)

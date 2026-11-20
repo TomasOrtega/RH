@@ -28,8 +28,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of sections is compatible with restriction. Pulling back after restricting from A to B therefore agrees with pulling back on A first and then restricting to the inverse image of B. Evaluate this equality of section maps on z.
 -/
 private theorem appLE_preimage_naturality {Y Q : Scheme.{u}} (f : Y ⟶ Q) {A B : Q.Opens}
     (h : B ≤ A) (h' : f ⁻¹ᵁ B ≤ f ⁻¹ᵁ A) (z : Γ(Q, A)) :
@@ -46,12 +46,8 @@ section
 
 variable {k : Type*} [CommRing k] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Reduce the differentiated product matrix modulo the ideal m. When a multiplier is one, its derivative is zero. In the other case the corresponding x lies in m, so the term involving the derivative of the multiplier dies modulo m. In either case the reduced column is the base derivative column multiplied by the residue of its multiplier. The reduced matrix is thus the base derivative matrix times the diagonal matrix of the multipliers. Taking determinants gives the congruence and puts the stated difference in m.
 -/
 theorem det_derivation_mul_sub_mem_of_eq_one_or_mem {B : Type*} [CommRing B] [Algebra k B]
     (δ : ι → Derivation k B B) (v x : ι → B) (m : Ideal B)
@@ -77,14 +73,8 @@ theorem det_derivation_mul_sub_mem_of_eq_one_or_mem {B : Type*} [CommRing B] [Al
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_prod, h1, h2, hmat,
     Matrix.det_mul, Matrix.det_diagonal, sub_self]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply q to the determinant. By compatibility with the derivations, the result is the determinant of the derivatives of the products of the units with the x entries. Modulo m this equals the determinant for the x entries times the product of the units by the determinant congruence. Both factors are units, so this value lies outside the proper ideal m. Therefore the original determinant lies outside the inverse image of m.
 -/
 theorem det_derivation_notMem_comap_of_eq_one_or_mem {R S : Type*} [CommRing R] [CommRing S]
     [Algebra k R] [Algebra k S] (q : R →+* S) (δ : ι → Derivation k R R)
@@ -123,8 +113,8 @@ theorem det_derivation_notMem_comap_of_eq_one_or_mem {R S : Type*} [CommRing R] 
 
 end
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coordinate matrix of the tuple of differentials has the i-th basis coefficient of the differential of w(j) at entry i,j. This coefficient is the i-th partial derivative of w(j) by the definition of the dual partial derivations. The two determinants are thus taken from the same matrix.
 -/
 theorem basisKaehler_det_eq_jacobian_det (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (S : Type*) [CommRing S] [Algebra (MvPolynomial ι k) S] [Algebra k S]
@@ -141,14 +131,8 @@ theorem basisKaehler_det_eq_jacobian_det (k : Type*) [CommRing k] (ι : Type*) [
     rw [EtaleCoordinates.partialDeriv_apply]
   rw [Module.Basis.det_apply, hM]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of a basic open under f is the basic open of the pulled-back section. Under each affine identification a point lies in the corresponding basic open exactly when the section is outside its prime. Consequently a section lies in the prime of f(y) precisely when its pullback lies in the prime of y.
 -/
 private theorem primeIdealOf_eq_comap_primeIdealOf {Y Q : Scheme.{u}} (f : Y ⟶ Q) {U : Q.Opens}
     (hU : IsAffineOpen U) (hW : IsAffineOpen (f ⁻¹ᵁ U)) {y : Y} (hy : y ∈ f ⁻¹ᵁ U) :
@@ -175,17 +159,15 @@ private theorem primeIdealOf_eq_comap_primeIdealOf {Y Q : Scheme.{u}} (f : Y ⟶
     rw [hbo s] at hyb
     exact notMem_basicOpen_of_mem_primeIdealOf hW hy _ hs hyb
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying image of the closed immersion of H is the support of its defining ideal sheaf. Membership in that support supplies the required preimage y.
 -/
 private theorem exists_subschemeι_base_eq_of_mem_support {Q : Scheme.{u}} (H : Q.IdealSheafData)
     {x : ↥Q} (hx : x ∈ H.support) : ∃ y : ↥H.subscheme, H.subschemeι.base y = x :=
   (Scheme.IdealSheafData.range_subschemeι H).ge hx
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the affine open U under a closed immersion is affine. Choose a principal open of that inverse image around y and contained in V, using the principal-open basis. Its defining section lifts to a section of U by surjectivity of restriction to the closed subscheme. The principal open of the lift lies in U and pulls back to the chosen principal open, giving both properties.
 -/
 private theorem exists_basicOpen_subschemeι_preimage_le {Q : Scheme.{u}} (H : Q.IdealSheafData) {U : Q.Opens}
     (hU : IsAffineOpen U) (V : H.subscheme.Opens) {y : ↥H.subscheme}
@@ -205,12 +187,8 @@ private theorem exists_basicOpen_subschemeι_preimage_le {Q : Scheme.{u}} (H : Q
   · rw [hpre]
     exact le_trans hgle inf_le_left
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each generator from a is a multiple of the corresponding generator from b. Conversely, multiplying by the inverse of its unit expresses each generator from b in the span of those from a. These containments give equality.
 -/
 private theorem span_image_eq_of_isUnit_mul {R : Type*} [CommRing R] {ι : Type*} (s : Set ι)
     (a b : ι → R) (h : ∀ i ∈ s, ∃ u : R, IsUnit u ∧ a i = u * b i) :
@@ -230,28 +208,8 @@ private theorem span_image_eq_of_isUnit_mul {R : Type*} [CommRing R] {ι : Type*
     rw [hb]
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, hi, rfl⟩)
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Match each labeled ambient index to the hypersurface index assigned to the same list entry. The ambient label is distinct from j₀, and the assumed forward condition supplies its hypersurface index. Injectivity of both labelings makes this a well-defined bijection between the matched subsets. The two full index sets have equal size because m + 1 = n. The complements of the matched subsets thus have equal size, so choose a bijection between them and combine it with the matching. Inverting the combination if necessary gives the bijection in the stated direction.
 -/
 private theorem exists_equiv_subtype_ne_compatible {n m : ℕ} (hnm : m + 1 = n) (j₀ : Fin n) (len : ℕ)
     (γ : ℕ → Option (Fin n)) (a' : ℕ → Option (Fin m))
@@ -362,30 +320,8 @@ section
 
 variable {X : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The map of section rings to H is the quotient by the coordinate at j₀. The ambient partial derivation at a surviving index kills this coordinate. By the Leibniz rule it preserves its principal ideal and descends to the quotient. On the surviving coordinate images it takes the values of the corresponding dual basis functional, namely one at its own index and zero elsewhere. These images are the coordinates of the chart restricted to H. Their differentials form a basis, so a derivation is determined by its values on them. The descended derivation is therefore the partial derivation of the restricted chart, giving the compatibility on r.
 -/
 private theorem appLE_subschemeι_chartPartialDeriv_complOrderEmb {p : X ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.Smooth p]
@@ -511,108 +447,8 @@ section
 
 variable {P : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Let x lie in the composite center. It lies on H, and its preimage y in H lies on Z because the composite ideal is the inverse image of the ideal of Z under restriction to H. Choose an ambient étale chart for H and the old divisors. Shrink and remove labels for divisors whose chosen equations are units at x, so that each labeled coordinate vanishes at x. Let j₀ be the index of H. Also choose an étale chart on H around y for Z and the pulled-back old divisors. Shrink the ambient affine open so that its intersection with H lies in this chart. The ambient chart has one more coordinate than the chart on H, since restricting the ambient chart to H removes precisely j₀. Every labeled old divisor through x also has a label in the chart on H. Match these indices by their divisor labels and extend the matching to a bijection from the indices on H to the ambient indices other than j₀. Keep the original H-coordinate. At each matched ambient index keep the original divisor coordinate, whose restriction is a unit times its counterpart on H because they generate the same principal ideal and the counterpart is a nonzerodivisor. At all other indices lift the actual coordinates on H by surjectivity of restriction. The Jacobian of this proposed tuple in the original ambient coordinates has a standard basis column at j₀. Expanding along it leaves the block of surviving derivatives. These derivatives descend to the corresponding partial derivatives on H. Before the unit multipliers are inserted, this block on H is a change-of-basis matrix between two bases of differentials and has unit determinant. After inserting them, the determinant changes modulo the prime of y by their product, since each multiplied coordinate vanishes at y and the other multipliers equal one. Thus the ambient determinant lies outside the prime of x, and the Jacobian criterion gives an étale chart after shrinking. The H-coordinate and all previously labeled divisor coordinates were kept, so their ideal descriptions and labels persist. The selected coordinates defining Z on H are the restrictions of the new ambient coordinates up to units, and hence their spans agree. This gives the required local data.
 -/
 theorem hasLocalCoordsOnSmoothHypersurface_of_comap (p : P ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (H : P.IdealSheafData) (N : List P.IdealSheafData)
@@ -1081,8 +917,8 @@ theorem hasLocalCoordsOnSmoothHypersurface_of_comap (p : P ⟶ Spec (CommRingCat
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Construct compatible ambient coordinates from the strict normal crossing data on H and on the ambient scheme. In these coordinates the ideal of the composite center is generated by the H-coordinate together with the coordinates whose images generate Z on H. The local-coordinate criterion for the composite center therefore gives strict normal crossings with H and the old divisors.
 -/
 theorem hasStrictNormalCrossingsWith_ker_cons_of_comap :
     ∀ (k : Type u) [Field k] [CharZero k] (P : Scheme.{u})

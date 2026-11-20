@@ -11,8 +11,8 @@ noncomputable def etaleChartCoord (k : Type u) [Field k] (m : ℕ) (S : Type u) 
     [Algebra (CoordPolynomialRing k m) S] (j : Fin m) : S :=
   algebraMap (CoordPolynomialRing k m) S (MvPolynomial.X (ULift.up.{u} j))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The j-th chart coordinate is the image in S of the polynomial variable indexed by j. This is exactly the formula defining the coordinate.
 -/
 theorem etaleChartCoord_def (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommRing S]
     [Algebra (CoordPolynomialRing k m) S] (j : Fin m) :
@@ -20,8 +20,8 @@ theorem etaleChartCoord_def (k : Type u) [Field k] (m : ℕ) (S : Type u) [CommR
       algebraMap (CoordPolynomialRing k m) S (MvPolynomial.X (ULift.up.{u} j)) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A polynomial ring in finitely many variables over a field is regular. Its localization at the prime p is a regular local ring.
 -/
 private theorem isRegularLocalRing_localization_coordPolynomialRing (k : Type u) [Field k] (m : ℕ)
     (p : Ideal (CoordPolynomialRing k m)) (hp : p.IsPrime) :
@@ -29,24 +29,10 @@ private theorem isRegularLocalRing_localization_coordPolynomialRing (k : Type u)
   have := hp
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
+/- English proof (authored)
+Let p be the contraction of q to P. Every element outside p maps outside q and hence to a unit in A. The map from P to A therefore factors through the local ring at p. This factor is local. If a fraction from that local ring maps to a unit in A, its numerator also maps to a unit because its denominator does. The numerator then lies outside p, so the fraction was already a unit at p.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+Étaleness of P → S and localization at q give flatness, formal unramifiedness, and essential finite type for the map from P to A. These properties give the corresponding properties for the factored map from the local ring at p. The local rings are Noetherian because P is Noetherian and S is of finite type over it. The local ring at p is regular by hypothesis. The regularity and dimension theorem for flat, formally unramified maps of these local rings now gives regularity of A and equality of its dimension with the dimension at p.
 -/
 private theorem isRegularLocalRing_and_ringKrullDim_eq_of_etale (P S : Type u) [CommRing P] [CommRing S] [Algebra P S]
     [Algebra.Etale P S] [IsNoetherianRing P]
@@ -122,8 +108,8 @@ private theorem isRegularLocalRing_and_ringKrullDim_eq_of_etale (P S : Type u) [
     ringKrullDim_eq_of_flat_formallyUnramified
       (Localization.AtPrime (q.comap (algebraMap P S))) A⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate polynomial ring is Noetherian, and its prime localizations are regular local rings. Apply the preceding étale localization result with this ring as the base and take its regularity conclusion for A.
 -/
 theorem isRegularLocalRing_of_isLocalization_etale (k : Type u) [Field k] (m : ℕ) (S : Type u)
     [CommRing S] [Algebra (CoordPolynomialRing k m) S] [Algebra.Etale (CoordPolynomialRing k m) S]
@@ -133,8 +119,8 @@ theorem isRegularLocalRing_of_isLocalization_etale (k : Type u) [Field k] (m : �
   (isRegularLocalRing_and_ringKrullDim_eq_of_etale (CoordPolynomialRing k m) S
     (by intro p hp; exact isRegularLocalRing_localization_coordPolynomialRing k m p hp) q A).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The prime localization of S at q is a localization at the complement of q. Take it as A in the preceding regularity result.
 -/
 theorem isRegularLocalRing_localization_atPrime_etale (k : Type u) [Field k] (m : ℕ) (S : Type u)
     [CommRing S] [Algebra (CoordPolynomialRing k m) S] [Algebra.Etale (CoordPolynomialRing k m) S]

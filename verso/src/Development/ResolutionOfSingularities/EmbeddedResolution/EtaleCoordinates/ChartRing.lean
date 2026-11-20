@@ -14,16 +14,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the two restriction maps by functoriality of the presheaf. They are induced by the composite arrow, which equals the direct arrow because the category of opens has at most one arrow between any two objects. Precomposing with h gives the asserted equality.
 -/
 private theorem comp_presheafMap_comp_presheafMap {X₁ : Scheme.{u}} {R : CommRingCat.{u}}
     {A B C : (X₁.Opens)ᵒᵖ} (h : R ⟶ X₁.presheaf.obj A) (g₁ : A ⟶ B) (g₂ : B ⟶ C) (g₃ : A ⟶ C) :
     (h ≫ X₁.presheaf.map g₁) ≫ X₁.presheaf.map g₂ = h ≫ X₁.presheaf.map g₃ := by
   rw [Category.assoc, ← Functor.map_comp, Scheme.presheaf_map_eq_of_parallel X₁ (g₁ ≫ g₂) g₃]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of a global section along the inclusion of V followed by f is pullback by f followed by restriction to V. Identifying the result on the open subscheme V with a section on V gives the direct section map. The two restriction composites agree by functoriality of the presheaf.
 -/
 private theorem appTop_comp_topIso_hom {X₁ Y₁ : Scheme.{u}} (f : X₁ ⟶ Y₁) (V : X₁.Opens)
     (hV : V ≤ f ⁻¹ᵁ (⊤ : Y₁.Opens)) :
@@ -33,8 +33,8 @@ private theorem appTop_comp_topIso_hom {X₁ Y₁ : Scheme.{u}} (f : X₁ ⟶ Y�
   rw [hR]
   exact comp_presheafMap_comp_presheafMap _ _ _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the preceding description of the direct section pullback as global pullback followed by the section-ring identification on V. Composing with the inverse identification cancels it and leaves the global pullback.
 -/
 theorem appLE_top_comp_topIso_inv {X Y : Scheme.{u}} (f : X ⟶ Y) (V : X.Opens)
     (hV : V ≤ f ⁻¹ᵁ (⊤ : Y.Opens)) :
@@ -54,8 +54,8 @@ def EtaleChart.coord (c : EtaleChart p U m) (j : Fin m) : Γ(X, U) :=
     (c.map.appTop.hom
       (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j : ULift.{u} (Fin m))))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart coordinate is defined by pulling the affine coordinate back to a global section of the chart domain, then identifying it with a section over U in X.
 -/
 theorem EtaleChart.coord_def (c : EtaleChart p U m) (j : Fin m) :
     c.coord j =
@@ -68,15 +68,15 @@ def EtaleChart.coordRingHom (c : EtaleChart p U m) :
     MvPolynomial (ULift.{u} (Fin m)) k →+* Γ(X, U) :=
   (U.topIso.hom.hom.comp c.map.appTop.hom).comp (affineSpaceGlobalSectionsHom k m)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The coordinate-ring map is defined by identifying polynomials with global sections of affine space, pulling those sections back along the chart, and identifying the resulting global sections with sections over U.
 -/
 theorem EtaleChart.coordRingHom_def (c : EtaleChart p U m) :
     c.coordRingHom = (U.topIso.hom.hom.comp c.map.appTop.hom).comp (affineSpaceGlobalSectionsHom k m) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The pullbacks on global sections induced by an isomorphism and its inverse are inverse ring maps, since pullback takes the composite identity to the identity. Applying the two pullbacks in succession returns x.
 -/
 private theorem appTop_hom_appTop_inv_apply {A B : Scheme.{u}} (e : A ≅ B) (x : Γ(A, ⊤)) :
     (Scheme.Hom.appTop e.hom).hom ((Scheme.Hom.appTop e.inv).hom x) = x := by
@@ -86,8 +86,8 @@ private theorem appTop_hom_appTop_inv_apply {A B : Scheme.{u}} (e : A ≅ B) (x 
   have h2 := congrArg (fun f : Γ(A, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom f x) h
   simpa using h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The standard isomorphism from the spectrum of the coordinate polynomial ring to affine space pulls the j-th affine coordinate back to the global section corresponding to the j-th polynomial variable.
 -/
 private theorem affineSpace_specIso_inv_appTop_coord (K : Type u) [Field K] (n : ℕ) (j : Fin n) :
     ((AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).inv.appTop).hom
@@ -96,8 +96,8 @@ private theorem affineSpace_specIso_inv_appTop_coord (K : Type u) [Field K] (n :
           (MvPolynomial.X (ULift.up j : ULift.{u} (Fin n))) := by
   exact AffineSpace.SpecIso_inv_appTop_coord (CommRingCat.of K) (ULift.up j)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under pullback from affine space to the polynomial spectrum, the j-th coordinate becomes the section of the j-th variable. The map from polynomials to sections on affine space applies the inverse of that pullback. It therefore sends the variable back to the coordinate.
 -/
 private theorem affineSpaceGlobalSectionsHom_X (K : Type u) [Field K] (n : ℕ) (j : Fin n) :
     affineSpaceGlobalSectionsHom K n (MvPolynomial.X (ULift.up j : ULift.{u} (Fin n)))
@@ -106,16 +106,16 @@ private theorem affineSpaceGlobalSectionsHom_X (K : Type u) [Field K] (n : ℕ) 
   rw [← affineSpace_specIso_inv_appTop_coord K n j]
   exact appTop_hom_appTop_inv_apply _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The global section of affine space corresponding to the j-th polynomial variable is the j-th affine coordinate. The chart ring map pulls this section back to U, which is the definition of the j-th chart coordinate.
 -/
 @[simp] theorem EtaleChart.coordRingHom_X (c : EtaleChart p U m) (j : Fin m) :
     c.coordRingHom (MvPolynomial.X (ULift.up j : ULift.{u} (Fin m))) = c.coord j := by
   rw [EtaleChart.coordRingHom_def, EtaleChart.coord_def]
   simp only [RingHom.comp_apply, affineSpaceGlobalSectionsHom_X]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The canonical identification of affine space with the polynomial spectrum is over the spectrum of K. The projection of the polynomial spectrum is induced by the inclusion of constants, so composing the identification with that projection gives the affine-space structure map.
 -/
 private theorem affineSpace_specIso_hom_comp_specMap_C (K : Type u) [Field K] (n : ℕ) :
     (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).hom ≫
@@ -129,8 +129,8 @@ private theorem affineSpace_specIso_hom_comp_specMap_C (K : Type u) [Field K] (n
     simp
   rw [← h, Iso.hom_inv_id_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On the polynomial spectrum the inclusion of constants corresponds to the projection to the spectrum of k. Transport that projection through the affine-space identification. By the defining commutative square of the chart, its composite with the chart is the structure map of the open subscheme U. Pullback on global sections and the identification with sections over U therefore give the scalar map induced by p.
 -/
 theorem EtaleChart.coordRingHom_comp_C (c : EtaleChart p U m) :
     c.coordRingHom.comp (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin m)) k) =
@@ -153,17 +153,15 @@ theorem EtaleChart.coordRingHom_comp_C (c : EtaleChart p U m) :
   have h := congrArg CommRingCat.Hom.hom key
   exact RingHom.ext fun x => DFunLike.congr_fun h x
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the formula for the composite with the constant inclusion at a. The result is its scalar section on U.
 -/
 theorem EtaleChart.coordRingHom_C (c : EtaleChart p U m) (a : k) :
     c.coordRingHom (MvPolynomial.C a) = sectionsAlgebraMap k p U a :=
   DFunLike.congr_fun (EtaleChart.coordRingHom_comp_C c) a
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Both the affine chart domain and the affine space over k are affine. Hence the étale chart induces an étale map on their global section rings. The coordinate-ring map is this map transported through the canonical identifications of the two rings. Because those identifications are isomorphisms, the coordinate-ring map is étale.
 -/
 theorem EtaleChart.coordRingHom_etale (c : EtaleChart p U m) (hU : IsAffineOpen U) :
     c.coordRingHom.Etale := by
@@ -190,31 +188,31 @@ theorem EtaleChart.coordRingHom_etale (c : EtaleChart p U m) (hU : IsAffineOpen 
     Algebra (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) :=
   c.coordRingHom.toAlgebra
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart algebra structure is the one induced by the coordinate-ring map, so its structure map is that ring map.
 -/
 theorem EtaleChart.algebraMap_eq_coordRingHom (c : EtaleChart p U m) :
     @algebraMap (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) _ _ c.algebra = c.coordRingHom :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The structure map of the chart algebra is the étale coordinate-ring map. This is precisely étaleness of the algebra.
 -/
 theorem EtaleChart.algebra_etale (c : EtaleChart p U m) (hU : IsAffineOpen U) :
     @Algebra.Etale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) _ _ c.algebra := by
   have h : c.coordRingHom.Etale := EtaleChart.coordRingHom_etale c hU
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+By the preceding result the chart algebra is étale. Formal étaleness is one of the conditions of étaleness.
 -/
 theorem EtaleChart.algebra_formallyEtale (c : EtaleChart p U m) (hU : IsAffineOpen U) :
     @Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) _ _ c.algebra := by
   have h := EtaleChart.algebra_etale c hU
   exact h.1
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The scalar action through the polynomial ring sends a scalar to a constant polynomial and then applies the chart ring map. The constant formula identifies its value with the direct scalar section given by p. Agreement of the two scalar maps gives the tower.
 -/
 theorem EtaleChart.isScalarTower (c : EtaleChart p U m) :
     @IsScalarTower k (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)
@@ -226,10 +224,8 @@ theorem EtaleChart.isScalarTower (c : EtaleChart p U m) :
   refine IsScalarTower.of_algebraMap_eq fun x => ?_
   exact (EtaleChart.coordRingHom_C c x).symm
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply ideal extension along the inverse isomorphism to both equal ideals in the global section ring of V. Each double extension is extension by the identity and therefore returns its original ideal. This gives equality of the original ideals.
 -/
 private theorem ideal_map_topIso_inv_injective {X₁ : Scheme.{u}} (V : X₁.Opens)
     {J₁ J₂ : Ideal Γ(X₁, V)}
@@ -243,8 +239,8 @@ private theorem ideal_map_topIso_inv_injective {X₁ : Scheme.{u}} (V : X₁.Ope
     rw [Ideal.map_map, hid, Ideal.map_id]
   rw [← key J₁, hJ, key J₂]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The section map of the inclusion identifies a section over V with the same section viewed globally on the open subscheme V. This is the inverse of the identification in the other direction.
 -/
 private theorem ι_appLE_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -252,12 +248,10 @@ private theorem ι_appLE_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
   simp
   exact Scheme.presheaf_map_eq_of_parallel X₁ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On the affine scheme U, the global ideal of the restricted ideal sheaf is the extension of the original section ideal on U along the canonical section-ring isomorphism. The global ideal of the chart ideal is generated by the affine coordinate sections indexed by S pulled back along the chart. Under the same section-ring isomorphism these generators correspond to the chart coordinates viewed as sections over U.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+The restriction hypothesis identifies the two global ideals on the open subscheme. Extend back along the inverse section-ring isomorphism. The original section ideal is therefore generated by the chart coordinates indexed by S.
 -/
 theorem EtaleChart.ideal_eq_span_coord (c : EtaleChart p U m) (hU : IsAffineOpen U)
     (I : X.IdealSheafData) (S : Finset (Fin m))
@@ -284,8 +278,8 @@ theorem EtaleChart.ideal_eq_span_coord (c : EtaleChart p U m) (hU : IsAffineOpen
     rw [← hL, ← hR, h]
   exact ideal_map_topIso_inv_injective U hfin
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In the chart algebra, the coordinate is the image of its polynomial variable under the coordinate-ring map. The variable formula identifies that image with the geometric chart coordinate.
 -/
 theorem EtaleChart.etaleCoordinates_coord (c : EtaleChart p U m) (j : Fin m) :
     @EtaleCoordinates.coord k _ (ULift.{u} (Fin m)) Γ(X, U) _ c.algebra

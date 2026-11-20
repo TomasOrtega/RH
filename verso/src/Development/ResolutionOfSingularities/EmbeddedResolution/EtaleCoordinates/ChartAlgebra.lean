@@ -19,16 +19,16 @@ noncomputable def chartEvalHom (_hW : IsAffineOpen W) (g : V.toScheme ⟶ Affine
     MvPolynomial n Γ(X, W) →+* Γ(Y, V) :=
   MvPolynomial.eval₂Hom (chartCoeffHom g) (chartVar g)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify global sections of each open subscheme with sections over the corresponding open of the ambient scheme. Under these identifications, pulling back global sections along the restricted map is the section pullback from W′ to V′. This gives the stated composite.
 -/
 private theorem resLE_appTop_eq {X' Y' : Scheme.{u}} (h : Y' ⟶ X') (W' : X'.Opens)
     (V' : Y'.Opens) (e : V' ≤ h ⁻¹ᵁ W') :
     (h.resLE W' V' e).appTop = W'.topIso.hom ≫ h.appLE W' V' e ≫ V'.topIso.inv := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the formula for the pullback on global sections of the open subschemes. On each end the identification and its inverse cancel, leaving the section pullback from W′ to V′.
 -/
 private theorem resLE_appTop_conj_topIso_eq_appLE {X' Y' : Scheme.{u}} (h : Y' ⟶ X') (W' : X'.Opens) (V' : Y'.Opens)
     (e : V' ≤ h ⁻¹ᵁ W') :
@@ -36,8 +36,8 @@ private theorem resLE_appTop_conj_topIso_eq_appLE {X' Y' : Scheme.{u}} (h : Y' �
   rw [resLE_appTop_eq]
   simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The polynomial evaluation acts on constants by the coefficient map. That coefficient map pulls sections back along the chart followed by the projection. The hypothesis identifies that composite with the restriction of h, and the section-ring identifications therefore make it the section pullback along h. Thus the two ring maps agree on every coefficient.
 -/
 theorem chartEvalHom_comp_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -50,8 +50,8 @@ theorem chartEvalHom_comp_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻
   have h1 : chartEvalHom hW g (MvPolynomial.C a) = chartCoeffHom g a := by simp [chartEvalHom]
   rw [RingHom.comp_apply, h1, key]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the equality between the coefficient map of polynomial evaluation and the section pullback at the scalar section a.
 -/
 theorem chartEvalHom_C (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -65,8 +65,8 @@ noncomputable def chartAlgebra (hW : IsAffineOpen W)
     Algebra (MvPolynomial n Γ(X, W)) Γ(Y, V) :=
   (chartEvalHom hW g).toAlgebra
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The polynomial algebra on V is induced by evaluation. A section on W enters the polynomial ring as a constant. Evaluating it yields its pullback along h by the constant formula, which is the direct action of the base section ring on V. The agreement gives the scalar tower.
 -/
 theorem chartAlgebra_isScalarTower (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V ≤ h ⁻¹ᵁ W)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme)
@@ -80,8 +80,8 @@ theorem chartAlgebra_isScalarTower (hW : IsAffineOpen W) (h : Y ⟶ X) (e : V �
   show (h.appLE W V e).hom a = chartEvalHom hW g (algebraMap Γ(X, W) (MvPolynomial n Γ(X, W)) a)
   rw [MvPolynomial.algebraMap_eq, chartEvalHom_C hW h e g hg]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The two ring maps coincide, so they induce the same algebra structure. The étaleness condition on that structure transfers directly.
 -/
 private theorem algebraEtale_congr {R S : Type u} [CommRing R] [CommRing S] {f f' : R →+* S}
     (h : f = f') (hf : @Algebra.Etale R S _ _ f.toAlgebra) :
@@ -89,16 +89,14 @@ private theorem algebraEtale_congr {R S : Type u} [CommRing R] [CommRing S] {f f
   subst h
   exact hf
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An étale ring map is one whose associated algebra structure is étale. The hypothesis gives precisely that property for the algebra induced by f.
 -/
 private theorem algebraEtale_of_ringHomEtale {R S : Type u} [CommRing R] [CommRing S] (f : R →+* S)
     (h : RingHom.Etale f) : @Algebra.Etale R S _ _ f.toAlgebra := h
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Transport the target of the étale algebra map along the target isomorphism. The transported algebra remains étale over R. The source isomorphism is itself étale, so composing with it gives an étale algebra over R′.
 -/
 private theorem algebraEtale_comp_equiv {R R' S S' : Type u} [CommRing R] [CommRing R']
     [CommRing S] [CommRing S'] (eR : R' ≃+* R) (f : R →+* S) (eS : S ≃+* S')
@@ -117,15 +115,15 @@ private theorem algebraEtale_comp_equiv {R R' S S' : Type u} [CommRing R] [CommR
     Algebra.Etale.of_equiv (R := R) (A := S) (AlgEquiv.ofRingEquiv (f := eS) fun _ => rfl)
   exact Algebra.Etale.comp R' R S'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The operation of pulling back global sections is contravariant. Pullback along the composite first pulls back z along the second map and then along the first.
 -/
 private theorem comp_appTop_apply {A B C : Scheme.{u}} (f : A ⟶ B) (k : B ⟶ C) (z : Γ(C, ⊤)) :
     (f ≫ k).appTop.hom z = f.appTop.hom (k.appTop.hom z) :=
   congrArg (fun m : Γ(C, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom m z) (Scheme.Hom.comp_appTop f k)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Under the canonical identifications of a ring with the global sections of its spectrum, pulling back along the spectrum map of u is the ring map u. Applying this identification to a gives the displayed section.
 -/
 private theorem specMap_appTop_apply {R S : CommRingCat.{u}} (u : R ⟶ S) (a : R) :
     (Spec.map u).appTop.hom ((Scheme.ΓSpecIso R).inv.hom a) =
@@ -133,8 +131,8 @@ private theorem specMap_appTop_apply {R S : CommRingCat.{u}} (u : R ⟶ S) (a : 
   (congrArg (fun m : R ⟶ Γ(Spec S, ⊤) => CommRingCat.Hom.hom m a)
     (Scheme.ΓSpecIso_inv_naturality u)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical map from the affine scheme Z to the spectrum of its global section ring induces the canonical identification of global sections with that ring. A section corresponding to a on the spectrum therefore pulls back to a on Z.
 -/
 private theorem isoSpec_hom_appTop_apply (Z : Scheme.{u}) [IsAffine Z] (a : Γ(Z, ⊤)) :
     Z.isoSpec.hom.appTop.hom ((Scheme.ΓSpecIso Γ(Z, ⊤)).inv.hom a) = a := by
@@ -147,8 +145,8 @@ private noncomputable def affineOpenIsoSpec {X' : Scheme.{u}} {W' : X'.Opens} (h
   haveI : IsAffine W'.toScheme := hW
   W'.toScheme.isoSpec ≪≫ Scheme.Spec.mapIso W'.topIso.symm.op
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The affine identification uses first the spectrum of the global sections of the open subscheme and then the isomorphism of that ring with the section ring on W′. Naturality for spectrum maps transfers a through the inverse section-ring identification. The affine comparison then pulls that section back unchanged to the open subscheme.
 -/
 private theorem affineOpenIsoSpec_hom_appTop_apply {X' : Scheme.{u}} {W' : X'.Opens}
     (hW : IsAffineOpen W') (a : Γ(X', W')) :
@@ -166,8 +164,8 @@ private noncomputable def affineSpaceOpenIsoSpecMvPolynomial {X' : Scheme.{u}} {
   (AffineSpace.functor.obj (Opposite.op m)).mapIso (affineOpenIsoSpec hW) ≪≫
     AffineSpace.SpecIso m Γ(X', W')
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Over the spectrum of the section ring on W′, the identification of affine space with the spectrum of a polynomial ring sends the variable section to the corresponding affine coordinate. Pulling back along the affine-space map induced by the identification of W′ with that spectrum preserves each coordinate. This gives the claimed coordinate on affine space over W′.
 -/
 private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X {X' : Scheme.{u}} {W' : X'.Opens} (hW : IsAffineOpen W')
     (m : Type u) (j : m) :
@@ -186,8 +184,8 @@ private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X {X' : Scheme.{u}
         (MvPolynomial.X j)) = AffineSpace.coord W'.toScheme j
   rw [comp_appTop_apply, key, AffineSpace.map_appTop_coord]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The constant polynomial a is the pullback of the base section a under the spectrum map of the coefficient inclusion. That map corresponds to the projection from relative affine space to its base. Transport to W′ using the affine identification. Compatibility of the projection with this transport gives the pullback of the section on the open subscheme corresponding to a.
 -/
 private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_C {X' : Scheme.{u}} {W' : X'.Opens} (hW : IsAffineOpen W')
     (m : Type u) (a : Γ(X', W')) :
@@ -216,12 +214,10 @@ private theorem affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_C {X' : Scheme.{u}
   rw [comp_appTop_apply, key, ← comp_appTop_apply, AffineSpace.map_over, comp_appTop_apply,
     affineOpenIsoSpec_hom_appTop_apply]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Identify the relative affine space over W with the spectrum of the polynomial ring over the sections on W. The chart map followed by this isomorphism is étale between affine schemes, so its map on global sections is étale. Transport this map to the polynomial ring and the ring of sections on V by their canonical isomorphisms.
 
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+To identify the transported map with chart evaluation, compare the polynomial generators. A constant is pulled back along the projection to W and then along the chart, which is the coefficient map. A variable is pulled back as the corresponding affine coordinate section, which is the variable value in evaluation. Both maps therefore agree on all polynomials, proving étaleness of the chart algebra.
 -/
 theorem chartAlgebra_etale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme) [Etale g] :
@@ -251,8 +247,8 @@ theorem chartAlgebra_etale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     rw [comp_appTop_apply, affineSpaceOpenIsoSpecMvPolynomial_hom_appTop_X]
     simp [chartEvalHom, chartVar]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The chart algebra is étale by the preceding result, and every étale algebra is formally étale.
 -/
 theorem chartAlgebra_formallyEtale (hW : IsAffineOpen W) (hV : IsAffineOpen V)
     (g : V.toScheme ⟶ AffineSpace n W.toScheme) [Etale g] :

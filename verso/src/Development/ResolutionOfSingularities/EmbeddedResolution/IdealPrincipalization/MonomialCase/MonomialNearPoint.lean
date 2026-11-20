@@ -19,18 +19,16 @@ namespace MonomialCenter
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Listing the values of the finite family in index order gives the factors of its finite product. The unit ideal is the multiplicative identity, so multiplying that list with the unit as the initial value gives this product.
 -/
 private theorem foldr_mul_ofFn_eq_prod {Z : Scheme.{u}} {n : ℕ} (f : Fin n → Z.IdealSheafData) :
     (List.ofFn f).foldr (· * ·) ⊤ = ∏ i, f i := by
   rw [← Scheme.IdealSheafData.one_eq_top]
   exact List.prod_ofFn
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+A boundary ideal in the list occurs at some index, so its restriction is a value of the indexed family. Conversely, every value of that family is the restriction of a listed ideal. This proves equality of the two sets.
 -/
 private theorem image_comap_eq_range_get (E : List X.IdealSheafData) (U : X.Opens) :
     (fun D : X.IdealSheafData => D.comap U.ι) '' {D | D ∈ E} =
@@ -43,8 +41,8 @@ private theorem image_comap_eq_range_get (E : List X.IdealSheafData) (U : X.Open
   · rintro ⟨i, rfl⟩
     exact ⟨E.get i, by simp, rfl⟩
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The definition of being monomial near the point asks for an open neighborhood where the ideal is a product of powers of the restricted boundary ideals. Writing the powers in boundary index order gives precisely the stated product.
 -/
 private theorem isMonomialNear_iff_exists_pow_prod (E : List X.IdealSheafData) (M : X.IdealSheafData)
     (x : ↥X) :
@@ -53,12 +51,8 @@ private theorem isMonomialNear_iff_exists_pow_prod (E : List X.IdealSheafData) (
         (List.ofFn (fun i : Fin E.length => (E.get i).comap U.ι ^ a i)).foldr (· * ·) ⊤ :=
   Iff.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On a proposed neighborhood, the restrictions of the listed boundary ideals are the finite indexed family of generators. A product of nonnegative powers of that family belongs to the generated submonoid. Conversely, a finite product of generators can be collected by index because ideal multiplication is commutative. The resulting exponents give the required monomial expression on the same neighborhood.
 -/
 theorem isMonomialNear_iff_mem_closure (E : List X.IdealSheafData) (M : X.IdealSheafData)
     (x : ↥X) :
@@ -77,12 +71,8 @@ theorem isMonomialNear_iff_mem_closure (E : List X.IdealSheafData) (M : X.IdealS
     refine ⟨U, hxU, a, ?_⟩
     rw [foldr_mul_ofFn_eq_prod, ha]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Keep the neighborhood on which the monomial expression holds. Each nonunit boundary ideal in the old list occurs in the new one, so its restriction belongs to the new generated submonoid. A unit ideal restricts to the multiplicative identity and also belongs. Thus the old generators, and hence the restricted monomial ideal they generate, belong to the new submonoid.
 -/
 theorem IsMonomialNear.mono {E E' : List X.IdealSheafData}
     (h : ∀ D ∈ E, D ≠ ⊤ → D ∈ E') {M : X.IdealSheafData} {x : ↥X}
@@ -102,8 +92,8 @@ theorem IsMonomialNear.mono {E E' : List X.IdealSheafData}
     exact SetLike.mem_coe.mpr (one_mem _)
   · exact Submonoid.subset_closure ⟨D, h D hD hDtop, rfl⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Equality of the two sets of nonunit boundary ideals implies that each nonunit ideal from the first list belongs to the second. The monotonicity result transfers the local monomial expression.
 -/
 theorem IsMonomialNear.congr_setOf {E E' : List X.IdealSheafData}
     (h : {D : X.IdealSheafData | D ∈ E ∧ D ≠ ⊤} = {D : X.IdealSheafData | D ∈ E' ∧ D ≠ ⊤})
@@ -111,8 +101,8 @@ theorem IsMonomialNear.congr_setOf {E E' : List X.IdealSheafData}
     IsMonomialNear E' M x :=
   hM.mono fun D hD hne => (((Set.ext_iff.mp h) D).mp ⟨hD, hne⟩).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary relation implies equality of the sets of nonunit boundary ideals. Apply the result that local monomiality is preserved by such equality.
 -/
 theorem IsMonomialNear.congr_sameNontrivialBoundary {E E' : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary E E') {M : X.IdealSheafData} {x : ↥X}
@@ -120,8 +110,8 @@ theorem IsMonomialNear.congr_sameNontrivialBoundary {E E' : List X.IdealSheafDat
     IsMonomialNear E' M x :=
   hM.congr_setOf h.setOf_mem_ne_top_eq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The geometry hypotheses preserve admissibility when the boundary is replaced by one with the same nonunit entries. At each point of the cosupport the original triple provides a local monomial expression. The ideal and mark are unchanged, and equality of the nontrivial boundary entries lets that expression be read with the new boundary.
 -/
 theorem isLocallyMonomialTriple_withBoundary (hG : MonomialGeometryHypotheses.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : IsLocallyMonomialTriple T)

@@ -33,8 +33,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Mapping the list to the strict transforms preserves its length. The given index lies in this first list, so appending the exceptional entry does not affect its value. The value there is the strict transform of the original entry at the same index.
 -/
 private theorem getElem_map_strictTransform_append_of_lt {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) (i : ℕ) (hi : i < L.length)
@@ -45,8 +45,8 @@ private theorem getElem_map_strictTransform_append_of_lt {X' X : Scheme.{u}} (π
     rw [List.length_map]; exact hi
   exact (List.getElem_append_left h1).trans (List.getElem_map _)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The list of strict transforms has the same length as the original boundary. The index equal to that length is the first index of the appended singleton, which contains the exceptional ideal.
 -/
 private theorem getElem_length_map_strictTransform_append {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData)
@@ -55,8 +55,8 @@ private theorem getElem_length_map_strictTransform_append {X' X : Scheme.{u}} (�
       = Blowup.exceptionalIdeal π Z := by
   simp [List.getElem_append_right]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform index has the same numeric position as the old boundary index. This position lies in the initial list of transformed ideals, and its entry is the strict transform of the original boundary ideal.
 -/
 theorem transformedBoundary_get_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) (j : Fin L.length) :
@@ -64,14 +64,8 @@ theorem transformedBoundary_get_strictTransformIndex {X' X : Scheme.{u}} (π : X
   simp only [List.get_eq_getElem]
   exact getElem_map_strictTransform_append_of_lt π Z L (j : ℕ) j.isLt _
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
-
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The support of a sum of two ideals is the intersection of their supports, since both ideals must lie in the maximal ideal of the stalk. Apply this fact inductively to the finite sum. For the empty sum the zero ideal has full support, as required by the vacuous membership condition.
 -/
 theorem mem_support_intersectionIdeal_iff {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (y : ↥Y) :
@@ -96,12 +90,8 @@ theorem mem_support_intersectionIdeal_iff {Y : Scheme.{u}} (L : List Y.IdealShea
       rw [Finset.iSup_insert, hsup, Finset.forall_mem_insert]
       exact and_congr_right fun _ => ih
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform support is the closure of the preimage of the divisor support outside the center. That preimage lies in the closed inverse image of the full divisor support, so its closure lies there too. Conversely, if the given point maps into the divisor support and outside the center, it already lies in the preimage whose closure defines the support.
 -/
 theorem mem_support_strictTransform_iff_of_notMem_support {X X' : Scheme.{u}}
     [IsLocallyNoetherian X'] (π : X' ⟶ X) (Z D : X.IdealSheafData) (x' : ↥X')
@@ -127,10 +117,8 @@ theorem mem_support_strictTransform_iff_of_notMem_support {X X' : Scheme.{u}}
     rw [← hsupp] at h4
     exact h4
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Membership in the support of the new intersection ideal is membership in every selected transformed boundary support. These selected indices are exactly the images of the old indices, and the ideal at each image index is the strict transform of the corresponding old ideal. This identifies the two membership conditions.
 -/
 theorem mem_support_intersectionIdeal_transformedBoundary_iff (T : MarkedIdealWithBoundary.{u}) (X' : Scheme.{u})
     (π : X' ⟶ T.scheme) (Z : T.scheme.IdealSheafData)
@@ -148,10 +136,8 @@ theorem mem_support_intersectionIdeal_transformedBoundary_iff (T : MarkedIdealWi
     rw [transformedBoundary_get_strictTransformIndex]
     exact h j hj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Test each intersection by membership in every selected boundary support. The selected transformed indices are the images of the old ones, and the ideal at such an index is the corresponding strict transform. Because the point maps outside the center, membership in each strict transform is equivalent to membership of its image in the corresponding old divisor.
 -/
 private theorem mem_support_intersectionIdeal_transformedBoundary_iff_of_notMem {X X' : Scheme.{u}} [IsLocallyNoetherian X']
     (π : X' ⟶ X) (Z : X.IdealSheafData) (L : List X.IdealSheafData)
@@ -169,34 +155,8 @@ private theorem mem_support_intersectionIdeal_transformedBoundary_iff_of_notMem 
     rw [transformedBoundary_get_strictTransformIndex]
     exact (mem_support_strictTransform_iff_of_notMem_support π Z (L.get j) x' hx').mpr (h j hj)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the generic point lies on the exceptional divisor. Near it the transformed boundary has strict normal-crossing coordinates. Each selected strict transform through the point is given by one of these coordinates, and the exceptional divisor is given by a distinct coordinate. Thus the intersection ideal on the chart is generated by the selected coordinates, excluding the exceptional one. Choose an open that meets the intersection support only in the given component. It contains the generic point, so restrict to an affine neighborhood inside this open and the chart. The assumed exceptional support is closed and contains the generic point, hence contains the whole component and thus the intersection on this affine neighborhood. But the extra coordinate is a nonzerodivisor modulo the selected coordinate ideal, by étale flatness from the polynomial chart. The prime containing the selected coordinates at the point has a generalization that still contains them and omits the exceptional coordinate. This contradicts the asserted containment.
 -/
 private theorem genericPoint_notMem_support_exceptionalIdeal
     (T : MarkedIdealWithBoundary.{u}) (Z : T.scheme.IdealSheafData)
@@ -330,38 +290,8 @@ private theorem genericPoint_notMem_support_exceptionalIdeal
       (Scheme.IdealSheafData.support (Blowup.exceptionalIdeal π Z)).isClosed).mp hmem
   exact hCE (hOsub ⟨hxO, hxA⟩)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The center, being a union of components of a boundary intersection, has strict normal crossings with the boundary. The generic-point argument puts the given upper component's generic point off the exceptional support. Its image is then outside the center and lies in the old selected intersection. The closure of the image is irreducible and contained in that intersection. If a larger irreducible set existed there, a generic point of its closure would generalize the image and hence lie outside the center. Lift it through the blowup isomorphism off the center. Its closure is in the transformed intersection and contains the given upper component, so maximality forces equality. Mapping back places the larger set inside the closure of the original image. The resulting downstairs component is unselected, since every selected component lies inside the center. Off the exceptional divisor the same isomorphism identifies the preimage of this component with the part of the given upper component there, by lifting specializations of the image point. Its closure is the full upper component since it contains the upper generic point. Finally, uniqueness of generic points makes the image equal to any generic point of the downstairs component.
 -/
 theorem intersectionComponents_transformedBoundary_of_isBlowupAlongIdealSheaf :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →

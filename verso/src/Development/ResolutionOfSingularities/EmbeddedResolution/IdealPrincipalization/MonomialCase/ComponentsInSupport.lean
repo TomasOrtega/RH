@@ -27,8 +27,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the affine open with the spectrum of its section ring. The point there is the corresponding prime and the given basic open pulls back to the basic open of the section in that spectrum. Membership in this basic open means that the section is outside the prime.
 -/
 private theorem mem_basicOpen_iff_notMem_asIdeal_primeIdealOf {X : Scheme.{u}} {V : X.Opens} (hV : IsAffineOpen V)
     {x : ↥X} (hx : x ∈ V) (f : Γ(X, V)) :
@@ -40,10 +40,8 @@ private theorem mem_basicOpen_iff_notMem_asIdeal_primeIdealOf {X : Scheme.{u}} {
   rw [← h2, hV.fromSpec_preimage_basicOpen]
   exact PrimeSpectrum.mem_basicOpen f _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open, the support of the ideal sheaf is the common zero locus of the sections in its ideal. A section vanishes at the point precisely when the corresponding prime contains it. Applying this condition to every section of the ideal gives the claimed inclusion.
 -/
 private theorem mem_support_iff_ideal_le_asIdeal_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData) {V : X.Opens}
     (hV : IsAffineOpen V) {x : ↥X} (hx : x ∈ V) :
@@ -56,12 +54,8 @@ private theorem mem_support_iff_ideal_le_asIdeal_primeIdealOf {X : Scheme.{u}} (
   · intro h f hf hb
     exact (mem_basicOpen_iff_notMem_asIdeal_primeIdealOf hV hx f).mp hb (h (SetLike.mem_coe.mp hf))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the exponent. For exponent zero the product is the initial element. For a successor exponent, rewrite the product as g times the product for the preceding exponent. Cancel one g using the ideal membership hypothesis and apply induction.
 -/
 private theorem mem_of_mul_pow_mem {R : Type u} [CommRing R] (I : Ideal R) (g : R)
     (hnzd : ∀ x : R, g * x ∈ I → x ∈ I) :
@@ -78,12 +72,8 @@ private theorem mem_of_mul_pow_mem {R : Type u} [CommRing R] (I : Ideal R) (g : 
       rw [e]
       exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Consider the multiplicative set of products of an element outside P and a nonnegative power of g. Primality of P makes this set multiplicatively closed. It is disjoint from I, since repeatedly cancelling g in such a product in I would put the outside factor in I and hence in P. Choose a prime Q containing I and avoiding this set. The set contains every element outside P, so Q lies inside P. It also contains g, so Q excludes g.
 -/
 private theorem exists_isPrime_between_notMem_of_mul_mem {R : Type u} [CommRing R] (I : Ideal R) (g : R)
     (hnzd : ∀ x : R, g * x ∈ I → x ∈ I)
@@ -113,12 +103,8 @@ private theorem exists_isPrime_between_notMem_of_mul_mem {R : Type u} [CommRing 
   · intro hg
     exact Set.disjoint_left.mp hQdisj hg ⟨1, 1, h1P, by ring⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pass to the quotient of the target ring by the extended ideal. It is flat over the source quotient because the quotient map between the rings is obtained by base change of an étale map. Multiplication by the class of w is injective in the source quotient, and flatness preserves this injectivity in the target quotient. The given product vanishes there, so the class of x vanishes. Thus x belongs to the extended ideal.
 -/
 private theorem mem_map_of_mul_mem_of_etale_of_isSMulRegular {P A : Type u} [CommRing P] [CommRing A]
     {f : P →+* A} (hf : f.Etale) (I : Ideal P) (w : P)
@@ -150,18 +136,8 @@ private theorem mem_map_of_mul_mem_of_etale_of_isSMulRegular {P A : Type u} [Com
     exact hsm
   exact Ideal.Quotient.eq_zero_iff_mem.mp hzero
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Set the variables in the chosen index set to zero and fix all other variables and coefficients. This endomorphism kills the coordinate ideal and induces the same quotient map as the identity. The distinguished variable is fixed because its index is outside the selected set. If its product with the polynomial belongs to the coordinate ideal, evaluating gives the product of this nonzero variable and the evaluated polynomial equal to zero. The polynomial ring over the field is a domain, so the evaluated polynomial is zero. Its original quotient class is therefore zero as well.
 -/
 private theorem mem_mvPolynomialCoordIdeal_of_X_mul_mem (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) {s : Fin m} (hs : s ∉ S) (r : MvPolynomial (ULift.{u} (Fin m)) k)
@@ -213,20 +189,8 @@ private theorem mem_mvPolynomialCoordIdeal_of_X_mul_mem (k : Type u) [Field k] (
   rw [RingHom.comp_apply, hψr, map_zero] at hfin
   exact Ideal.Quotient.eq_zero_iff_mem.mp hfin.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine chart let I be the ideal generated by the selected coordinates, and let g be the different coordinate defining the additional divisor. In the polynomial ring g acts injectively modulo the selected variables, and étale flatness preserves this injectivity after extending the ideal to the chart ring. The prime of the given point contains I. The prime-avoidance construction supplies a prime between I and that prime which omits g. It defines a generalization of the given point in the support of the first ideal and outside the other divisor, contradicting the hypothesis on all such generalizations.
 -/
 private theorem false_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {V : X.Opens} (hV : IsAffineOpen V) {m : ℕ}
@@ -283,30 +247,8 @@ private theorem false_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type 
   rw [mem_support_iff_ideal_le_asIdeal_primeIdealOf D hV hrange, hQeq, hDspan, hqQ] at hηD
   exact hgQ (hηD (Ideal.mem_span_singleton_self _))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the component lies in the additional divisor. At its generic point choose an affine neighborhood in an étale boundary chart. The selected divisors containing the point give distinct chart coordinates, and their sum ideal is generated by those coordinates. The additional divisor also contains the point and has a different coordinate, since its index is outside the selected set. A generalization of the generic point inside the intersection support must remain in the component, because its closure is an irreducible subset containing the component and maximality gives equality. It would therefore lie in the additional divisor. The affine coordinate argument produces a generalization outside that divisor, a contradiction.
 -/
 private theorem not_subset_boundary_support_of_notMem (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (C : Set ↥T.scheme)
@@ -401,10 +343,8 @@ private theorem not_subset_boundary_support_of_notMem (T : MarkedIdealWithBounda
     exact subset_closure (Set.mem_singleton η)
   exact hsub hηC
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the divisor is selected, its ideal is a summand of the intersection ideal, so the intersection support and the component it contains lie in the support of the divisor. If it is unselected, containment would contradict the argument at the component's generic point using the extra boundary coordinate.
 -/
 theorem intersectionComponents_subset_support_iff : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)),

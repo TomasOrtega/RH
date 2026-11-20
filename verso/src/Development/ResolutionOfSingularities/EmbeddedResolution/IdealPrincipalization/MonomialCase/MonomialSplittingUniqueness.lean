@@ -24,14 +24,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the finite order as n. The stalk ideal is the a-th power of the maximal ideal, so n is at least a. If n were larger, that power would be contained in the next power. Multiplication by the maximal ideal would then leave the a-th power unchanged. Nakayama's lemma applies because the stalk is Noetherian and forces that power to vanish. This would make the order infinite, a contradiction. Hence n equals a.
 -/
 theorem orderAt_eq_of_stalkIdeal_eq_maximalIdeal_pow [IsLocallyNoetherian X]
     (M : X.IdealSheafData) (η : X) (a : ℕ)
@@ -79,16 +73,16 @@ def IsMonomialOnOpen (E : List X.IdealSheafData) (M : X.IdealSheafData) (U : X.O
   restrictIdeal M U =
     ((List.finRange E.length).map (fun j => restrictIdeal (E.get j) U ^ a j)).prod
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Extension of ideals along a ring map preserves multiplication and the unit ideal. Apply it successively to the factors of the list to obtain the product of their extensions.
 -/
 private theorem ideal_map_listProd {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (L : List (Ideal R)) :
     Ideal.map f L.prod = (L.map (fun I => Ideal.map f I)).prod :=
   map_list_prod (Ideal.mapHom f) L
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Extend the equal ideals along the left inverse. Successive extension is extension along the composite, which is the identity on the original ring. The resulting equality is the equality of the original ideals.
 -/
 private theorem eq_of_ideal_map_eq_of_ringHom_leftInverse {R S : Type*} [CommRing R] [CommRing S]
     (f : R →+* S) (g : S →+* R) (hgf : ∀ z, g (f z) = z) {A B : Ideal R}
@@ -98,28 +92,24 @@ private theorem eq_of_ideal_map_eq_of_ringHom_leftInverse {R S : Type*} [CommRin
   have hB : Ideal.map g (Ideal.map f B) = B := by rw [Ideal.map_map, hcomp, Ideal.map_id]
   rw [← hA, ← hB, hAB]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Evaluate the equality of the composite ring morphism and the given ring morphism at the specified element. Evaluation of a composite is successive evaluation.
 -/
 private theorem hom_apply_hom_apply_of_comp_eq {A B C : CommRingCat.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (k : A ⟶ C) (hk : f ≫ g = k) (z : A) : g.hom (f.hom z) = k.hom z := by
   rw [← hk, CommRingCat.hom_comp]
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The ring morphism followed by its inverse is the identity. Evaluating this composite at the element returns that element.
 -/
 private theorem inv_hom_apply_hom_apply {A B : CommRingCat.{u}} (f : A ⟶ B) [IsIso f]
     (z : A) : (inv f).hom (f.hom z) = z := by
   rw [hom_apply_hom_apply_of_comp_eq f (inv f) (𝟙 A) (IsIso.hom_inv_id f) z, CommRingCat.hom_id]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the point of the open subscheme corresponding to the given ambient point. Take stalks of the monomial identity on the open. Stalk ideals preserve products and powers, and the stalks of restricted ideals are extensions along the stalk map of the inclusion. This stalk map is an isomorphism. Applying its inverse to the resulting equality gives the product formula in the ambient stalk.
 -/
 theorem stalkIdeal_eq_prod_of_isMonomialOnOpen (E : List X.IdealSheafData) (M : X.IdealSheafData)
     (U : X.Opens) (a : Fin E.length → ℕ) (h : IsMonomialOnOpen E M U a) (x : X) (hx : x ∈ U) :
@@ -149,12 +139,8 @@ theorem stalkIdeal_eq_prod_of_isMonomialOnOpen (E : List X.IdealSheafData) (M : 
   rw [ideal_map_listProd, hL, ← stalkIdeal_listProd, ← h', restrictIdeal_eq_comap_ι,
     stalkIdeal_comap]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The residual support does not contain the whole boundary component. Since the support is closed, it cannot contain the generic point either. The residual factor has order zero there. The order of the product is the sum of the orders at this point, so the original ideal and its monomial factor have the same order.
 -/
 theorem orderAt_genericPoint_eq_of_isMonomialSplitting {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -180,16 +166,8 @@ theorem orderAt_genericPoint_eq_of_isMonomialSplitting {k : Type u} [Field k] [C
     (orderAt_eq_zero_iff_not_mem_support N hC.isIrreducible.genericPoint).mpr hηN
   rw [hsplit.eq_mul, orderAt_mul k p M N hC.isIrreducible.genericPoint, h0, add_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open meets the component and therefore contains its generic point. At that point the monomial stalk is a product and is contained in the factor for the chosen boundary index. That boundary stalk is contained in the maximal ideal, so the monomial stalk is contained in the power of the maximal ideal with exponent given by the local expression. The order of the monomial factor is at least that exponent. The original ideal is contained in its monomial factor by the product identity, so its order is at least as large. Its generic order is the finite order along the component, proving the bound.
 -/
 theorem exponent_le_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -244,16 +222,8 @@ theorem exponent_le_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     exact h2.trans h3
   exact_mod_cast h4
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. Two ordered indices cannot occur in the empty list. If the first index is the head, the product of the tail is contained in the factor at the second index, which proves the claim after multiplying by the head. If both indices are in the tail, the entire product is contained in the tail product and the induction bound applies there.
 -/
 private theorem ideal_listProd_le_mul_getElem_of_lt {R : Type*} [CommRing R] (L : List (Ideal R)) :
     ∀ (i j : ℕ) (hi : i < L.length) (hj : j < L.length), i < j →
@@ -282,8 +252,8 @@ private theorem ideal_listProd_le_mul_getElem_of_lt {R : Type*} [CommRing R] (L 
               exact le_trans (le_trans Ideal.mul_le_inf inf_le_right)
                 (ih i' j' hi' hj' (by omega))
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Order the two distinct positions. The ordered-index bound puts the product inside the product of the entries in that order. Commutativity of ideal multiplication gives the stated order of the factors.
 -/
 private theorem ideal_listProd_le_mul_getElem_of_ne {R : Type*} [CommRing R] (L : List (Ideal R))
     (i j : ℕ) (hi : i < L.length) (hj : j < L.length) (hij : i ≠ j) :
@@ -293,8 +263,8 @@ private theorem ideal_listProd_le_mul_getElem_of_ne {R : Type*} [CommRing R] (L 
   · rw [mul_comm]
     exact ideal_listProd_le_mul_getElem_of_lt L j i hj hi h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The full product is contained in the product of the two distinct listed factors. Substitute the bounds by the corresponding powers of the given ideal and use monotonicity of ideal multiplication. The product of the two powers is the power with the sum of the exponents.
 -/
 private theorem ideal_listProd_le_pow_add {R : Type*} [CommRing R] (m : Ideal R)
     (L : List (Ideal R)) (i j : ℕ) (hi : i < L.length) (hj : j < L.length) (hij : i ≠ j)
@@ -304,8 +274,8 @@ private theorem ideal_listProd_le_pow_add {R : Type*} [CommRing R] (m : Ideal R)
   rw [pow_add]
   exact Ideal.mul_mono hbi hcj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The list contains one factor for each finite index. All except the specified factor are the unit ideal. Removing these unit factors leaves exactly that factor.
 -/
 private theorem ideal_listProd_finRange_eq_of_ne_eq_top {R : Type*} [CommRing R] {n : ℕ}
     (f : Fin n → Ideal R) (j : Fin n) (h : ∀ l : Fin n, l ≠ j → f l = ⊤) :
@@ -314,32 +284,8 @@ private theorem ideal_listProd_finRange_eq_of_ne_eq_top {R : Type*} [CommRing R]
   refine Finset.prod_eq_single j (fun l _ hl => ?_) (fun hj => absurd (Finset.mem_univ j) hj)
   rw [h l hl, Ideal.one_eq_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open contains the generic point of the chosen boundary component because it meets that component. At this point, any other boundary entry whose support misses the point contributes a unit stalk. If another boundary entry contains the point, its local exponent is bounded by the original ideal's order along one of its components through the point. In the canonical monomial factor, this other entry's contribution is therefore contained in the power of the maximal ideal with that local exponent. The chosen entry's contribution is contained in the power given by the original order along the chosen component. If the other exponent were positive, the product of these two contributions would force the canonical factor to have larger order than the original ideal at the chosen generic point. The canonical factor's order there equals the original order, so the other exponent is zero. Thus the local product for the monomial factor consists, up to unit factors, of just the chosen boundary stalk raised to its exponent. This boundary stalk is the maximal ideal because the divisor is étale locally a coordinate divisor and the point is generic on its component. The order of this maximal-ideal power equals its exponent, since the order is finite. The splitting gives equality of monomial and original orders at the generic point, so the exponent is the original order along the component.
 -/
 theorem exponent_eq_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -478,8 +424,8 @@ theorem exponent_eq_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     rw [← hMord, hMI, ← hco]
   exact_mod_cast hfinal
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both lists have the same length as the original list. At each position both contain the value of the function on the original entry at that position, so they are equal.
 -/
 private theorem map_finRange_get_eq_map {α : Type*} {β : Type*} (l : List α) (g : α → β) :
     (List.finRange l.length).map (fun j => g (l.get j)) = l.map g := by
@@ -487,14 +433,8 @@ private theorem map_finRange_get_eq_map {α : Type*} {β : Type*} (l : List α) 
   intro n h1 h2
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a local monomial expression at the point and take its stalk. If a boundary divisor contains the point, choose a component of its support through the point. The exponent formula identifies its local exponent with the order of the original ideal along that component, and the canonical factor along the divisor has the same stalk power. If the point is off the divisor, both factors have unit stalks. The stalk products for the local monomial expression and the canonical monomial factor therefore agree factor by factor.
 -/
 theorem stalkIdeal_eq_stalkIdeal_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -529,8 +469,8 @@ theorem stalkIdeal_eq_stalkIdeal_monomialFactorIdeal {k : Type u} [Field k] [Cha
   rw [stalkIdeal_eq_prod_of_isMonomialOnOpen E M U a hmon x hxU,
     stalkIdeal_monomialFactorIdeal E I x, hlist]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At every point the stalk of the splitting's monomial factor equals the stalk of the canonical factor. Stalk ideals test inclusion in both directions, giving equality of the ideal sheaves.
 -/
 theorem eq_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -546,10 +486,8 @@ theorem eq_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
   · exact (le_iff_forall_stalkIdeal_le (monomialFactorIdeal E I) M).mpr
       (fun x => le_of_eq (hstalk x).symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The monomial factor equals the canonical one and is locally generated by a nonzerodivisor. The original ideal is contained in that factor by the product identity. Multiplying the canonical factor by its ideal quotient into the original ideal recovers the original ideal. This is also the product with the given residual factor. Cancel the canonical factor locally using its nonzerodivisor generators to conclude equality of the residual factors.
 -/
 theorem eq_nonMonomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -571,8 +509,8 @@ theorem eq_nonMonomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     exact hsplit.eq_mul.symm
   exact hF.eq_of_mul_eq_mul hmul
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The monomial part of each splitting equals the same canonical monomial factor. The residual part of each equals the same canonical ideal quotient. Equality through these canonical factors proves uniqueness of both parts.
 -/
 theorem isMonomialSplitting_unique {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]

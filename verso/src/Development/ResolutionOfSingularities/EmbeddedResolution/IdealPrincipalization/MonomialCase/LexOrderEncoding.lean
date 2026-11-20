@@ -6,8 +6,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCenter
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A strictly increasing map carries the sorted list to a strictly increasing list. This mapped list and the sorted image have the same entries, since an element of the image comes from an element of the original set and conversely. A strictly increasing finite list is determined by its set of entries, so the lists coincide.
 -/
 private theorem sort_image_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder β]
     [DecidableEq β] (f : α → β) (hf : StrictMono f) (s : Finset α) :
@@ -20,8 +20,8 @@ private theorem sort_image_of_strictMono {α β : Type*} [LinearOrder α] [Linea
   intro b
   simp [Finset.mem_sort]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Sorting the image gives the same list as sorting the original indices and mapping the strictly increasing function over them. Taking each resulting index's natural-number value gives the stated list.
 -/
 theorem sortedIndices_image_of_strictMono {n n' : ℕ} [DecidableEq (Fin n')]
     (φ : Fin n → Fin n') (hφ : StrictMono φ) (J : Finset (Fin n)) :
@@ -29,16 +29,8 @@ theorem sortedIndices_image_of_strictMono {n n' : ℕ} [DecidableEq (Fin n')]
   rw [sortedIndices_eq_map_sort, sort_image_of_strictMono φ hφ J, List.map_map]
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
-
-Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compare the lists recursively. The comparison with an empty list depends only on which lists are empty, which the map preserves. For two nonempty lists, a strict comparison of their heads is preserved and reflected by strict monotonicity, and equality of their mapped heads is equivalent to equality of their heads by injectivity. In the equal-head case apply the induction statement to the tails.
 -/
 theorem lex_map_iff_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder β]
     (f : α → β) (hf : StrictMono f) (l l' : List α) :
@@ -67,8 +59,8 @@ theorem lex_map_iff_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder 
         · exact Or.inl (hf h)
         · exact Or.inr ⟨rfl, (ih t).mpr h2⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The sorted index lists of the images are obtained by applying the increasing index map and then taking natural-number values. Both this composite and the original natural-number value map are strictly increasing. Lexicographic comparison for either pair is therefore equivalent to comparison of the original sorted lists.
 -/
 theorem lex_sortedIndices_image_iff {n n' : ℕ} [DecidableEq (Fin n')]
     (φ : Fin n → Fin n') (hφ : StrictMono φ) (J J' : Finset (Fin n)) :
@@ -85,8 +77,8 @@ theorem lex_sortedIndices_image_iff {n n' : ℕ} [DecidableEq (Fin n')]
 
 def reversedIndex (n : ℕ) (j : Fin n) : ℕ := n - 1 - (j : ℕ)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Both indices are at most n − 1, so subtracting either from n − 1 uses ordinary nonnegative differences. Subtracting from the same bound reverses the strict comparison.
 -/
 theorem reversedIndex_lt_reversedIndex_iff {n : ℕ} (j j' : Fin n) :
     reversedIndex n j < reversedIndex n j' ↔ j' < j := by
@@ -95,8 +87,8 @@ theorem reversedIndex_lt_reversedIndex_iff {n : ℕ} (j j' : Fin n) :
   simp only [reversedIndex, Fin.lt_def]
   omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two indices lie between zero and n − 1. If their differences from n − 1 agree, adding back these indices shows that their natural-number values agree. The indices are therefore equal.
 -/
 theorem reversedIndex_injective {n : ℕ} : Function.Injective (reversedIndex n) := by
   intro a b h
@@ -105,8 +97,8 @@ theorem reversedIndex_injective {n : ℕ} : Function.Injective (reversedIndex n)
   have h' : n - 1 - (a : ℕ) = n - 1 - (b : ℕ) := h
   exact Fin.val_injective (by omega)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The code sums powers of two with exponents obtained by reversing the selected indices. The reversal map is injective, so every exponent occurs once when the sum is reindexed over the image.
 -/
 theorem binaryEncode_eq_sum_image {n : ℕ} (J : Finset (Fin n)) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J = ∑ e ∈ J.image (reversedIndex n), 2 ^ e := by
@@ -115,16 +107,8 @@ theorem binaryEncode_eq_sum_image {n : ℕ} (J : Finset (Fin n)) :
   rw [Finset.sum_image hinj]
   rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+When comparing two sums of distinct powers of two, the highest exponent present on just one side decides the order. Its term exceeds the sum of all lower powers. Thus the code of J is larger exactly when an exponent from J alone exceeds every exponent from J′ alone. Reversing the indices converts this into an index of J alone smaller than every index of J′ alone. The same argument in reverse proves sufficiency.
 -/
 theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J' < _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J ↔
@@ -161,36 +145,8 @@ theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
         exact hfnot (Finset.mem_image_of_mem _ hbJ)
       exact (reversedIndex_lt_reversedIndex_iff b a).mpr (hmin b hb hbJ)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components.
-
-Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the heads of the two increasing lists of equal length. If the first head is smaller, it is absent from the other list and is smaller than each of its entries, so it witnesses the set condition. If the second head is smaller, that head is absent from the first list and prevents any entry of the first from witnessing the condition. If the heads agree, they occur in both lists, and all tail entries are strictly greater than the common head. The comparison and the set condition both reduce to the tails. Two empty lists satisfy neither strict condition, which completes the induction.
 -/
 private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
     ∀ (L L' : List α), L.length = L'.length → List.Pairwise (· < ·) L →
@@ -287,10 +243,8 @@ private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
             · exact le_of_lt (hs.1 x h)
           exact absurd hxb (not_lt.mpr (le_trans hab.le hax))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Sort the two sets into increasing lists. Equal cardinality gives equal list length. The reversed binary-code criterion says that an entry of the first list alone is smaller than every entry of the second alone. For increasing lists of equal length this is exactly lexicographic precedence. Taking natural-number values preserves and reflects that comparison.
 -/
 theorem binaryEncode_lt_iff_lex_of_card_eq {n : ℕ} (J J' : Finset (Fin n)) (hcard : J.card = J'.card) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J' < _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J ↔
@@ -309,10 +263,8 @@ theorem binaryEncode_lt_iff_lex_of_card_eq {n : ℕ} (J J' : Finset (Fin n)) (hc
   rw [sortedIndices_eq_map_sort, sortedIndices_eq_map_sort]
   exact (binaryEncode_lt_iff J J').trans (hfin.symm.trans (hA.symm.trans hmap.symm))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write each code as a sum of distinct powers of two over the set of reversed indices. If the exponent sets differed, the largest exponent in their symmetric difference would give unequal sums, so equal codes imply equal exponent sets. Injectivity of index reversal then gives equality of the original sets.
 -/
 theorem binaryEncode_injective {n : ℕ} :
     Function.Injective (fun J : Finset (Fin n) => _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J) := by

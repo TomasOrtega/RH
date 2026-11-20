@@ -24,20 +24,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
+/- English proof (authored)
+Write the closed set as a finite union of irreducible closed subsets using Noetherianity. Remove the union of those pieces that are not contained in the given maximal irreducible subset. The complement is open, and its intersection with the original closed set lies in the maximal subset. If that intersection were empty, the removed pieces would cover the maximal subset. Irreducibility would place it inside one removed piece, and maximality would make that piece equal to it, a contradiction.
 -/
 theorem exists_isOpen_inter_subset_of_maximal {α : Type*} [TopologicalSpace α]
     [TopologicalSpace.NoetherianSpace α] (A : Set α) (hA : IsClosed A) (C : Set α)
@@ -98,12 +86,8 @@ theorem exists_isOpen_inter_subset_of_maximal {α : Type*} [TopologicalSpace α]
     · exact hk hzk
     · exact absurd (Set.mem_iUnion₂.mpr ⟨k, (hmemT k).mpr ⟨hkS, hk⟩, hzk⟩) hzO
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Take the inverse image of the specified target point under the homeomorphism of subspaces. Its ambient image is the specified point by the compatibility of the homeomorphism with the underlying map. The image of y also belongs to the closure of the target point in the target subspace, because subspace closure is the intersection with ambient closure. The inverse homeomorphism carries the singleton closure back to the source subspace. Passing to the ambient space gives the desired specialization.
 -/
 theorem exists_specializes_of_homeomorph {α β : Type*} [TopologicalSpace α] [TopologicalSpace β]
     (p : α → Prop) (q : β → Prop) (f : α → β) (e : {x : α // p x} ≃ₜ {y : β // q y})
@@ -125,10 +109,8 @@ theorem exists_specializes_of_homeomorph {α β : Type*} [TopologicalSpace α] [
     have h5 := closure_subtype.mp h4
     rwa [Set.image_singleton] at h5
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Restrict the blowup to the complement of the center. There the center ideal is the unit ideal, so the restriction is an isomorphism. Both specified target points lie in this complement. Use its homeomorphism with the preimage to lift the more general point and carry the given specialization back upstairs.
 -/
 theorem exists_lift_of_specializes_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) (ξ : ↥X) (hξ : ξ ∉ Z.support)
@@ -150,10 +132,8 @@ theorem exists_lift_of_specializes_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}
       (fun b : ↥X => b ∈ Z.support.compl) (fun a => (⇑π.base) a) e he ξ hξ' y hy' hs
   exact ⟨x, hx1, hx2⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the complement of the center the blowup is an isomorphism, since it is the blowup of the unit ideal there. Both points are in the preimage of this complement. The restricted blowup is injective on points, so equality of their images gives equality upstairs.
 -/
 theorem eq_of_isBlowupAlongIdealSheaf_of_notMem_support {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) (x y : ↥X')
@@ -175,10 +155,8 @@ theorem eq_of_isBlowupAlongIdealSheaf_of_notMem_support {X X' : Scheme.{u}} (π 
     exact hxy
   exact congrArg Subtype.val (e.injective key)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pullback of the center ideal. Its support is the inverse image of the support of the center. Since the image of y lies outside the latter, y lies outside the exceptional support.
 -/
 theorem notMem_support_exceptionalIdeal {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (y : ↥X') (hy : π y ∉ Z.support) :
@@ -191,36 +169,8 @@ theorem notMem_support_exceptionalIdeal {X X' : Scheme.{u}} (π : X' ⟶ X)
   rw [h1] at hmem'
   exact hy hmem'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The component of the strict-transform support is closed by maximality, so it has a generic point. A Noetherian component has an ambient open meeting the strict-transform support only within that component. The support is the closure of the inverse image of the divisor away from the center, so this open meets that inverse image. Its intersection with the component shows that the generic point lies off the exceptional locus. Its image lies on the divisor because the inverse image of the divisor is closed and contains the strict-transform support. Take the closure of this image point inside the divisor. To prove maximality, suppose an irreducible subset of the divisor contains that closure and take a generic point of its closure. This point lies off the center, since it specializes to the image point off the center. The blowup is an isomorphism off the center, so lift it to a point specializing to the chosen upper generic point. The lift is in the strict-transform support. Its closure contains the original upper component and must equal it by maximality. Mapping back shows that the larger downstairs subset lies in the closure of the original image point. That closure is therefore an irreducible component of the divisor and meets the complement of the center.
 -/
 theorem exists_eq_closure_of_isIrreducibleComponentOf_strictTransform :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →

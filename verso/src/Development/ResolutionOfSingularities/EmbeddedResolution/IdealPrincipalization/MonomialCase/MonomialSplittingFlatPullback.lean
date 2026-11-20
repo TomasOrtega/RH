@@ -13,8 +13,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {X Y : Scheme.{u}}
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the finite set. The pullback of the empty product is the unit ideal. Inserting an index introduces one factor, and pullback of the resulting product is the product of the pullbacks. Apply the induction hypothesis to the remaining factors.
 -/
 private theorem comap_finset_prod {ι : Type*} (s : Finset ι) (F : ι → X.IdealSheafData)
     (h : Y ⟶ X) : (∏ i ∈ s, F i).comap h = ∏ i ∈ s, (F i).comap h := by
@@ -23,15 +23,15 @@ private theorem comap_finset_prod {ι : Type*} (s : Finset ι) (F : ι → X.Ide
   | cons a s ha ih =>
       rw [Finset.prod_cons, Finset.prod_cons, Scheme.IdealSheafData.comap_mul, ih]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse-image open, the original open and the two ambient schemes form the commutative restriction square. The two successive ideal pullbacks are pullbacks along the two composites in that square. Those composites are equal.
 -/
 theorem comap_comap_ι (h : Y ⟶ X) (J : X.IdealSheafData) (U : X.Opens) :
     (J.comap h).comap (h ⁻¹ᵁ U).ι = (J.comap U.ι).comap (h ∣_ U) := by
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+A point in the pulled-back support maps into the original support. The assumed inclusion places its image in some listed boundary support. Thus the point belongs to the support of that pulled-back boundary ideal, which occurs in the pulled-back list.
 -/
 theorem support_comap_subset_biUnion (h : Y ⟶ X) (E : List X.IdealSheafData)
     (M : X.IdealSheafData) (hM : (M.support : Set X) ⊆ ⋃ D ∈ E, (D.support : Set X)) :
@@ -43,12 +43,8 @@ theorem support_comap_subset_biUnion (h : Y ⟶ X) (E : List X.IdealSheafData)
   refine Set.mem_iUnion₂.mpr ⟨D.comap h, List.mem_map.mpr ⟨D, hD, rfl⟩, ?_⟩
   exact Scheme.IdealSheafData.mem_support_comap.mpr hyD
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At the image of the given point, choose an open on which the ideal is a product of powers of boundary ideals. Take its inverse image as the neighborhood upstairs. Restriction and pullback commute, and pullback preserves products and powers. The pulled-back boundary has one entry at each original index, so the original exponents give the required product upstairs.
 -/
 theorem IsMonomialIn.comap_of_isMonomialIn {E : List X.IdealSheafData} {M : X.IdealSheafData}
     (hM : IsMonomialIn E M) (h : Y ⟶ X) :
@@ -77,22 +73,8 @@ theorem IsMonomialIn.comap_of_isMonomialIn {E : List X.IdealSheafData} {M : X.Id
   intro i _
   rw [hget i]
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let an upstairs component of a pulled-back boundary support have generic point ξ. Its image belongs to the downstairs boundary support. The closure of that image is a component there: if a larger irreducible subset contained the closure, take a generic point of the larger subset's closure. It generalizes the image of ξ, so the generalizing map lifts it to a generalization of ξ. This lift lies in the upstairs boundary support and its closure contains the upstairs component. Maximality puts the lift back in the component. Its image therefore lies in the closure of the image of ξ, forcing the larger set to be contained in that closure. If the upstairs component were contained in the pulled-back residual support, the image of ξ would be in the residual support, and its whole closure would be there by closedness. This contradicts the condition on the downstairs component.
 -/
 theorem irreducibleComponents_not_subset_support_comap (h : Y ⟶ X) (hg : GeneralizingMap (fun y : Y => h.base y))
     (E : List X.IdealSheafData) (N : X.IdealSheafData)
@@ -161,8 +143,8 @@ theorem irreducibleComponents_not_subset_support_comap (h : Y ⟶ X) (hg : Gener
   rw [← hη] at hzc
   exact closure_minimal (Set.singleton_subset_iff.mpr hηclos) isClosed_closure hzc
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback preserves the product identity for the monomial and residual factors. It preserves the containment of the monomial support in the boundary and carries each local monomial expression to one in the pulled-back boundary. Since the map lifts generalizations, the component argument also preserves the condition that the residual support contains no boundary component. These give the four properties of the pulled-back splitting.
 -/
 theorem isMonomialSplitting_comap_of_generalizingMap (h : Y ⟶ X)
     (hg : GeneralizingMap (fun y : Y => h.base y)) {E : List X.IdealSheafData}
@@ -174,15 +156,15 @@ theorem isMonomialSplitting_comap_of_generalizingMap (h : Y ⟶ X)
   monomial := hs.monomial.comap_of_isMonomialIn h
   transversal := irreducibleComponents_not_subset_support_comap h hg E N hs.transversal
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Flat morphisms satisfy going-down. Applied on affine neighborhoods, it lifts a generalization of the image of a point to a generalization of that point. Thus the underlying point map is generalizing.
 -/
 theorem generalizingMap_base_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat h] :
     GeneralizingMap (fun y : Y => h.base y) :=
   AlgebraicGeometry.Flat.generalizingMap h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A flat morphism gives a generalizing map on points by going-down. Apply preservation of monomial splittings under pullback along a generalizing map.
 -/
 theorem isMonomialSplitting_comap_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat h]
     {E : List X.IdealSheafData} {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N) :
@@ -190,8 +172,8 @@ theorem isMonomialSplitting_comap_of_flat (h : Y ⟶ X) [AlgebraicGeometry.Flat 
       (N.comap h) :=
   isMonomialSplitting_comap_of_generalizingMap h (generalizingMap_base_of_flat h) hs
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Smooth morphisms are flat, so preservation of the splitting under flat pullback gives the result.
 -/
 theorem isMonomialSplitting_comap_of_smooth (h : Y ⟶ X) [AlgebraicGeometry.Smooth h]
     {E : List X.IdealSheafData} {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N) :

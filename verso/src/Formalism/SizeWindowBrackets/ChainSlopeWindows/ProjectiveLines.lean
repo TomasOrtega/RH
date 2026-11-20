@@ -11,8 +11,8 @@ namespace Formalism.LFunctionChainParameters.ProjectiveLineModels
 open Formalism.LFunctionChainParameters.HilbertSchmidtNormSquare (hsSq)
 open Formalism.LFunctionChainParameters.MatrixLatticeEstimates
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The grouped ramified hypotheses are the conjunction of the separate ramified hypotheses. To apply the ungrouped result, extract each conjunct and supply it as the corresponding hypothesis. To apply the grouped result, assemble the separate hypotheses into the conjunction. Both statements give the same conclusion.
 -/
 theorem b_ramified_grouped_holds : BRamGrouped := by
   constructor
@@ -29,8 +29,8 @@ theorem b_ramified_grouped_holds : BRamGrouped := by
       s u U HH δ Dstar sg η0 η1 e0 de bb x c
       ⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The grouped power-window statement packages all the individual hypotheses in one conjunction. Unpack the conjunction to use the statement with separate hypotheses. In the other direction, combine the separate hypotheses into the conjunction and apply the grouped statement.
 -/
 theorem b_power_grouped_holds : BPowGrouped := by
   constructor
@@ -47,8 +47,8 @@ theorem b_power_grouped_holds : BPowGrouped := by
       s u U HH δ Dstar η0 η1 e0 de bb x c
       ⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+With the lattice and slope data fixed, the grouped form collects the same conditions as the separate-hypothesis form. Each implication follows by either taking the components of the conjunction or combining the separate assumptions into it.
 -/
 theorem c_grouped_form_holds : CGrouped := by
   constructor
@@ -65,8 +65,8 @@ theorem c_grouped_form_holds : CGrouped := by
       muMaxM muM dr BE Sg0 A A' Vh HH δ Dstar sg η0 η1 e0 de bb x c
       ⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The grouped local-lattice and slope conditions contain exactly the hypotheses in the separate form. Decompose the conjunction to obtain the separate hypotheses in one direction, and combine them to obtain the grouped hypothesis in the other.
 -/
 theorem d_grouped_form_holds : DGrouped := by
   constructor
@@ -83,10 +83,8 @@ theorem d_grouped_form_holds : DGrouped := by
       σ τ M N0 β dr Sg0 A A' Vh HH δ Dstar sg η0 η1 e0 de bb x c
       ⟨a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use x raised to −c for the ramification scale. It is positive because x is positive. Since it is the reciprocal of x to the power c, dividing by it amounts to multiplying by x to the power c. These substitutions transform the two scale inequalities into the required ramified inequalities. The other conditions are carried over directly.
 -/
 theorem power_hyp_to_ramified : HypPowToRam := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ ιf _ _ Bf Vr
@@ -99,8 +97,8 @@ theorem power_hyp_to_ramified : HypPowToRam := by
   · rw [hinv, div_inv_eq_mul]; exact a7
   · rw [hinv, div_inv_eq_mul, mul_comm]; exact a19
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The flat statement presents the geometric and numerical hypotheses individually. Form the geometric and numerical conjunctions from the corresponding parts of the flat list to use the grouped theorem. Conversely, read off the individual assumptions from those two conjunctions and restore them to the flat list. The remaining conditions are supplied directly in both directions.
 -/
 theorem flatness_iff_holds : FlatIff := by
   constructor
@@ -115,14 +113,14 @@ theorem flatness_iff_holds : FlatIff := by
     exact H K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ
       a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21 a22 a23 a24 a25 a26
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The standard lattice is the integral span of the coordinate basis. The coordinate index set is finite, so that basis is a finite generating set for the lattice.
 -/
 theorem standard_lattice_fg (K n : Type) [Field K] [NumberField K] [Fintype n] : (stdLat K n).FG :=
   Submodule.fg_span (Set.finite_range _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each coordinate basis vector belongs to the integral lattice. Their span over the number field is the entire vector space. The field-linear span of the larger set of lattice points is therefore the entire space as well.
 -/
 theorem standard_lattice_span_eq_top (K n : Type) [Field K] [NumberField K] [Fintype n] :
     Submodule.span K ((stdLat K n : Submodule (𝓞 K) (n → K)) : Set (n → K)) = ⊤ := by
@@ -133,24 +131,16 @@ section Lines
 
 variable (p : ℕ) [Fact p.Prime]
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+For a nonvertical line the first coordinate is the parameter. For a vertical line the second coordinate is the parameter. Thus equal points on the same line always have equal parameters.
 -/
 theorem line_point_injective (i : Option (ZMod p) × ZMod p) : Function.Injective (linePt p i) := by
   rcases i with ⟨_ | m, b⟩ <;> intro t s h <;> simp [linePt] at h
   · exact h
   · exact h.1
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Distinct vertical lines have different fixed first coordinates and cannot meet. For a vertical line and a nonvertical line, the fixed first coordinate determines the horizontal parameter, and the other coordinate then determines the vertical parameter. For two nonvertical lines, any intersection has a common first coordinate. If their slopes agree, their intercepts differ and they cannot meet. Otherwise subtract the two intersection equations to get the product of the nonzero slope difference and the parameter difference equal to zero. The parameter difference must vanish in the field.
 -/
 theorem distinct_lines_meet_at_most_once (i j : Option (ZMod p) × ZMod p) (hij : i ≠ j) (t t' s s' : ZMod p)
     (h1 : linePt p i t = linePt p j t') (h2 : linePt p i s = linePt p j s') : t = s ∧ t' = s' := by
@@ -178,8 +168,8 @@ theorem distinct_lines_meet_at_most_once (i j : Option (ZMod p) × ZMod p) (hij 
       · exact absurd (sub_eq_zero.1 h4) hm
       · exact ⟨sub_eq_zero.1 h4, sub_eq_zero.1 h4⟩
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each column is the coordinate vector at its corresponding point. The Gram entry is the inner product of two coordinate vectors, which is one when the points coincide and zero otherwise.
 -/
 theorem line_matrix_gram (i j : Option (ZMod p) × ZMod p) :
     (lineMat p i)ᴴ * lineMat p j
@@ -187,12 +177,8 @@ theorem line_matrix_gram (i j : Option (ZMod p) × ZMod p) :
   ext t t'
   simp [lineMat, Matrix.mul_apply, eq_comm]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Every Gram entry is zero or one, so the squared Hilbert–Schmidt norm counts parameter pairs whose points coincide. Distinct lines meet in at most one point, and the parametrizations are injective. There is at most one such pair.
 -/
 theorem distinct_lines_gram_hs_le_one (i j : Option (ZMod p) × ZMod p) (hij : i ≠ j) :
     hsSq ((lineMat p i)ᴴ * lineMat p j) ≤ 1 := by
@@ -213,18 +199,16 @@ theorem distinct_lines_gram_hs_le_one (i j : Option (ZMod p) × ZMod p) (hij : i
     exact Prod.ext e1 e2
   exact_mod_cast this
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For two columns of one line, their points coincide exactly when their parameters coincide. The Gram formula therefore gives ones on the diagonal and zeros elsewhere.
 -/
 theorem line_matrix_gram_self (i : Option (ZMod p) × ZMod p) : (lineMat p i)ᴴ * lineMat p i = 1 := by
   rw [line_matrix_gram]
   ext t t'
   simp [Matrix.one_apply, (line_point_injective p i).eq_iff]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+All weights are one and each line has p coordinates. The off-diagonal bound permits squared norm p² divided by p², which is one, and the distinct-line estimate gives it. The diagonal Gram matrices are identities, so their deviations vanish. The ambient point set has p² elements and the added coordinate set is empty, giving the required dimension.
 -/
 theorem line_model_input_sizes :
     InputSG (I := Option (ZMod p) × ZMod p) (ι := fun _ => ZMod p) (lineMat p) (fun _ => 1)
@@ -241,8 +225,8 @@ theorem line_model_input_sizes :
   · simp [KdG, KpG, line_matrix_gram_self, hsSq]
   · simp [ZMod.card, sq]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+There are p + 1 direction choices, including the vertical direction, and p intercepts for each. Each line has coordinate space of dimension p. Summing the ranks over all lines gives p²(p + 1).
 -/
 theorem line_rank_sum_eq : RsG (fun _ : Option (ZMod p) × ZMod p => ZMod p) = (p : ℝ) ^ 2 * ((p : ℝ) + 1) := by
   simp [RsG, ZMod.card]
@@ -250,8 +234,8 @@ theorem line_rank_sum_eq : RsG (fun _ : Option (ZMod p) × ZMod p => ZMod p) = (
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Apply the line map to the coordinate basis vector at parameter zero. The coefficient of the image at the point with that parameter is one, so this image is nonzero and the map cannot vanish.
 -/
 theorem line_map_ne_zero (i : Option (ZMod p) × ZMod p) : lineMap K p i ≠ 0 := by
   intro h0
@@ -260,14 +244,8 @@ theorem line_map_ne_zero (i : Option (ZMod p) × ZMod p) : lineMap K p i ≠ 0 :
   rw [Matrix.toLin_self] at h1
   simp [Finset.sum_apply, ite_apply] at h1
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+All metric and change-of-basis matrices are identities, so their determinants are units. The standard lattices are finitely generated and span their vector spaces, and the total line rank is positive. Each coordinate generator on a line maps to the coordinate generator at its plane point, so the maps preserve the lattices. The height function is the map height itself. With zero deletion and no added coordinates, the dimension inequality holds with equality. Finally, the incidence entries are zero or one and are fixed by every embedding, so the matrix identity follows entry by entry.
 -/
 theorem projective_lines_geometry (v : InfinitePlace K) :
     LatGeom (κ₁ := Empty) (V := fun _ : Option (ZMod p) × ZMod p => ZMod p → K) (ι := fun _ => ZMod p)
@@ -299,18 +277,8 @@ theorem projective_lines_geometry (v : InfinitePlace K) :
       Matrix.map_apply, Matrix.of_apply, lineMat, Sum.inl.injEq]
     split_ifs <;> simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the map heights for the shifts and take s to be the rank-weighted mean of the shifted lattice means. The total rank is positive, so this normalizes the weighted sum correctly. Take u as the sum of the absolute differences between each shifted maximal slope and s. It is nonnegative and bounds every individual difference. The assumptions on the height and U supply the other numerical bounds. The geometric and Gram estimates furnish the matrix conditions. With x = p + 1 and exponent one, the reciprocal scale is at most 1/20 since p ≥ 19, the total rank is p²x, and the choice of small height equal to the large height divided by x saturates the height bound. The zero error parameters satisfy the remaining bounds.
 -/
 theorem projective_lines_power_hypothesis (hp19 : 19 ≤ p) (v : InfinitePlace K) :
     ∃ (h : Option (ZMod p) × ZMod p → ℝ) (s u : ℝ), 0 ≤ u ∧ ∀ HH U : ℝ,
@@ -363,10 +331,8 @@ theorem projective_lines_power_hypothesis (hp19 : 19 ≤ p) (v : InfinitePlace K
 
 end Lines
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the shifts, mean and spread from the power-window construction. Choose the height to be one plus the absolute difference between the mean and the ambient minimal slope, and choose the upper spread equal to the spread itself. These choices satisfy the construction's hypotheses. The small height is the large height divided by p + 1, so it is strictly smaller. Each line map is nonzero by the coordinate-vector argument.
 -/
 theorem projective_lines_all_cases : ModelLinesAll := by
   intro p _ hp19 K _ _ _ _ v
@@ -382,10 +348,8 @@ theorem projective_lines_all_cases : ModelLinesAll := by
   · rw [div_lt_iff₀ (by linarith)]
     nlinarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+Apply the construction at the prime p = 19. The ambient dimension p² becomes 361 and the scale p + 1 becomes 20. The same witnesses have the required strict height bound and nonzero maps.
 -/
 theorem projective_lines_model : ModelLines := by
   intro K _ _ _ _ v
@@ -396,12 +360,8 @@ theorem projective_lines_model : ModelLines := by
   rw [e1, e2] at H
   exact ⟨h, s, u, U, HH, bb, H, h1, h2⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Work at p = 19 and let k be the logarithm of the number of lines. Let t be the absolute gap between the chosen mean and the ambient minimal slope. Choose the large height t + 1 + 20k and the small height equal to one-twentieth of it, so the latter dominates k. Take the unit size parameters equal to one, take the parameter a equal to twenty times the small height, and take the loss equal to the nonnegative spread. The resulting spread bound is at least the spread. Apply the power-window construction, then convert it to the ramified form with reciprocal scale 1/20. The chosen parameters satisfy the remaining equalities and inequalities.
 -/
 theorem projective_lines_model₂ : ExistsModelLines := by
   intro K _ _ _ _ v
@@ -427,25 +387,23 @@ theorem projective_lines_model₂ : ExistsModelLines := by
   exact ⟨h, s, u, t + 1 + 20 * k, (t + 1 + 20 * k) / 20, k, 1, 1, 20 * ((t + 1 + 20 * k) / 20), 1, 0, u, H2,
     rfl, le_rfl, le_rfl, le_rfl, hu0, le_rfl, by linarith⟩
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each column is a different coordinate vector of the enlarged space. Their inner products are one for equal columns and zero otherwise, so their Gram matrix is the identity.
 -/
 theorem inclusion_matrix_isometry (κ κ₁ : Type) [Fintype κ] [Fintype κ₁] [DecidableEq κ] [DecidableEq κ₁] :
     (inclMat κ κ₁)ᴴ * inclMat κ κ₁ = 1 := by
   ext k l
   simp [inclMat, Matrix.mul_apply, Matrix.one_apply, eq_comm]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The squared Hilbert–Schmidt norm sums the squared moduli of all entries. Only the diagonal entries contribute, each with value one. Their number is the cardinality of the index set.
 -/
 theorem hs_sq_one (n : Type) [Fintype n] [DecidableEq n] :
     hsSq (1 : Matrix n n ℂ) = Fintype.card n := by
   simp [hsSq, Matrix.one_apply, apply_ite]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The quotient of the lattice by its own restriction to itself is the zero module. Localizing preserves the zero module, whose module length is zero.
 -/
 theorem local_length_self_eq_zero {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V]
     (w : slopeLatticeData.FinPl K) (L : Submodule (𝓞 K) V) : slopeLatticeData.lenAt w L L = 0 := by
@@ -456,8 +414,8 @@ theorem local_length_self_eq_zero {K V : Type} [Field K] [NumberField K] [AddCom
   rw [Module.length_eq_zero_iff]
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a coordinate index using nonemptiness. Its basis vector is nonzero and lies in the standard lattice. The lattice therefore contains an element other than zero.
 -/
 theorem standard_lattice_ne_bot (K n : Type) [Field K] [NumberField K] [Fintype n] [Nonempty n] :
     stdLat K n ≠ ⊥ := by

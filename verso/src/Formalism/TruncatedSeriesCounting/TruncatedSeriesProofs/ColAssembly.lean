@@ -11,22 +11,8 @@ open Formalism.WachCohomologyFacts.PLenBound
 
 variable {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M]
 
-/- English proof (translation)
-Establish `hle : P.comap B.subtype ≤ (P.comap A.subtype).comap (Submodule.inclusion hBA)`. Introduce `x hx`. Simplify using `using hx`. Set `f` to `Submodule.mapQ (P.comap B.subtype) (P.comap A.subtype) (Submodule.inclusion hBA) hle`. Establish `hPB : P.comap A.subtype ≤ (B ⊔ P).comap A.subtype` using `Submodule.comap_mono le_sup_right`.
-
-Set `g` to `Submodule.factor hPB`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
-
-Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Conclude with `hx`. Establish `hg : Function.Surjective g` using `Submodule.factor_surjective hPB`.
-
-Establish `hex : Function.Exact f g`. Introduce `y`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
-
-Establish `h0 : (Submodule.Quotient.mk a : ↥A ⧸ (B ⊔ P).comap A.subtype) = 0` using `ha`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Take `⟨b, hb, p, hp, hbp⟩` from `Submodule.mem_sup.1 h0`. Use `⟨Submodule.Quotient.mk ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [f, Submodule.mapQ_apply]`.
-
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion]`. Rewrite using `[← hbp]`. Simplify using `using P.neg_mem hp`. Introduce and unpack `⟨x, hx⟩`.
-
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← hx]`. Use `show (Submodule.Quotient.mk (Submodule.inclusion hBA x) : ↥A ⧸ (B ⊔ P).comap A.subtype) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion]`. Conclude with `Submodule.mem_sup_left x.2`.
-
-Rewrite using `[Module.length_eq_add_of_exact f g hf hg hex, add_comm]`.
+/- English proof (authored)
+Include B/(B∩P) into A/(A∩P) and then quotient A by A∩(B+P). The inclusion is injective because an element of B represents zero in A/(A∩P) exactly when it is in P. The second map is onto. Its kernel consists of classes of a = b+p, with b in B and p in P. These are precisely the image of the first map, since a and b have the same class. Add lengths in the resulting short exact sequence.
 -/
 theorem len_two_step (A B P : Submodule O M) (hBA : B ≤ A) :
     Module.length O (↥A ⧸ P.comap A.subtype) =
@@ -69,14 +55,8 @@ theorem len_two_step (A B P : Submodule O M) (hBA : B ≤ A) :
       exact Submodule.mem_sup_left x.2
   rw [Module.length_eq_add_of_exact f g hf hg hex, add_comm]
 
-/- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [Finset.range_zero, Finset.sum_empty, zero_add]`. Establish `e : (P.comap (F 0).subtype).map (((LinearEquiv.ofEq _ _ hF0).trans Submodule.topEquiv : ↥(F 0) ≃ₗ[O] M) : ↥(F 0) →ₗ[O] M) = P`. Use extensionality with `x`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`. Conclude with `⟨⟨x, by rw [hF0]; trivial⟩, by simpa using hx, rfl⟩`.
-
-Conclude with `le_of_eq ((Submodule.Quotient.equiv _ P _ e).length_eq).symm`. Consider the case `succ k ih`. Establish `ih'` using `ih (fun i hi => hF i (by omega))`. Rewrite `ih'` using `[len_two_step (F k) (F (k + 1)) P (hF k (by omega))]`. Rewrite using `[Finset.sum_range_succ, add_assoc]`.
-
-Conclude with `ih'`.
+/- English proof (authored)
+At k = 0 the initial term is the quotient M/P, since F₀ is the full module. In the induction step apply the two-step length equality to Fₖ₊₁ ≤ Fₖ. It rewrites the old terminal length as the next layer length plus the next terminal length. Insert that equality into the bound for k and append the new summand.
 -/
 theorem len_chain (P : Submodule O M) (k : ℕ) (F : ℕ → Submodule O M) (hF0 : F 0 = ⊤)
     (hF : ∀ i < k, F (i + 1) ≤ F i) :
@@ -101,18 +81,8 @@ theorem len_chain (P : Submodule O M) (k : ℕ) (F : ℕ → Submodule O M) (hF0
     rw [Finset.sum_range_succ, add_assoc]
     exact ih'
 
-/- English proof (translation)
-Establish `hsZ : ∀ x ∈ s, x ∈ Z` using `fun x hx => hZ ▸ Submodule.mem_sup_left (Submodule.subset_span hx)`. Set `v : s → (↥Z ⧸ I.comap Z.subtype)` to `fun x => Submodule.Quotient.mk ⟨x.1, hsZ x.1 x.2⟩`. Establish `hkill : ∀ i, (a ^ e) • v i = 0`. Introduce `i`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
-
-Conclude with `hI i.1 (hsZ i.1 i.2)`. Establish `hspan : Submodule.span O (Set.range v) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`.
-
-Set `T : Submodule O M` to `((Submodule.span O (Set.range v)).comap (I.comap Z.subtype).mkQ).map Z.subtype`. Establish `hT : Z ≤ T`. Rewrite using `[← hZ]`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
-
-Introduce `y hy`. Conclude with `⟨⟨y, hsZ y hy⟩, Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩, rfl⟩`. Introduce `b hb`. Establish `hbZ : b ∈ Z` using `hZ ▸ Submodule.mem_sup_right hb`. Use `⟨⟨b, hbZ⟩, ?_, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr (by simpa using hBc hb)]`. Conclude with `Submodule.zero_mem _`. Take `⟨z', hz', hzz⟩` from `hT hz`. Establish `hz'' : z' = ⟨z, hz⟩` using `Subtype.ext hzz`. Substitute `hz''` using the available equality.
-
-Conclude with `hz'`. Establish `h1` using `length_le_of_span v (a ^ e) hspan hkill`. Establish `h2` using `length_quot_pow_le a e`. Rewrite `h1` using `[Fintype.card_coe]`. Combine the equalities or inequalities in the displayed calculation.
+/- English proof (authored)
+Since Bc is contained in I, its image is zero in Z/(Z∩I). The equality Z = span(s)+Bc then says the classes of s generate the quotient. They are killed by a^e, and therefore give a surjection from |s| copies of O/(a^e). Each copy has length at most e times the length of O/(a). Use |s| ≤ g to finish.
 -/
 theorem len_bound (a : O) (g e : ℕ) (Z Bc I : Submodule O M) (s : Finset M)
     (hcard : s.card ≤ g) (hZ : Submodule.span O (s : Set M) ⊔ Bc = Z) (hBc : Bc ≤ I)
@@ -157,12 +127,8 @@ theorem len_bound (a : O) (g e : ℕ) (Z Bc I : Submodule O M) (s : Finset M)
         gcongr
     _ = _ := (mul_assoc _ _ _).symm
 
-/- English proof (translation)
-Take `⟨n, bF⟩` from `Submodule.basisOfPid (Module.Free.chooseBasis O M) F`. Set `s : Finset M` to `Finset.univ.image (fun i => (bF i : M))`. Establish `hcard : s.card ≤ Module.finrank O M`. Combine the equalities or inequalities in the displayed calculation. Establish `hspan : Submodule.span O (s : Set M) ⊔ ⊥ = F`.
-
-Rewrite using `[sup_bot_eq]`. Establish `hs : (s : Set M) = F.subtype '' Set.range bF`. Use extensionality with `x`. Simplify using `[s]`. Rewrite using `[hs, Submodule.span_image, bF.span_eq, Submodule.map_top, Submodule.range_subtype]`.
-
-Establish `h` using `len_bound a (Module.finrank O M) e F ⊥ P s hcard hspan bot_le hF`. Combine the equalities or inequalities in the displayed calculation.
+/- English proof (authored)
+Take a basis of F over the principal ideal domain and view its vectors in M. They form a finite spanning set of size at most the rank of F, which is at most the rank of M. Apply len_bound with Bc = 0, I = P, and g equal to the rank of M, using the hypothesis that a^e kills the classes of F modulo P.
 -/
 theorem sub_gen [IsDomain O] [IsPrincipalIdealRing O] [Module.Free O M] [Module.Finite O M]
     (a : O) (e : ℕ) (F P : Submodule O M) (hF : ∀ x ∈ F, a ^ e • x ∈ P) :
@@ -188,16 +154,8 @@ theorem sub_gen [IsDomain O] [IsPrincipalIdealRing O] [Module.Free O M] [Module.
 end ColAsm
 
 open ColAsm in
-/- English proof (translation)
-Introduce `O _ _ _ M _ _ _ _ ℓ P k F gen m e e' L hF0 hF hgen hG hN hk`. Establish `hchain` using `len_chain P k F hF0 hF`. Establish `hlast` using `sub_gen ℓ e (F k) P hk`. Establish `hterm : ∀ i ∈ Finset.range k, Module.length O (↥(F i) ⧸ (F (i + 1) ⊔ P).comap (F i).subtype) ≤ (if i ∈ gen then ((m * e' : ℕ) : ℕ∞) else (L : ℕ∞)) * Module.length O (O ⧸ Ideal.span {ℓ})`. Introduce `i hi`.
-
-Rewrite `hi` using `[Finset.mem_range]`. Use `split_ifs with hig`. Take `⟨⟨s, hs, hsF, hFs⟩, hl⟩` from `hG i hig`. Establish `hZ : Submodule.span O (s : Set M) ⊔ F (i + 1) = F i` using `le_antisymm (sup_le (Submodule.span_le.2 hsF) (hF i hi)) hFs`. Establish `h1` using `len_bound ℓ m e' (F i) (F (i + 1)) (F (i + 1) ⊔ P) s hs hZ le_sup_left hl`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hN i hi hig`. Establish `hcount : ∑ i ∈ Finset.range k, (if i ∈ gen then ((m * e' : ℕ) : ℕ∞) else (L : ℕ∞)) = ((gen.card * m * e' + (k - gen.card) * L : ℕ) : ℕ∞)`. Rewrite using `[Finset.sum_ite, Finset.sum_const, Finset.sum_const, Finset.filter_mem_eq_inter, Finset.inter_eq_right.2 hgen]`. Establish `hsd : (Finset.range k).filter (fun i => i ∉ gen) = Finset.range k \ gen`.
-
-Use extensionality with `x`. Simplify using `[Finset.mem_sdiff]`. Rewrite using `[hsd, Finset.card_sdiff, Finset.inter_eq_left.2 hgen, Finset.card_range, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hsum : ∑ i ∈ Finset.range k, Module.length O (↥(F i) ⧸ (F (i + 1) ⊔ P).comap (F i).subtype) ≤ ((gen.card * m * e' + (k - gen.card) * L : ℕ) : ℕ∞) * Module.length O (O ⧸ Ideal.span {ℓ})`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+/- English proof (authored)
+Use len_chain to bound the length by the sum of layer lengths and the terminal length. For i in gen, the chosen generators and Fᵢ₊₁ span Fᵢ, so len_bound applies with Bc = Fᵢ₊₁ and I = Fᵢ₊₁+P. This gives coefficient me′ in units of the length of O/(ℓ). For each other i, the assumed bound gives coefficient L. There are |gen| indices of the first kind and k−|gen| of the second because gen is contained in the index range. Add the layer estimates. Finally sub_gen gives coefficient rank(M)·e for the terminal length. Factoring out the common length proves the formula.
 -/
 theorem column_assembly_bound : ColAssembly := by
   intro O _ _ _ M _ _ _ _ ℓ P k F gen m e e' L hF0 hF hgen hG hN hk

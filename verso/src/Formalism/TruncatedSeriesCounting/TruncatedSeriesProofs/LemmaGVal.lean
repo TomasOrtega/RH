@@ -5,8 +5,8 @@ namespace Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains
 
 open Finset
 
-/- English proof (translation)
-Rewrite using `[Finset.sum_image]`. Introduce `a _ b _ h`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The map j ↦ j₀−j is injective, so replacing the indices by their images preserves the sum. The weight of each image index i is vℓ(i).
 -/
 private lemma sum_shift_val (ℓ : ℕ) (j₀ : ℤ) (T : Finset ℤ) :
     ∑ j ∈ T, padicValInt ℓ (j₀ - j) = ∑ i ∈ T.image (fun j => j₀ - j), padicValInt ℓ i := by
@@ -15,46 +15,10 @@ private lemma sum_shift_val (ℓ : ℕ) (j₀ : ℤ) (T : Finset ℤ) :
   simp only at h
   omega
 
-/- English proof (translation)
-Introduce `ℓ _ h η S b a S₂ hb hbS hS₂ j₀ hj₀`. Rewrite `hj₀` using `[Finset.mem_Icc]`. Take `⟨hj1, hj2⟩` from `hj₀`. Establish `hℓ : (2 : ℝ) ≤ ℓ` using `by exact_mod_cast (Fact.out : ℓ.Prime).two_le`. Establish `hmem : ∀ j ∈ S₂, ((b : ℤ) + 1 ≤ j ∧ j ≤ (b : ℤ) + S + a) ∨ (1 - (η : ℤ) ≤ j ∧ j ≤ (η : ℤ) + a)`.
+/- English proof (authored)
+Split S₂ at b. Combine its portion above b with the indices in [b−a+1,b] other than j₀, since these two sets are disjoint. The other portion of S₂ lies in [1−η,η+a]. Reindex both sums injectively by i = j₀−j. The first image lies in the half-open interval starting at j₀−b−S−a of length 2a+S. The second lies in the interval starting at j₀−η−a of length 2η+a. Neither contains zero, since j₀ was removed from the central interval and the two ranges for S₂ lie outside it. The bounds on b and S also give |i| ≤ 2(h+η) in both images.
 
-Introduce `j hj`. Use `hS₂ hj` as an intermediate fact. Simplify `this` using `only [Finset.mem_union, Finset.mem_Icc]`. Use `set T₁ : Finset ℤ := (Finset.Icc ((b : ℤ) - a + 1) b).erase j₀ ∪ S₂.filter (fun j => (b : ℤ) < j) with hT₁`. Use `set T₂ : Finset ℤ := S₂.filter (fun j => ¬ (b : ℤ) < j) with hT₂`.
-
-Establish `hsplit : (∑ j ∈ (Finset.Icc ((b : ℤ) - a + 1) (b : ℤ)).erase j₀, padicValInt ℓ (j₀ - j)) + ∑ j ∈ S₂, padicValInt ℓ (j₀ - j) = ∑ j ∈ T₁, padicValInt ℓ (j₀ - j) + ∑ j ∈ T₂, padicValInt ℓ (j₀ - j)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S₂ (fun j => (b : ℤ) < j), ← add_assoc, hT₁, hT₂, Finset.sum_union]`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Establish `h1` using `(Finset.mem_Icc.mp (Finset.mem_of_mem_erase hx)).2`.
-
-Establish `h2` using `(Finset.mem_filter.mp hx').2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, sum_shift_val, sum_shift_val]`. Establish `c1 : T₁.image (fun j => j₀ - j) ⊆ Finset.Ico (j₀ - b - S - a) (j₀ - b - S - a + ((2 * a + S : ℕ) : ℤ))`. Introduce `i hi`.
-
-Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, rfl⟩` from `hi`. Rewrite using `[Finset.mem_Ico]`. Use `push_cast`. Rewrite `hj` using `[hT₁, Finset.mem_union]`.
-
-Break down `hj with hj | hj` into its components or cases. Use `Finset.mem_Icc.mp (Finset.mem_of_mem_erase hj)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `(Finset.mem_filter.mp hj).2`. Establish `h2` using `hmem j (Finset.mem_filter.mp hj).1`.
-
-Use linear arithmetic over natural numbers and integers. Establish `c2 : (0 : ℤ) ∉ T₁.image (fun j => j₀ - j)`. Introduce `hi`. Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, hj0⟩` from `hi`.
-
-Rewrite `hj` using `[hT₁, Finset.mem_union]`. Break down `hj with hj | hj` into its components or cases. Use `Finset.ne_of_mem_erase hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `(Finset.mem_filter.mp hj).2`.
-
-Use linear arithmetic over natural numbers and integers. Establish `c3 : ∀ i ∈ T₁.image (fun j => j₀ - j), |i| ≤ ((2 * (h + η) : ℕ) : ℤ)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, rfl⟩` from `hi`.
-
-Use `push_cast`. Rewrite `hj` using `[hT₁, Finset.mem_union]`. Rewrite using `[abs_le]`. Break down `hj with hj | hj` into its components or cases. Use `Finset.mem_Icc.mp (Finset.mem_of_mem_erase hj)` as an intermediate fact.
-
-Apply the tactic sequence `constructor <;> omega`. Establish `h1` using `(Finset.mem_filter.mp hj).2`. Establish `h2` using `hmem j (Finset.mem_filter.mp hj).1`. Apply the tactic sequence `constructor <;> omega`. Establish `d1 : T₂.image (fun j => j₀ - j) ⊆ Finset.Ico (j₀ - η - a) (j₀ - η - a + ((2 * η + a : ℕ) : ℤ))`.
-
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, rfl⟩` from `hi`. Rewrite using `[Finset.mem_Ico]`. Use `push_cast`.
-
-Establish `h1` using `(Finset.mem_filter.mp hj).2`. Establish `h2` using `hmem j (Finset.mem_filter.mp hj).1`. Use linear arithmetic over natural numbers and integers. Establish `d2 : (0 : ℤ) ∉ T₂.image (fun j => j₀ - j)`. Introduce `hi`.
-
-Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, hj0⟩` from `hi`. Establish `h1` using `(Finset.mem_filter.mp hj).2`. Establish `h2` using `hmem j (Finset.mem_filter.mp hj).1`. Use linear arithmetic over natural numbers and integers.
-
-Establish `d3 : ∀ i ∈ T₂.image (fun j => j₀ - j), |i| ≤ ((2 * (h + η) : ℕ) : ℤ)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_image]`. Take `⟨j, hj, rfl⟩` from `hi`. Use `push_cast`.
-
-Rewrite using `[abs_le]`. Establish `h1` using `(Finset.mem_filter.mp hj).2`. Establish `h2` using `hmem j (Finset.mem_filter.mp hj).1`. Apply the tactic sequence `constructor <;> omega`. Establish `w1` using `Formalism.WindowSums.arc_WindowSum ℓ (j₀ - b - S - a) (2 * a + S) (2 * (h + η)) _ c1 c2 c3`.
-
-Establish `w2` using `Formalism.WindowSums.arc_WindowSum ℓ (j₀ - η - a) (2 * η + a) (2 * (h + η)) _ d1 d2 d3`. Establish `hDpos : (1 : ℝ) ≤ ((2 * (h + η) : ℕ) : ℝ)`. Establish `: 1 ≤ 2 * (h + η)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hlog : 0 ≤ Real.logb ℓ ((2 * (h + η) : ℕ) : ℝ)` using `Real.logb_nonneg (by linarith) hDpos`.
-
-Establish `hlam : lam ℓ (h + η) = Real.logb ℓ ((2 * (h + η) : ℕ) : ℝ) + 1`. Simplify using `only [lam]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hsum : ((2 * a + S : ℕ) : ℝ) / ((ℓ : ℝ) - 1) + ((2 * η + a : ℕ) : ℝ) / ((ℓ : ℝ) - 1) = (3 * (a : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((ℓ : ℝ) - 1)`.
-
-Rewrite using `[← add_div]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hlam]`. Move the coercions through the operations in `at w1 w2 hlog hsum ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Apply the valuation window estimate to both images and sum. The length contribution is (3a+S+2η)/(ℓ−1). The logarithmic contribution is twice log base ℓ of 2(h+η), which is at most 3 lam(ℓ,h+η) by the definition of lam and nonnegativity of that logarithm.
 -/
 theorem g_coeff_valuation_statement : LemmaGVal := by
   intro ℓ _ h η S b a S₂ hb hbS hS₂ j₀ hj₀

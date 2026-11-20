@@ -36,8 +36,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Supply the required witnesses or components.
+/- English proof (authored)
+A closed immersion identifies its source with its scheme-theoretic image. This image is the closed subscheme of its kernel ideal sheaf, which is the specified ideal. The identification followed by the subscheme inclusion is the original immersion.
 -/
 private theorem exists_iso_subscheme_of_ker_eq {Z X : Scheme.{u}} (i : Z ⟶ X)
     [IsClosedImmersion i] (I : X.IdealSheafData) (hI : Scheme.Hom.ker i = I) :
@@ -45,10 +45,8 @@ private theorem exists_iso_subscheme_of_ker_eq {Z X : Scheme.{u}} (i : Z ⟶ X)
   subst hI
   exact ⟨asIso i.toImage, i.toImage_imageι⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Identify each of the two closed immersions with the inclusion of the closed subscheme of its ideal. By hypothesis the second ideal is the pullback of the first, so the canonical map between these two closed subschemes gives a pullback square over the ambient map. Transport the square through the identifications to get the comparison of the original sources.
 -/
 theorem exists_isPullback_of_ker_eq_comap {Z X Z' X' : Scheme.{u}} (i : Z ⟶ X)
     [IsClosedImmersion i] (i' : Z' ⟶ X') [IsClosedImmersion i'] (g : X' ⟶ X)
@@ -70,10 +68,8 @@ abbrev opensPreimageProjLeft (k : Type u) [Field k] (M p : ℕ)
     (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin p))).Opens :=
   (Opens.map (projLeft k M p).base).obj U
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the open maps by the zero-coordinate inclusion to a point whose first projection is its original image in the open. The new point is therefore in the inverse image open and lies in the range of its inclusion.
 -/
 theorem range_affineSpaceInl_subset_range_opensPreimageProjLeft (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) :
@@ -90,8 +86,8 @@ theorem range_affineSpaceInl_subset_range_opensPreimageProjLeft (k : Type u) [Fi
     exact x.2
   exact ⟨⟨(U.ι ≫ affineSpaceInl k M p) x, hmem⟩, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The zero-coordinate inclusion on the given open has image in the inverse image open, so it factors uniquely through its open immersion. Following the factor by the restricted projection gives the identity because composing with the original open inclusion gives that inclusion, and the inclusion is a monomorphism.
 -/
 private theorem exists_zeroSectionOverOpen (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) :
@@ -112,8 +108,8 @@ def zeroSectionOverOpen (k : Type u) [Field k] (M p : ℕ)
   (exists_zeroSectionOverOpen k M p U).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The zero section over the open is the chosen factorization of the original zero-coordinate inclusion through the inverse image open. Its composite with that open inclusion is therefore the original inclusion restricted to the given open.
 -/
 theorem zeroSectionOverOpen_comp_ι (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) :
@@ -121,8 +117,8 @@ theorem zeroSectionOverOpen_comp_ι (k : Type u) [Field k] (M p : ℕ)
   (exists_zeroSectionOverOpen k M p U).choose_spec.1
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First compose the restricted zero section with the inverse image open inclusion, which gives the original zero-coordinate inclusion restricted to the open. Then compose both equal maps with the given morphism.
 -/
 theorem zeroSectionOverOpen_comp_ι_assoc (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) {Z : Scheme.{u}}
@@ -131,8 +127,8 @@ theorem zeroSectionOverOpen_comp_ι_assoc (k : Type u) [Field k] (M p : ℕ)
   rw [← Category.assoc, zeroSectionOverOpen_comp_ι, Category.assoc]
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen zero section is a section of the restricted first projection, so their composite is the identity of the open.
 -/
 theorem zeroSectionOverOpen_comp_restrict (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) :
@@ -140,8 +136,8 @@ theorem zeroSectionOverOpen_comp_restrict (k : Type u) [Field k] (M p : ℕ)
   (exists_zeroSectionOverOpen k M p U).choose_spec.2
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The restricted projection after the zero section is the identity. Following that composite by the given map therefore gives the map itself.
 -/
 theorem zeroSectionOverOpen_comp_restrict_assoc (k : Type u) [Field k] (M p : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens) {Z : Scheme.{u}}
@@ -149,10 +145,8 @@ theorem zeroSectionOverOpen_comp_restrict_assoc (k : Type u) [Field k] (M p : �
     zeroSectionOverOpen k M p U ≫ (projLeft k M p ∣_ U) ≫ g = g := by
   rw [← Category.assoc, zeroSectionOverOpen_comp_restrict, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The product map sends the zero section to the zero section after the given map. On the first block both composites give the given map since projection splits the zero section. On the second block both give the zero coordinates over the same field map. To show that the square is a pullback, paste it with the product map's pullback square over the first projection. The outer rectangle has identity horizontal maps because both zero sections split their projections. It is a pullback, so cancellation of the product square proves the claim.
 -/
 theorem isPullback_zeroSectionOverOpen (k : Type u) [Field k] (M p c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).Opens)
@@ -173,8 +167,8 @@ theorem isPullback_zeroSectionOverOpen (k : Type u) [Field k] (M p c : ℕ)
     exact IsPullback.of_horiz_isIso ⟨by simp⟩
   exact IsPullback.of_right hs hcomm (isPullback_prodMapOnPreimage k M p c U q hq).flip
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+A coordinate pulled back along the composite is pulled back first to the intermediate scheme and then to the source, by functoriality of sections.
 -/
 private theorem pullbackCoord_comp_eq_appTop {k : Type u} [Field k] {T Y : Scheme.{u}}
     {n : Type u} (a : T ⟶ Y) (g : Y ⟶ affineSpaceIndexedBy k n) (i : n) :
@@ -183,22 +177,22 @@ private theorem pullbackCoord_comp_eq_appTop {k : Type u} [Field k] {T Y : Schem
 def uliftFinSumEquiv (c p : ℕ) : ULift.{u, 0} (Fin c ⊕ Fin p) ≃ ULift.{u, 0} (Fin (c + p)) :=
   Equiv.ulift.trans (finSumFinEquiv.trans Equiv.ulift.symm)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The indexing bijection places the first block at the beginning of the combined list. The index in this block retains its original position.
 -/
 theorem uliftFinSumEquiv_inl (c p : ℕ) (i : Fin c) :
     uliftFinSumEquiv.{u} c p ⟨Sum.inl i⟩ = ⟨Fin.castAdd p i⟩ :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The indexing bijection places the second block after the whole first block. Its index in the combined list is therefore shifted by the length of the first block.
 -/
 theorem uliftFinSumEquiv_inr (c p : ℕ) (j : Fin p) :
     uliftFinSumEquiv.{u} c p ⟨Sum.inr j⟩ = ⟨Fin.natAdd c j⟩ :=
   rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The forward affine-space isomorphism uses the inverse bijection on coordinate indices, so the pulled-back coordinate is the original coordinate at that inverse image.
 -/
 private theorem pullbackCoord_affineSpaceIsoOfEquiv_hom (k : Type u) [Field k] {n m : Type u}
     (e : n ≃ m) (i : m) :
@@ -206,12 +200,8 @@ private theorem pullbackCoord_affineSpaceIsoOfEquiv_hom (k : Type u) [Field k] {
       AffineSpace.coord (Spec (CommRingCat.of k)) (e.symm i) := by
   simp [pullbackCoord]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The composite is over the field. After undoing the coordinate reindexing, a coordinate lies in one of the two blocks. In the first block it pulls back along the origin and is zero. In the second block it pulls back along the zero-coordinate inclusion and is already zero. A map over the field with all coordinates zero is the origin of the combined space.
 -/
 theorem affineSpaceOrigin_comp_affineSpaceInl_affineSpaceIsoOfEquiv (k : Type u) [Field k] (c p : ℕ) :
     affineSpaceOrigin k c ≫ affineSpaceInl k c p ≫
@@ -236,8 +226,8 @@ theorem affineSpaceOrigin_comp_affineSpaceInl_affineSpaceIsoOfEquiv (k : Type u)
 
 namespace HasSmoothCoordCodim
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the given pullback with the canonical pullback of the closed immersion. The ideal of the resulting closed subscheme is the pullback of the original defining ideal. The identification is an isomorphism on the source, which preserves the kernel ideal.
 -/
 private theorem ker_eq_comap_ker_of_isPullback_closedImmersion {Z X X' W : Scheme.{u}}
     (i : Z ⟶ X) [IsClosedImmersion i] (g : X' ⟶ X) (j : W ⟶ X') (a : W ⟶ Z)
@@ -246,18 +236,10 @@ private theorem ker_eq_comap_ker_of_isPullback_closedImmersion {Z X X' W : Schem
   rw [← H.flip.isoPullback_hom_fst, Scheme.Hom.ker_comp_of_isIso,
     Scheme.IdealSheafData.ker_fst_of_isClosedImmersion]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+At each point choose an original smooth coordinate chart for the closed immersion and take its inverse image under the first projection of the enlarged affine space. The enlarged point belongs to this open since the projection undoes the zero-coordinate inclusion. The product of the original coordinate map and the unchanged added block is smooth and preserves the structural map to the field. Reindex its two blocks together.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+The restriction of the original immersion is defined by the pullback of the original ideal. In the original chart, this restriction is also the pullback of the origin in the coordinate space. The restricted zero section is a pullback of the enlarged zero inclusion, and the product chart carries it to the corresponding zero section in the chart's target. Pasting these pullbacks identifies the restriction of the enlarged immersion with the pullback of the enlarged origin along the reindexed product chart. The origin ideal is generated by all coordinates, so the restricted defining ideal is the pullback of the coordinate ideal for the original number of equations plus the number of added coordinates.
 -/
 theorem comp_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] {M c : ℕ} {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ] (p : ℕ)
@@ -319,8 +301,8 @@ theorem comp_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field 
           (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} c p) (Spec (CommRingCat.of k))).hom) _ _ hW3.flip,
       ker_affineSpaceOrigin]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Adding the zero-coordinate block increases the smooth coordinate codimension by the size of the block. Reindexing the two blocks by an isomorphism over the field preserves that codimension, so the final composite has the stated value.
 -/
 theorem comp_affineSpaceInl_affineSpaceIsoOfEquiv (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] {M c : ℕ} {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ] (p : ℕ)

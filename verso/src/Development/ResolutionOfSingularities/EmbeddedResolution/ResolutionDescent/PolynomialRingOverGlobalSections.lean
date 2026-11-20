@@ -24,8 +24,8 @@ def mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ) :
         (ULift.up (Sum.inr i) : ULift.{u} (Fin M ⊕ Fin n)))
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluation sends a coefficient to its pullback along the first projection. A constant polynomial therefore has exactly the stated image.
 -/
 theorem mvPolynomialToSumCoordinateRing_C (k : Type u) [Field k] (M n : ℕ)
     (t : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -33,8 +33,8 @@ theorem mvPolynomialToSumCoordinateRing_C (k : Type u) [Field k] (M n : ℕ)
   simp [mvPolynomialToSumCoordinateRing]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Evaluation sends each new variable to its chosen section, which is the corresponding coordinate in the second block.
 -/
 theorem mvPolynomialToSumCoordinateRing_X (k : Type u) [Field k] (M n : ℕ) (i : Fin n) :
     mvPolynomialToSumCoordinateRing k M n (MvPolynomial.X i) =
@@ -42,22 +42,20 @@ theorem mvPolynomialToSumCoordinateRing_X (k : Type u) [Field k] (M n : ℕ) (i 
         (ULift.up (Sum.inr i) : ULift.{u} (Fin M ⊕ Fin n)) := by
   simp [mvPolynomialToSumCoordinateRing]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Pullback of sections along a composite is successive pullback in reverse order. Evaluate this functoriality identity on the given section.
 -/
 private theorem comp_appTop_apply_eq {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (t : Γ(Z, ⊤)) :
     (f ≫ g).appTop t = f.appTop (g.appTop t) := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback along the identity scheme map is the identity on global sections.
 -/
 private theorem id_appTop_apply (X : Scheme.{u}) (t : Γ(X, ⊤)) :
     (𝟙 X : X ⟶ X).appTop t = t := by simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A coefficient section enters the sum coordinate ring by first-block pullback. The projection identity then identifies its pullback on the source with the coefficient pulled back through the original ambient map and the given ring map. A new variable pulls back to its assigned generator. The formula follows on all polynomials because both operations preserve addition and multiplication.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_mvPolynomial (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -82,24 +80,24 @@ theorem specToAffineSpaceExtendCoords_appTop_mvPolynomial (k : Type u) [Field k]
       simp only [map_mul, MvPolynomial.eval₂_mul, mvPolynomialToSumCoordinateRing_X, hp,
         specToAffineSpaceExtendCoords_appTop_coord_inr, MvPolynomial.map_X, MvPolynomial.eval₂_X]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed subscheme of an affine scheme is affine and its coordinate ring is a quotient of the ambient coordinate ring. The map on global sections is that quotient map, so it is surjective.
 -/
 private theorem appTop_surjective_of_isClosedImmersion {X Y : Scheme.{u}}
     (f : X ⟶ Y) [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsClosedImmersion f] :
     Function.Surjective ⇑((f.appTop).hom) :=
   (AlgebraicGeometry.IsClosedImmersion.isAffine_surjective_of_isAffine (f := f)).2
 
-/- English proof (translation)
-By extensionality, compare the relevant components. A detailed English derivation is pending.
+/- English proof (authored)
+The maps on global sections agree on each section by hypothesis. Equality of ring maps follows from pointwise equality.
 -/
 private theorem appTop_ext {X Y : Scheme.{u}} {f g : X ⟶ Y}
     (h : ∀ t : Γ(Y, ⊤), f.appTop t = g.appTop t) : f.appTop = g.appTop := by
   ext t
   exact h t
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The identification of a ring with the global sections of its spectrum is natural. Under it, pullback along the map of spectra sends the section of the given element to the section of its image under the ring map.
 -/
 private theorem specMap_appTop_ΓSpecIso_inv {R S : CommRingCat.{u}} (f : R ⟶ S) (r : R) :
     (Spec.map f).appTop ((Scheme.ΓSpecIso R).inv r) = (Scheme.ΓSpecIso S).inv (f r) := by
@@ -118,8 +116,8 @@ private def globalSectionsToPolynomialRing (k : Type u) [Field k] (M n : ℕ) :
       Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+*
         MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map includes the section ring as the coefficient ring. Thus each section is sent to its constant polynomial.
 -/
 private theorem globalSectionsToPolynomialRing_apply (k : Type u) [Field k] (M n : ℕ)
     (t : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -138,8 +136,8 @@ private def affineSpaceSumToSpecPolynomialRing (k : Type u) [Field k] (M n : ℕ
   (affineSpaceIndexedBy k (ULift.{u} (Fin M ⊕ Fin n))).isoSpec.hom ≫
     Spec.map (CommRingCat.ofHom (mvPolynomialToSumCoordinateRing k M n))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map from the polynomial spectrum is the extended coordinate map for the coefficient inclusion and the new polynomial variables. Its composite with the target structural map is the structure map through the original affine block, by the structural identity for extended coordinates.
 -/
 private theorem comp_affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (M n : ℕ) :
     specPolynomialRingToAffineSpaceSum k M n ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin M ⊕ Fin n)) =
@@ -148,8 +146,8 @@ private theorem comp_affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (M n :
   specToAffineSpaceExtendCoords_comp_toSpec k (affineSpaceIndexedBy k (ULift.{u} (Fin M)))
     (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first block pulls back through the coefficient inclusion on global sections. The original coordinate therefore becomes its constant polynomial, viewed as a section on the spectrum.
 -/
 private theorem appTop_coord_inl_eq_C (k : Type u) [Field k] (M n : ℕ) (a : Fin M) :
     (specPolynomialRingToAffineSpaceSum k M n).appTop
@@ -162,8 +160,8 @@ private theorem appTop_coord_inl_eq_C (k : Type u) [Field k] (M n : ℕ) (a : Fi
   rw [Category.comp_id, specHomOfGlobalSections_appTop] at h
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The selected generators are the new polynomial variables. A second-block coordinate therefore pulls back to the section of its corresponding variable.
 -/
 private theorem appTop_coord_inr_eq_X (k : Type u) [Field k] (M n : ℕ) (j : Fin n) :
     (specPolynomialRingToAffineSpaceSum k M n).appTop
@@ -173,8 +171,8 @@ private theorem appTop_coord_inr_eq_X (k : Type u) [Field k] (M n : ℕ) (j : Fi
   specToAffineSpaceExtendCoords_appTop_coord_inr k (affineSpaceIndexedBy k (ULift.{u} (Fin M)))
     (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n) j
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map to the polynomial spectrum is induced by the sum coordinate ring map after the canonical affine identification. Pullback of the section of a polynomial along the map of spectra gives the section of its image by naturality. Pulling back along the affine identification then recovers that image as a section of the sum affine space.
 -/
 private theorem appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ)
     (r : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -192,14 +190,8 @@ private theorem appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing (k : Typ
   rw [h2, h1]
   simp [Scheme.isoSpec_hom, Scheme.toSpecΓ_appTop]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compose the map from the sum affine space to the polynomial spectrum with the extended coordinate map back to the sum space. The composite is over the field because coefficient inclusion followed by the sum coordinate map recovers the original structural pullback on field sections. Each original coordinate goes to its constant polynomial and then to the same first-block coordinate. Each added coordinate goes to its variable and then to the same second-block coordinate. Thus the composite is the identity by the coordinate characterization. For any section of the sum space, pull it back to the polynomial spectrum and regard it as a polynomial. The identity just established shows that this polynomial maps to the given section.
 -/
 private theorem mvPolynomialToSumCoordinateRing_surjective (k : Type u) [Field k] (M n : ℕ) :
     Function.Surjective ⇑(mvPolynomialToSumCoordinateRing k M n) := by
@@ -227,8 +219,8 @@ private theorem mvPolynomialToSumCoordinateRing_surjective (k : Type u) [Field k
     Iso.hom_inv_id_apply]
   exact hx
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The original embedding is a closed immersion into an affine scheme, so its map on sections is surjective. Changing polynomial coefficients along a surjection is surjective because each polynomial has finitely many coefficients to lift. Apply this to the indicated relation.
 -/
 theorem exists_mvPolynomial_map_appTop_eq (k : Type u) [Field k] (A : Scheme.{u}) (M : ℕ)
     (e : A ⟶ affineSpaceIndexedBy k (ULift.{u} (Fin M)))
@@ -240,24 +232,10 @@ theorem exists_mvPolynomial_map_appTop_eq (k : Type u) [Field k] (A : Scheme.{u}
     (appTop_surjective_of_isClosedImmersion e) (rel j)
   exact ⟨P, hP⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+First pull the kernel back to the polynomial ring over the original affine-space sections. By the coordinate evaluation formula, it is the inverse image under coefficient change of the ideal of relations in the ambient section ring. The lifted relations map onto those generators. Since coefficient change is surjective, the inverse image is the ideal generated by the lifts plus the kernel of coefficient change. That kernel consists of polynomials whose coefficients lie in the original embedding ideal, so it is generated by the constant images of that ideal.
 
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The map from this polynomial ring to the sum coordinate ring is surjective, so mapping the pulled-back kernel forward recovers the desired kernel. The lifted relations map to the stated section generators, and the constant embedding ideal maps to its extension along the first-block projection. This gives the sum in the statement.
 -/
 theorem ker_specToAffineSpaceExtendCoords_appTop (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -351,8 +329,8 @@ theorem ker_specToAffineSpaceExtendCoords_appTop (k : Type u) [Field k] (A : Sch
     rfl
   rw [hrange, sup_comm]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse image of a basic open is the basic open of its pulled-back section. The pulled-back section is a unit, so this open is the whole source.
 -/
 theorem preimage_basicOpen_specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)

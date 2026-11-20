@@ -22,8 +22,8 @@ def homOfSumCoords {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.
         (fun b => g.appTop (AffineSpace.coord S b)) (e.symm i))
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate index comes from the first block. The inverse indexing bijection returns that first-block index, so the section in the defining vector is its pullback along the first map.
 -/
 theorem homOfSumCoords_appTop_coord_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) (a : n₁) :
@@ -32,8 +32,8 @@ theorem homOfSumCoords_appTop_coord_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n�
   simp [homOfSumCoords]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse indexing bijection places this coordinate in the second block. Its section in the defining vector is the pullback along the second map.
 -/
 theorem homOfSumCoords_appTop_coord_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) (b : n₂) :
@@ -41,8 +41,8 @@ theorem homOfSumCoords_appTop_coord_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n�
       g.appTop (AffineSpace.coord S b) := by
   simp [homOfSumCoords]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both maps to the first affine space have the same structure map by construction. The first-block projection picks out exactly the first map's coordinate sections. Therefore the two maps coincide.
 -/
 private theorem homOfSumCoords_comp_reindex_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) :
@@ -52,8 +52,8 @@ private theorem homOfSumCoords_comp_reindex_inl {n₁ n₂ n : Type u} (e : n₁
   · rw [AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
     simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The shared structure map equals that of the second map by the compatibility assumption. The second-block projection picks out precisely the second map's coordinate sections. These identities give equality.
 -/
 private theorem homOfSumCoords_comp_reindex_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S)
@@ -64,12 +64,8 @@ private theorem homOfSumCoords_comp_reindex_inr {n₁ n₂ n : Type u} (e : n₁
   · rw [AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
     simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The equality of the first projections determines the structure map. Each coordinate index belongs to exactly one of the two blocks because the indexing map is a bijection. For each block the given equality of projections determines its coordinate pullbacks, which are the corresponding entries of the combined map. Thus the original map equals the combined one.
 -/
 private theorem eq_homOfSumCoords_of_comp_reindex {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S)
@@ -92,12 +88,8 @@ private theorem eq_homOfSumCoords_of_comp_reindex {n₁ n₂ n : Type u} (e : n�
       rw [AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply] at h
       simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The projections to the two blocks preserve the structural maps. For any pair of morphisms agreeing over the base, combine their coordinate sections in the indexing order. The resulting affine-space morphism has the two given projections. Any other morphism with these projections has the same structure map and coordinate pullbacks, so it is equal to the combined map. This proves the pullback property.
 -/
 theorem isPullback_reindex_of_sumEquiv {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u}) :
     IsPullback
@@ -157,29 +149,29 @@ def sumUliftEquivUliftSum (n m : ℕ) :
   right_inv := by rintro ⟨a | b⟩ <;> rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On an element in the first block, the bijection retains the same index in the first block of the combined index set.
 -/
 theorem sumUliftEquivUliftSum_inl (n m : ℕ) (a : Fin n) :
     sumUliftEquivUliftSum.{u} n m (Sum.inl (ULift.up a)) = ULift.up (Sum.inl a) := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On an element in the second block, the bijection retains the same index in the second block of the combined index set.
 -/
 theorem sumUliftEquivUliftSum_inr (n m : ℕ) (b : Fin m) :
     sumUliftEquivUliftSum.{u} n m (Sum.inr (ULift.up b)) = ULift.up (Sum.inr b) := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inverse bijection recovers the first summand and the original first-block index.
 -/
 theorem sumUliftEquivUliftSum_symm_inl (n m : ℕ) (a : Fin n) :
     (sumUliftEquivUliftSum.{u} n m).symm (ULift.up (Sum.inl a)) = Sum.inl (ULift.up a) := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inverse bijection recovers the second summand and the original second-block index.
 -/
 theorem sumUliftEquivUliftSum_symm_inr (n m : ℕ) (b : Fin m) :
     (sumUliftEquivUliftSum.{u} n m).symm (ULift.up (Sum.inr b)) = Sum.inr (ULift.up b) := rfl
@@ -195,8 +187,8 @@ def projLeft (k : Type u) [Field k] (n m : ℕ) :
     (fun j : ULift.{u} (Fin n) => (ULift.up (Sum.inl j.down) : ULift.{u} (Fin n ⊕ Fin m)))
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Projection to the second block is a reindexing over the field, so the structural map of the second block composed with this projection is the original structural map.
 -/
 theorem projRight_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     projRight k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin m)) =
@@ -204,8 +196,8 @@ theorem projRight_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : 
   simp [projRight]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of a second-factor coordinate along the second projection is the corresponding coordinate in the second block of the product.
 -/
 theorem projRight_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin m) :
     (projRight k n m).appTop
@@ -215,8 +207,8 @@ theorem projRight_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin m) :
   simp [projRight]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Projection to the first block is a reindexing over the field. Following it by the first block's structural map returns the structural map of the product.
 -/
 theorem projLeft_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     projLeft k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin n)) =
@@ -224,8 +216,8 @@ theorem projLeft_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : �
   simp [projLeft]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first projection pulls a coordinate on the first factor back to its corresponding coordinate in the first block of the product.
 -/
 theorem projLeft_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin n) :
     (projLeft k n m).appTop
@@ -234,8 +226,8 @@ theorem projLeft_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin n) :
         (ULift.up (Sum.inl j) : ULift.{u} (Fin n ⊕ Fin m)) := by
   simp [projLeft]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the pullback result for any partition of the coordinates into two blocks to this disjoint indexing of the two finite coordinate sets.
 -/
 theorem isPullback_projLeft_projRight (k : Type u) [Field k] (n m : ℕ) :
     IsPullback (projLeft k n m) (projRight k n m)
@@ -243,16 +235,16 @@ theorem isPullback_projLeft_projRight (k : Type u) [Field k] (n m : ℕ) :
       (affineSpaceIndexedByToSpec k (ULift.{u} (Fin m))) :=
   isPullback_reindex_of_sumEquiv (sumUliftEquivUliftSum.{u} n m) (Spec (CommRingCat.of k))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection to the second affine space is the base change of the first affine space's structural map along the second structural map. The first structural map is smooth, so its base change is smooth.
 -/
 theorem smooth_projRight (hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     AlgebraicGeometry.Smooth (projRight k n m) :=
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth)
     (isPullback_projLeft_projRight k n m) (hs k n)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projection to the first affine space is the base change of the second affine space's structural map along the first structural map. The second structural map is smooth, so its base change is smooth.
 -/
 theorem smooth_projLeft (hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     AlgebraicGeometry.Smooth (projLeft k n m) := by
@@ -280,8 +272,8 @@ def prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
               (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))))
         i.down)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The product map is constructed from its coordinate sections over the field, using the given inverse image open's structural map. Its composite with the target structural map is therefore the structural map of that open.
 -/
 theorem prodMapOnPreimage_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -290,10 +282,8 @@ theorem prodMapOnPreimage_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k]
       (projLeft k n m ⁻¹ᵁ U).ι ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin n ⊕ Fin m)) := by
   simp [prodMapOnPreimage]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both maps to the second affine block preserve the structural map. They pull back each coordinate to the restriction of the corresponding original second-block coordinate, by the definition of the product map. These equalities determine the morphism.
 -/
 theorem prodMapOnPreimage_comp_projRight (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -307,10 +297,8 @@ theorem prodMapOnPreimage_comp_projRight (k : Type u) [Field k] (n m c : ℕ)
     rw [projRight_appTop_coord, projRight_appTop_coord]
     simp [prodMapOnPreimage]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Both maps to the new first block preserve the structural map because the map out of the open is over the field. Their pullback of a first-block coordinate is the pullback along that map and then along the restricted projection, by the defining vector of the product map. Thus the maps agree.
 -/
 theorem morphismRestrict_projLeft_comp (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -338,8 +326,8 @@ theorem morphismRestrict_projLeft_comp (k : Type u) [Field k] (n m c : ℕ)
       simp [prodMapOnPreimage]
     exact h.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image open is the product of the first-block open and the second affine block over the field. This follows by pasting its open restriction square with the original product square. The target of the product map is also a product over the field. The two projection identities show that the comparison is the given map on the first factor and the identity on the second. Cancelling the target product square gives the stated pullback.
 -/
 theorem isPullback_prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -362,8 +350,8 @@ theorem isPullback_prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
   exact (hstar'.of_bot (morphismRestrict_projLeft_comp k n m c U φ hφ)
     (isPullback_projLeft_projRight k c m)).flip
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The product pullback square identifies the product map with base change of the given smooth map along the projection to the new first block. Smoothness is preserved by base change.
 -/
 theorem smooth_prodMapOnPreimage (_hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)

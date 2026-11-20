@@ -23,8 +23,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In an irreducible space the whole space is irreducible, so maximality makes every irreducible component the whole space. If the support contained a component it would equal the whole space, contrary to its properness.
 -/
 theorem nonzeroOnComponents_of_support_ne_univ {X : Scheme.{u}} [IrreducibleSpace ↥X]
     (I : X.IdealSheafData) (h : (↑I.support : Set ↥X) ≠ Set.univ) :
@@ -34,22 +34,22 @@ theorem nonzeroOnComponents_of_support_ne_univ {X : Scheme.{u}} [IrreducibleSpac
   have hle : (Set.univ : Set ↥X) ⊆ T := hT.2 huniv (Set.subset_univ T)
   exact h (Set.univ_subset_iff.mp (hle.trans hsub))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed immersion induces a closed embedding of underlying topological spaces, and an embedding is injective.
 -/
 private theorem base_injective_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] : Function.Injective ⇑f.base :=
   (Scheme.Hom.isClosedEmbedding f).injective
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map of spaces underlying a closed immersion is a closed embedding. Its image is therefore closed.
 -/
 private theorem isClosed_range_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] : IsClosed (Set.range ⇑f.base) :=
   (Scheme.Hom.isClosedEmbedding f).isClosed_range
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The support of the kernel ideal sheaf is the closure of the morphism's image. The image of a closed immersion is already closed, so it equals that support.
 -/
 private theorem support_ker_eq_range_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] :
@@ -57,14 +57,8 @@ private theorem support_ker_eq_range_of_isClosedImmersion {X Y : Scheme.{u}} (f 
   have hcl := (isClosed_range_of_isClosedImmersion f).closure_eq
   simp [Scheme.Hom.support_ker, hcl]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The larger ambient space is irreducible, so it suffices to show that the composite's support is proper. For the composite closed immersion this support is its image. If the image were all of the larger ambient space, injectivity of the second immersion would force the first to be surjective onto its ambient space. The larger ambient space is nonempty, so surjectivity of the composite also supplies a point of the first ambient space. Any irreducible component through this point would lie in the support of the first immersion's kernel by surjectivity, contradicting its componentwise nonvanishing.
 -/
 theorem nonzeroOnComponents_ker_comp {Y A A' : Scheme.{u}} (j : Y ⟶ A) (i : A ⟶ A')
     [IsClosedImmersion j] [IsClosedImmersion i] [IrreducibleSpace ↥A']
@@ -92,8 +86,8 @@ theorem nonzeroOnComponents_ker_comp {Y A A' : Scheme.{u}} (j : Y ⟶ A) (i : A 
   intro b _
   exact Set.mem_range.mpr (hjsurj b)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The global-section map of a composite pulls back first through its second morphism and then through its first morphism.
 -/
 private theorem appTop_comp_apply_eq {X Y Z : Scheme.{u}} (a : X ⟶ Y) (b : Y ⟶ Z)
     (x : ↑(Z.presheaf.obj (Opposite.op ⊤))) :
@@ -105,14 +99,8 @@ private theorem appTop_comp_apply_eq {X Y Z : Scheme.{u}} (a : X ⟶ Y) (b : Y �
   rw [h]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+For each source coordinate choose a section of the target that pulls back to it. These sections define a morphism back into the source affine space over the base. Its composite after the given map fixes the structure map and every coordinate, so it is the identity. On global sections the given map therefore has a right inverse and is surjective. Between affine schemes this makes the original map a closed immersion.
 -/
 theorem isClosedImmersion_of_coord_surjective {R : CommRingCat.{u}} {N M : Type u}
     (f : AffineSpace N (Spec R) ⟶ AffineSpace M (Spec R))
@@ -157,8 +145,8 @@ def affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ) :
     (coordVectorInr n m (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))))
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The first-block inclusion appends zero coordinates using the original structural map over the field. Thus composing it with the product structural map returns the original structural map.
 -/
 theorem affineSpaceInl_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)) =
@@ -166,26 +154,24 @@ theorem affineSpaceInl_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n
   simp [affineSpaceInl]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The second-block inclusion puts zeros in the first block and is defined over the field. Its composite with the product structure map is the second block's structure map.
 -/
 theorem affineSpaceInrEmbedding_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)) =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) := by
   simp [affineSpaceInrEmbedding]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+A coordinate is a global section, and its pullback along the identity is that same section.
 -/
 private theorem pullbackCoord_id {k : Type u} [Field k] {N : Type u} (j : N) :
     pullbackCoord (𝟙 (affineSpaceIndexedBy k N)) j
       = AffineSpace.coord (Spec (CommRingCat.of k)) j := by
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate vector of the inclusion keeps every first-block coordinate and gives zero in the second block. Pullbacks of target coordinates are the entries of this vector.
 -/
 theorem pullbackCoord_affineSpaceInl (k : Type u) [Field k] (n m : ℕ)
     (i : ULift.{u, 0} (Fin n ⊕ Fin m)) :
@@ -205,25 +191,23 @@ theorem pullbackCoord_affineSpaceInl (k : Type u) [Field k] (n m : ℕ)
       exact pullbackCoord_id _
   | inr _ => rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the coordinate formula for the first-block inclusion to an index in the first block. It returns the corresponding source coordinate.
 -/
 theorem pullbackCoord_affineSpaceInl_inl (k : Type u) [Field k] (n m : ℕ) (a : Fin n) :
     pullbackCoord (affineSpaceInl k n m) (ULift.up.{u, 0} (Sum.inl a)) =
       AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} a) :=
   pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inl a))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second-block entries of the coordinate vector are zero, so each coordinate in that block pulls back to zero.
 -/
 theorem pullbackCoord_affineSpaceInl_inr (k : Type u) [Field k] (n m : ℕ) (b : Fin m) :
     pullbackCoord (affineSpaceInl k n m) (ULift.up.{u, 0} (Sum.inr b)) = 0 :=
   pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inr b))
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The defining coordinate vector for the second-block inclusion has zero first-block entries and the original coordinates in the second block. The pullback formula for maps defined by coordinate vectors gives the result.
 -/
 theorem pullbackCoord_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ)
     (i : ULift.{u, 0} (Fin n ⊕ Fin m)) :
@@ -243,23 +227,23 @@ theorem pullbackCoord_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ)
           = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b)
       exact pullbackCoord_id _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the coordinate formula for the second-block inclusion at a first-block index, where the vector has value zero.
 -/
 theorem pullbackCoord_affineSpaceInrEmbedding_inl (k : Type u) [Field k] (n m : ℕ) (a : Fin n) :
     pullbackCoord (affineSpaceInrEmbedding k n m) (ULift.up.{u, 0} (Sum.inl a)) = 0 :=
   pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inl a))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At a second-block index the coordinate formula for this inclusion returns the corresponding source coordinate.
 -/
 theorem pullbackCoord_affineSpaceInrEmbedding_inr (k : Type u) [Field k] (n m : ℕ) (b : Fin m) :
     pullbackCoord (affineSpaceInrEmbedding k n m) (ULift.up.{u, 0} (Sum.inr b)) =
       AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b) :=
   pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inr b))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The first-block inclusion is over the field. Each source coordinate is the pullback of the coordinate at the same index in the first block of the target. The criterion for closed immersion using coordinate lifts therefore applies.
 -/
 theorem isClosedImmersion_affineSpaceInl (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInl k n m) := by
@@ -272,8 +256,8 @@ theorem isClosedImmersion_affineSpaceInl (k : Type u) [Field k] (n m : ℕ) :
     pullbackCoord_affineSpaceInl_inl k n m a
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The second-block inclusion preserves the structure map. Every coordinate of its source lifts to the corresponding second-block coordinate of the target. The coordinate-surjectivity criterion makes the map a closed immersion.
 -/
 theorem isClosedImmersion_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInrEmbedding k n m) := by
@@ -292,10 +276,8 @@ instance instIsClosedImmersionLinEmbRight (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInrEmbedding k n m) :=
   isClosedImmersion_affineSpaceInrEmbedding k n m
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Both maps have the given structural map. The composite pulls first-block coordinates back by the original map and pulls second-block coordinates back to zero. These are exactly the coordinates of the defining vector, so the maps agree.
 -/
 theorem comp_affineSpaceInl {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     (q : Y ⟶ Spec (CommRingCat.of k)) (f : Y ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)))
@@ -311,12 +293,8 @@ theorem comp_affineSpaceInl {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     | inl _ => rfl
     | inr _ => exact map_zero _
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two maps are over the same field map. The composite pulls first-block coordinates back to zero and second-block coordinates back through the original map. These are the entries of the second-block vector, which determine its affine-space map.
 -/
 theorem comp_affineSpaceInrEmbedding {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     (q : Y ⟶ Spec (CommRingCat.of k)) (f : Y ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))
@@ -336,8 +314,8 @@ theorem comp_affineSpaceInrEmbedding {k : Type u} [Field k] {Y : Scheme.{u}} (n 
         rw [pullbackCoord_def] at h
         rw [h, coordVectorInr_inr, pullbackCoord_def]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Use the identity as the comparison at every stage. The lengths are equal, the base projections are preserved, and each comparison square over the identity is a pullback. Pullback of a center ideal along an identity fixes the ideal. These give a strict pullback of the sequence along the identity.
 -/
 theorem IsStrictPullbackBlowupSeq.id {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     IsStrictPullbackBlowupSeq (𝟙 X) s s := by
@@ -345,8 +323,8 @@ theorem IsStrictPullbackBlowupSeq.id {X : Scheme.{u}} (s : SequenceOfBlowups X) 
   · exact IsPullback.of_id_fst
   · simp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The identity of the base is surjective. Because each target center is proper, the given comparison along the identity is strict by the surjectivity criterion. The target sequence is also its own strict pullback along the identity, so uniqueness of strict pullbacks gives the sequence isomorphism.
 -/
 theorem isomorphic_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s t : SequenceOfBlowups X)
     (h : IsPullbackBlowupSequence (𝟙 X) s t) (hc : ∀ i : ℕ, i < t.length → t.center i ≠ ⊤) :
@@ -355,16 +333,16 @@ theorem isomorphic_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s t : Seq
   exact IsStrictPullbackBlowupSeq.isomorphic (h.isStrictPullback_of_surjective hc)
     (IsStrictPullbackBlowupSeq.id t)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assumption on affine space gives smoothness of the structural map for every dimension. Apply it to the chosen field and dimension.
 -/
 private theorem smooth_affineSpaceIndexedByToSpec (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n : ℕ) :
     AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) :=
   hsm k n
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The affine-space structural map is smooth by hypothesis. The empty-boundary theorem for smooth schemes gives strict normal crossing position for its empty boundary.
 -/
 private theorem inStrictNormalCrossingPosition_nil_affineSpace (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n : ℕ) :
@@ -391,8 +369,8 @@ def EmbeddingDatum.ofClosedImmersionAffineSpace (hsm : AffineSpaceIsSmooth.{u}) 
   sncEmpty := inStrictNormalCrossingPosition_nil_affineSpace hsm k n
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The datum for a closed immersion into affine space takes that affine space itself as the ambient scheme, which gives the stated ambient scheme.
 -/
 theorem EmbeddingDatum.ofClosedImmersionAffineSpace_ambient (hsm : AffineSpaceIsSmooth.{u}) {k : Type u} [Field k]
     [CharZero k] {Y : Scheme.{u}} {p : Y ⟶ Spec (CommRingCat.of k)} (n : ℕ)

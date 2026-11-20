@@ -49,8 +49,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Adding the marked ideal and boundary and passing to the marked sequence preserves the underlying sequence of blowups. Its projection at each stage is therefore the same as the projection in the original data.
 -/
 private theorem toMarkedSequence_projectionToBase_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -58,10 +58,8 @@ private theorem toMarkedSequence_projectionToBase_eq {k : Type u} [Field k] {X :
     ((d.toMarkedBlowupSequenceData p I m E h).toMarkedSequenceOfBlowups).projectionToBase n = d.projectionToBase n :=
   BlowupSequenceData.toSequenceOfBlowups_projectionToBase d n
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the embedding is the initial smaller-scheme isomorphism followed by the original closed immersion, and the ambient projection is the identity. This gives the first commuting square. At each successor the two transition maps commute with the embeddings. Compose that square with the preceding projection square and use the successor rule for projections to obtain the next square.
 -/
 private theorem embeddingIntoAmbientBlowupSequence_comp_projectionToBase {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -81,8 +79,8 @@ private theorem embeddingIntoAmbientBlowupSequence_comp_projectionToBase {S X : 
     rw [BlowupSequenceData.projectionToBase_succ, BlowupSequenceData.projectionToBase_succ, ← Category.assoc,
       embeddingIntoAmbientBlowupSequence_succ_comp_map ι d hres hno hcen m, Category.assoc, ih, ← Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the ambient projection square to the chosen boundary divisor and the underlying blowup data of its marked sequence. The comparison of marked and underlying data identifies their projections, giving the desired formula.
 -/
 theorem embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -99,10 +97,8 @@ theorem embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι
   rw [MarkedBlowupSequenceData.projectionToBase_eq_toBlowupSequenceData_projectionToBase (MarkedBlowupSequenceData.ofMarkedSequence s) t]
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The marked ambient projection to the ground field is the projection to the original ambient scheme followed by its structure map. Compose this with the stage embedding and use the projection square to factor through the original divisor. The divisor inclusion followed by the ambient structure map is the original divisor structure map, so the result is the divisor-stage projection to the ground field.
 -/
 theorem projectionToSpec_eq_comp_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -139,12 +135,8 @@ theorem projectionToSpec_eq_comp_ambientMarkedSeq (hres : FunctorialResolution.B
   rw [hstruct, MarkedSequenceOfBlowups.projectionToSpec_eq]
   exact ((e1.trans e2).trans e3).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient projection at stage t+1 of the prepended sequence agrees with the unprepended ambient projection at t. After embedding the divisor stage, the projection square identifies the resulting map with the divisor projection followed by the original divisor inclusion. Compose with the ambient structure map. Since this composition gives the divisor's structure map on the original divisor, the full composite is its stage-t projection to the ground field.
 -/
 theorem projectionToSpec_eq_comp_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -195,8 +187,8 @@ theorem projectionToSpec_eq_comp_prependedAmbientSeq (hres : FunctorialResolutio
 private def unionSupportsExcept {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j : ℕ) : Set ↥Y :=
   ⋃ i : Fin L.length, ⋃ (_ : (i : ℕ) ≠ j), ((L.get i).support : Set ↥Y)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The union includes the support at every valid index other than j. Use the given index i to witness membership for any point of its support.
 -/
 private theorem support_subset_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j i : ℕ)
     (hi : i < L.length) (hij : i ≠ j) :
@@ -204,8 +196,8 @@ private theorem support_subset_otherLocusOfList {Y : Scheme.{u}} (L : List Y.Ide
   intro x hx
   exact Set.mem_iUnion.2 ⟨⟨i, hi⟩, Set.mem_iUnion.2 ⟨hij, hx⟩⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Membership in the union yields an index in the finite index set. The corresponding inner union yields both the condition that this index differs from j and membership in its support.
 -/
 private theorem exists_mem_support_of_mem_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j : ℕ)
     {x : ↥Y} (hx : x ∈ unionSupportsExcept L j) :
@@ -214,15 +206,15 @@ private theorem exists_mem_support_of_mem_otherLocusOfList {Y : Scheme.{u}} (L :
   obtain ⟨h1, h2⟩ := Set.mem_iUnion.1 hi
   exact ⟨i.1, i.2, h1, h2⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The index set of proofs of the proposition has at most one element and is therefore finite. Every member is the given closed set, so their finite union is closed.
 -/
 private theorem isClosed_iUnion_prop {α : Type u} [TopologicalSpace α] {p : Prop} {A : Set α}
     (h : IsClosed A) : IsClosed (⋃ _ : p, A) :=
   isClosed_iUnion_of_finite fun _ => h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For each list index the conditional union is closed, since the support is closed and the condition has at most one witness. The outer union is finite, so it is closed as well.
 -/
 private theorem isClosed_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j : ℕ) :
     IsClosed (unionSupportsExcept L j) := by
@@ -230,17 +222,15 @@ private theorem isClosed_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealShea
   intro i
   exact isClosed_iUnion_prop ((L.get i).support).2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the equality of composite morphisms at the given point and expand each composite as successive application of its maps.
 -/
 private theorem apply_eq_apply_of_comp_eq {A B C D : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (f' : A ⟶ D) (g' : D ⟶ C) (e : f ≫ g = f' ≫ g') (x : ↥A) : ⇑g (⇑f x) = ⇑g' (⇑f' x) :=
   congrArg (fun m : A ⟶ C => ⇑m x) e
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary locus is the union of supports over all entries of the boundary list. A point in the union has a witnessing entry containing it, and such an entry in turn puts the point in the union.
 -/
 private theorem mem_boundaryLocus_iff {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -256,16 +246,16 @@ private theorem mem_boundaryLocus_iff {k : Type u} [Field k] {X : Scheme.{u}}
     unfold MarkedSequenceOfBlowups.boundaryLocus
     exact Set.mem_iUnion₂.2 ⟨D, hD, hxD⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both sets are defined by taking the supports of the stage-t boundary entries at indices different from j and forming their union.
 -/
 private theorem otherBoundaryLocus_eq_otherLocusOfList {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} (S : MarkedSequenceOfBlowups p I m E) (j t : ℕ) :
     MarkedSequenceOfBlowups.otherBoundaryLocus S j t = unionSupportsExcept (S.boundary t) j := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+An index in the first list remains valid after a second list is appended, and the entry it selects is unchanged. Since the index differs from j, the same support occurs in the union for the concatenated list.
 -/
 private theorem support_subset_otherLocusOfList_append_left {Y : Scheme.{u}} (L M : List Y.IdealSheafData)
     (j i : ℕ) (hi : i < L.length) (hij : i ≠ j) :
@@ -276,10 +266,8 @@ private theorem support_subset_otherLocusOfList_append_left {Y : Scheme.{u}} (L 
   have h2 := support_subset_otherLocusOfList (L ++ M) j i h1 hij
   rwa [List.getElem_append_left hi] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The appended entry occurs at the old list length. This index differs from j because j lies in the old list, so the support of the appended entry appears in the union.
 -/
 private theorem support_subset_otherLocusOfList_append_singleton {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (e : Y.IdealSheafData) (j : ℕ) (hj : j < L.length) :
@@ -291,8 +279,8 @@ private theorem support_subset_otherLocusOfList_append_singleton {Y : Scheme.{u}
   have h3 : (L ++ [e])[L.length]'h1 = e := by simp
   rwa [h3] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Specialize the commuting projection square to stage zero. The ambient and divisor stage-zero projections are the forward maps of their initial isomorphisms, so the two paths in the square are the stated composites.
 -/
 private theorem embeddingIntoAmbient_zero_comp_isoObjZero_hom (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -308,8 +296,8 @@ private theorem embeddingIntoAmbient_zero_comp_isoObjZero_hom (hres : Functorial
     BlowupSequenceData.projectionToBase_zero] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center is defined as the scheme-theoretic image of the divisor center under the stage embedding. Since the stage embedding is a closed immersion, pulling its image ideal back along the immersion recovers the divisor center ideal.
 -/
 private theorem comap_embeddingIntoAmbient_center_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -323,8 +311,8 @@ private theorem comap_embeddingIntoAmbient_center_ambientBlowupSeq (hres : Funct
   rw [ambientBlowupSeq_center_eq_imageIdealSheaf]
   exact Blowup.comap_schemeImageIdeal (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the ambient center support is the support of its ideal pulled back to the stage divisor. The pullback of the ambient center ideal is exactly the divisor center ideal, so this inverse image is the divisor center support.
 -/
 private theorem preimage_support_center_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -344,8 +332,8 @@ private theorem preimage_support_center_ambientBlowupSeq (hres : FunctorialResol
   rw [comap_embeddingIntoAmbient_center_ambientBlowupSeq] at h
   exact h.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary subscheme is closed in the Noetherian ambient scheme. Its inclusion is quasi-compact and locally of finite type, which makes the boundary subscheme Noetherian.
 -/
 private theorem isNoetherian_boundary_subscheme (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length) :
@@ -355,8 +343,8 @@ private theorem isNoetherian_boundary_subscheme (T : MarkedIdealWithBoundary.{u}
   have : AlgebraicGeometry.QuasiCompact (T.boundary.get ⟨j, hj⟩).subschemeι := inferInstance
   exact isNoetherian_of_locallyOfFiniteType (T.boundary.get ⟨j, hj⟩).subschemeι
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen divisor is Noetherian as a closed subscheme of the ambient scheme. The blowup sequence over it preserves Noetherianity at every stage bounded by the sequence length.
 -/
 private theorem isNoetherian_schemeAt_restrictToBoundaryDivisor (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -365,38 +353,12 @@ private theorem isNoetherian_schemeAt_restrictToBoundaryDivisor (T : MarkedIdeal
     AlgebraicGeometry.IsNoetherian (s.schemeAt i) :=
   @isNoetherian_schemeAt _ s.toSequenceOfBlowups (isNoetherian_boundary_subscheme T j hj) i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
+/- English proof (authored)
+At stage zero any entry of the divisor boundary is obtained by pulling back an entry of the starting ambient boundary with index different from j. The stage-zero projection square therefore puts the image of any point of that support in the corresponding ambient support.
 
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
+For a successor stage, consider first a strict transform of an old divisor-boundary entry. Away from the inverse image of the center, the projection of a point in the transform lies in the old support. By induction its ambient image lies in an old ambient boundary support with index different from j. The transition square and the equality of the inverse image of the ambient center support with the divisor center support put the point's ambient lift in the strict transform of that ambient entry. This entry keeps its index. The ambient union of these supports is closed, as is its inverse image in the divisor. Taking the closure of the inverse-image locus off the center proves the same inclusion for the whole strict-transform support.
 
-Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+For the new exceptional entry, its support is the inverse image of the divisor center support along the transition. The same transition square puts its image in the ambient exceptional support. The ambient exceptional entry is appended after the old entries, so its index differs from j. These are all successor boundary entries.
 -/
 private theorem boundaryLocus_subset_preimage_otherLocus (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -549,8 +511,8 @@ private theorem boundaryLocus_subset_preimage_otherLocus (hres : FunctorialResol
         rw [BlowupSequenceData.boundary_succ]
         exact support_subset_otherLocusOfList_append_singleton _ _ j hjlen hmem
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pushed marked sequence uses the boundaries obtained by starting with the original ambient boundary and applying the boundary recursion of the ambient blowup data. The equality identifies the stage-t lists in these two descriptions.
 -/
 private theorem ambientMarkedSeq_boundary (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -563,8 +525,8 @@ private theorem ambientMarkedSeq_boundary (hres : FunctorialResolution.Blowup.St
       (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).boundaryFrom T.boundary t :=
   BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence is formed from the prepended blowup data with the original boundary. By the boundary formula for that construction, its stage-t boundary equals the iterated boundary of the prepended data from the original list.
 -/
 private theorem prependedAmbientSeq_boundary (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -581,10 +543,8 @@ private theorem prependedAmbientSeq_boundary (hres : FunctorialResolution.Blowup
           (lowerBoundaryAfterBlowup T j hj) s hpr)).boundaryFrom T.boundary t :=
   BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression.
+/- English proof (authored)
+At the first prepended stage the boundary is the lower ambient boundary transported through the initial ambient isomorphism, which is the ambient stage-zero boundary. At each later stage the prepended morphism and center are the corresponding ambient morphism and center with the index shifted by one. Equal preceding boundaries give equal strict transforms and equal appended exceptional entries. Induction proves the formula.
 -/
 private theorem prepend_boundary_succ_eq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -605,10 +565,8 @@ private theorem prepend_boundary_succ_eq (hres : FunctorialResolution.Blowup.Str
         BlowupSequenceData.prepend_center_succ]
       rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Without a preparatory blowup, the lower ambient boundary is the original boundary, so j remains an admissible index. Apply the general boundary-locus inclusion. The stage boundary of the pushed marked sequence is the iterated ambient boundary from that same original list. Taking the union over indices other than j gives precisely its other boundary locus.
 -/
 theorem boundaryLocus_subset_preimage_otherBoundaryLocus (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -640,10 +598,8 @@ theorem boundaryLocus_subset_preimage_otherBoundaryLocus (hres : FunctorialResol
   rw [hset]
   exact hmain
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The preparatory blowup takes strict transforms of all original boundary entries and appends one exceptional entry, so j still lies in the lower ambient list. Apply the general inclusion to this lower boundary. The shifted boundary recursion identifies the ambient stage-t list with the prepended marked sequence's list at stage t+1. Their unions of supports at indices different from j therefore agree.
 -/
 theorem boundaryLocus_subset_preimage_otherBoundaryLocus_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

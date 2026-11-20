@@ -76,8 +76,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A natural number is finite in the extended natural numbers. For a finite n, the inequality n+1 ≤ n would give n < n, which is impossible.
 -/
 private theorem not_natCast_add_one_le_self (n : ℕ) : ¬ ((n : ℕ∞) + 1 ≤ (n : ℕ∞)) := by
   rw [ENat.add_one_le_iff (ENat.natCast_ne_top n)]
@@ -88,20 +88,16 @@ private def iteratedStrictTransform {X : Scheme.{u}} (d : BlowupSequenceData X)
   Nat.rec (motive := fun n => (d.obj n).IdealSheafData) A0
     (fun n ih => Blowup.strictTransform (d.map n) (d.center n) ih) t
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At each successor stage the iteration applies the strict transform for that stage's blowup and center to the preceding ideal. Evaluating this recursive rule gives the formula.
 -/
 private theorem strictTransformIter_succ {X : Scheme.{u}} (d : BlowupSequenceData X)
     (A0 : (d.obj 0).IdealSheafData) (t : ℕ) :
     iteratedStrictTransform d A0 (t + 1) =
       Blowup.strictTransform (d.map t) (d.center t) (iteratedStrictTransform d A0 t) := rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+At stage zero the boundary is the original list pulled back by the initial isomorphism and therefore has the original length. At every subsequent step, taking strict transforms preserves length and appending the exceptional divisor adds one. Induction gives the bound at every stage through the end of the sequence.
 -/
 private theorem length_le_length_boundary {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -119,8 +115,8 @@ private theorem length_le_length_boundary {k : Type u} [Field k] {X : Scheme.{u}
       simp
     omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stage-zero boundary is obtained by pulling back every original entry through the initial isomorphism. Pullback of an ordered list preserves the index, so entry j is the pullback of original entry j.
 -/
 private theorem boundary_zero_get_eq_comap {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -130,10 +126,8 @@ private theorem boundary_zero_get_eq_comap {k : Type u} [Field k] {X : Scheme.{u
   have hb := S.boundary_zero
   rw [List.get_eq_getElem, List.get_eq_getElem, List.getElem_of_eq hb h, List.getElem_map]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The first part of the successor boundary consists of the strict transforms of the preceding entries in the same order, and it has their length. Since j lies in this first part, its entry is the strict transform of preceding entry j.
 -/
 private theorem boundary_succ_get_eq_strictTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -149,12 +143,8 @@ private theorem boundary_succ_get_eq_strictTransform {k : Type u} [Field k] {X :
   rw [List.get_eq_getElem, List.get_eq_getElem, List.getElem_of_eq hb h]
   simp [List.getElem_append_left hlen]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility supplies some factor whose product with the marked power of the contained-components ideal is the original ideal. The prepended blowup uses the identity, so the exceptional ideal is the contained-components ideal and the two identity pullbacks of the original ideal leave it unchanged. The factorization property of the residual therefore gives the desired product with the lower ideal.
 -/
 private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -179,14 +169,8 @@ private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : Mark
 
 namespace TransportedDivisor
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write pₜ for the projection from stage t followed by the inverse of the initial isomorphism. At stage zero p₀ is the identity and the transported ideal is the starting ideal. At a successor stage the transported ideal is pulled back from the previous one. Its support is therefore the inverse image of the previous support. By induction that support is the inverse image of the original support under pₜ, and composing with the transition map gives pₜ₊₁.
 -/
 theorem support_iteratedComap {X : Scheme.{u}} (d : BlowupSequenceData X) (B : (d.obj 0).IdealSheafData)
     (t : ℕ) :
@@ -217,12 +201,8 @@ end TransportedDivisor
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a point lies in both supports, each factor has order at least one there. The original ideal is the product of the marked power of the contained-components ideal and the lower ideal. Additivity of order for products and the power rule imply that the original order is at least m+1, where m is the marking. This contradicts the upper bound m.
 -/
 theorem disjoint_support_lowerIdealAfterBlowup_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -250,8 +230,8 @@ theorem disjoint_support_lowerIdealAfterBlowup_containedComponentsIdeal (T : Mar
     exact add_le_add hm hbb
   exact not_natCast_add_one_le_self T.mult (le_trans hordGe (hord x))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient lift starts with the original ambient scheme and its initial isomorphism is the identity isomorphism. Its forward morphism is therefore the identity.
 -/
 private theorem ambientBlowupSeq_isoObjZero_hom (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -263,8 +243,8 @@ private theorem ambientBlowupSeq_isoObjZero_hom (hres : FunctorialResolution.Blo
   congrArg Iso.hom (ambientBlowupSequence_isoObjZero (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial isomorphism of the ambient lift is the identity isomorphism of the starting ambient scheme. Its inverse is again the identity.
 -/
 private theorem ambientBlowupSeq_isoObjZero_inv (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -276,8 +256,8 @@ private theorem ambientBlowupSeq_isoObjZero_inv (hres : FunctorialResolution.Blo
   congrArg Iso.inv (ambientBlowupSequence_isoObjZero (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the projection to the starting scheme is the forward map of the initial isomorphism, which is the identity. Its composite with the original structure map is the structure map itself.
 -/
 private theorem ambientBlowupSeq_projectionToBase_zero_comp_structureMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -291,8 +271,8 @@ private theorem ambientBlowupSeq_projectionToBase_zero_comp_structureMorphism (h
   rw [h1]
   exact Category.id_comp T.structMap
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse of the ambient initial isomorphism is the identity on the starting ambient scheme. Postcomposing the stage projection with it leaves the projection unchanged.
 -/
 private theorem ambientBlowupSeq_projectionToBase_comp_isoObjZero_inv (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -306,8 +286,8 @@ private theorem ambientBlowupSeq_projectionToBase_comp_isoObjZero_inv (hres : Fu
   rw [ambientBlowupSeq_isoObjZero_inv hres hno T j hj I₀ E₀ s hpr]
   exact Category.comp_id ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase n)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Packaging the ambient sequence as a marked sequence preserves its length. The ambient lift has the same number of steps as the divisor sequence, and the prepended blowup adds one step.
 -/
 private theorem prependedAmbientSeq_length (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -326,8 +306,8 @@ private theorem prependedAmbientSeq_length (hres : FunctorialResolution.Blowup.S
       ambientBlowupSeq_length hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr]
   exact h1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Passing from the prepended blowup data to a marked sequence retains the underlying blowup morphism at every index. Thus the successor transition is the corresponding morphism from the prepended data.
 -/
 private theorem prependedAmbientSeq_blowupMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -346,8 +326,8 @@ private theorem prependedAmbientSeq_blowupMorphism (hres : FunctorialResolution.
       (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).toMarkedBlowupSequenceData
       T.structMap T.ideal T.mult T.boundary hmk) n
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence constructed from the prepended data retains its center ideals. Its center at the given index therefore equals the center at that index in the data.
 -/
 private theorem prependedAmbientSeq_center (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -366,8 +346,8 @@ private theorem prependedAmbientSeq_center (hres : FunctorialResolution.Blowup.S
       (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).toMarkedBlowupSequenceData
       T.structMap T.ideal T.mult T.boundary hmk) n
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first transition of the marked sequence is the first blowup morphism of the prepended data. This morphism is the forward map of the ambient initial isomorphism, which is the identity.
 -/
 private theorem prependedAmbientSeq_blowupMorphism_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -382,8 +362,8 @@ private theorem prependedAmbientSeq_blowupMorphism_zero (hres : FunctorialResolu
   rw [prependedAmbientSeq_blowupMorphism hres hno T j hj hb s hpr hmk 0, BlowupSequenceData.prepend_blowupMorphism_zero]
   exact ambientBlowupSeq_isoObjZero_hom hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence keeps the underlying blowup morphisms. After the prepended step, the morphism at index n+1 in those data is the morphism at index n of the ambient sequence.
 -/
 private theorem prependedAmbientSeq_blowupMorphism_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -400,8 +380,8 @@ private theorem prependedAmbientSeq_blowupMorphism_succ (hres : FunctorialResolu
     (BlowupSequenceData.prepend_blowupMorphism_succ (containedComponentsIdeal T j hj) hb
       (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) n)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence preserves its underlying centers. By construction the first center of the prepended data is the contained-components ideal.
 -/
 private theorem prependedAmbientSeq_center_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -417,8 +397,8 @@ private theorem prependedAmbientSeq_center_zero (hres : FunctorialResolution.Blo
     (BlowupSequenceData.prepend_center_zero (containedComponentsIdeal T j hj) hb
       (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After the first center has been inserted, the center of the data at index n+1 is the old ambient center at index n. Forming the marked sequence leaves those centers unchanged.
 -/
 private theorem prependedAmbientSeq_center_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -435,8 +415,8 @@ private theorem prependedAmbientSeq_center_succ (hres : FunctorialResolution.Blo
     (BlowupSequenceData.prepend_center_succ (containedComponentsIdeal T j hj) hb
       (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) n)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The prepending construction takes its new starting identification to be the identity isomorphism. Passing to a marked sequence retains it, and its forward map is the identity.
 -/
 private theorem prependedAmbientSeq_isoObjZero_hom (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -451,8 +431,8 @@ private theorem prependedAmbientSeq_isoObjZero_hom (hres : FunctorialResolution.
   congrArg Iso.hom (BlowupSequenceData.prepend_isoObjZero (containedComponentsIdeal T j hj) hb
     (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence's structure map is its stage projection followed by the original structure map. For a successor stage of the prepended data, that projection equals the projection at the preceding index in the ambient lift. Substitute this equality before composing with the structure map.
 -/
 private theorem prependedAmbientSeq_projectionToSpec_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -474,8 +454,8 @@ private theorem prependedAmbientSeq_projectionToSpec_succ (hres : FunctorialReso
     (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) n
   exact h1.trans (congrArg (fun f => f ≫ T.structMap) h2)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The comparison at stage zero identifies the kernel with the pullback of boundary entry j first by the new initial identification and then by the first blowup morphism. Both are identities, so both pullbacks leave the ideal unchanged.
 -/
 private theorem ker_embeddingIntoAmbient_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -497,10 +477,8 @@ private theorem ker_embeddingIntoAmbient_zero (hres : FunctorialResolution.Blowu
     rw [Scheme.IdealSheafData.comap_id, Scheme.IdealSheafData.comap_id]
   exact h2.trans h3
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stated bound on i is the length bound of the prepended marked sequence. Admissibility is preserved by the marked transform through that stage, using that an effective Cartier divisor contains no component of the ambient scheme. Each boundary entry of the transformed admissible object is a smooth divisor for its structure map. Its boundary and structure map are exactly those of the prepended sequence at stage i.
 -/
 private theorem isSmoothDivisor_prependedAmbientSeq_boundary_get (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -528,12 +506,8 @@ private theorem isSmoothDivisor_prependedAmbientSeq_boundary_get (hres : Functor
   rw [MarkedIdealWithBoundary.transformAt_structureMorphism] at h3
   exact h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+An original boundary index remains in range at every stage because boundary length never decreases. At stage one, the first transition is the identity and its center is the contained-components ideal. Thus entry j is the strict transform of the initial entry for this preparatory blowup. At later stages, taking the next boundary entry applies the strict transform along the next blowup to the preceding entry. The prepended morphisms and centers have shifted by one, so induction identifies this update with the recursion for the ambient iterated strict transform.
 -/
 private theorem prependedAmbientSeq_boundary_succ_get
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -578,18 +552,8 @@ private theorem prependedAmbientSeq_boundary_succ_get
       prependedAmbientSeq_center_succ hres hno T j hj hb s hpr hmk n]
     rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the ideal is pulled back via the initial isomorphism, which is also the stage projection. For the induction step, write the pullback of the previous ideal as the exceptional ideal to the marked power times the current ideal. At a point of the current support, the current order is at least one. The order inequality for products gives order at least one for the pulled back previous ideal, so the point maps to the previous support. The induction hypothesis then puts its image in the original divisor ideal's support.
 -/
 private theorem projectionToBase_mem_support_of_mem_support_ideal (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (s : (restrictTwistedToDivisor T j hj).SequenceOfBlowups) :
@@ -648,14 +612,8 @@ private theorem projectionToBase_mem_support_of_mem_support_ideal (T : MarkedIde
     rw [h10]
     exact h9
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every ambient center point comes from a center point of the divisor sequence. The marked center condition and positivity of the marking place that divisor point in the support of its current ideal. Projecting to the initial divisor and then embedding in the original ambient scheme puts its image in the support of the lower ambient ideal. On the other hand, membership in the support of the transported contained-components ideal would put the same image in the original contained-components support. Here the two projections agree by the assumed comparison square, and the initial ambient identification is the identity. The lower and contained-components supports are disjoint, giving a contradiction.
 -/
 private theorem disjoint_support_center_iteratedComap_containedComponentsIdeal
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -712,16 +670,10 @@ private theorem disjoint_support_center_iteratedComap_containedComponentsIdeal
   exact (Set.disjoint_left.1
     (disjoint_support_lowerIdealAfterBlowup_containedComponentsIdeal T hV hord j hj)) hw2 hz'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+At stage zero, the embedding kernel is the original boundary entry. It is the product of its preparatory strict transform and the contained-components ideal, whose supports are disjoint. The contained-components ideal is a smooth divisor. Along the ambient sequence, both the embedding kernel and the preparatory strict transform evolve by strict transform. The latter stays a smooth divisor because at every stage it is the selected boundary entry of the admissible prepended sequence.
 
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+The centers avoid the iterated pullback of the contained-components support by the comparison with the divisor sequence and the disjointness of the two starting supports. The ambient stages are locally Noetherian and their maps to the ground field are smooth by admissibility of the prepended sequence. Apply the theorem on transporting the product of disjoint divisor factors with centers avoiding the pulled back factor. It makes the kernel a smooth divisor at every stage, for the structure map that agrees with the prepended projection one stage later.
 -/
 theorem isSmoothDivisor_ker_embeddingIntoAmbient (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (_hgeom : OrderAtComapOffExceptionalLocus.{u})

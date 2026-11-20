@@ -8,8 +8,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution.OpenImmersionRestriction
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The affine opens cover the underlying space, so some affine open contains the given point.
 -/
 private theorem exists_affineOpens_mem (X : Scheme.{u}) (x : ↥X) :
     ∃ U : X.affineOpens, x ∈ U.1.1 := by
@@ -19,24 +19,8 @@ private theorem exists_affineOpens_mem (X : Scheme.{u}) (x : ↥X) :
   obtain ⟨U, hU⟩ := TopologicalSpace.Opens.mem_iSup.mp hx
   exact ⟨U, hU⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood of the specialized point. It also contains the point that specializes to it. The corresponding primes are strictly ordered because the points are distinct and related by specialization. Choose an element in the larger prime outside the smaller. Its germ lies in the maximal ideal of the stalk at the specialized point. If the germ were zero, some multiplier outside the larger prime would annihilate the original element. That multiplier is also outside the smaller prime, so primality would put the original element in the smaller prime. This contradiction gives a nonzero element of the maximal ideal.
 -/
 theorem maximalIdeal_stalk_ne_bot_of_specializes
     (X : Scheme.{u}) (x y : ↥X) (h : y ⤳ x) (hne : y ≠ x) :
@@ -103,18 +87,8 @@ theorem maximalIdeal_stalk_ne_bot_of_specializes
   · exact hcq hcc
   · exact haq haa
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given closed set is irreducible because it is the closure of its generic point. Enlarge it to an irreducible component of the whole scheme. The enlargement is strict by hypothesis, so its generic point is distinct from the original generic point and specializes to it. The stalk at the original point therefore has nonzero maximal ideal by the specialization argument. The order-one criterion for a vanishing ideal at the generic point of a maximal irreducible subset of its support now applies, taking the subset to be the whole given closed set.
 -/
 theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
     (X : Scheme.{u}) [IsLocallyNoetherian X] (S : Closeds ↥X) (x : ↥X)
@@ -161,8 +135,8 @@ theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
     maximalIdeal_stalk_ne_bot_of_specializes X x y hyx hyne
   exact _root_.FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one S x (S : Set ↥X) hMax hx hbot
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closed subscheme of the smooth divisor has a smooth structural morphism to the field. A smooth morphism is locally of finite type, and the field is Noetherian. Thus the divisor is locally Noetherian.
 -/
 theorem isLocallyNoetherian_subscheme_of_isSmoothDivisor
     (k : Type u) [Field k] (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k))
@@ -175,8 +149,8 @@ theorem isLocallyNoetherian_subscheme_of_isSmoothDivisor
   have : IsNoetherianRing (CommRingCat.of k) := inferInstanceAs (IsNoetherianRing k)
   exact AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian (D.subschemeι ≫ U.ι ≫ p)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth divisor is locally Noetherian by its smooth structure morphism to the field. Apply the order-one vanishing-ideal theorem to the closed subset and its generic point, using that the subset is not an irreducible component.
 -/
 theorem vanishingOrderOneOnSmoothDivisor : VanishingOrderOneOnSmoothDivisor.{u} := by
   intro k hk W p U D hD T y hy hT

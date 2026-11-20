@@ -29,14 +29,14 @@ structure IrreducibleClosedPair (W : Scheme.{u}) where
 def AgreeNear {W : Scheme.{u}} (I J : W.IdealSheafData) (x : ↥W) : Prop :=
   ∃ U : W.Opens, x ∈ U ∧ I.comap U.ι = J.comap U.ι
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+Local agreement at a point is defined to mean equality after restricting to an open neighborhood of that point. The displayed condition is exactly this definition.
 -/
 theorem agreeNear_iff {W : Scheme.{u}} (I J : W.IdealSheafData) (x : ↥W) :
     AgreeNear I J x ↔ ∃ U : W.Opens, x ∈ U ∧ I.comap U.ι = J.comap U.ι := Iff.rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Use the same open neighborhood witnessing agreement. Reverse the equality of the two restrictions on that neighborhood.
 -/
 theorem agreeNear_symm {W : Scheme.{u}} {I J : W.IdealSheafData} {x : ↥W}
     (h : AgreeNear I J x) : AgreeNear J I x := by
@@ -93,12 +93,8 @@ structure IdealSheafGeometryHypotheses (V : VanishingAssignment.{u}) : Prop wher
       (T' : Set ↥(U.toScheme)) = U.ι.base ⁻¹' (T : Set ↥W) →
       (V W T).comap U.ι = V U.toScheme T'
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Local agreement gives equal orders at the point. Membership in an ideal’s support is equivalent to its order being at least one. The equal orders therefore give equivalent support memberships.
 -/
 theorem mem_support_iff_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {W : Scheme.{u}} {I J : W.IdealSheafData} {x : ↥W} (h : AgreeNear I J x) :
@@ -124,10 +120,8 @@ def OrderOneCentersIsolated (V : VanishingAssignment.{u}) {k : Type u} [Field k]
     AgreeNear I (V W ⟨C.S1, C.closed1⟩) C.xi1 → orderAt I C.xi1 = 1 →
     C.xi2 ∈ (I.support : Set ↥W) → False
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both the closed subscheme inclusion and the open inclusion identify the source topology with the topology induced from the target. The underlying map of their composite is the composite of these two maps. Composition preserves the induced-topology property.
 -/
 theorem isInducing_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) :
@@ -141,8 +135,8 @@ theorem isInducing_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : Ideal
   rw [hfun]
   exact h2.comp h1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite inclusion induces the topology on the subscheme. The closure of the singleton of the lifted point is therefore the inverse image of the closure of its image. That image is the stated generic point, whose closure is the original closed set.
 -/
 theorem isGenericPoint_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
@@ -151,8 +145,8 @@ theorem isGenericPoint_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}
     IsGenericPoint y ((D.subschemeι ≫ U.ι).base ⁻¹' T) :=
   isGenericPoint_preimage_of_isInducing (isInducing_subschemeι_comp_ι hV W U D) hξ hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite inclusion is continuous because it induces the source topology. Its inverse image of a closed subset is therefore closed.
 -/
 theorem isClosed_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
@@ -160,12 +154,8 @@ theorem isClosed_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV 
     IsClosed ((D.subschemeι ≫ U.ι).base ⁻¹' T) :=
   hT.preimage (isInducing_subschemeι_comp_ι hV W U D).continuous
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient point belongs to the open, so take its corresponding point in the open subscheme. This point lies in the inverse image of the given set, hence in the closed subscheme support by hypothesis. Since the support is the image of the closed subscheme inclusion, lift the point there. Under the composite inclusion its image is the original point.
 -/
 theorem exists_subschemeι_comp_ι_apply_eq_of_mem {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
@@ -189,16 +179,8 @@ theorem exists_subschemeι_comp_ι_apply_eq_of_mem {V : VanishingAssignment.{u}}
   refine ⟨y, ?_⟩
   rw [hV.base_comp _ _ _ D.subschemeι U.ι y, hy, hy₀]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open containing the common point also contains the second generic point. The common point lifts to the hypersurface because it lies in the center support, and the generic point lifts because it lies in the input support. The inverse image of the second irreducible closed subset is irreducible, with this lifted generic point. The inverse image of the center support in the hypersurface is closed and is open by hypothesis. Since it contains the lifted common point, it contains the whole irreducible inverse-image subset. In particular it contains the lifted generic point. This contradicts the generic point being outside the original center support.
 -/
 theorem false_of_isOpen_preimage_support {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (N Z : W.IdealSheafData) (C : IrreducibleClosedPair W) (U : W.Opens)
@@ -249,8 +231,8 @@ theorem false_of_isOpen_preimage_support {V : VanishingAssignment.{u}} (hV : Ide
   rw [← hV.base_comp _ _ _ H.subschemeι U.ι y2, hy2] at h'
   exact h'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The first closed subset lies in the center support, and so does its generic point. The center support is contained in the boundary set by hypothesis, contradicting avoidance of that set by the generic point.
 -/
 private theorem orderOneCentersIsolated_of_support_subset {V : VanishingAssignment.{u}} {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (I : W.IdealSheafData) (m : ℕ)
@@ -259,8 +241,8 @@ private theorem orderOneCentersIsolated_of_support_subset {V : VanishingAssignme
   intro C _ hS1 _ hxi1M _ _ _ _
   exact hxi1M (h (hS1 C.generic1.mem))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The isolation condition assumes a mark equal to one. This is impossible when the mark is at least two.
 -/
 private theorem orderOneCentersIsolated_of_two_le {V : VanishingAssignment.{u}} {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (I : W.IdealSheafData) (m : ℕ)
@@ -269,16 +251,8 @@ private theorem orderOneCentersIsolated_of_two_le {V : VanishingAssignment.{u}} 
   intro _ hm1 _ _ _ _ _ _ _
   omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both generic points avoid the support of the boundary factor. On a neighborhood of the first, this factor is the unit ideal, so the residual ideal agrees with the original ideal and hence with the first subset’s vanishing ideal. The product order bound gives order at most one for the residual ideal there because the boundary factor has order zero. The center condition gives the residual mark as a lower bound at this point. The mark is at least one, so both mark and residual order equal one. The second generic point lies in the residual support because it lies in the product support but outside the boundary factor’s support. The residual isolation hypothesis now gives a contradiction.
 -/
 private theorem orderOneCentersIsolated_of_eq_mul_of_subset_orderAtLeastLocus {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -317,22 +291,8 @@ private theorem orderOneCentersIsolated_of_eq_mul_of_subset_orderAtLeastLocus {V
     · exact h'
   exact ih C hμ1 hS1 hxi2Z hxi1M hxi2M hAN hordN hxi2Nmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen open contains the common point, hence both generic points. Pull the two closed subsets and their points back to the open subscheme. The subsets remain closed and irreducible, with the lifted points as their generic points. Support and boundary conditions transfer by inverse image. Local ideal agreement transfers by pullback, which also takes the vanishing ideal to that of the inverse-image closed subset. Order is preserved by the open inclusion. Thus the pair satisfies all hypotheses of the isolation property on the open, giving the contradiction.
 -/
 private theorem false_of_orderOneCentersIsolated_comap_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -414,8 +374,8 @@ private theorem false_of_orderOneCentersIsolated_comap_opens {V : VanishingAssig
     rw [hx2]
     exact hxi2I
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The common point belongs to the first closed subset and hence to the center support. Choose its specified open neighborhood, where the pulled-back ideals satisfy isolation. The transfer argument for an open containing the common point gives the required contradiction in the ambient scheme.
 -/
 private theorem orderOneCentersIsolated_of_forall_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -431,32 +391,8 @@ private theorem orderOneCentersIsolated_of_forall_opens {V : VanishingAssignment
   exact false_of_orderOneCentersIsolated_comap_opens hV (U C.pt hz) C (hU C.pt hz) (ih C.pt hz) hm1 hS1 hxi2Z
     hxi1M hxi2M hagree hord hxi2I
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The open contains the common point and both generic points. The first subset lies in the center support and the second generic point lies in the input support, so all three points lift to the smooth hypersurface. The inverse-image closed subsets are irreducible with the lifted generic points. Near the first point the residual ideal agrees with the restricted input and hence with the vanishing ideal of the first inverse-image subset. The subset cannot be an entire component of the hypersurface, since its generic point lies in the residual support and the residual ideal is nonzero on components. Its vanishing ideal therefore has order one there by the smooth-divisor hypothesis, and so does the residual ideal. The second generic point belongs to the residual support by the same local agreement with the input there. Center membership, center avoidance, and boundary avoidance transfer by inverse image. The isolation property on the hypersurface gives the contradiction.
 -/
 private theorem false_of_isSmoothDivisor_of_orderOneCentersIsolated {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -592,8 +528,8 @@ private theorem false_of_isSmoothDivisor_of_orderOneCentersIsolated {V : Vanishi
   · exact hordJ
   · exact hy2mem
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the specified hypersurface neighborhood of the common point, which lies in the center. If no residual ideal is supplied, the pulled-back center support is open on the hypersurface, and the connectedness argument forces the second generic point into it. If a residual ideal is supplied, use the isolation property for that ideal on the hypersurface together with local agreement and nonvanishing on components. The hypersurface transfer then gives the contradiction.
 -/
 private theorem orderOneCentersIsolated_of_isSmoothDivisor {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
@@ -635,10 +571,8 @@ private theorem orderOneCentersIsolated_of_isSmoothDivisor {V : VanishingAssignm
       (hNsubH C.pt hz) (hZH C.pt hz) (hJcomp C.pt hz Jz hJJ) (hJloc C.pt hz Jz hJJ)
       (ih C.pt hz Jz hJJ) hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2N
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use simultaneous induction on the certificate and its residual certificate. Centers contained in the boundary and marks at least two satisfy isolation directly. For a decomposition into a boundary factor and a residual ideal, the residual transfer applies using the inductive isolation property. For a certificate given on opens, transfer the local isolation at the common point back to the original scheme. The remaining residual case is a smooth hypersurface reduction, where the hypersurface transfer applies with the supplied data and the inductive property when there is a further ideal. This covers every certificate constructor.
 -/
 theorem orderOneCentersIsolated_of_principalizationCertificate {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}

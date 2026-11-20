@@ -20,22 +20,22 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace OpenImmersionRestriction
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The assignment is the vanishing ideal sheaf. Pullback along an open immersion takes the vanishing ideal of a closed subset to the vanishing ideal of its inverse image. Apply this to the given open inclusion.
 -/
 theorem vanishingComapOpens : VanishingComapOpens.{u} := by
   intro W T U T' hT'
   simp only [vanishingIdealAssignment_apply]
   exact comap_vanishingIdeal_of_isOpenImmersion U.ι T T' hT'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The vanishing ideal assignment has order one at the required generic points of a smooth divisor, preserves local vanishing agreement under restriction to a closed subscheme, and commutes with restriction to opens. Apply the construction of the geometry hypotheses from these three properties.
 -/
 theorem idealSheafGeometryHypotheses_vanishingIdealAssignment : IdealSheafGeometryHypotheses (vanishingIdealAssignment.{u}) :=
   idealSheafGeometryHypotheses_of_vanishingOrderOneOnSmoothDivisor vanishingOrderOneOnSmoothDivisor agreeNearVanishingComapSubscheme vanishingComapOpens
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the assignment by the ordinary vanishing ideal. Smoothness of the ambient scheme and the vanishing subscheme, together with the absence of any entire ambient component in the closed subset, give order one at each point of the subset by the smooth vanishing-ideal theorem.
 -/
 private theorem orderAt_vanishingIdealAssignment_eq_one :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -48,8 +48,8 @@ private theorem orderAt_vanishingIdealAssignment_eq_one :
   rw [vanishingIdealAssignment_apply] at hsm ⊢
   exact orderAt_vanishingIdeal_eq_one p hp T hirr hsm hcomp x hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion is smooth, so its composite with the given smooth structural morphism is smooth.
 -/
 private theorem smooth_opens_ι_comp_of_smooth :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -58,8 +58,8 @@ private theorem smooth_opens_ι_comp_of_smooth :
   have : Smooth p := hp
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the assignments with the ordinary vanishing ideals. The closed subset on the divisor is the inverse image of the original subset, which lies in the divisor on the chosen open. The smooth restriction theorem for vanishing ideals along a smooth divisor gives smoothness of its vanishing subscheme over the field.
 -/
 private theorem smooth_vanishingIdealAssignment_of_isSmoothDivisor :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -74,8 +74,8 @@ private theorem smooth_vanishingIdealAssignment_of_isSmoothDivisor :
   rw [vanishingIdealAssignment_apply] at hT ⊢
   exact smooth_vanishingIdeal_comap_subschemeι p U H hH T S hS hTsubH hT
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of the vanishing ideal to the open equals the vanishing ideal of the inverse-image closed subset. The corresponding pulled-back subscheme is the open restriction of the original smooth subscheme, so it stays smooth over the field. The ideal equality gives the asserted smoothness.
 -/
 private theorem smooth_vanishingIdealAssignment_restrict_opens :
     ∀ (k : Type u) [Field k] [CharZero k] (W : Scheme.{u})
@@ -91,8 +91,8 @@ private theorem smooth_vanishingIdealAssignment_restrict_opens :
     (smooth_comap_subschemeι_of_isOpenImmersion U.ι
       (Scheme.IdealSheafData.vanishingIdeal T) p hT)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order-one theorem for the vanishing ideal gives the required order condition. Smoothness of an open restriction and the smoothness results for the vanishing ideals on a divisor and on an open supply the three smoothness conditions.
 -/
 theorem smoothVanishingHypotheses_vanishingIdealAssignment : SmoothVanishingHypotheses (vanishingIdealAssignment.{u}) where
   orderAt_vanishing_eq_one := orderAt_vanishingIdealAssignment_eq_one
@@ -100,8 +100,8 @@ theorem smoothVanishingHypotheses_vanishingIdealAssignment : SmoothVanishingHypo
   smooth_vanishing_hypersurface := smooth_vanishingIdealAssignment_of_isSmoothDivisor
   smooth_vanishing_opens := smooth_vanishingIdealAssignment_restrict_opens
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The vanishing ideal assignment satisfies both the ideal-sheaf geometry and the smooth-vanishing hypotheses. Applying the isolation theorem for a principalization certificate with these hypotheses proves the claim.
 -/
 theorem smoothOrderOneCentersIsolated_vanishingIdealAssignment_of_principalizationCertificate {k : Type u} [Field k] [CharZero k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -111,10 +111,8 @@ theorem smoothOrderOneCentersIsolated_vanishingIdealAssignment_of_principalizati
 
 end OpenImmersionRestriction
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback along an open immersion preserves nonvanishing on components. The induced map from the pulled-back closed subscheme is an open immersion, and pullback of a smooth divisor remains a smooth divisor. These three results give the required stability.
 -/
 theorem openImmersionStability (k : Type u) [Field k] : OpenImmersionStability.{u} k := by
   refine ⟨?_, ?_, ?_⟩
@@ -128,8 +126,8 @@ theorem openImmersionStability (k : Type u) [Field k] : OpenImmersionStability.{
     have : IsOpenImmersion f := hf
     exact OpenImmersionRestriction.isSmoothDivisor_comap f p D hD
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the certificate pullback theorem with the established stability under open immersions. It gives the certificate for the pulled-back ideals and the inverse image of the boundary under the composed structural morphism.
 -/
 theorem PrincipalizationCertificate.comap_of_isOpenImmersion {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}

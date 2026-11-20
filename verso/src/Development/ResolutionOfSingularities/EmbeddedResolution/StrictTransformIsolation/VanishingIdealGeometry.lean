@@ -19,28 +19,28 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution.OpenImmersionRestriction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Containment of ideal sheaves is defined by containment of the section ideals on all affine opens. The hypothesis gives precisely these inclusions.
 -/
 private theorem le_of_ideal_le {X : Scheme.{u}} {I J : X.IdealSheafData}
     (h : ∀ V : X.affineOpens, I.ideal V ≤ J.ideal V) : I ≤ J := h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inverse ring map is a left inverse of the forward map. Hence the forward map is injective.
 -/
 private theorem injective_hom_of_iso {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Injective e.hom.hom :=
   e.commRingCatIsoToRingEquiv.injective
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inverse ring map supplies a preimage for each target element. Thus the forward map is surjective.
 -/
 private theorem surjective_hom_of_iso {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Surjective e.hom.hom :=
   e.commRingCatIsoToRingEquiv.surjective
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+An element of the kernel has the same image as zero. Injectivity forces the element to be zero, which belongs to the indicated ideal.
 -/
 private theorem ker_hom_of_iso_le {A B : CommRingCat.{u}} (e : A ≅ B) (I : Ideal A) :
     RingHom.ker e.hom.hom ≤ I := by
@@ -50,35 +50,31 @@ private theorem ker_hom_of_iso_le {A B : CommRingCat.{u}} (e : A ≅ B) (I : Ide
   have hz : x = 0 := injective_hom_of_iso e hx0
   simp [hz]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+If a class is nilpotent, a power of its representative lies in the ideal. Its representative is thus in the radical, which equals the ideal by hypothesis. The class is zero, so the quotient is reduced.
 -/
 private theorem isReduced_quotient_of_radical_eq {R : Type u} [CommRing R] (I : Ideal R)
     (h : I.radical = I) : _root_.IsReduced (R ⧸ I) :=
   (Ideal.isRadical_iff_quotient_reduced I).mp (Ideal.radical_eq_iff.mp h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+If a fraction is nilpotent, some power of its numerator is annihilated by an element of the multiplicative set. Multiplying the numerator by this element gives a nilpotent element of the original reduced ring and hence zero. This makes the fraction zero in the localization.
 -/
 private theorem isReduced_of_isLocalization {R S : Type u} [CommRing R] [CommRing S]
     (alg : Algebra R S) (M : Submonoid R) (hloc : @IsLocalization R _ M S _ alg)
     (hred : _root_.IsReduced R) : _root_.IsReduced S :=
   @isReduced_localizationPreserves R _ M S _ alg hloc hred
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The vanishing ideal consists of elements belonging to every prime in the given set. If a power of an element lies in all those primes, the element lies in each prime by primality. Thus the vanishing ideal is radical.
 -/
 private theorem radical_primeSpectrum_vanishingIdeal_eq {R : Type u} [CommRing R]
     (t : Set (PrimeSpectrum R)) :
     (PrimeSpectrum.vanishingIdeal t).radical = PrimeSpectrum.vanishingIdeal t :=
   (PrimeSpectrum.isRadical_vanishingIdeal t).radical
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine open around the image of a point of the subscheme. Its inverse-image open is affine and has section ring the quotient by the radical section ideal. This quotient is reduced. The stalk at the point is a localization of that ring and remains reduced. All stalks of the subscheme are therefore reduced.
 -/
 private theorem isReduced_subscheme_of_radical_eq {X : Scheme.{u}} (J : X.IdealSheafData)
     (hJ : ∀ U : X.affineOpens, (J.ideal U).radical = J.ideal U) :
@@ -105,8 +101,8 @@ private theorem isReduced_subscheme_of_radical_eq {X : Scheme.{u}} (J : X.IdealS
   have := hst
   exact AlgebraicGeometry.isReduced_of_isReduced_stalk _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On every affine open the section ideal is the vanishing ideal of the corresponding subset of the prime spectrum. It is radical as an intersection of primes. The subscheme defined by such section ideals is reduced.
 -/
 private theorem isReduced_vanishingIdeal_subscheme {X : Scheme.{u}} (Z : Closeds ↥X) :
     AlgebraicGeometry.IsReduced (Scheme.IdealSheafData.vanishingIdeal Z).subscheme := by
@@ -114,14 +110,14 @@ private theorem isReduced_vanishingIdeal_subscheme {X : Scheme.{u}} (Z : Closeds
   rw [Scheme.IdealSheafData.vanishingIdeal_ideal]
   exact radical_primeSpectrum_vanishingIdeal_eq _
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The support of the vanishing ideal is the zero locus of that ideal. For a closed set, taking its vanishing ideal and then its zero locus recovers the set itself.
 -/
 private theorem support_vanishingIdeal_eq_self {X : Scheme.{u}} (Z : Closeds ↥X) :
     (Scheme.IdealSheafData.vanishingIdeal Z).support = Z := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The radical of an ideal sheaf is the vanishing ideal of its support. The vanishing ideal of the closed set has that closed set as support, so taking its radical recovers it.
 -/
 private theorem radical_vanishingIdeal_eq_self {X : Scheme.{u}} (Z : Closeds ↥X) :
     (Scheme.IdealSheafData.vanishingIdeal Z).radical
@@ -129,8 +125,8 @@ private theorem radical_vanishingIdeal_eq_self {X : Scheme.{u}} (Z : Closeds ↥
   rw [← Scheme.IdealSheafData.vanishingIdeal_support]
   exact Scheme.IdealSheafData.gc.u_l_u_eq_u Z
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A section of the ideal vanishes on its support. Since the specified closed set lies in that support, the section vanishes there as well. This gives containment in the vanishing ideal on every affine open.
 -/
 private theorem le_vanishingIdeal_of_subset {X : Scheme.{u}} (I : X.IdealSheafData)
     (Z : Closeds ↥X) (h : (Z : Set ↥X) ⊆ (I.support : Set ↥X)) :
@@ -138,12 +134,8 @@ private theorem le_vanishingIdeal_of_subset {X : Scheme.{u}} (I : X.IdealSheafDa
   have h' : Z ≤ I.support := h
   exact (Scheme.IdealSheafData.gc I Z).mp h'
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For an affine open in the source, its image is affine and the open immersion identifies the two section rings. The pulled-back section ideal is the image of the target section ideal under this isomorphism. The target section ideal is radical by hypothesis, and ring isomorphisms preserve radicals. Thus every section ideal of the pullback is radical.
 -/
 private theorem radical_comap_eq_of_isOpenImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsOpenImmersion f] (I : Y.IdealSheafData) (hI : I.radical = I) :
@@ -169,12 +161,8 @@ private theorem radical_comap_eq_of_isOpenImmersion {X Y : Scheme.{u}} (f : X �
     rw [hmap, ← Ideal.map_radical_of_surjective hsurj hker, hIrad]
   exact le_of_eq ((Scheme.IdealSheafData.radical_ideal (I.comap f) V).trans hrw)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine target open the kernel ideal consists of sections mapping to zero on its affine inverse image. If a power of a section lies in the kernel, the image of the section is nilpotent. The source is reduced, so its image is zero. The section itself belongs to the kernel, which is therefore radical.
 -/
 private theorem radical_ker_eq_of_isReduced {A B : Scheme.{u}} (g : A ⟶ B)
     [AlgebraicGeometry.IsAffineHom g] [AlgebraicGeometry.IsReduced A] :
@@ -195,12 +183,8 @@ private theorem radical_ker_eq_of_isReduced {A B : Scheme.{u}} (g : A ⟶ B)
   rw [← map_pow]
   exact (key _).1 hn
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal containment makes the second closed subscheme factor through the first closed immersion. That factorization together with the identity on the second subscheme gives a map back into the pullback, whose composite with the second projection is the identity. For the other composite, compare both projections. The second agrees by construction, and the first agrees after the first subscheme inclusion by commutativity. That inclusion is a monomorphism, so the first also agrees. The pullback property proves the inverse identity.
 -/
 private theorem isIso_pullback_snd_of_le {X : Scheme.{u}} (H J : X.IdealSheafData)
     (h : H ≤ J) : IsIso (Limits.pullback.snd H.subschemeι J.subschemeι) := by
@@ -221,12 +205,8 @@ private theorem isIso_pullback_snd_of_le {X : Scheme.{u}} (H J : X.IdealSheafDat
     rw [Category.assoc, hβfac, Limits.pullback.condition]
   · rw [Category.assoc, Limits.pullback.lift_snd, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Containment of the closed set in the support of the hypersurface ideal gives containment of that ideal in the vanishing ideal. The vanishing subscheme therefore factors through the closed immersion. Its pullback along the immersion is isomorphic to the vanishing subscheme and is reduced. Consequently the pulled-back ideal, the kernel of the corresponding closed immersion, is radical. Its support is the inverse image of the original closed set. A radical ideal sheaf is the vanishing ideal of its support, giving the equality.
 -/
 private theorem comap_vanishingIdeal_subschemeι {X : Scheme.{u}} (H : X.IdealSheafData)
     (Z : Closeds ↥X) (hZH : (Z : Set ↥X) ⊆ (H.support : Set ↥X))
@@ -264,8 +244,8 @@ private theorem comap_vanishingIdeal_subschemeι {X : Scheme.{u}} (H : X.IdealSh
         Scheme.IdealSheafData.vanishingIdeal_support.symm
     _ = Scheme.IdealSheafData.vanishingIdeal S := by rw [hsupp]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Support of a pullback is the inverse image of support. The support of the original vanishing ideal is the specified closed set, giving the formula for the open inclusion.
 -/
 private theorem support_comap_opens_vanishingIdeal {W : Scheme.{u}} (U : W.Opens) (T : Closeds ↥W) :
     ((((Scheme.IdealSheafData.vanishingIdeal T).comap U.ι).support) : Set ↥(U.toScheme))
@@ -275,8 +255,8 @@ private theorem support_comap_opens_vanishingIdeal {W : Scheme.{u}} (U : W.Opens
     = ⇑U.ι ⁻¹' (T : Set ↥W)
   rw [support_vanishingIdeal_eq_self]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The vanishing ideal is radical, and pullback along the open immersion preserves this property. A radical ideal equals the vanishing ideal of its support. Apply this fact to the pulled-back ideal.
 -/
 private theorem comap_opens_vanishingIdeal_eq_vanishingIdeal_support {W : Scheme.{u}} (U : W.Opens)
     (T : Closeds ↥W) :
@@ -286,8 +266,8 @@ private theorem comap_opens_vanishingIdeal_eq_vanishingIdeal_support {W : Scheme
   rw [Scheme.IdealSheafData.vanishingIdeal_support]
   exact (radical_comap_eq_of_isOpenImmersion U.ι _ (radical_vanishingIdeal_eq_self T)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted vanishing ideal is the vanishing ideal of the inverse-image closed set. This set lies in the support of the indicated ideal by hypothesis. The support containment criterion therefore puts that ideal in the restricted vanishing ideal.
 -/
 private theorem le_comap_vanishingIdeal_of_preimage_subset {W : Scheme.{u}} (U : W.Opens)
     (H : (U.toScheme).IdealSheafData) (T : Closeds ↥W)
@@ -298,10 +278,8 @@ private theorem le_comap_vanishingIdeal_of_preimage_subset {W : Scheme.{u}} (U :
   rw [support_comap_opens_vanishingIdeal]
   exact hTsubH
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restrict first to the open, where the ideal becomes the vanishing ideal of the inverse-image closed subset. This subset lies in the support of the closed subscheme. The vanishing ideal restriction formula for a closed immersion therefore applies. The successive inverse images compose to the specified closed subset of the subscheme.
 -/
 private theorem comap_subschemeι_comap_vanishingIdeal {W : Scheme.{u}} (U : W.Opens)
     (H : (U.toScheme).IdealSheafData)
@@ -317,18 +295,16 @@ private theorem comap_subschemeι_comap_vanishingIdeal {W : Scheme.{u}} (U : W.O
   · rw [hS, support_comap_opens_vanishingIdeal, ← Set.preimage_comp]
     rfl
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The closed subscheme of a pulled-back ideal is canonically isomorphic to the fiber product of the original closed subscheme with the new base. Its inclusion corresponds to the first projection. Take the forward map of this isomorphism.
 -/
 private theorem exists_isIso_pullback_lift_comap_subschemeι {X Y : Scheme.{u}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     ∃ α : (I.comap f).subscheme ⟶ Limits.pullback f I.subschemeι,
       IsIso α ∧ α ≫ Limits.pullback.fst f I.subschemeι = (I.comap f).subschemeι :=
   ⟨(I.comapIso f).hom, inferInstance, Scheme.IdealSheafData.comapIso_hom_fst I f⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the pulled-back closed subscheme with the fiber product. By commutativity its composite to the target equals the isomorphism to the fiber product followed by the second projection and the original smooth morphism. All of these maps are smooth by the isomorphism and the hypotheses. Their composite is smooth.
 -/
 private theorem smooth_comap_subschemeι_comp_of_smooth_pullback_snd {X Y S : Scheme.{u}} (f : X ⟶ Y)
     (I : Y.IdealSheafData) (g : Y ⟶ S)
@@ -350,18 +326,16 @@ private theorem smooth_comap_subschemeι_comp_of_smooth_pullback_snd {X Y S : Sc
   have := hsnd
   infer_instance
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The irreducible component chosen through a point is maximal irreducible and contains the point by its defining properties. It gives the required component.
 -/
 private theorem exists_irreducibleComponent_mem (α : Type u) [TopologicalSpace α] (x : α) :
     ∃ C ∈ irreducibleComponents α, x ∈ C :=
   ⟨irreducibleComponent x, irreducibleComponent_mem_irreducibleComponents x,
     mem_irreducibleComponent⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback of the radical vanishing ideal along an open immersion is radical. Its support is the inverse image of the given closed set, which is the specified set upstairs. Since a radical ideal sheaf is determined by its support, it is the vanishing ideal upstairs.
 -/
 theorem comap_vanishingIdeal_of_isOpenImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsOpenImmersion f] (T : Closeds ↥Y) (S : Closeds ↥X)
@@ -382,14 +356,8 @@ theorem comap_vanishingIdeal_of_isOpenImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
         Scheme.IdealSheafData.vanishingIdeal_support.symm
     _ = Scheme.IdealSheafData.vanishingIdeal S := by rw [hsupp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose an ambient neighborhood on which the two original ideals agree. Its inverse image in the closed subscheme contains the point. The map from that inverse image to the ambient scheme factors through the chosen neighborhood, so the original equality pulls back to equality there. The pullback of the vanishing ideal along the open inclusion and then the closed immersion is the vanishing ideal of the stated inverse image, by the support containment hypothesis. Thus the two ideals agree near the point as claimed.
 -/
 theorem agreeNearVanishingComapSubscheme : AgreeNearVanishingComapSubscheme.{u} := by
   intro W N U H T S x hS hTsubH hN
@@ -417,8 +385,8 @@ theorem agreeNearVanishingComapSubscheme : AgreeNearVanishingComapSubscheme.{u} 
       ← hg, ← Scheme.IdealSheafData.comap_comp]
   rw [e N, hVeq, ← e, comap_subschemeι_comap_vanishingIdeal U H T S hS hTsubH]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The equality of ideals identifies their closed subschemes and inclusions. Under this identification the stated smooth morphism is the required one.
 -/
 theorem smooth_subschemeι_comp_of_eq {X S : Scheme.{u}} (f : X ⟶ S) {K K' : X.IdealSheafData}
     (h : K = K') (hsm : AlgebraicGeometry.Smooth (K'.subschemeι ≫ f)) :
@@ -426,8 +394,8 @@ theorem smooth_subschemeι_comp_of_eq {X S : Scheme.{u}} (f : X ⟶ S) {K K' : X
   subst h
   exact hsm
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The second projection of the fiber product is an open immersion, since it is a base change of the given open immersion. It is therefore smooth. Identify the pulled-back subscheme with the fiber product and compose this projection with the given smooth structure morphism.
 -/
 theorem smooth_comap_subschemeι_of_isOpenImmersion {X Y S : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsOpenImmersion f] (I : Y.IdealSheafData) (g : Y ⟶ S)
@@ -436,10 +404,8 @@ theorem smooth_comap_subschemeι_of_isOpenImmersion {X Y S : Scheme.{u}} (f : X 
   have : AlgebraicGeometry.Smooth (Limits.pullback.snd f I.subschemeι) := inferInstance
   exact smooth_comap_subschemeι_comp_of_smooth_pullback_snd f I g hsm inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+First restrict the original smooth vanishing subscheme to the open, which preserves smoothness. The local closed subset lies inside the hypersurface support, so the restricted vanishing subscheme factors through the hypersurface and remains isomorphic to its pullback there. This pullback is smooth by composition with the isomorphic second projection. The vanishing ideal pullback identity identifies it with the closed subscheme of the required ideal on the hypersurface.
 -/
 theorem smooth_vanishingIdeal_comap_subschemeι {k : Type u} [Field k] {W : Scheme.{u}}
     (p : W ⟶ Spec (CommRingCat.of k)) (U : W.Opens) (H : (U.toScheme).IdealSheafData)
@@ -464,20 +430,8 @@ theorem smooth_vanishingIdeal_comap_subschemeι {k : Type u} [Field k] {W : Sche
   exact smooth_comap_subschemeι_comp_of_smooth_pullback_snd H.subschemeι
     ((Scheme.IdealSheafData.vanishingIdeal T).comap U.ι) (U.ι ≫ p) hJ hsnd
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the point of the closed subset, smoothness of the ambient scheme and of the vanishing subscheme gives an étale chart on which the vanishing ideal is a coordinate ideal. If the coordinate set were empty, the vanishing ideal would be zero on that open, so the entire open would lie in the closed subset. An ambient irreducible component through the point would then have a nonempty open piece in the closed subset. That piece is dense in the component, putting the whole component in the subset, a contradiction. Thus the coordinate set is nonempty. The order calculation for a nonempty coordinate ideal at a point of its support gives order one.
 -/
 theorem orderAt_vanishingIdeal_eq_one {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
     (p : W ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (T : Closeds ↥W)

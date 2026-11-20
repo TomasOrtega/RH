@@ -54,8 +54,8 @@ def SmoothOrderOneCentersIsolated (V : VanishingAssignment.{u}) {k : Type u} [Fi
     (∀ x ∈ C.S, AgreeNear I (V W ⟨C.S, C.closedS⟩) x) →
     C.pt ∈ (Z.support : Set ↥W) → False
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each point of the closed set, local equality with its vanishing ideal gives the same support membership as for the vanishing ideal. That support is exactly the closed set. Hence every point of the set lies in the given ideal’s support.
 -/
 theorem subset_support_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (N : W.IdealSheafData) (T : Set ↥W) (hT : IsClosed T)
@@ -65,20 +65,8 @@ theorem subset_support_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealShe
   rw [mem_support_iff_of_agreeNear hV (hagree x hx), hV.support_vanishing W ⟨T, hT⟩]
   exact hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose a component of the open subscheme lies in the inverse image of the closed set. The closure of its image is irreducible, so it lies in an irreducible component of the ambient scheme. This ambient component meets the open, and its intersection with the open is irreducible. Its inverse image contains the original component, so maximality identifies them. Thus the intersection lies in the closed set. The intersection is a nonempty open of the ambient irreducible component and is dense in it. Closedness then puts the whole ambient component in the closed set, a contradiction.
 -/
 private theorem irreducibleComponents_opens_not_subset_preimage {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (T : Set ↥W) (hT : IsClosed T)
@@ -129,8 +117,8 @@ private theorem irreducibleComponents_opens_not_subset_preimage {V : VanishingAs
   rw [← FunctorialResolution.EmbeddedResolution.closure_inter_open_eq hZcl hZirr (hV.isOpen_opens W U) hZU]
   exact closure_minimal hZT hT
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Near the specified point the ideal agrees with the vanishing ideal of the closed irreducible subset, so their orders there agree. The smooth-vanishing order hypothesis gives order one for this vanishing ideal, since its subscheme is smooth and the subset contains no ambient irreducible component.
 -/
 private theorem orderAt_eq_one_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -143,18 +131,8 @@ private theorem orderAt_eq_one_of_agreeNear {V : VanishingAssignment.{u}} (hV : 
   rw [hV.orderAt_congr W I (V W ⟨C.S, C.closedS⟩) x (hagree x hx)]
   exact hG.orderAt_vanishing_eq_one k W p hp ⟨C.S, C.closedS⟩ C.irredS hsm hcomp x hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen open contains the distinguished point of the closed subset, so it also contains its generic point. Pull the closed subset and both points back to the open subscheme. The inverse image is closed and irreducible with the lifted generic point. The structural map and the vanishing subscheme remain smooth by the restriction hypotheses. No component of the open subscheme is contained in the inverse-image subset by the component argument. Support membership and absence at the two points transfer under pullback, as do disjointness from the boundary and local agreement with the vanishing ideal. The stated isolation property on the open subscheme then gives the contradiction.
 -/
 theorem false_of_smoothOrderOneCentersIsolated_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -213,30 +191,8 @@ theorem false_of_smoothOrderOneCentersIsolated_opens {V : VanishingAssignment.{u
     rw [← hy1, ← hV.orderAt_comap W U Z y1] at h1
     exact (one_le_orderAt_iff_mem_support (Z.comap U.ι) y1).mp h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Local agreement and smoothness give order one at the generic point, so it lies in the input support. If there is no next ideal, the inverse image of the center support in the hypersurface is open by hypothesis. The generic point belongs to the hypersurface and specializes to the given point, so this openness contradicts the assumed separation of the two points by the center. If the next ideal exists, the portion of the closed subset on the chosen open lies in the input support, hence in the smooth hypersurface. Pull back the subset and its generic and distinguished points to this hypersurface. The inverse image is closed and irreducible. Near its points the next ideal agrees with the pullback of the original ideal because the subset avoids the boundary. This in turn agrees locally with the vanishing ideal of the inverse-image subset. The next ideal is nonzero on components, so the subset contains no whole component. Smoothness transfers to its vanishing subscheme by hypothesis. The two center support conditions and boundary disjointness transfer by inverse images. Apply the inductive isolation property on the hypersurface to obtain the contradiction.
 -/
 private theorem false_of_isSmoothDivisor_of_smoothOrderOneCentersIsolated {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
@@ -363,18 +319,8 @@ private theorem false_of_isSmoothDivisor_of_smoothOrderOneCentersIsolated {V : V
     exact hIH ⟨(H.subschemeι ≫ U.ι).base ⁻¹' C.S, y0, y1, hS'closed, hirr', hgen', hmemPt⟩
       hsmooth hm hsmV hcomp' hxi' hdisj' hagree' hpt'
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use simultaneous induction on the certificate and its residual certificate. If the center is contained in the boundary, the distinguished point in the center contradicts disjointness. A mark at least two contradicts the order-one hypothesis directly. In the factorization case, around every point of the subset the boundary factor is the unit ideal because its support is contained in the boundary. Thus the residual ideal has the same local agreement with the vanishing ideal. If the residual mark is one, apply induction. If it is at least two, the residual ideal has order one at the distinguished point by the smooth-vanishing order result, contradicting the marked center condition. In the open restriction cases apply the induction hypothesis in the neighborhood of the distinguished point and transfer isolation through the open inclusion. In the hypersurface case apply the restriction argument for a smooth divisor, using the inductive isolation property whenever a further ideal is present. These cases establish the required isolation.
 -/
 theorem smoothOrderOneCentersIsolated_of_principalizationCertificate {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (hG : SmoothVanishingHypotheses V) {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}

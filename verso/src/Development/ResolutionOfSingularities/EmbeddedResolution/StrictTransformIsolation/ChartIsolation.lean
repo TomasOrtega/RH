@@ -81,16 +81,8 @@ structure ChartIsolationHypotheses (V : VanishingAssignment.{u}) (A : Principali
           orderAt ((principalizationOfEmbedding k Y pY D A).ideal i)
             (((D.toEmbeddedBlowupSequence A).strictTransformι i).base ξ) = 1
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Use the certificate to obtain the order-one center isolation property. The detached component is an irreducible component whose image is contained in the ambient center. Its image and that of the other component are closed and irreducible because the strict-transform inclusion is a closed embedding, and their generic points are images of the original generic points. The generic point of the other component lies outside the center, since otherwise its closure would lie in the closed center, making it detached. Both generic points avoid the given boundary union. The first has order one and near it the ideal agrees with the vanishing ideal of its component. The second has order one and hence belongs to the input support. If the components intersected, their images would share a point, contradicting the isolation property applied to these two closed irreducible sets.
 -/
 theorem disjoint_detachedComponent_of_principalizationCertificate
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -150,10 +142,8 @@ theorem disjoint_detachedComponent_of_principalizationCertificate
     rfl hC₁sub hnotcenter (hmem C₁ hC₁comp ξ₁ hξ₁) (hmem C₂ h₂ ξ₂ hξ₂) hag1 hord1
     ((one_le_orderAt_iff_mem_support I ((S.strictTransformι i).base ξ₂)).1 (le_of_eq hord2.symm))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the indicated stage the output of the canonical order reduction supplies a principalization certificate for the initial order-one marked triple. The chart hypotheses supply Noetherianity, the closed embedding of the strict transform, and the local agreement and order-one assumptions at generic points. Generic avoidance of each boundary member implies avoidance of their union. Thus the certificate disjointness theorem applies to the detached and nondetached components.
 -/
 theorem disjoint_detachedComponent_canonicalPrincipalization
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -191,8 +181,8 @@ theorem disjoint_detachedComponent_canonicalPrincipalization
     exact hind.generic_not_mem_member k Y pY D i (le_of_lt hi) C hC ξ hξ E hE hxE
   · exact hind.agreeNear_orderAt_eq_one k Y pY D i (le_of_lt hi)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a stage before the end, the detached locus is the union of the detached irreducible components. By the certificate argument, every such component is disjoint from every irreducible component outside this family. Since the strict-transform space is Noetherian, there are finitely many irreducible components and they are closed. The union of the other components is its closed complement, so the detached locus is open.
 -/
 theorem detachedLocusIsOpen_toEmbeddedBlowupSequence
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
@@ -211,8 +201,8 @@ theorem detachedLocusIsOpen_toEmbeddedBlowupSequence
     (fun C₁ hC₁ C₂ hC₂ hC₂' =>
       disjoint_detachedComponent_canonicalPrincipalization hV hres hB hrad hind k Y pY D i hi hC₁ hC₂ hC₂')
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For any admissible embedding, apply the stagewise openness theorem to the embedded blowup sequence produced by the canonical principalization. This gives exactly the openness property for all such embeddings.
 -/
 theorem detachedLocusIsOpenForEmbeddings_canonicalPrincipalization
     {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)

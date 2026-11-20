@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitDict.exists_split_dictionary | exact GlobalTheory.SplitDict.exists_split_dictionary | (intros; apply GlobalTheory.SplitDict.exists_split_dictionary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitDict.exists_split_dictionary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsLocalDictionarySplitPlace.lean&line=210#L210)
 -/
 theorem _root_.GlobalTheory.T.exists_local_dictionary_splitPlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →

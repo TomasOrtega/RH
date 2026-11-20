@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuotRegular.exists_isReg | exact GlobalTheory.QuotRegular.exists_isReg | (intros; apply GlobalTheory.QuotRegular.exists_isReg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuotRegular.exists_isReg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularRepresentationOfFinitePair.lean&line=177#L177)
 -/
 theorem _root_.GlobalTheory.T.regular_representation_of_finite_pair : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), FinPair V μ 𝓕 → ∃ ρ, IsReg V μ 𝓕 ρ := by
   first | exact @GlobalTheory.QuotRegular.exists_isReg | exact GlobalTheory.QuotRegular.exists_isReg | (intros; apply GlobalTheory.QuotRegular.exists_isReg <;> assumption)

@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm.M GlobalTheory.To
 open Filter Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.hodge_potential_local | exact GlobalTheory.HodgeLocGeo.hodge_potential_local | (intros; apply GlobalTheory.HodgeLocGeo.hodge_potential_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeLocGeo.hodge_potential_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsExponentsGeneratingDivisorAtPoint.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_exponents_generating_divisor_at_point : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →

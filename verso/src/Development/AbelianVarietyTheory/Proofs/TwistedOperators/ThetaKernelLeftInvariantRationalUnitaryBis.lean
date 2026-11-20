@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareComm.ThetaLeft.main | exact GlobalTheory.SquareComm.ThetaLeft.main | (intros; apply GlobalTheory.SquareComm.ThetaLeft.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareComm.ThetaLeft.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaKernelLeftInvariantRationalUnitary.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (M X : HSp D) (A : Fr M) (B : Fr X)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ false M X χ χ' ω → ∀ Φ ∈ algF ψ θ false A B, ∀ γ ∈ GQ M,

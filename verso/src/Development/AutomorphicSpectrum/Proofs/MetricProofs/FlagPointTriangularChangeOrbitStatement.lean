@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFlagPointTriangularChangeOrbit.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.flag_point_triangular_change_orbit : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (b : (Σ k, baseIdx ι M.blk k) → ℂ) (h B : Ψ → Matrix (Fin N) (Fin N) ℂ), (∀ τ', IsBlockDiag j (B τ') ∧ (B τ').BlockTriangular id ∧ (B τ').det ≠ 0) → SameOrbit (FC.flagPt M F b fun τ' => h τ' * B τ') (FC.flagPt M F b h) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.sameOrbit_flagPt_mul <;> assumption)

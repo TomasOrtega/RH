@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncreasingRowChoicePerColumn
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeylCombInt.comb_mem_iff | exact GlobalTheory.WeylCombInt.comb_mem_iff | (intros; apply GlobalTheory.WeylCombInt.comb_mem_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeylCombInt.comb_mem_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCombMemIff.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.comb_mem_iff_alt : ∀ (p : ℕ) [Fact p.Prime] (Lt T : Type) [Fintype Lt] [DecidableEq Lt] [Fintype T] (e : Lt → T), Function.Bijective e →
     ∀ (N : ℕ) (ν : T → Fin N → ℕ) (ι : Lt → Type) [∀ s, Fintype (ι s)] [∀ s, DecidableEq (ι s)]

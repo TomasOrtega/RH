@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FShearPushforwardHermitianMeasure.lean&line=195#L195)
 -/
 theorem _root_.GlobalTheory.T.shear_pushforward_hermitian_measure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ (a : Fin n) (s : Fin n → Ainf F ⊗[F] E), s a = 0 → ∀ τ : HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n → HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n, Measurable τ → (∀ S, (τ S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) (GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearM a s) * S * GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearM a s) → (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n).map τ = GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n := by
   first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.ShearHaar.coordHerm_map_shear <;> assumption)

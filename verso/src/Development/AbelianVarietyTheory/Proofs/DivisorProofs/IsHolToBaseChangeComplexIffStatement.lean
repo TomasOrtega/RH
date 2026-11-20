@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PELU.isHolTo_bc_iff | exact GlobalTheory.PELU.isHolTo_bc_iff | (intros; apply GlobalTheory.PELU.isHolTo_bc_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PELU.isHolTo_bc_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsHolToBaseChangeComplexIff.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.isHolTo_baseChange_complex_iff : ∀ (R : Type) [CommRing R] (σ : R →+* ℂ) (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp ℂ) (f : X' ⟶ X), IsPullback f s' s (spMap σ) → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (B : Set V) (y : V → (Sp ℂ ⟶ X')), (∀ b ∈ B, y b ≫ s' = spMap (RingHom.id ℂ)) → (IsHolTo B y ↔ IsHolTo B (fun b => y b ≫ f)) := by
   first | exact @GlobalTheory.PELU.isHolTo_bc_iff | exact GlobalTheory.PELU.isHolTo_bc_iff | (intros; apply GlobalTheory.PELU.isHolTo_bc_iff <;> assumption)

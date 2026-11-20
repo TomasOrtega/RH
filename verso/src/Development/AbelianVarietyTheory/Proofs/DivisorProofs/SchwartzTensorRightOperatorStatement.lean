@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTemperateGrowthE
 
 open GlobalTheory.SliceSchwartz
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceOp.exists_tensor_clm | exact GlobalTheory.SliceOp.exists_tensor_clm | (intros; apply GlobalTheory.SliceOp.exists_tensor_clm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SliceOp.exists_tensor_clm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzTensorRightOperator.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.schwartz_tensor_right_operator : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (κ κ' κ₁' : Type)
     [Fintype κ] [Fintype κ'] [Fintype κ₁'] (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ),

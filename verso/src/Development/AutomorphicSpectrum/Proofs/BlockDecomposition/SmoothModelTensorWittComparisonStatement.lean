@@ -5,8 +5,10 @@ set_option backward.isDefEq.respectTransparency false
 set_option maxHeartbeats 1000000
 open CategoryTheory AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.PAlg CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BcAcris.bc_tens | exact GlobalTheory.CompanionTheory.BcAcris.bc_tens | (intros; apply GlobalTheory.CompanionTheory.BcAcris.bc_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BcAcris.bc_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSmoothModelTensorWittComparison.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.smooth_model_tensor_witt_comparison : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K), M.Sm → ∀ j n, Tens (WittVector l r.k) (N := fun _ : Unit => AW r) (M := fun _ => (Wc.HS l (B.schFn M.p) r.ρ j).M n) (M' := Mid.HM r M n j) fun _ a y => idA r a • bWL r M n j y := by
   first | exact @GlobalTheory.CompanionTheory.BcAcris.bc_tens | exact GlobalTheory.CompanionTheory.BcAcris.bc_tens | (intros; apply GlobalTheory.CompanionTheory.BcAcris.bc_tens <;> assumption)

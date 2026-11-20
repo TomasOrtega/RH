@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero | exact GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero | (intros; apply GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealZeroFormEqSmoothFunction.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.real_zero_form_eq_smooth_function : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (σ : k →+* ℂ) (α : (h.atlas σ).Fld), (h.atlas σ).IsRealForm 0 α → ∃ t : CxPts p σ → ℝ, (∀ y, CInfAt t y) ∧ α = (h.atlas σ).fn t := by
   first | exact @GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero | exact GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero | (intros; apply GlobalTheory.CxForm.IsRegVar.exists_cInfAt_of_isRealForm_zero <;> assumption)

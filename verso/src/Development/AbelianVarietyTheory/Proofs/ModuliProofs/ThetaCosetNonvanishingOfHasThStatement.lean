@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.coset_of_hasTh | exact GlobalTheory.coset_of_hasTh | (intros; apply GlobalTheory.coset_of_hasTh <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.coset_of_hasTh` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FThetaCosetNonvanishingOfHasTh.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.thetaCosetNonvanishing_of_hasTh : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (n : ℕ) (R : Type) [CommRing R] (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R) (q : Ideal R), 2 ≤ n → n ∣ N' → t.HasTh x v → q.IsPrime → Coset n N' v q := by
   first | exact @GlobalTheory.coset_of_hasTh | exact GlobalTheory.coset_of_hasTh | (intros; apply GlobalTheory.coset_of_hasTh <;> assumption)

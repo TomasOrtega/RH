@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensAct.rosatiAdj_matAct | exact GlobalTheory.TensAct.rosatiAdj_matAct | (intros; apply GlobalTheory.TensAct.rosatiAdj_matAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensAct.rosatiAdj_matAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRosatiAdjTensorPowerIntMatrixEndomorphism.lean&line=355#L355)
 -/
 theorem _root_.GlobalTheory.T.rosatiAdj_tensorPowerIntMatrixEndomorphism : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ), A.transpose * (W + W.transpose) = (W + W.transpose) * A' → RosatiAdj D'.P.A D'.P.L (GlobalTheory.TensAct.matAct T A) (GlobalTheory.TensAct.matAct T A') := by
   first | exact @GlobalTheory.TensAct.rosatiAdj_matAct | exact GlobalTheory.TensAct.rosatiAdj_matAct | (intros; apply GlobalTheory.TensAct.rosatiAdj_matAct <;> assumption)

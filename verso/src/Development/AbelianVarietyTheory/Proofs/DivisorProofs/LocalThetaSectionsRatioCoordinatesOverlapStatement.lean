@@ -11,8 +11,10 @@ open GlobalTheory.ProjSpace GlobalTheory.UMin.ThBdl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.ThBdl.cross_ratio_sections | exact GlobalTheory.UMin.ThBdl.cross_ratio_sections | (intros; apply GlobalTheory.UMin.ThBdl.cross_ratio_sections <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.ThBdl.cross_ratio_sections` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalThetaSectionsRatioCoordinatesOverlap.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.localThetaSections_ratio_coordinates_overlap : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (G : Over M.Z) [GrpObj G]
     (L : LB G.left) (n : ℕ) (c : Fin (n + 1) → Ω) (h : M.Z ⟶ PSpace k n) (v : SecM G L 1 (Over.mk M.pt)),

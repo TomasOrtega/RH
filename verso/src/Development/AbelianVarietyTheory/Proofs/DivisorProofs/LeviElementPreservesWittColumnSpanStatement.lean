@@ -8,8 +8,10 @@ open GlobalTheory.Doubling (absE conjUnit)
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdTorus.levi_mulVec_col | exact GlobalTheory.IdTorus.levi_mulVec_col | (intros; apply GlobalTheory.IdTorus.levi_mulVec_col <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdTorus.levi_mulVec_col` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviElementPreservesWittColumnSpan.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.levi_element_preserves_witt_column_span : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {S : Finset (Fin r)}, (∀ k ∈ S, ∀ i, i ≤ k → i ∈ S) →

@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PolRoot
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolRootComplete.root_of_residue | exact GlobalTheory.PolRootComplete.root_of_residue | (intros; apply GlobalTheory.PolRootComplete.root_of_residue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolRootComplete.root_of_residue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMumfordBundleRootLiftsFromResidueCompleteLocal.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.mumfordBundle_root_lifts_from_residue_complete_local : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ t : Sp R ⟶ S, Root A P (spMap (residue R) ≫ t) → Root A P t := by
   first | exact @GlobalTheory.PolRootComplete.root_of_residue | exact GlobalTheory.PolRootComplete.root_of_residue | (intros; apply GlobalTheory.PolRootComplete.root_of_residue <;> assumption)

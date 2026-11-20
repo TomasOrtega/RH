@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualMeasur
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JR.Hyp.measure_eq_coords | exact GlobalTheory.JR.Hyp.measure_eq_coords | (intros; apply GlobalTheory.JR.Hyp.measure_eq_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JR.Hyp.measure_eq_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelfDualMeasureEtaleHermitianEqCoords.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.selfDualMeasure_etaleHermitian_eq_coords : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (x : A.Kˣ) (e : A.L), e * e = e → star e = 1 - e → ∀ (ν : Measure A.K) (μ : Measure A.L), SelfDual ν (Hyp.kx A ψ x) → SelfDual μ (A.kerL ψ x) → ∀ h : A.L → ℂ, IsTest h → ∫ y, h y ∂μ = ∫ a, ∫ b, h (Hyp.cc A e (a, b)) ∂ν ∂ν := by
   first | exact @GlobalTheory.JR.Hyp.measure_eq_coords | exact GlobalTheory.JR.Hyp.measure_eq_coords | (intros; apply GlobalTheory.JR.Hyp.measure_eq_coords <;> assumption)

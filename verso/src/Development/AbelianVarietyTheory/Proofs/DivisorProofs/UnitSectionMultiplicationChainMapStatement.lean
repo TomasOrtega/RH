@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.EtC.unit_mul_chain_map`. Consider the case `exact GlobalTheory.EtC.unit_mul_chain_map`. Consider the case `(intros; apply GlobalTheory.EtC.unit_mul_chain_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtC.unit_mul_chain_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitSectionMultiplicationChainMap.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.unitSection_multiplication_chainMap : ∀ (q : ℕ) [NeZero q] (i k : ℤ) (μ : Pair (res _ (tw q 0)) (res _ (tw q i)) (res _ (tw q k))) (D : Cx (ZMod q)) (ι : D ⟶ res _ (tw q i)), (∀ n U (a : Sec ((res _ (tw q i)).X n) U), (∃ b, Sec.map (ι.f n) b = a) ↔ Loc U fun V g => IsUnit (q : Γ(V, ⊤)) ∨ Sec.res g a = 0) → ∃ u : D ⟶ res _ (tw q k), ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (s : ℤ) (b : Sec (D.X s) U), Sec.map (u.f s) b = μ.mul U 0 s s (zero_add s) (resGen 0 ζ) (Sec.map (ι.f s) b) := by
   first

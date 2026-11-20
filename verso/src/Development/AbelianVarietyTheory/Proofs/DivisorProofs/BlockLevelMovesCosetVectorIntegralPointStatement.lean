@@ -10,8 +10,10 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunObj.CosetMove.om_cosetV_block | exact GlobalTheory.FunObj.CosetMove.om_cosetV_block | (intros; apply GlobalTheory.FunObj.CosetMove.om_cosetV_block <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunObj.CosetMove.om_cosetV_block` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBlockLevelMovesCosetVectorIntegralPoint.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.blockLevel_moves_cosetVector_integral_point : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), oddE0 D ⊤ δ t0 a d e0 → a ≤ d → ∀ (W : WeilO D ⊤ δ a d e0) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → (∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (𝔪 * D.host.conj • 𝔪) → W.chV'.f u = 1) → ∀ h ∈ intG D d, (∀ i j : Fin d, j.1 < a → a ≤ i.1 → ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ hatId D 𝔪) → ∃ c : ℂ, ‖c‖ = 1 ∧ ∃ k ∈ intG D a, W.Om 1 h (cosetV D δ 𝔪 0 a d e0) = c • W.Om k 1 (cosetV D δ 𝔪 0 a d e0) := by
   first | exact @GlobalTheory.FunObj.CosetMove.om_cosetV_block | exact GlobalTheory.FunObj.CosetMove.om_cosetV_block | (intros; apply GlobalTheory.FunObj.CosetMove.om_cosetV_block <;> assumption)

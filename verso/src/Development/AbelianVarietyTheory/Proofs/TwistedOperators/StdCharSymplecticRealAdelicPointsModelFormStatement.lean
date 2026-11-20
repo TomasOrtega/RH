@@ -8,8 +8,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchPhase.psi_symplOH_realPt | exact GlobalTheory.ArchPhase.psi_symplOH_realPt | (intros; apply GlobalTheory.ArchPhase.psi_symplOH_realPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchPhase.psi_symplOH_realPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStdCharSymplecticRealAdelicPointsModelForm.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.stdChar_symplectic_realAdelicPoints_modelForm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D)
     (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.IsONLatBasis V b → ∀ (r : ℕ) (hr : W.rank = r)

@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbitSep.unitAt_of_forall_unitAt_fibre | exact GlobalTheory.OrbitSep.unitAt_of_forall_unitAt_fibre | (intros; apply GlobalTheory.OrbitSep.unitAt_of_forall_unitAt_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrbitSep.unitAt_of_forall_unitAt_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalFunctionUnitAtPointOfFibreQuotient.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.rationalFunctionUnitAtPoint_of_fibre_quotient : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (Γ : Type) [Group Γ] [Finite Γ]
     (ρ : Γ →* Aut X) (q : X ⟶ W) [IsDominant q], IsAffineQuotient ρ q → ∀ (y : W) (b : W.functionField),

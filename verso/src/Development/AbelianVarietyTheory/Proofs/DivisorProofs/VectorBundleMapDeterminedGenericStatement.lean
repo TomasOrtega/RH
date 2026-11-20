@@ -15,8 +15,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLocalChains.hom_ext_of_genRes | exact GlobalTheory.MixedLocalChains.hom_ext_of_genRes | (intros; apply GlobalTheory.MixedLocalChains.hom_ext_of_genRes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLocalChains.hom_ext_of_genRes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVectorBundleMapDeterminedGeneric.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.vector_bundle_map_determined_generic : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O)
     (F G : Z.X.Modules) (m : ℕ) (a b : F ⟶ G), GlobalTheory.VB.IsVB G m → Z.genRes.map a = Z.genRes.map b → a = b := by

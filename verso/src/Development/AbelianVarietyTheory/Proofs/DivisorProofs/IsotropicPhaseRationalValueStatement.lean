@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoPhaseRat.phase_rat | exact GlobalTheory.IsoPhaseRat.phase_rat | (intros; apply GlobalTheory.IsoPhaseRat.phase_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoPhaseRat.phase_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsotropicPhaseRationalValue.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.isotropic_phase_rational_value : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ) (W : Spc F E d)
     (H' : Plane E d d₁) (w : Fin d₁ → E), ∀ γ ∈ ratU σ W.J, ∃ c : F, GlobalTheory.IsoPhase.phase σ W H' w γ = algebraMap F (AF F) c := by

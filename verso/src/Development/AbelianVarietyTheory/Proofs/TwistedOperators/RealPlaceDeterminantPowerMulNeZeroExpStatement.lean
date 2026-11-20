@@ -11,8 +11,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp | exact GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp | (intros; apply GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPlaceDeterminantPowerMulNeZeroExp.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.realPlaceDeterminantPower_mul_ne_zero_exp : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (m : D.what₂.Tau → ℤ), (∀ a b, detPow θ V m (a * b) = detPow θ V m a * detPow θ V m b) ∧ (∀ a, detPow θ V m a ≠ 0) ∧ (∀ Y : GlobalTheory.SmoothForms.LieN V, detPow θ V m (GlobalTheory.SmoothForms.expInf θ V Y) = cexp (GlobalTheory.AdSpan.ConjHol.trLin V m Y)) := by
   first | exact @GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp | exact GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp | (intros; apply GlobalTheory.AdSpan.ConjHol.detPow_mul_ne_zero_exp <;> assumption)

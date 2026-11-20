@@ -10,8 +10,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InfTraceNondeg.realTrace_nondeg | exact GlobalTheory.InfTraceNondeg.realTrace_nondeg | (intros; apply GlobalTheory.InfTraceNondeg.realTrace_nondeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InfTraceNondeg.realTrace_nondeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealTraceArchimedeanEmbeddingsNondegenerate.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.realTrace_archimedeanEmbeddings_nondegenerate : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)),
     IsInfFam θ → ∀ a : Ainf D.host.F, a ≠ 0 →

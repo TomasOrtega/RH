@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.exists_hom_of_regAt_fnOf | exact GlobalTheory.Desc.exists_hom_of_regAt_fnOf | (intros; apply GlobalTheory.Desc.exists_hom_of_regAt_fnOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.exists_hom_of_regAt_fnOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHomToAffineOpenOfFunctionFieldMapRegular.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_hom_to_affineOpen_of_functionField_map_regular : ∀ (Y P : Scheme.{0}) [IsIntegral Y] [IsIntegral P] (U : Y.Opens), genericPoint Y ∈ U → ∀ (V : P.Opens), IsAffineOpen V → ∀ (hVη : genericPoint P ∈ V) (φ : P.functionField →+* Y.functionField), (∀ s : Γ(P, V), ∀ y ∈ U, RegAt y (φ (fnOf V hVη s))) → ∃ f : U.toScheme ⟶ P, (∀ y : U.toScheme, f y ∈ V) ∧ ∀ l : Sp Y.functionField ⟶ U.toScheme, l ≫ U.ι = gp Y → l ≫ f = spMap φ ≫ gp P := by
   first | exact @GlobalTheory.Desc.exists_hom_of_regAt_fnOf | exact GlobalTheory.Desc.exists_hom_of_regAt_fnOf | (intros; apply GlobalTheory.Desc.exists_hom_of_regAt_fnOf <;> assumption)

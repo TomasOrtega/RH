@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VMetric.isometric_grLB_tens_grLB_det | exact GlobalTheory.VMetric.isometric_grLB_tens_grLB_det | (intros; apply GlobalTheory.VMetric.isometric_grLB_tens_grLB_det <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VMetric.isometric_grLB_tens_grLB_det` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRankTwoGradedDeterminantIsometric.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.rank_two_graded_determinant_isometric : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (h : VMetric p E 2)
     (H : h.IsCInf) (fl : Vert.Flag E 2),

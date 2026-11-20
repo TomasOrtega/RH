@@ -12,8 +12,10 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.sharpOver_baseChange | exact GlobalTheory.Poinc.sharpOver_baseChange | (intros; apply GlobalTheory.Poinc.sharpOver_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.sharpOver_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSharpOverOfPolarizedPullback.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.sharpOver_of_polarized_pullback : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (T T' : Scheme.{0}) (P : PolAV T) (P' : PolAV T') (u : T ⟶ F.X) (f : T' ⟶ T) (φ : P'.A.left ⟶ P.A.left), SharpOver F W P u → IsGrpPullback P'.A P.A f φ → LBIso P'.L (P.L.pull φ) → SharpOver F W P' (f ≫ u) := by
   first | exact @GlobalTheory.Poinc.sharpOver_baseChange | exact GlobalTheory.Poinc.sharpOver_baseChange | (intros; apply GlobalTheory.Poinc.sharpOver_baseChange <;> assumption)

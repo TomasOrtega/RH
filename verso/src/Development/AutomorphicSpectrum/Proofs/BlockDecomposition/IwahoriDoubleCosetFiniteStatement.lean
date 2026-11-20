@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL | exact GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL | (intros; apply GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIwahoriDoubleCosetFinite.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.iwahori_double_coset_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (a : ℕ) (t : GLw a w), (Function.support fun q : GLw a w ⧸ iwGL a w => dcos a w t q.out).Finite ∧ IsOpen (iwGL a w : Set (GLw a w)) ∧ IsCompact (iwGL a w : Set (GLw a w)) ∧ iwGL a w ≤ GlobalTheory.LFun.KGL w a ∧ (iwGL a w).relIndex (GlobalTheory.LFun.KGL w a) ≠ 0 := by
   first | exact @GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL | exact GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL | (intros; apply GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL <;> assumption)

@@ -11,8 +11,10 @@ open Formalism.L2.Host (HChar embTau)
 open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples
 open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.FunObj GlobalTheory.FunObj.SqNum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT | exact GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT | (intros; apply GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaFunctionRationalTranslateMem.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.thetaFunction_rationalTranslate_mem : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}, Crv D cc δ → ∀ {N N' : ℕ} {x : VC D N N'} {M : ℕ}, 0 < M → M • x ∈ La0 D (tor0 D cc δ) N N' → ∀ {F : VC D N N' → ℂ}, F ∈ TT D (tor0 D cc δ) N N' → Wd D (tor0 D cc δ) x F ∈ TT D (tor0 D cc δ) N N' := by
   first | exact @GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT | exact GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT | (intros; apply GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT <;> assumption)

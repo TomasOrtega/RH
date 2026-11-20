@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.FdDom.dom_iff_frDoms | exact GlobalTheory.HolDict.FdDom.dom_iff_frDoms | (intros; apply GlobalTheory.HolDict.FdDom.dom_iff_frDoms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.FdDom.dom_iff_frDoms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagDomainFramesEqGramFramesUnitary.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.flagDomain_frames_eq_gramFrames_unitary : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r) (mu : GA D V → ℂ) (c : Comp → ℂ) (Kf : Subgroup (GA D V)), HolShape M → GoodDict θ M w hr X la dict mu c Kf → ∀ k, ∃ e : D.what₂.Tau ≃ (X k).Ψ, (∀ ρ, (e ρ).1 = tauE D ρ) ∧ (∀ x : ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r, x ∈ (X k).dom ↔ (fun ρ a b => x (e ρ) (Fin.cast hr a) (Fin.cast hr b)) ∈ frDoms (gramAt D V) (fun ρ => nNeg (M.ε ρ))) ∧ ∀ γ ∈ (X k).Γ, ∀ ρ, Matrix.reindex (finCongr hr.symm) (finCongr hr.symm) ((γ : Matrix (Fin r) (Fin r) D.host.E).map (tauE D ρ)) ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ) := by
   first | exact @GlobalTheory.HolDict.FdDom.dom_iff_frDoms | exact GlobalTheory.HolDict.FdDom.dom_iff_frDoms | (intros; apply GlobalTheory.HolDict.FdDom.dom_iff_frDoms <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfNot
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChosenHalf.qpOf_half | exact GlobalTheory.ChosenHalf.qpOf_half | (intros; apply GlobalTheory.ChosenHalf.qpOf_half <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChosenHalf.qpOf_half` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChosenHalfSplitPlacesMeetsConjugatePairOnce.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once : ∀ (D : D7) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), (∀ v, NG.OverPl (Pq v) v) →
     ∀ S : Finset (PlE D.host), (∀ P ∈ S, IsSplitPl D.host P) →

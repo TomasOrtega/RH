@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OtherPlace.mt_map_pr_eq_one | exact GlobalTheory.OtherPlace.mt_map_pr_eq_one | (intros; apply GlobalTheory.OtherPlace.mt_map_pr_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OtherPlace.mt_map_pr_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMatrixProjEqOneOfSuppAtDistinctFinitePlace.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.matrix_proj_eq_one_of_suppAt_distinct_finitePlace : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k') (V : HSp D) (g : GA D V), q.v ≠ q'.v → SuppAt q'.e V g → (mt V g).map q.pr = 1 := by
   first | exact @GlobalTheory.OtherPlace.mt_map_pr_eq_one | exact GlobalTheory.OtherPlace.mt_map_pr_eq_one | (intros; apply GlobalTheory.OtherPlace.mt_map_pr_eq_one <;> assumption)

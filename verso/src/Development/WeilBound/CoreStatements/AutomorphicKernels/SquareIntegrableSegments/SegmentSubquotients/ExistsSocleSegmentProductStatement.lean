@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec | exact GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FAutomorphicKernels%2FSquareIntegrableSegments%2FSegmentSubquotients%2FExistsSocleSegmentProduct.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.TL.exists_socle_segment_product : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} (hd : ∑ a, (dec Δ a).1 = N), ∃ τ : IrrRep (GL (Fin N) k), IsSocle τ.ρ (prodIrr (dec Δ) hd) := by
   first | exact @GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec | exact GlobalTheory.CompanionTheory.LkSegSocle.exists_isSocle_prodIrr_dec

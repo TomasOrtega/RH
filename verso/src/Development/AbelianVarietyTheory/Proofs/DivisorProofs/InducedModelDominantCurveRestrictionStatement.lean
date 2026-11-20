@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.Basi
 open scoped ENNReal Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefHodgeTateAt.nefAt_HT | exact GlobalTheory.NefHodgeTateAt.nefAt_HT | (intros; apply GlobalTheory.NefHodgeTateAt.nefAt_HT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefHodgeTateAt.nefAt_HT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedModelDominantCurveRestriction.lean&line=441#L441)
 -/
 theorem _root_.GlobalTheory.T.induced_model_dominant_curve_restriction : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) →

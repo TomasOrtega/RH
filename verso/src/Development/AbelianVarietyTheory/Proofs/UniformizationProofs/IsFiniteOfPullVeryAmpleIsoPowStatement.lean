@@ -11,8 +11,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow | exact GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow | (intros; apply GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FIsFiniteOfPullVeryAmpleIsoPow.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.isFinite_of_pull_veryAmple_iso_pow : ∀ (K : Type) [Field K] (X X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of K)) (φ : X' ⟶ X) (H : LB X) (H' : LB X') (n : ℕ) (s : Fin (n + 1) → LB.Sec H') (d : ℕ), H.IsLB → H'.IsLB → IsSeparated f → VeryAmpleBy (φ ≫ f) H' s → 1 ≤ d → LBIso (pw H' d) (H.pull φ) → IsFinite φ := by
   first | exact @GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow | exact GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow | (intros; apply GlobalTheory.PullAmpleFinite.isFinite_of_pull_iso_pow <;> assumption)

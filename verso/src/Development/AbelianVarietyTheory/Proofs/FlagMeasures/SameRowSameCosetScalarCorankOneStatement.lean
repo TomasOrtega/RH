@@ -5,8 +5,10 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SnFamCoset.scalar_of_same_coset | exact GlobalTheory.SnFamCoset.scalar_of_same_coset | (intros; apply GlobalTheory.SnFamCoset.scalar_of_same_coset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SnFamCoset.scalar_of_same_coset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FSameRowSameCosetScalarCorankOne.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.same_row_same_coset_scalar_corank_one : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', t.G ≠ 0 → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' → nmlOf Y u u' t = nmlOf Y u u' t' → (Y.tO u u').s0 t t' = 1 ∧ (Y.tO u u').scal t t' := by
   first | exact @GlobalTheory.SnFamCoset.scalar_of_same_coset | exact GlobalTheory.SnFamCoset.scalar_of_same_coset | (intros; apply GlobalTheory.SnFamCoset.scalar_of_same_coset <;> assumption)

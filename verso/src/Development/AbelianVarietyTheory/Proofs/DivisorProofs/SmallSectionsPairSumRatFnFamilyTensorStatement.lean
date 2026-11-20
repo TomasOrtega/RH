@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSNef.smallFam_pair_tens | exact GlobalTheory.HSNef.smallFam_pair_tens | (intros; apply GlobalTheory.HSNef.smallFam_pair_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSNef.smallFam_pair_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmallSectionsPairSumRatFnFamilyTensor.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.smallSections_pairSum_ratFnFamily_tensor : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ (P : Pair p) (J : Type) (f : J → X.functionField) (w : J → ℝ), (∀ j, f j ∈ P.Bl 1 1 (Real.exp (-w j))) → SmallFam (P.L.tens P.A) f w := by
   first | exact @GlobalTheory.HSNef.smallFam_pair_tens | exact GlobalTheory.HSNef.smallFam_pair_tens | (intros; apply GlobalTheory.HSNef.smallFam_pair_tens <;> assumption)

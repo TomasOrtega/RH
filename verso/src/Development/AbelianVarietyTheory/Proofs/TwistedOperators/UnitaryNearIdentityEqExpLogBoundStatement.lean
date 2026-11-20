@@ -6,8 +6,10 @@ open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalis
 open scoped InnerProductSpace
 open GlobalTheory.SepReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SepReal.logNear_holds | exact GlobalTheory.SepReal.logNear_holds | (intros; apply GlobalTheory.SepReal.logNear_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SepReal.logNear_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryNearIdentityEqExpLogBound.lean&line=237#L237)
 -/
 theorem _root_.GlobalTheory.T.unitary_near_identity_eq_exp_log_bound : LogNear := by
   first | exact @GlobalTheory.SepReal.logNear_holds | exact GlobalTheory.SepReal.logNear_holds | (intros; apply GlobalTheory.SepReal.logNear_holds <;> assumption)

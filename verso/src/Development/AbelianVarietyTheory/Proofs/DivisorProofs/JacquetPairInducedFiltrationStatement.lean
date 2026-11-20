@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusThreeBlockAppl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTheory.IndJacBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndJacBlock.jacquet_cells | exact GlobalTheory.IndJacBlock.jacquet_cells | (intros; apply GlobalTheory.IndJacBlock.jacquet_cells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndJacBlock.jacquet_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJacquetPairInducedFiltration.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.jacquet_pair_induced_filtration : GlobalTheory.Published.GeometricLemmaFiltration → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (d : ℕ) (h2 : 2 ≤ d) (b : Fin 2 → ℕ) (hb : b 0 + b 1 = d) (χ : Fin 2 → kˣ →* ℂˣ),

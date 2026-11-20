@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF | exact GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF | (intros; apply GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFullFlagGradedLineChernFormsSmoothDbarClosed.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.fullFlagGradedLineChernForms_smooth_dbarClosed : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ) (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ x : Root m, DbarCoh (atlas X σ) (grF E H x) (grF E H x) := by
   first | exact @GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF | exact GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF | (intros; apply GlobalTheory.ChernCalc.GradedForm.dbarCoh_grF <;> assumption)

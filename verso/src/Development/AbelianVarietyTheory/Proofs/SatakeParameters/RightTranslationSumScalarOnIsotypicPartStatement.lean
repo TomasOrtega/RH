@@ -15,8 +15,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RtSumScalar.rtSum_isoTyp | exact GlobalTheory.RtSumScalar.rtSum_isoTyp | (intros; apply GlobalTheory.RtSumScalar.rtSum_isoTyp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RtSumScalar.rtSum_isoTyp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FRightTranslationSumScalarOnIsotypicPart.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.rightTranslationSum_scalar_on_isotypicPart : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GQ L n) W) (S : Submodule ℂ (GAf L n → W)), NG.IsIrrRep ρ S → ∀ (K : Subgroup (GAf L n)) (R : Finset (GAf L n)) (c : ℂ), (∀ f ∈ S, (∀ κ ∈ K, NG.rt L n κ f = f) → ∑ γ ∈ R, NG.rt L n γ f = c • f) → ∀ f ∈ NG.isoTyp ρ S, (∀ κ ∈ K, NG.rt L n κ f = f) → ∑ γ ∈ R, NG.rt L n γ f = c • f := by
   first | exact @GlobalTheory.RtSumScalar.rtSum_isoTyp | exact GlobalTheory.RtSumScalar.rtSum_isoTyp | (intros; apply GlobalTheory.RtSumScalar.rtSum_isoTyp <;> assumption)

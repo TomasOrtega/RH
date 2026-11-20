@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary | exact GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary | (intros; apply GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaKernelLeftInvariantRationalUnitaryAlt.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.thetaKO_mul_left_invariant_of_mem_GQ : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (χS χT : (AE D)ˣ →* Circle) (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)), Datum.IsWeilDatumO R.ψ (Vc D i) (Wc D i) χS χT ω → ∀ φ : WO (Vc D i) (Wc D i) → ℂ, Datum.IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → ∀ (h : GA D (Vc D i)) (γ : GA D (Wc D i)), γ ∈ GQ (Wc D i) → ∀ g : GA D (Wc D i), Datum.thetaKO ω h (γ * g) φ = Datum.thetaKO ω h g φ := by
   first | exact @GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary | exact GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary | (intros; apply GlobalTheory.ThetaLeftW.thetaKernel_leftInvariant_rationalUnitary <;> assumption)

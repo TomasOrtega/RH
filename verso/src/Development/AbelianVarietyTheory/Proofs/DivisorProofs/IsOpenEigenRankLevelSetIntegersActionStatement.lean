@@ -15,8 +15,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BalProjOpen.isOpen_eigRank_eq | exact GlobalTheory.BalProjOpen.isOpen_eigRank_eq | (intros; apply GlobalTheory.BalProjOpen.isOpen_eigRank_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BalProjOpen.isOpen_eigRank_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsOpenEigenRankLevelSetIntegersAction.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.isOpen_eigenRank_levelSet_integersAction : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (F : IntermediateField ℚ ℂ) (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) (R : Type) [CommRing R] (iF : F →+* R) (n : ℕ) (A : 𝓞 E → Matrix (Fin n) (Fin n) R), A 1 = 1 → (∀ a b, A (a + b) = A a + A b) → (∀ a b, A (a * b) = A a * A b) → ∀ (τ : E →+* ℂ) (N : ℕ), IsOpen {𝔭 : PrimeSpectrum R | GlobalTheory.BalProj.eigRank (algebraMap R 𝔭.asIdeal.ResidueField) A (GlobalTheory.BalProj.embR F hF iF τ) = N} := by
   first | exact @GlobalTheory.BalProjOpen.isOpen_eigRank_eq | exact GlobalTheory.BalProjOpen.isOpen_eigRank_eq | (intros; apply GlobalTheory.BalProjOpen.isOpen_eigRank_eq <;> assumption)

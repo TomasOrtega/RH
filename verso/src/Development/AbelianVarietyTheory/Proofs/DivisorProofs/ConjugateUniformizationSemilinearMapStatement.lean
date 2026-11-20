@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjTangentSemilin.exists_semilinear_transport | exact GlobalTheory.ConjTangentSemilin.exists_semilinear_transport | (intros; apply GlobalTheory.ConjTangentSemilin.exists_semilinear_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjTangentSemilin.exists_semilinear_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConjugateUniformizationSemilinearMap.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.conjugate_uniformization_semilinear_map : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (p : A'.left ⟶ A.left) (g : ℂ ≃+* ℂ),
     IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p → ∀ (L : LB A.left) (L' : LB A'.left) (N : ℕ) (u : HolUnif A L N)

@@ -15,8 +15,10 @@ open GlobalTheory.Core.Rk.SW
 open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisSmooth.contDiff_of_heis_closed | exact GlobalTheory.HeisSmooth.contDiff_of_heis_closed | (intros; apply GlobalTheory.HeisSmooth.contDiff_of_heis_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisSmooth.contDiff_of_heis_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FContDiffOfHeisenbergDerivativeClosedClass.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.contDiff_of_heisenbergDerivativeClosedClass : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (V : Set (WO S T → ℂ)), (∀ f ∈ V, Continuous f) → (∀ f ∈ V, ∀ M : ℝ →+ WO S T, Continuous M → (∀ t, (M t).map (finPart D) = 0) → ∃ f' ∈ V, ∀ w, HasDerivAt (fun t : ℝ => heisO ψ S T (M t) f w) (f' w) 0) → ∀ f ∈ V, ∀ (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ∞ fun t => f (w + L t) := by
   first | exact @GlobalTheory.HeisSmooth.contDiff_of_heis_closed | exact GlobalTheory.HeisSmooth.contDiff_of_heis_closed | (intros; apply GlobalTheory.HeisSmooth.contDiff_of_heis_closed <;> assumption)

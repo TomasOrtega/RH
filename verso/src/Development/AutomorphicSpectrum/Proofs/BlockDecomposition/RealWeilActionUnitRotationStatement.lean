@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.RealCircle.main | exact GlobalTheory.CompanionTheory.FexTheta.RealCircle.main | (intros; apply GlobalTheory.CompanionTheory.FexTheta.RealCircle.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.RealCircle.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRealWeilActionUnitRotation.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.real_weil_action_unit_rotation : ∀ (n : ℤ) (t : ℝ) (g : GL (Fin 2) ℝ) (x u : ℂ), ‖u‖ = 1 →
   piRc (chC n (Complex.I * t)) g (PhiInf n) (x * u) = u ^ (-n) * piRc (chC n (Complex.I * t)) g (PhiInf n) x := by

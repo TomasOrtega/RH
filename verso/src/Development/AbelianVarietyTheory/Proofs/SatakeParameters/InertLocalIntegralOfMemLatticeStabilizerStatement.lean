@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open Formalism.UG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax | exact GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax | (intros; apply GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FInertLocalIntegralOfMemLatticeStabilizer.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.inertLocal_integral_of_mem_latticeStabilizer : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), ∀ u : GAf L n, u ∈ Umax L n → ∀ i j, ((Dv.loc u : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) i j ∈ intL (w.adicCompletion L) := by
   first | exact @GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax | exact GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax | (intros; apply GlobalTheory.InertUmaxInt.loc_integral_of_mem_Umax <;> assumption)

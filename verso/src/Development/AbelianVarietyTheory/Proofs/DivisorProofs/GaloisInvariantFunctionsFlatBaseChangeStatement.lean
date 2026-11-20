@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.InvFun.invariant_functions | exact GlobalTheory.Mum.InvFun.invariant_functions | (intros; apply GlobalTheory.Mum.InvFun.invariant_functions <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.InvFun.invariant_functions` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisInvariantFunctionsFlatBaseChange.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.galois_invariant_functions_flat_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (Y Y' : Scheme.{0}) (y : Y ⟶ Sp R) (y' : Y' ⟶ Sp R') (β : Y' ⟶ Y), Flat y → IsPullback β y' y (spMap ρ) → ∀ (act : Gal ρ → (Y' ⟶ Y')), (∀ σ, act σ ≫ β = β) → (∀ σ, act σ ≫ y' = y' ≫ spMap (Gal.hom σ)) → ∀ V : Y.Opens, Function.Injective (β.app V).hom ∧ ∀ u : Γ(Y', β ⁻¹ᵁ V), (∀ σ (h : β ⁻¹ᵁ V ≤ act σ ⁻¹ᵁ (β ⁻¹ᵁ V)), ((act σ).appLE _ _ h).hom u = u) → u ∈ Set.range (β.app V).hom := by
   first | exact @GlobalTheory.Mum.InvFun.invariant_functions | exact GlobalTheory.Mum.InvFun.invariant_functions | (intros; apply GlobalTheory.Mum.InvFun.invariant_functions <;> assumption)

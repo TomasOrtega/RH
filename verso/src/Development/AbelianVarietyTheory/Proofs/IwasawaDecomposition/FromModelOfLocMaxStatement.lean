@@ -7,8 +7,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineNorm.Glue.fromModel_of_locMax | exact GlobalTheory.LineNorm.Glue.fromModel_of_locMax | (intros; apply GlobalTheory.LineNorm.Glue.fromModel_of_locMax <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineNorm.Glue.fromModel_of_locMax` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFromModelOfLocMax.lean&line=194#L194)
 -/
 theorem _root_.GlobalTheory.T.fromModel_of_locMax' : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : GlobalTheory.TrueGeo.Model Y) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (φ : PtFn Y), (∀ y, Δ.IsEqn y (t y)) → (∀ z, LocMax M t φ z) → FromModel Y Δ t φ := by
   first | exact @GlobalTheory.LineNorm.Glue.fromModel_of_locMax | exact GlobalTheory.LineNorm.Glue.fromModel_of_locMax | (intros; apply GlobalTheory.LineNorm.Glue.fromModel_of_locMax <;> assumption)

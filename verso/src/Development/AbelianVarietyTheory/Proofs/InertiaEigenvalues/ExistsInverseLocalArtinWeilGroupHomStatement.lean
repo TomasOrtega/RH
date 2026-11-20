@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvLocalArtin.exists_invLocalArtin | exact GlobalTheory.InvLocalArtin.exists_invLocalArtin | (intros; apply GlobalTheory.InvLocalArtin.exists_invLocalArtin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvLocalArtin.exists_invLocalArtin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsInverseLocalArtinWeilGroupHom.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_inverse_localArtin_weilGroup_hom : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (art : Neutral.B1.Ideles E →* GlobalTheory.HeckeGal.Gab E Ω), GlobalTheory.HeckeGal.IsGlobalArtin art → ∃ a : Weil h →* (w.adicCompletion E)ˣ, Function.Surjective a ∧ (∀ σ, ord (w.adicCompletion E) (a σ) = -deg σ) ∧ ∀ σ : Weil h, art (Neutral.B1.localIdele E w (a σ)) = GlobalTheory.HeckeGal.toAb E Ω σ := by
   first | exact @GlobalTheory.InvLocalArtin.exists_invLocalArtin | exact GlobalTheory.InvLocalArtin.exists_invLocalArtin | (intros; apply GlobalTheory.InvLocalArtin.exists_invLocalArtin <;> assumption)

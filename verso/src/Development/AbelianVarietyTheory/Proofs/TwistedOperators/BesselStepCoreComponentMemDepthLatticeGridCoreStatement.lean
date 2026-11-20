@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.pcBF_core_mem_latCore | exact GlobalTheory.AscFin.pcBF_core_mem_latCore | (intros; apply GlobalTheory.AscFin.pcBF_core_mem_latCore <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.pcBF_core_mem_latCore` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselStepCoreComponentMemDepthLatticeGridCore.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.besselStep_coreComponent_mem_depthLatticeGridCore : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ (pcBF W F ρ h).Γ₀, ((F.oB ρ h).resS (G.V (.core (2 * ρ + 1))) u).1 ∈ latCore G (2 * ρ + 1) := by
   first | exact @GlobalTheory.AscFin.pcBF_core_mem_latCore | exact GlobalTheory.AscFin.pcBF_core_mem_latCore | (intros; apply GlobalTheory.AscFin.pcBF_core_mem_latCore <;> assumption)

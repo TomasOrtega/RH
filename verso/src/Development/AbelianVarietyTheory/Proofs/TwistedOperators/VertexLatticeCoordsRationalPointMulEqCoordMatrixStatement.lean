@@ -20,8 +20,10 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open GlobalTheory.RatMoveJets
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatMoveLat.latAt_rat | exact GlobalTheory.RatMoveLat.latAt_rat | (intros; apply GlobalTheory.RatMoveLat.latAt_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatMoveLat.latAt_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FVertexLatticeCoordsRationalPointMulEqCoordMatrix.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.vertexLatticeCoords_rationalPoint_mul_eq_coordMatrix : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node) (r : FinPt G X) (U : Matrix.unitaryGroup (Fin (G.V X).rank) D.host.E),

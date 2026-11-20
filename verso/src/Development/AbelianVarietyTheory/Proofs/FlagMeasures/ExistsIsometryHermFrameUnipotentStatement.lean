@@ -7,8 +7,10 @@ import Formalism.FormalDegreeBessel.StatementG
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent | exact GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent | (intros; apply GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsIsometryHermFrameUnipotent.lean&line=258#L258)
 -/
 theorem _root_.GlobalTheory.T.exists_isometry_hermFrame_unipotent : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r : ℕ} (e f e' f' : Fin r → V) (z z' : V),

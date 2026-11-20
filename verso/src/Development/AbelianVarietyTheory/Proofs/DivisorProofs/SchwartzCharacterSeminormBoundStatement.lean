@@ -7,8 +7,10 @@ open scoped SchwartzMap
 open GlobalTheory.Published.Metaplectic
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le | exact GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le | (intros; apply GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzCharacterSeminormBound.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.schwartz_character_seminorm_bound : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (p : Seminorm ℂ (SchwartzMap V ℂ)), Continuous p →
     ∃ (q : Seminorm ℂ (SchwartzMap V ℂ)) (M : ℕ), Continuous q ∧ ∀ (L : V →L[ℝ] ℝ) (k : ℝ) (f : SchwartzMap V ℂ),

@@ -8,8 +8,10 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open scoped ComplexOrder ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeDomain.ddc_comp_holo | exact GlobalTheory.HodgeDomain.ddc_comp_holo | (intros; apply GlobalTheory.HodgeDomain.ddc_comp_holo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeDomain.ddc_comp_holo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDdcCompositionLeviForm.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.ddc_composition_levi_form : ∀ (ι : Type) [Fintype ι] (p q d : ℕ) (F : Pt ι p q → ReciprocityTheory.L2DbarEstimates.V d) (u : ReciprocityTheory.L2DbarEstimates.V d → ℝ) (z : Pt ι p q), (∀ᶠ v in nhds (flat z), DifferentiableAt ℂ (fun w => F (unflat w)) v) → ContDiffAt ℝ 2 u (F z) → ∀ ξ, ddc (u ∘ F) z ξ = (ReciprocityTheory.L2DbarEstimates.leviV d (fun v => (u v : ℂ)) (F z) (fderiv ℂ (fun w => F (unflat w)) (flat z) (flat ξ)).ofLp).re / Real.pi := by
   first | exact @GlobalTheory.HodgeDomain.ddc_comp_holo | exact GlobalTheory.HodgeDomain.ddc_comp_holo | (intros; apply GlobalTheory.HodgeDomain.ddc_comp_holo <;> assumption)

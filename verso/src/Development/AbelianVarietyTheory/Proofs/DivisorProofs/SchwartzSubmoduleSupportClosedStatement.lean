@@ -7,8 +7,10 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBRestrict.eq_SB_of_restrict | exact GlobalTheory.SBRestrict.eq_SB_of_restrict | (intros; apply GlobalTheory.SBRestrict.eq_SB_of_restrict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBRestrict.eq_SB_of_restrict` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzSubmoduleSupportClosed.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.schwartz_submodule_support_closed : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (ψ0 : AddChar k ℂ), Continuous ψ0 →

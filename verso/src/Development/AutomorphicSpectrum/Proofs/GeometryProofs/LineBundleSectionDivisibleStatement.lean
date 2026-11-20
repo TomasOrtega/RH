@@ -9,8 +9,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 open GlobalTheory.CompanionTheory.Ar.Sl.Reg
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local | exact GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLineBundleSectionDivisible.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.line_bundle_section_divisible : ∀ (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (π : X ⟶ Sp R) (M : LB X) (s : LB.Sec M) (δ : R), sc π ⊤ δ ≠ 0 → (∀ i (W : X.Opens) (hW : W ≤ M.U i), IsAffineOpen W → ∃ a : Γ(X, W), (X.presheaf.map (homOfLE hW).op).hom (s.f i) = sc π W δ * a) → ∃ s' : LB.Sec M, ∀ i, s.f i = sc π (M.U i) δ * s'.f i := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local | exact GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local <;> assumption)

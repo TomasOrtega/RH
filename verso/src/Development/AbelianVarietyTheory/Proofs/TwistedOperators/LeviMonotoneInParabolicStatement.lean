@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviSign.levi_le_levi_singleton | exact GlobalTheory.LeviSign.levi_le_levi_singleton | (intros; apply GlobalTheory.LeviSign.levi_le_levi_singleton <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviSign.levi_le_levi_singleton` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLeviMonotoneInParabolic.lean&line=395#L395)
 -/
 theorem _root_.GlobalTheory.T.levi_monotone_in_parabolic : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (R : Type) [CommRing R] [Algebra D.host.F R] P, IsPar P → ∀ u, vec u ∈ aP P → Φ.levi D.sp.cm R P ≤ Φ.levi D.sp.cm R {u} := by
   first | exact @GlobalTheory.LeviSign.levi_le_levi_singleton | exact GlobalTheory.LeviSign.levi_le_levi_singleton | (intros; apply GlobalTheory.LeviSign.levi_le_levi_singleton <;> assumption)

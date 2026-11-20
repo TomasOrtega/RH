@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopPair.pairPar_top | exact GlobalTheory.TopPair.pairPar_top | (intros; apply GlobalTheory.TopPair.pairPar_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopPair.pairPar_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContragredientThetaParamsLastRowArrows.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.contragredientThetaParams_lastRowArrows : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (j : ℕ) (τ : D.what₂.Tau) (hj : j < D.R.m), PairPar (dualPar (parXp D (j + 1) τ)) (dualPar (parXp D j τ)) (-(D.hc τ).e ⟨j, hj⟩) (-(D.hc τ).e ⟨j, hj⟩) := by
   first | exact @GlobalTheory.TopPair.pairPar_top | exact GlobalTheory.TopPair.pairPar_top | (intros; apply GlobalTheory.TopPair.pairPar_top <;> assumption)

@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.heisOF_line_add | exact GlobalTheory.heisOF_line_add | (intros; apply GlobalTheory.heisOF_line_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.heisOF_line_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergCMRealLineAddNoPhase.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOp_realLine_add_eq_phase_mul_shifted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAbo
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MuBlockLoc.mu_block_mem | exact GlobalTheory.MuBlockLoc.mu_block_mem | (intros; apply GlobalTheory.MuBlockLoc.mu_block_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MuBlockLoc.mu_block_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTrivialPartInBaseChange.lean&line=227#L227)
 -/
 theorem _root_.GlobalTheory.T.trivial_part_in_base_change : ∀ (D : D7) (Rw : RowSide D), ParLaws D → ∀ j σ π μ Pa, LiftAt D Rw j σ π μ → RowLoc D Rw σ → SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa → (⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩ : Part D.naut.CG) ∈ Pa := by
   first | exact @GlobalTheory.MuBlockLoc.mu_block_mem | exact GlobalTheory.MuBlockLoc.mu_block_mem | (intros; apply GlobalTheory.MuBlockLoc.mu_block_mem <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 open GlobalTheory.InertZeta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertZeta.addVec | exact GlobalTheory.InertZeta.addVec | (intros; apply GlobalTheory.InertZeta.addVec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertZeta.addVec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLatticeAddVectorDetValuation.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.lattice_add_vector_det_valuation : AddVec := by
   first | exact @GlobalTheory.InertZeta.addVec | exact GlobalTheory.InertZeta.addVec | (intros; apply GlobalTheory.InertZeta.addVec <;> assumption)

@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.NormRatio
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormRatio.selfDual_and_mem_intG_iff | exact GlobalTheory.NormRatio.selfDual_and_mem_intG_iff | (intros; apply GlobalTheory.NormRatio.selfDual_and_mem_intG_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormRatio.selfDual_and_mem_intG_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardLatticeSelfDualAndIntegralIffStabilizes.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes : ∀ {D : D7} (V : HSp D) (n : ℕ) (g : GA D V) (x : Formalism.MainNotions.StandardLatticesGL3.GA D n), V.gram = 1 → V.rank = n → GlobalTheory.BotFormula.IsFinPt V g x →
   IsSelfDualC V (stdLat V) ∧ (x ∈ intG D n ↔ g ∈ openOff V (stdLat V) ∅) := by

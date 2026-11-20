@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitDegOne.main | exact GlobalTheory.SplitDegOne.main | (intros; apply GlobalTheory.SplitDegOne.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitDegOne.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDegreeOnePrimeCMFieldOverSplitMaxRealSubfield.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.degreeOne_prime_CMField_over_split_maxRealSubfield : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)),
     w.asIdeal.inertiaDeg ℤ = 1 → w.asIdeal.ramificationIdx ℤ = 1 →

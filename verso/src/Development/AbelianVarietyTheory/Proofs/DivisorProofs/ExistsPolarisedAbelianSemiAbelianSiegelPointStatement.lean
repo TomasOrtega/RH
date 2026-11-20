@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CExtGen.exists_polAV_semiAbelian | exact GlobalTheory.CExtGen.exists_polAV_semiAbelian | (intros; apply GlobalTheory.CExtGen.exists_polAV_semiAbelian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CExtGen.exists_polAV_semiAbelian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolarisedAbelianSemiAbelianSiegelPoint.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_polarisedAbelian_semiAbelian_siegelPoint : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V],
     GlobalTheory.Mum.Base V → IsDiscreteValuationRing V → ∀ y : Sp (FractionRing V) ⟶ F.X,

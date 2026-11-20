@@ -12,8 +12,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 open GlobalTheory.CompanionTheory.LTPer.Tilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.Tilt.GalDiv.galdiv | exact GlobalTheory.CompanionTheory.LTPer.Tilt.GalDiv.galdiv | (intros; apply GlobalTheory.CompanionTheory.LTPer.Tilt.GalDiv.galdiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.Tilt.GalDiv.galdiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLubinTateTeichmullerSequenceCompatibility.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_teichmuller_sequence_compatibility : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (z : ℕ → Om l) (f : ℕ), 0 < f →
     ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖ → ‖oc K π‖ < 1 →

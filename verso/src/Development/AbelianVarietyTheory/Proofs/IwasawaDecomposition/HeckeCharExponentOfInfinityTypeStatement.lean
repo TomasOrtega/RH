@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
 open NumberField IsDedekindDomain MeasureTheory Formalism.L2.Host GlobalTheory.CuspRep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspRep.InfType.expo_of_infType | exact GlobalTheory.CuspRep.InfType.expo_of_infType | (intros; apply GlobalTheory.CuspRep.InfType.expo_of_infType <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspRep.InfType.expo_of_infType` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHeckeCharExponentOfInfinityType.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.heckeChar_exponent_of_infinityType : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E), (∀ n : (E →+* ℂ) → ℤ, χ.IsAlg n → ∀ τ, expo χ τ = n τ) ∧ (∀ s : ℝ, χ.IsAbsPow s → ∀ τ, expo χ τ = s) ∧ ∀ (I : Type) [Fintype I] (φ : I → E →+* ℂ) (n : I → ℤ), Function.Injective (fun i => InfinitePlace.mk (φ i)) → χ.HasInf φ n → ∀ i, expo χ (φ i) = (n i : ℂ) / 2 ∧ expo χ (ComplexEmbedding.conjugate (φ i)) = -(n i : ℂ) / 2 := by
   first | exact @GlobalTheory.CuspRep.InfType.expo_of_infType | exact GlobalTheory.CuspRep.InfType.expo_of_infType | (intros; apply GlobalTheory.CuspRep.InfType.expo_of_infType <;> assumption)

@@ -21,8 +21,10 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZUnf.ClassRep.exists_change_rep | exact GlobalTheory.CompanionTheory.ZUnf.ClassRep.exists_change_rep | (intros; apply GlobalTheory.CompanionTheory.ZUnf.ClassRep.exists_change_rep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZUnf.ClassRep.exists_change_rep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FParabolicFactorizationRows.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.parabolic_factorization_rows : ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n ρ p : ℕ} (hn : ρ + p = n) (a b c d a₂ b₂ c₂ d₂ A B Dd : Matrix (Fin p) (Fin p) K),
     IsUnitary σ (blk4 0 1 (-1) 0) (blk4 A B 0 Dd) → blk4 a b c d = blk4 A B 0 Dd * blk4 a₂ b₂ c₂ d₂ →

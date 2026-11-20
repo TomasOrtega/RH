@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tameLift_isTame_not_isUnram | exact GlobalTheory.tameLift_isTame_not_isUnram | (intros; apply GlobalTheory.tameLift_isTame_not_isUnram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tameLift_isTame_not_isUnram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTameLiftResidueCharacterIsTameNotUnramified.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.tame_lift_residue_character_isTame_not_unramified : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (PP : Pl D.host.E) (ξ : (kP PP)ˣ →* ℂˣ), IsProjAt φ PP → ξ ≠ 1 → ∀ ξl : (Fv D.host.F v)ˣ →* ℂˣ, LiftsChar φ PP ξl ξ → GlobalTheory.SplitWeil.IsTame ξl ∧ ¬ GlobalTheory.SplitWeil.IsUnram ξl := by
   first | exact @GlobalTheory.tameLift_isTame_not_isUnram | exact GlobalTheory.tameLift_isTame_not_isUnram | (intros; apply GlobalTheory.tameLift_isTame_not_isUnram <;> assumption)

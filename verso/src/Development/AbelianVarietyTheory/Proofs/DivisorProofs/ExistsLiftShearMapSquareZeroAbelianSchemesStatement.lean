@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShearLift.exists_lift_shear | exact GlobalTheory.ShearLift.exists_lift_shear | (intros; apply GlobalTheory.ShearLift.exists_lift_shear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShearLift.exists_lift_shear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftShearMapSquareZeroAbelianSchemes.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_shearMap_squareZero_abelianSchemes : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I → AbelianSchemeLifts.At hI π →
     ∀ (g g' : ℕ) (A₀ B₀ : Over (Sp R₀)) [GrpObj A₀] [GrpObj B₀] (A' B' : Over (Sp R)) [GrpObj A'] [GrpObj B'] (i' : A₀.left ⟶ A'.left) (j' : B₀.left ⟶ B'.left),

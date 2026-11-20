@@ -25,8 +25,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | exact GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | (intros; apply GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralDiagonalThetaSecondVariableDiagonal.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.integral_diagonalTheta_secondVariable_diagonal : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _

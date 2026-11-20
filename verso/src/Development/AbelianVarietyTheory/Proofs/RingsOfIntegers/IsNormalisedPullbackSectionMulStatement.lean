@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullComp.pulls_mul | exact GlobalTheory.PullComp.pulls_mul | (intros; apply GlobalTheory.PullComp.pulls_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullComp.pulls_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FIsNormalisedPullbackSectionMul.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.isNormalisedPullbackSection_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (a b : 𝓞 E) (k k' k'' : ℕ) (F : SecN Xo x k) (F' : SecN Xo x k') (F'' : SecN Xo x k''), Pulls Xo a F F' → Pulls Xo b F' F'' → Pulls Xo (a * b) F F'' := by
   first | exact @GlobalTheory.PullComp.pulls_mul | exact GlobalTheory.PullComp.pulls_mul | (intros; apply GlobalTheory.PullComp.pulls_mul <;> assumption)

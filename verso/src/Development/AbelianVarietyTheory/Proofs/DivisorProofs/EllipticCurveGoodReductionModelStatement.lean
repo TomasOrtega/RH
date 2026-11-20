@@ -24,8 +24,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMPlaceCurve.exists_curve | exact GlobalTheory.CMPlaceCurve.exists_curve | (intros; apply GlobalTheory.CMPlaceCurve.exists_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMPlaceCurve.exists_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEllipticCurveGoodReductionModel.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.elliptic_curve_good_reduction_model : GlobalTheory.Published.SerreTateGoodReductionSt →
   ∀ (d : ℕ) (Λ : PeriodPair), d.Prime → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →

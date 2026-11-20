@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.RealDimOne.exists_real_dim_one | exact GlobalTheory.ZH.RealDimOne.exists_real_dim_one | (intros; apply GlobalTheory.ZH.RealDimOne.exists_real_dim_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.RealDimOne.exists_real_dim_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsThetaSystemGenusOne.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.exists_theta_system_genus_one : Laws → Laws2 → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : ArithBase o Ω) (S : ThetaSys o Ω), S.g = 1 ∧ S.Big ∧ Nonempty S.Real := by
   first | exact @GlobalTheory.ZH.RealDimOne.exists_real_dim_one | exact GlobalTheory.ZH.RealDimOne.exists_real_dim_one | (intros; apply GlobalTheory.ZH.RealDimOne.exists_real_dim_one <;> assumption)

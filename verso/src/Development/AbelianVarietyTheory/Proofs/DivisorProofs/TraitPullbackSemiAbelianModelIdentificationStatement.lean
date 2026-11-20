@@ -16,8 +16,10 @@ open GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.HodgeFrameGen
 open GlobalTheory.QCoh (pullbackSections)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeFrameGen.traitPullback_identification | exact GlobalTheory.HodgeFrameGen.traitPullback_identification | (intros; apply GlobalTheory.HodgeFrameGen.traitPullback_identification <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeFrameGen.traitPullback_identification` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraitPullbackSemiAbelianModelIdentification.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.traitPullback_semiAbelianModel_identification : ∀ {S' : Scheme.{0}} {G : Over S'} [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →
     ∀ {R : Type} [CommRing R] [IsDomain R] {G₁ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ →

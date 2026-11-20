@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal Matrix
 open scoped Classical
 open GlobalTheory.ArchDecay
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchDecay.sobolev_per | exact GlobalTheory.ArchDecay.sobolev_per | (intros; apply GlobalTheory.ArchDecay.sobolev_per <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchDecay.sobolev_per` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSobolevBoundPeriodicSchwartz.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.sobolev_bound_periodic_schwartz : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∃ (P : ℕ) (C : ℝ) (c : ℕ), ∀ m : ℕ, 0 < m → ∀ f ∈ schA F κ, Per F m f → ∀ b : ℝ, 0 ≤ b → (∀ w : List (κ → mixedEmbedding.mixedSpace F), w.length ≤ P → (∀ v ∈ w, ‖v‖ ≤ 1) → ∫⁻ x, ‖wordD F w f x‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal b) → ∀ x, ‖f x‖ ^ 2 ≤ C * (m : ℝ) ^ c * b := by
   first | exact @GlobalTheory.ArchDecay.sobolev_per | exact GlobalTheory.ArchDecay.sobolev_per | (intros; apply GlobalTheory.ArchDecay.sobolev_per <;> assumption)

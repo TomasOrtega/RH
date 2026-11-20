@@ -21,8 +21,10 @@ open scoped nonZeroDivisors
 open GlobalTheory.CosetOrth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosetOrth.Cong.inHat_of_inv_cong | exact GlobalTheory.CosetOrth.Cong.inHat_of_inv_cong | (intros; apply GlobalTheory.CosetOrth.Cong.inHat_of_inv_cong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosetOrth.Cong.inHat_of_inv_cong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryFinitePointCongrOneOfInvConjCongr.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.unitaryFinitePoint_congr_one_of_inv_conj_congr : ∀ {D : D7}, (∀ w : HeightOneSpectrum (𝓞 D.host.E), ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.asIdeal = D.host.conj • w.asIdeal ∧
     (∀ x : Formalism.MainNotions.StandardLatticesGL3.AE D, Valued.v (GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D x) w') = Valued.v (GlobalTheory.BotFormula.toFinE D x w)) ∧

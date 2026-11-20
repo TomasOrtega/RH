@@ -16,8 +16,10 @@ open GlobalTheory.FlatModel
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.unitChartAt_of_mem_basicOpen_p | exact GlobalTheory.FlatModel.unitChartAt_of_mem_basicOpen_p | (intros; apply GlobalTheory.FlatModel.unitChartAt_of_mem_basicOpen_p <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.unitChartAt_of_mem_basicOpen_p` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitChartAtInvertibleP.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.unit_chart_at_invertible_p : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (x : X),
     x ∈ X.basicOpen (p : Γ(X, ⊤)) → UnitChartAt p Xw K x := by

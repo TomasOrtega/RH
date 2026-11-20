@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitParity.exists_int_add_half | exact GlobalTheory.SplitParity.exists_int_add_half | (intros; apply GlobalTheory.SplitParity.exists_int_add_half <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitParity.exists_int_add_half` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsIntEqExponentAddHalfIndex.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.exists_int_eq_exponent_add_half_index : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (n : ℕ) (τ : D.what₂.Tau) (a : ℚ), IsHeckeChar D χ → ResEta D χ n → HasInfExp D χ τ a → ∃ e : ℤ, (e : ℚ) = a + (n : ℚ) / 2 := by
   first | exact @GlobalTheory.SplitParity.exists_int_add_half | exact GlobalTheory.SplitParity.exists_int_add_half | (intros; apply GlobalTheory.SplitParity.exists_int_add_half <;> assumption)

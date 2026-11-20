@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompatibleSecti
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out MvPolynomial GlobalTheory.CompanionTheory.GE
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GE.Lift.uniform_lift | exact GlobalTheory.CompanionTheory.GE.Lift.uniform_lift | (intros; apply GlobalTheory.CompanionTheory.GE.Lift.uniform_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GE.Lift.uniform_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHomogeneousIdealFiltrationSaturated.lean&line=251#L251)
 -/
 theorem _root_.GlobalTheory.T.homogeneous_ideal_filtration_saturated : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (N : ℕ)
     (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)),

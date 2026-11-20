@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Poinc
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.DivDeep.main | exact GlobalTheory.Poinc.DivDeep.main | (intros; apply GlobalTheory.Poinc.DivDeep.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.DivDeep.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaSetupDividingLabelPersistsDeeperLevel.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.thetaSetup_dividingLabel_persists_deeperLevel : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁), ∀ (z₁ : X₁.M.Z) (x₀ : X₁.S.Gam), x₀ ∈ X₁.S.supI X₁.M z₁ → ∀ (z' : D.X.M.Z), D.q z' = z₁ → D.X.M.Div D.X.S.th (D.lab x₀) z' := by
   first | exact @GlobalTheory.Poinc.DivDeep.main | exact GlobalTheory.Poinc.DivDeep.main | (intros; apply GlobalTheory.Poinc.DivDeep.main <;> assumption)

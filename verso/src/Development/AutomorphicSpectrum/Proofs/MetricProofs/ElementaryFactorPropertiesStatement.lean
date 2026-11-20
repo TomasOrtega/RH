@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FElementaryFactorProperties.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.elementary_factor_properties : ∀ (N j : ℕ) (a b ca cb : Fin N) (t : ℂ), j ≤ N → (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsBlockDiag j (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) ∧ (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ).det = 1 ∧ (∀ h : Matrix (Fin N) (Fin N) ℂ, ∀ i, facOf N j a (h * (1 + Matrix.single cb ca t)) i = facOf N j a h i) ∧ ∀ G h : Matrix (Fin N) (Fin N) ℂ, ∀ i, i ≠ a → blockPot j i G (h * (1 + Matrix.single cb ca t)) = blockPot j i G h := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main <;> assumption)

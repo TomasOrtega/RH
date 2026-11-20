@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff | exact GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff | (intros; apply GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeFiltrationTensorLiftsIffProjections.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.hodgeFiltration_tensor_lifts_iff_projections : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I) (π : R →+* R₀)
     (A₀ B₀ : Over (Sp R₀)) [GrpObj A₀] [GrpObj B₀] (X Y : Over (Sp R)) (i : A₀.left ⟶ X.left) (j : B₀.left ⟶ Y.left)

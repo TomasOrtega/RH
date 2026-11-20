@@ -25,8 +25,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultW
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR | exact GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR | (intros; apply GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLocalRepresentationInputsImply.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.local_representation_inputs_imply : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), MultQ (prmR N S Γ) := by
   first | exact @GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR | exact GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR | (intros; apply GlobalTheory.Mem.Top.Bl.MultQClose.multQ_prmR <;> assumption)

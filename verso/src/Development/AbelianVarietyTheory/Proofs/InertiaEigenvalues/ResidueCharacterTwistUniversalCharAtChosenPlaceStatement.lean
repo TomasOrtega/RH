@@ -11,8 +11,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResTwist.res_twist_spec | exact GlobalTheory.ResTwist.res_twist_spec | (intros; apply GlobalTheory.ResTwist.res_twist_spec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResTwist.res_twist_spec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FResidueCharacterTwistUniversalCharAtChosenPlace.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.residueCharacter_twist_universalChar_at_chosen_place : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X), ρ.Good →
   ∀ (Y : NExp D.R D.host D.what₂ D.LL0 N X), GlobalTheory.UnivChar.IsUnivChar Y →

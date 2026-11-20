@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.gal_transitive_on_fibres | exact GlobalTheory.Mum.gal_transitive_on_fibres | (intros; apply GlobalTheory.Mum.gal_transitive_on_fibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.gal_transitive_on_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisTransitiveOnFibresFlatBaseChange.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.galois_transitive_on_fibres_flat_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'], Function.Injective (algebraMap R R') → IsGal (algebraMap R R') → ∀ (Y : Over (Sp R)), Flat Y.hom → ∀ (Z : Scheme.{0}) (p : Z ⟶ Y.left) (s : Z ⟶ Sp R'), IsPullback p s Y.hom (spMap (algebraMap R R')) → ∀ z z' : Z, p z = p z' → ∃ (σ : Gal (algebraMap R R')) (h : Z ⟶ Z), h ≫ p = p ∧ h ≫ s = s ≫ spMap (Gal.hom σ) ∧ h z = z' := by
   first | exact @GlobalTheory.Mum.gal_transitive_on_fibres | exact GlobalTheory.Mum.gal_transitive_on_fibres | (intros; apply GlobalTheory.Mum.gal_transitive_on_fibres <;> assumption)

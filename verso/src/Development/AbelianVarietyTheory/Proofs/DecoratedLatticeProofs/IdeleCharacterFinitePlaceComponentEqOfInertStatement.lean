@@ -14,8 +14,10 @@ open GlobalTheory.LGrp (bcParam)
 open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrameAt KGL IsSatVecGL IsSatVecU eulerFac UnrAt LvTw dv Fam)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt | exact GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt | (intros; apply GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIdeleCharacterFinitePlaceComponentEqOfInert.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.ideleCharacterFinitePlaceComponent_eq_of_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : (AF F ⊗[F] E)ˣ →* Circle), ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), IsInertAt F E v w → ∀ x : (Fv F v ⊗[F] E)ˣ, ((charAt χ v x : Circle) : ℂ) = (locChar χ w (Units.map (toCompl h).toMonoidHom x) : ℂˣ) := by
   first | exact @GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt | exact GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt | (intros; apply GlobalTheory.LFun.charAt_eq_locChar_of_isInertAt <;> assumption)

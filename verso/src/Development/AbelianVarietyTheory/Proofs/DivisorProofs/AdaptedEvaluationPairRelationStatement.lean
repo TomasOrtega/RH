@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.IsoStep.ev_step | exact GlobalTheory.ThK.IsoStep.ev_step | (intros; apply GlobalTheory.ThK.IsoStep.ev_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.IsoStep.ev_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedEvaluationPairRelation.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.adapted_evaluation_pair_relation : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

@@ -11,8 +11,10 @@ open Classical
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP | exact GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP | (intros; apply GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemCompletedPairLatticeIffAdjointFrameMatrixInte.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.mem_completedPairLattice_iff_adjointFrameMatrix_integral_conjHalf : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ t : WO (Vc D i) (Wc D i), IsHalf (cA D eQ) t → (IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) (t)) ↔ t ∈ lattice₂ R i) := by
   first | exact @GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP | exact GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP | (intros; apply GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP <;> assumption)

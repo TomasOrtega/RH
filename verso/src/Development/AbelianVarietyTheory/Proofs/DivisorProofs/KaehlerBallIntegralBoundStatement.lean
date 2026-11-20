@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open AlgebraicGeometry CategoryTheory MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.L2DbarEstimates GlobalTheory GlobalTheory.ShFam GlobalTheory.ChernReg GlobalTheory.CxPts GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AvgMV.avg_sub_le | exact GlobalTheory.AvgMV.avg_sub_le | (intros; apply GlobalTheory.AvgMV.avg_sub_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AvgMV.avg_sub_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKaehlerBallIntegralBound.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.rho_sub_self_le_of_fderiv_le : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     (a : ChartForm p σ d) (E : ChartMap p σ d) (c : AlgChart p σ d) (f : CxPts p σ → ℝ) (y : CxPts p σ) (t Cc M : ℝ),

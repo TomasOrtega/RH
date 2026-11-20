@@ -9,8 +9,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (compFin ExtUnr
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.oneBF_red_torus | exact GlobalTheory.FinPl.oneBF_red_torus | (intros; apply GlobalTheory.FinPl.oneBF_red_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.oneBF_red_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselToJacobiFlatMapSupportReducesToTorus.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.besselToJacobiFlatMap_support_reduces_to_torus : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (LV : Lat B.V) (LV₀ : Lat B.V₀) (LW : Lat J.W) (LW₀ : Lat J.W₀) (v : Pl D), GoodBF ψ B J LV LV₀ LW LW₀ v → UnrAt s v → ∀ 𝔉, IsFlatBF s (· = v) 𝔉 → ∀ f, Vac ψ B.V J.W LV LW (· = v) f → ∀ n ∈ flagN J.d, n ∈ grpAt J.W (· = v) → ∀ t : GL (Fin ρ) (AE D), ∀ γ ∈ grpAt J.W₀ (· = v), ∀ κ, InK J.W LW (· = v) κ → 𝔉 (s.om (1, n * J.d.levi t * J.d.emb0 γ * κ) f) ≠ 0 → 𝔉 (s.om (1, J.d.levi t) f) ≠ 0 := by
   first | exact @GlobalTheory.FinPl.oneBF_red_torus | exact GlobalTheory.FinPl.oneBF_red_torus | (intros; apply GlobalTheory.FinPl.oneBF_red_torus <;> assumption)

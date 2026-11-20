@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertForm.exists_symm_arForm | exact GlobalTheory.VertForm.exists_symm_arForm | (intros; apply GlobalTheory.VertForm.exists_symm_arForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertForm.exists_symm_arForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithIntersectionFormExists.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.arith_intersection_form_exists : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∃ num : Form (Cl p) D, IsArForm D num ∧ IsSymm num := by
   first | exact @GlobalTheory.VertForm.exists_symm_arForm | exact GlobalTheory.VertForm.exists_symm_arForm | (intros; apply GlobalTheory.VertForm.exists_symm_arForm <;> assumption)

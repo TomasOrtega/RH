@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop | exact GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop | (intros; apply GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPluckerMatricesLowerTriangular.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.plucker_matrices_lower_triangular : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (K : Type) [Field K] (M M' : GlobalTheory.FlagBundle.Mat S.Dw.mult K), (∀ τ, IsUnit (M τ).det) → (∀ τ, IsUnit (M' τ).det) → (∀ x : GlobalTheory.FlagAmple.Step S.Dw, ∃ u : Kˣ, GlobalTheory.FlagAmple.PlkLoc.plkFn M x = (u : K) • GlobalTheory.FlagAmple.PlkLoc.plkFn M' x) → ∀ τ, ∃ L : Matrix (Fin (S.Dw.mult τ)) (Fin (S.Dw.mult τ)) K, M τ = L * M' τ ∧ ∀ i l, i < l → L i l = 0 := by
   first | exact @GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop | exact GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop | (intros; apply GlobalTheory.FlagAmple.PlkLoc.LowerTri.eq_lower_mul_of_plk_prop <;> assumption)

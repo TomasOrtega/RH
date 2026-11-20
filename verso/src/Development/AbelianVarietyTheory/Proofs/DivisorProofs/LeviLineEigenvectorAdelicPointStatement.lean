@@ -24,8 +24,10 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 open GlobalTheory.Orb (archMat)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorFin.line_mulVec_eq_smul | exact GlobalTheory.TorFin.line_mulVec_eq_smul | (intros; apply GlobalTheory.TorFin.line_mulVec_eq_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorFin.line_mulVec_eq_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviLineEigenvectorAdelicPoint.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.levi_line_eigenvector_adelic_point : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (w : InfinitePlace F) (τ : EmbOver E w)

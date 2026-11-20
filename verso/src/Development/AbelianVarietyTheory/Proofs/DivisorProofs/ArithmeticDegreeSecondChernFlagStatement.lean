@@ -12,8 +12,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag | exact GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag | (intros; apply GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticDegreeSecondChernFlag.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_degree_second_chern_flag : ∀ (B : CxForm.BottChern) (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S] (h : IsRegVar p 1) (R : CxForm.ArRing B h) (r : ℕ) (E : HermVB p r) (fl : Vert.Flag E.E r) (a : ℝ), VMetric.IsFlagCh2 E.cInf fl a → R.deg (R.char E (CxForm.chPart r 2)) = a := by
   first | exact @GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag | exact GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag | (intros; apply GlobalTheory.FlagCh2Ring.deg_ch2_eq_flag <;> assumption)

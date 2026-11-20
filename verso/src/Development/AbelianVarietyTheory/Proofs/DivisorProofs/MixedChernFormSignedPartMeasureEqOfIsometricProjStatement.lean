@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.part_eq_of_isom | exact GlobalTheory.Mix.part_eq_of_isom | (intros; apply GlobalTheory.Mix.part_eq_of_isom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.part_eq_of_isom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernFormSignedPartMeasureEqOfIsometricProj.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.mixedChernFormSignedPartMeasure_eq_of_isometric_projOver : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (D : ℕ) (L M : Fin D → MLine p σ), (∀ i, (L i).Isom (M i)) → ∀ ε : ℤˣ, part L ε = part M ε := by
   first | exact @GlobalTheory.Mix.part_eq_of_isom | exact GlobalTheory.Mix.part_eq_of_isom | (intros; apply GlobalTheory.Mix.part_eq_of_isom <;> assumption)

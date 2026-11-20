@@ -9,8 +9,10 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TypeLev Matrix Formalism.L2.Forms GlobalTheory.SeeSaw.TwLev
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.TwLev.GlueApprox.exists_ratAt_congOne | exact GlobalTheory.SeeSaw.TwLev.GlueApprox.exists_ratAt_congOne | (intros; apply GlobalTheory.SeeSaw.TwLev.GlueApprox.exists_ratAt_congOne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.TwLev.GlueApprox.exists_ratAt_congOne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsRationalAtPrimesUnitaryCongruentOne.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.exists_rationalAtPrimes_unitary_congruentOne : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) {n : ℕ} [NeZero n] {Q : Finset (HeightOneSpectrum (𝓞 E))}, (∀ P ∈ Q, conjPrime₂ P ∉ Q) →

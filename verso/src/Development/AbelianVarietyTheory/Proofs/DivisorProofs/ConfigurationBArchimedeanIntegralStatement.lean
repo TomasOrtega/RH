@@ -18,8 +18,10 @@ open GlobalTheory.Doubling (absE)
 open Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockInclK.tensIncl_acts | exact GlobalTheory.FockInclK.tensIncl_acts | (intros; apply GlobalTheory.FockInclK.tensIncl_acts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockInclK.tensIncl_acts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigurationBArchimedeanIntegral.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.configuration_b_archimedean_integral : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

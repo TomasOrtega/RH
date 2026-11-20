@@ -11,8 +11,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FourierN.fourierZero | exact GlobalTheory.CompanionTheory.FourierN.fourierZero | (intros; apply GlobalTheory.CompanionTheory.FourierN.fourierZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FourierN.fourierZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFourierZeroHolds.lean&line=273#L273)
 -/
 theorem _root_.GlobalTheory.T.fourier_zero_holds : PositivityTheory.PfSWUS.FourierZero := by
   first | exact @GlobalTheory.CompanionTheory.FourierN.fourierZero | exact GlobalTheory.CompanionTheory.FourierN.fourierZero | (intros; apply GlobalTheory.CompanionTheory.FourierN.fourierZero <;> assumption)

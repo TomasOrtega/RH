@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UniStepFB.psiUni_pcFB | exact GlobalTheory.UniStepFB.psiUni_pcFB | (intros; apply GlobalTheory.UniStepFB.psiUni_pcFB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UniStepFB.psiUni_pcFB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGenericCharacterTrivialFourierJacobiStep.lean&line=250#L250)
 -/
 theorem _root_.GlobalTheory.T.genericCharacter_trivial_fourierJacobi_step : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ u : UX D (σ + 1), MxAt (fun _ => True) (u.1.1 - 1) → xFB F σ h' ⬝ u.1.1 - xFB F σ h' ∈ (pcFB W F σ h h').A₁ → psiUni W.ψ u.1 = 1 := by
   first | exact @GlobalTheory.UniStepFB.psiUni_pcFB | exact GlobalTheory.UniStepFB.psiUni_pcFB | (intros; apply GlobalTheory.UniStepFB.psiUni_pcFB <;> assumption)

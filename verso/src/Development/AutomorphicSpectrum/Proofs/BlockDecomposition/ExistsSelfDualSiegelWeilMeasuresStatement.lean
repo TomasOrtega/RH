@@ -9,8 +9,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN | exact GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN | (intros; apply GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsSelfDualSiegelWeilMeasures.lean&line=280#L280)
 -/
 theorem _root_.GlobalTheory.T.exists_self_dual_siegel_weil_measures : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
   ∀ μ : Measure (Mx D V.rank r), (∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕) →

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchFinSplit.split_arch_fin | exact GlobalTheory.ArchFinSplit.split_arch_fin | (intros; apply GlobalTheory.ArchFinSplit.split_arch_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchFinSplit.split_arch_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicUnitaryFiniteInfiniteSplit.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.adelic_unitary_finite_infinite_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (W : Spc F E n) (g : UA σ W.J), ∃ gi ∈ UAt σ W (evI F), ∃ gf ∈ UAt σ W (fun u : AF F => u.2), g = gi * gf := by

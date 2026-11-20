@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdHalfLat.mem_pairLat_iff_std | exact GlobalTheory.StdHalfLat.mem_pairLat_iff_std | (intros; apply GlobalTheory.StdHalfLat.mem_pairLat_iff_std <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdHalfLat.mem_pairLat_iff_std` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemGridPairWeilLatticeIffStandardOfHalf.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.mem_gridPairWeilLattice_iff_standard_of_half : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} (S : GridChoice W Set.univ) (t : T) (p : Pair T), DefPair D.R.m p → ∀ (e : AE D), IsIdemSum e (locPl G t) → ∀ x : WO (G.pS p) (G.pT p), IsHalf e x → (x ∈ pairLat G p ↔ x ∈ latO (G.pS p) (G.pT p) (S.N.latS p : Set (Fin (G.pS p).rank → D.host.E)) (S.N.latT p : Set (Fin (G.pT p).rank → D.host.E)) fun _ => True) := by
   first | exact @GlobalTheory.StdHalfLat.mem_pairLat_iff_std | exact GlobalTheory.StdHalfLat.mem_pairLat_iff_std | (intros; apply GlobalTheory.StdHalfLat.mem_pairLat_iff_std <;> assumption)

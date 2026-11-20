@@ -19,8 +19,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure | exact GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure | (intros; apply GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMapWittEmbeddingZeroRankIsHaarMeasure.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.isHaarMeasure_map_emb0_of_rank_zero_decomposition : ∀ (D : D7) (S S₀ : HSp D) (d : HypDec S S₀ 0) (μ : Measure (GA D S₀)), μ.IsHaarMeasure → (Measure.map d.emb0 μ).IsHaarMeasure := by
   first | exact @GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure | exact GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure | (intros; apply GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInje
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorIrr.eq_bot_or_eq_top | exact GlobalTheory.TensorIrr.eq_bot_or_eq_top | (intros; apply GlobalTheory.TensorIrr.eq_bot_or_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorIrr.eq_bot_or_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCoefficientSpaceStableEqBotOrTop.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.coefficientSpace_stable_eq_bot_or_top : ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n),
     (∀ τ, ∀ φ : nablaSq K n (lam τ) →ₗ[K] nablaSq K n (lam τ), ∃ (s : Finset (GL (Fin n) K)) (c : GL (Fin n) K → K),

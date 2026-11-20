@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr
 open Limits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurveClosure.exists_closure_arith_surface_rat | exact GlobalTheory.CurveClosure.exists_closure_arith_surface_rat | (intros; apply GlobalTheory.CurveClosure.exists_closure_arith_surface_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurveClosure.exists_closure_arith_surface_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsClosureCurveRationalFibreArithmeticSurface.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_closure_curve_rationalFibre_arithmeticSurface : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (Z : Closeds (ratFibre p)), IsCompleteCurve ℚ Z → ∃ (W : Scheme.{0}) (w : W ⟶ X) (z : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ⟶ W), IsClosedImmersion w ∧ IsArithVar (w ≫ p) 1 ∧ z ≫ w = redι Z ≫ ratFibre.fst p ∧ IsPullback z (redι Z ≫ ratFibre.snd p) ((w ≫ p) ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℚ)) := by
   first | exact @GlobalTheory.CurveClosure.exists_closure_arith_surface_rat | exact GlobalTheory.CurveClosure.exists_closure_arith_surface_rat | (intros; apply GlobalTheory.CurveClosure.exists_closure_arith_surface_rat <;> assumption)

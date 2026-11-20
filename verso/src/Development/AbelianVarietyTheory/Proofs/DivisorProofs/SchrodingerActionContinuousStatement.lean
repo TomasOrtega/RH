@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairRApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzTranslationSeminormBound
 open scoped SchwartzMap
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrPairing.continuous_schrSch | exact GlobalTheory.SchrPairing.continuous_schrSch | (intros; apply GlobalTheory.SchrPairing.continuous_schrSch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrPairing.continuous_schrSch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerActionContinuous.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_action_continuous : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {P : V → V → ℝ} (hP : GlobalTheory.ArchUniq.IsPairing P) (f : 𝓢(V, ℂ)), Continuous fun w : V × V => GlobalTheory.SchrPairing.schrSch hP w f := by
   first | exact @GlobalTheory.SchrPairing.continuous_schrSch | exact GlobalTheory.SchrPairing.continuous_schrSch | (intros; apply GlobalTheory.SchrPairing.continuous_schrSch <;> assumption)

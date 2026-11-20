@@ -8,8 +8,10 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open scoped ComplexOrder ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.exists_holo_frame | exact GlobalTheory.ShFam.exists_holo_frame | (intros; apply GlobalTheory.ShFam.exists_holo_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.exists_holo_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFrameDomainCoordinatesHolomorphic.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.frame_domain_coordinates_holomorphic : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp), ∃ f : Pt D.what₂.Tau j (N - j) → (s.fd k).dom, (∀ z ∈ DomI D.what₂.Tau j (N - j), s.zOf L k (f z) = z ∧ ∀ τ, coW (s.fd k) s.j_le (f z).1 τ = 1 ∧ coOm (s.fd k) s.j_le (f z).1 τ = 1) ∧ ∀ τ a b, DifferentiableOn ℂ (fun v => ReciprocityTheory.ChartRestriction.G.FD.mat (f (unflat v)).1 τ a b) (DomFlat D.what₂.Tau j (N - j)) := by
   first | exact @GlobalTheory.ShFam.exists_holo_frame | exact GlobalTheory.ShFam.exists_holo_frame | (intros; apply GlobalTheory.ShFam.exists_holo_frame <;> assumption)

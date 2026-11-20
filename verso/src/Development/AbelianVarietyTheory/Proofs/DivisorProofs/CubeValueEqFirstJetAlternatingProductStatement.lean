@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.Cl.CubeJet.cube_jet | exact GlobalTheory.MBLow.Cl.CubeJet.cube_jet | (intros; apply GlobalTheory.MBLow.Cl.CubeJet.cube_jet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.Cl.CubeJet.cube_jet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCubeValueEqFirstJetAlternatingProduct.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.cube_value_eq_first_jet_alternating_product : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
     (ν : NumOf D ℂ N) (d : AB N.toNumB g) (G : Geo ν d),

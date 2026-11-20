@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulDe
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
 open PowerSeries GlobalTheory.BK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM | exact GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM | (intros; apply GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPrimePowSmulDescentPhiMemLatticeOfOrbitBound.lean&line=286#L286)
 -/
 theorem _root_.GlobalTheory.T.prime_pow_smul_descent_phi_mem_lattice_of_orbit_bound : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), ∀ r : ℕ, 1 ≤ r → (∀ τ, ∀ c ∈ D.desc.chars τ, frobPeriod l c ≤ r) → (r + 2) * η < l + 1 → l ≠ 2 → ∀ m ∈ D.Minv, (l : K) ^ (η * (r + 1)) • D.zeta (D.phi m) ∈ D.MM := by
   first | exact @GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM | exact GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM | (intros; apply GlobalTheory.BK.l_pow_smul_zeta_phi_mem_MM <;> assumption)

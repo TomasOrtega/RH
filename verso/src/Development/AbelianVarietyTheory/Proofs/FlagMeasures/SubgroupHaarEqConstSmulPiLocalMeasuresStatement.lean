@@ -11,8 +11,10 @@ open Matrix MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotio
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.Pf.AmpWinLoc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MuHPi.muH_eq_pi | exact GlobalTheory.MuHPi.muH_eq_pi | (intros; apply GlobalTheory.MuHPi.muH_eq_pi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MuHPi.muH_eq_pi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FSubgroupHaarEqConstSmulPiLocalMeasures.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.subgroupHaar_eq_const_smul_pi_localMeasures : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word), ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muH u = κ • Measure.pi (fun v => muHl C u (X.pl v) v) := by
   first | exact @GlobalTheory.MuHPi.muH_eq_pi | exact GlobalTheory.MuHPi.muH_eq_pi | (intros; apply GlobalTheory.MuHPi.muH_eq_pi <;> assumption)

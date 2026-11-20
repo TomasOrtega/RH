@@ -10,8 +10,10 @@ open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.Chain.RealIt GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockConjNeg.fock_neg_cj | exact GlobalTheory.FockConjNeg.fock_neg_cj | (intros; apply GlobalTheory.FockConjNeg.fock_neg_cj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockConjNeg.fock_neg_cj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjFockPureTensorMapNegFormSpaceEq.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.conj_fockPureTensorMap_negFormSpace_eq : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (f : WO S.V T.V → ℂ), IsStdChar D ψ (-1) → IsInfFam θ → IsThetaFunO ψ (GlobalTheory.Grid.neg S.V) T.V f → ∀ P : GlobalTheory.Grid.Pol S T, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (GlobalTheory.Grid.fock ψ θ true S T f P) = GlobalTheory.Chain.ptOf ψ θ S.M T.M (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f) (MvPolynomial.map (starRingEnd ℂ) P) := by
   first | exact @GlobalTheory.FockConjNeg.fock_neg_cj | exact GlobalTheory.FockConjNeg.fock_neg_cj | (intros; apply GlobalTheory.FockConjNeg.fock_neg_cj <;> assumption)

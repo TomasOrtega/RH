@@ -21,8 +21,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TangentOrigin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertCoeffGlue.exists_coeff | exact GlobalTheory.VertCoeffGlue.exists_coeff | (intros; apply GlobalTheory.VertCoeffGlue.exists_coeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertCoeffGlue.exists_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsVectorFieldCoeffsGluedFromAffineOpens.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_vectorField_coeffs_glued_from_affineOpens : ∀ {X : Scheme.{0}} {n : ℕ} (W : X.Opens) (δ : Fld X) (dd : Fin n → Fld X), IsField W δ → (∀ a, IsField ⊤ (dd a)) →
     (∀ V V' : X.Opens, IsAffineOpen V → IsAffineOpen V' → V ≤ W → V' ≤ V →

@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThKSoDecay GlobalTheory.ThKTorus
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKTorus.exists_frameCo_of_basis | exact GlobalTheory.ThKTorus.exists_frameCo_of_basis | (intros; apply GlobalTheory.ThKTorus.exists_frameCo_of_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKTorus.exists_frameCo_of_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymplecticBlockBasisOrthogonal.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.symplectic_block_basis_orthogonal : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d q : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E) (x y : Fin q → Fin n → E)

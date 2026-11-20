@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange | exact GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange | (intros; apply GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianAmpleSymmPreservedFieldBaseChange.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.abelian_ample_symm_preserved_field_baseChange : ∀ (k Ω : Type) [Field k] [Field Ω] (σ : k →+* Ω) (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ → ∀ L : LB A₀.left, L.IsLB → RelAmple A₀ L → LBIso (L.pull (GrpObj.inv : A₀ ⟶ A₀).left) L → IsAbelianScheme ((Over.pullback (spMap σ)).obj A₀) ∧ RelAmple ((Over.pullback (spMap σ)).obj A₀) (L.pull (pullback.fst A₀.hom (spMap σ))) ∧ LBIso ((L.pull (pullback.fst A₀.hom (spMap σ))).pull (GrpObj.inv : (Over.pullback (spMap σ)).obj A₀ ⟶ (Over.pullback (spMap σ)).obj A₀).left) (L.pull (pullback.fst A₀.hom (spMap σ))) := by
   first | exact @GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange | exact GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange | (intros; apply GlobalTheory.FieldBaseChange.abelian_ample_symm_baseChange <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pinch.unitsPatch | exact GlobalTheory.Pinch.unitsPatch | (intros; apply GlobalTheory.Pinch.unitsPatch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pinch.unitsPatch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPinchingSquareUnitsPatch.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.pinchingSquare_unitsPatch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), IsPullback i' p' p i → IsAffineHom p → IsClosedImmersion i → GlobalTheory.Pinch.Cond p i → GlobalTheory.Pinch.UnitsPatch p i i' p' := by
   first | exact @GlobalTheory.Pinch.unitsPatch | exact GlobalTheory.Pinch.unitsPatch | (intros; apply GlobalTheory.Pinch.unitsPatch <;> assumption)

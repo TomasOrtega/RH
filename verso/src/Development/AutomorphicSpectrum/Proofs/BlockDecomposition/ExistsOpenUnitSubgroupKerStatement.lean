@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual Recipro
 open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HeckeSmooth.exists_open_unit_subgroup_ker | exact GlobalTheory.CompanionTheory.HeckeSmooth.exists_open_unit_subgroup_ker | (intros; apply GlobalTheory.CompanionTheory.HeckeSmooth.exists_open_unit_subgroup_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HeckeSmooth.exists_open_unit_subgroup_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsOpenUnitSubgroupKer.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_open_subgroup_heckeChar_eq_one : ∀ {E : Type} [Field E] [NumberField E] (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)),
     ∃ U : Subgroup (w.adicCompletion E)ˣ, IsOpen (U : Set (w.adicCompletion E)ˣ) ∧ (∀ x ∈ U, IsUnitAt w x) ∧

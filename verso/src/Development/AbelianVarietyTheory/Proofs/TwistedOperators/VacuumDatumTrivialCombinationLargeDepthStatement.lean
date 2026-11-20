@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacComb.main | exact GlobalTheory.VacComb.main | (intros; apply GlobalTheory.VacComb.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacComb.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FVacuumDatumTrivialCombinationLargeDepth.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.vacuumDatum_trivialCombination_largeDepth : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (j : Fin D.R.m), IsCombOf ch.W (FinDatum.vacuum ch.G t (.top t j)) (Finsupp.single 0 1) := by
   first | exact @GlobalTheory.VacComb.main | exact GlobalTheory.VacComb.main | (intros; apply GlobalTheory.VacComb.main <;> assumption)

@@ -7,8 +7,10 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainCol.innerStep | exact GlobalTheory.ChainCol.innerStep | (intros; apply GlobalTheory.ChainCol.innerStep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainCol.innerStep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLocalVectorDownEdgeInterior.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.local_vector_down_edge_interior : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (j : Fin D.R.m) (g : Sch ch.G (.down t 0 j)), (j : ℕ) + 1 < D.R.m → HEq g (R.vY t j) → ∃ c : ℂˣ, c ∈ xiVals R.toLevCh t ∧ ∀ e : AE D, IsIdemSum e (locPl ch.G t) → ∀ Φ : ch.G.Datum, IsLocVec ch.W (.mu t 0 j) e (ch.rm.vT 0 j) ((c : ℂ) • GlobalTheory.FlipStart.givenFn ch.S.B t Φ e (.down t 0 j)) g := by
   first | exact @GlobalTheory.ChainCol.innerStep | exact GlobalTheory.ChainCol.innerStep | (intros; apply GlobalTheory.ChainCol.innerStep <;> assumption)

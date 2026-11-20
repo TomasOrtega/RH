@@ -14,8 +14,10 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SuppOut.exists_lat_pair_ne_one | exact GlobalTheory.SuppOut.exists_lat_pair_ne_one | (intros; apply GlobalTheory.SuppOut.exists_lat_pair_ne_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SuppOut.exists_lat_pair_ne_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigAIdeleUnitIntegralIdentity.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.T.config_a_idele_unit_integral_identity : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ}
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')) (X : Chars F E)

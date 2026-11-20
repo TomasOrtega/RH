@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoFiltrations.main | exact GlobalTheory.TwoFiltrations.main | (intros; apply GlobalTheory.TwoFiltrations.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoFiltrations.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrincipallyPolarizedAbelianShortExact.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.principally_polarized_abelian_short_exact : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality →
   ∀ (p : ℕ) [Fact p.Prime] (T : Scheme.{0}) [Algebra (ZMod p) Γ(T, ⊤)],

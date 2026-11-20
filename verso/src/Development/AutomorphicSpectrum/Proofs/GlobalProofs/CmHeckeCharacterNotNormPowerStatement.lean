@@ -10,8 +10,10 @@ open GroundTheory.Automorphic.GodementSection (localChar)
 open Formalism.L2.Host (unif atFin unif_spec)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow | exact GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow | (intros; apply GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCmHeckeCharacterNotNormPower.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.cm_hecke_character_not_norm_power : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (χ : HChar E) (hu : IsUnitary χ) (n : I → ℤ), Formalism.L2.Host.HChar.HasInf χ φ n → (∃ i, n i ≠ 0) → ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E, ((toHecke χ hu).toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I) := by
   first | exact @GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow | exact GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow | (intros; apply GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow <;> assumption)

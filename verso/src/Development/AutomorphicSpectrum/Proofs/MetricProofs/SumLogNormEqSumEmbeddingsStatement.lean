@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjSpace GlobalTheory.CompanionTheory.Ar.BaseZ GlobalTheory.CompanionTheory.Ar.BGS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve | exact GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FSumLogNormEqSumEmbeddings.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.sum_logNorm_eq_sum_embeddings : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ), IsArithVar p 0 → ∀ (M : HermLB p) (ν : Weight t τ M.B), WOver M.φ ν → ∀ (r : M.B.ι → X.functionFieldˣ), IsRatSec M.B r → ∑ᶠ y : CxPts t τ, logNorm ν r y = ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts p σ, logNorm (M.φ σ) r y := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve | exact GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve <;> assumption)

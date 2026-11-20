@@ -12,8 +12,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LagrForm.lagr_form_admitted | exact GlobalTheory.LagrForm.lagr_form_admitted | (intros; apply GlobalTheory.LagrForm.lagr_form_admitted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LagrForm.lagr_form_admitted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerLatticeDistributionContinuous.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_lattice_distribution_continuous : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), LinearIndependent F (fun j => (u j).1) →
     ∀ μ : @Measure (Fin r → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

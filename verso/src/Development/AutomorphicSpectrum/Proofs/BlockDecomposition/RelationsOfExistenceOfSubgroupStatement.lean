@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelationsOfExis
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompatibility.TemperedLocalGlobal.LocalGlobalOfIwahori
 open LocalGlobalAboveLAlt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub | exact GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub | (intros; apply GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRelationsOfExistenceOfSubgroup.lean&line=293#L293)
 -/
 theorem _root_.GlobalTheory.T.relations_of_existence_of_subgroup : ExSub → RelOfMain := by
   first | exact @GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub | exact GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub | (intros; apply GlobalTheory.CompanionTheory.LocalParam.relOfMain_of_exSub <;> assumption)

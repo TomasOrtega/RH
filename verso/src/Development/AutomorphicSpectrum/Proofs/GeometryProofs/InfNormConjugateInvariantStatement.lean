@@ -12,8 +12,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj | exact GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FInfNormConjugateInvariant.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.inf_norm_conjugate_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (s : c.F →+* ℂ) (t : ℝ), IsLineFn U τ φ → HasInfNorm U τ φ s t → HasInfNorm U τ φ ((starRingEnd ℂ).comp s) t := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj | exact GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.hasInfNorm_conj <;> assumption)

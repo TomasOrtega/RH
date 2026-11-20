@@ -19,8 +19,10 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotMatch.complementary_minor_map | exact GlobalTheory.BotMatch.complementary_minor_map | (intros; apply GlobalTheory.BotMatch.complementary_minor_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotMatch.complementary_minor_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsComplementaryMinorMapRealPlaces.lean&line=298#L298)
 -/
 theorem _root_.GlobalTheory.T.exists_complementaryMinor_map_realPlaces : ∀ (D : D7) {a a' d : ℕ} (had : a + a' = d) (n : D.what₂.Tau → ℕ),
     ∃ (Pl : PolF D d a →ₗ[ℂ] PolF D d a') (ε : Tup D a d n → ℤˣ),

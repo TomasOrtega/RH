@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AddLineField.additive_eq_lam_of_ample | exact GlobalTheory.AddLineField.additive_eq_lam_of_ample | (intros; apply GlobalTheory.AddLineField.additive_eq_lam_of_ample <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AddLineField.additive_eq_lam_of_ample` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdditiveLineBundleEqMumfordLambdaOfAmpleAlgClose.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.additiveLineBundle_eq_mumfordLambda_of_ample_algClosed : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → ∀ N : LB (A ⊗ 𝟙_ (Over (Sp K))).left, Fam A N → ∃ a : 𝟙_ (Over (Sp K)) ⟶ A, Same A N (abelian₂ A L) (𝟙 _) a := by
   first | exact @GlobalTheory.AddLineField.additive_eq_lam_of_ample | exact GlobalTheory.AddLineField.additive_eq_lam_of_ample | (intros; apply GlobalTheory.AddLineField.additive_eq_lam_of_ample <;> assumption)

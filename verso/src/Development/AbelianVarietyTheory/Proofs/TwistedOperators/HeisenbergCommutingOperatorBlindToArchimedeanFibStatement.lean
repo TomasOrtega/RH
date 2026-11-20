@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinFibre.fibre_zero | exact GlobalTheory.FinFibre.fibre_zero | (intros; apply GlobalTheory.FinFibre.fibre_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinFibre.fibre_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergCommutingOperatorIndependentOfArchimedeanFiber.lean&line=235#L235)
 -/
 theorem _root_.GlobalTheory.T.heisenbergCommuting_operator_independent_of_archimedeanFibres : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (T : Module.End ℂ ((κ → AF F) → ℂ)),
     IsStd ψ → (∀ Φ ∈ schA F κ, T Φ ∈ schA F κ) →

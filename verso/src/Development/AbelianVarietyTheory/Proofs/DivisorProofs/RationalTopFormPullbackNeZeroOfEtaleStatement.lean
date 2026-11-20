@@ -5,8 +5,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaleKlt.ratPull_ne_zero | exact GlobalTheory.EtaleKlt.ratPull_ne_zero | (intros; apply GlobalTheory.EtaleKlt.ratPull_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaleKlt.ratPull_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalTopFormPullbackNeZeroOfEtale.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.rationalTopFormPullback_ne_zero_of_etale : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [IsLocallyNoetherian M] [IsLocallyNoetherian W] (p : W ⟶ Sp ℂ) (f : M ⟶ W) [IsDominant f] (n : ℕ) [SmoothOfRelativeDimension n p] [SmoothOfRelativeDimension n (f ≫ p)] (U : M.Opens), Etale (U.ι ≫ f) → (U : Set M).Nonempty → ∀ η : RatForms p n, η ≠ 0 → GlobalTheory.EtaleKlt.ratPull p f n η ≠ 0 := by
   first | exact @GlobalTheory.EtaleKlt.ratPull_ne_zero | exact GlobalTheory.EtaleKlt.ratPull_ne_zero | (intros; apply GlobalTheory.EtaleKlt.ratPull_ne_zero <;> assumption)

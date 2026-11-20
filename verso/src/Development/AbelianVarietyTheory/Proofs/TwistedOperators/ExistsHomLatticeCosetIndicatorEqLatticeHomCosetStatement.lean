@@ -14,8 +14,10 @@ open GlobalTheory.Grid GlobalTheory.ChiGrid GlobalTheory.GridJoin
 open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosToCoset.cosInd_eq_cosetInd | exact GlobalTheory.CosToCoset.cosInd_eq_cosetInd | (intros; apply GlobalTheory.CosToCoset.cosInd_eq_cosetInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosToCoset.cosInd_eq_cosetInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsHomLatticeCosetIndicatorEqLatticeHomCoset.lean&line=196#L196)
 -/
 theorem _root_.GlobalTheory.T.exists_homLatticeCosetIndicator_eq_latticeHomCoset : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ), Formalism.L2.DIV.IsFrame S.β S.Λ → Formalism.L2.DIV.IsFrame T.β T.Λ → IsIdemSum e P → ∀ κ : GlobalTheory.ChiGrid.Cos S.Λ T.Λ (∏ w ∈ P, w.asIdeal ^ d w), ∃ c : GlobalTheory.Grid.Coset S T (∏ w ∈ P, w.asIdeal ^ d w), GlobalTheory.Grid.cosetInd S T e (∏ w ∈ P, w.asIdeal ^ d w) c = GlobalTheory.ChiGrid.cosInd e κ := by
   first | exact @GlobalTheory.CosToCoset.cosInd_eq_cosetInd | exact GlobalTheory.CosToCoset.cosInd_eq_cosetInd | (intros; apply GlobalTheory.CosToCoset.cosInd_eq_cosetInd <;> assumption)

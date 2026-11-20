@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHermitianL
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StarMulOfMemKc
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.PolarU GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower GlobalTheory.CartanInt Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CartanInt.UnitLog.exists_unitlog | exact GlobalTheory.CartanInt.UnitLog.exists_unitlog | (intros; apply GlobalTheory.CartanInt.UnitLog.exists_unitlog <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CartanInt.UnitLog.exists_unitlog` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsHermitianLogUnitaryBlockDiagonal.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.exists_hermitian_log_unitaryBlockDiagonal : ∀ (p q : ℕ) (k : UpqT p q), k ∈ Kc p q → ∃ H : Mat p q, Hᴴ = H ∧ IsKC H ∧ (∀ a b, ‖H a b‖ ≤ Real.pi) ∧ UpqT.mat k = NormedSpace.exp (Complex.I • H) := by
   first | exact @GlobalTheory.CartanInt.UnitLog.exists_unitlog | exact GlobalTheory.CartanInt.UnitLog.exists_unitlog | (intros; apply GlobalTheory.CartanInt.UnitLog.exists_unitlog <;> assumption)

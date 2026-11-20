@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.UnivCover
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OnePlaceCong.chi_eq_one_of_cong | exact GlobalTheory.OnePlaceCong.chi_eq_one_of_cong | (intros; apply GlobalTheory.OnePlaceCong.chi_eq_one_of_cong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OnePlaceCong.chi_eq_one_of_cong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FOnePlaceTwistTrivialOnCongruentUnits.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.onePlaceTwist_trivial_on_congruent_units : ∀ (D : D7) {A : Type} [CommGroup A] (PP : Pl D.host.E) (χ : (AE D)ˣ →* A) (κ : GlobalTheory.ExportSeries.ResChars D A), (⟨{PP}, χ, κ⟩ : GlobalTheory.ExportSeries.Twist D A).Good → ∀ N : ℕ, ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → ∀ x : (AE D)ˣ, FinUnit x → (∃ y ∈ intAE D, finPart D (x : AE D) - 1 = N • y) → χ x = 1 := by
   first | exact @GlobalTheory.OnePlaceCong.chi_eq_one_of_cong | exact GlobalTheory.OnePlaceCong.chi_eq_one_of_cong | (intros; apply GlobalTheory.OnePlaceCong.chi_eq_one_of_cong <;> assumption)

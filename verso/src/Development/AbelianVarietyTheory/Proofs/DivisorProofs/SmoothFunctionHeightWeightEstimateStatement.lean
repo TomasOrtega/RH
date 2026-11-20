@@ -14,8 +14,10 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatPoint.exists_algPt_height_zero | exact GlobalTheory.FlatPoint.exists_algPt_height_zero | (intros; apply GlobalTheory.FlatPoint.exists_algPt_height_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatPoint.exists_algPt_height_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothFunctionHeightWeightEstimate.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.smooth_function_height_weight_estimate : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

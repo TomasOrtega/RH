@@ -8,8 +8,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.galois_log | exact GlobalTheory.CompanionTheory.LTPer.galois_log | (intros; apply GlobalTheory.CompanionTheory.LTPer.galois_log <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.galois_log` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLubinTateSeriesCommuteLinear.lean&line=352#L352)
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_series_commute_linear : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {R : Type} [CommRing R], PerEnv S F ϖ → ∀ (ϖ' : B), ϖ * ϖ' = 1 →
     ∀ (h : R →+* B), (∀ c, h c ∈ S) → ∀ (π : R), h π = ϖ → ∀ (q : ℕ), 2 ≤ q → (∃ s ∈ S, (q : B) = ϖ * s) →

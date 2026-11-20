@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Glue.SiegLoc.local_coords | exact GlobalTheory.Glue.SiegLoc.local_coords | (intros; apply GlobalTheory.Glue.SiegLoc.local_coords; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Glue.SiegLoc.local_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FLogCoordsUnitValueTwoVariableIntegralExpansion.lean&line=318#L318)
 -/
 theorem _root_.GlobalTheory.T.logCoords_unit_value_twoVariableIntegralExpansion : ∀ (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ (T : GlobalTheory.K5.Tower p Ωl) (L : ℕ) (ψ : O0 p →+* Ωl) (ι : On p L →ₐ[O0 p] Ωl), 1 ≤ L → IsReb T L ψ → IsEmb T L ι →
   ∀ (A₁ g : ℤ) (θ : ℤ → ℤ → ℤ) (cU cE : ℤ → Ωl) (x x' : Ωl),

@@ -17,8 +17,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial | exact GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial | (intros; apply GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalCharactersTrivialOfNonzeroAverage.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.local_characters_trivial_of_nonzero_average : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (c : HeckeCharacter K)
   (M : ∀ v : Pl, LM c v), AdmM M → ∀ R : Finset (Pl →₀ ℤ), IsReps M R → ∀ Sv : Finset Pl, GoodSv M Sv →

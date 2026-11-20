@@ -16,8 +16,10 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt | exact GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt | (intros; apply GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpUniqCh0.exists_factor_trivSqZeroExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsSquareZeroLiftLocal.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.exists_square_zero_lift_local : ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [Field S] (x0 : Sp S ⟶ X)
     {A B : Type} [CommRing A] [Algebra S A] [IsLocalRing A] [CommRing B] [Algebra S B] [IsLocalRing B]

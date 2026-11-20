@@ -18,8 +18,10 @@ open GlobalTheory.FlatModel
 open GlobalTheory.UnitGlue
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitGlue.glueLB_isLB | exact GlobalTheory.UnitGlue.glueLB_isLB | (intros; apply GlobalTheory.UnitGlue.glueLB_isLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitGlue.glueLB_isLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGluedLineBundleInvertible.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.glued_line_bundle_invertible : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (h : ∀ x : X, UnitChartAt p Xw K x), IsIntegral X → (Xw : Set X).Nonempty → Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → (∀ x y : X, ∃ u, RatioProp h x y u) → (glueLB h).IsLB := by
   first | exact @GlobalTheory.UnitGlue.glueLB_isLB | exact GlobalTheory.UnitGlue.glueLB_isLB | (intros; apply GlobalTheory.UnitGlue.glueLB_isLB <;> assumption)

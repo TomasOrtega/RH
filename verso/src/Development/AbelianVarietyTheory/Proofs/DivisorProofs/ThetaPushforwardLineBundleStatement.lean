@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRR.exists_lb_pushforward | exact GlobalTheory.ThetaRR.exists_lb_pushforward | (intros; apply GlobalTheory.ThetaRR.exists_lb_pushforward <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRR.exists_lb_pushforward` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaPushforwardLineBundle.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.theta_pushforward_line_bundle : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (L : LB P.A.left), IsTheta P L → ∃ M : LB S, M.IsLB ∧ Nonempty (toMod M ≅ (Scheme.Modules.pushforward P.A.hom).obj (toMod L)) := by
   first | exact @GlobalTheory.ThetaRR.exists_lb_pushforward | exact GlobalTheory.ThetaRR.exists_lb_pushforward | (intros; apply GlobalTheory.ThetaRR.exists_lb_pushforward <;> assumption)

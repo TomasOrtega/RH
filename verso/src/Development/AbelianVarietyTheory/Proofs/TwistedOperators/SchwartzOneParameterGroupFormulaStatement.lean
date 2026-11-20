@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MetaplecticScalarDeriv.main | exact GlobalTheory.MetaplecticScalarDeriv.main | (intros; apply GlobalTheory.MetaplecticScalarDeriv.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MetaplecticScalarDeriv.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSchwartzOneParameterGroupFormula.lean&line=202#L202)
 -/
 theorem _root_.GlobalTheory.T.schwartz_one_parameter_group_formula : GlobalTheory.FunPr.Hypotheses₂ → ∀ (l : Type) [Fintype l] [DecidableEq l]
     (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ), Z ∈ LieAlgebra.Symplectic.sp l ℝ →

@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.exists_semiPosReg_tens | exact GlobalTheory.Mix.exists_semiPosReg_tens | (intros; apply GlobalTheory.Mix.exists_semiPosReg_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.exists_semiPosReg_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSemiPosTwistMetrisedLineBundle.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_semiPos_twist_metrisedLineBundle : ∀ (F : Type) [Field F] (X : Scheme.{0}) (p : X ⟶ Sp F) (σ : F →+* ℂ), IsProjOver p → ∀ (D : ℕ) (A : MLine p σ), ∃ Q : MLine p σ, Q.φ.SemiPosReg D ∧ (A.tens Q).φ.SemiPosReg D := by
   first | exact @GlobalTheory.Mix.exists_semiPosReg_tens | exact GlobalTheory.Mix.exists_semiPosReg_tens | (intros; apply GlobalTheory.Mix.exists_semiPosReg_tens <;> assumption)

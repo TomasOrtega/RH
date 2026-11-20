@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom | exact GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHeightCharFreeGeometric.lean&line=230#L230)
 -/
 theorem _root_.GlobalTheory.T.height_char_free_geometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X), PowFns t → ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X), GeomPF t x → ∀ (d r : ℕ) (g : GermAt t x d), HChar g.B r → HFree g.B r := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom | exact GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.hfree_geom <;> assumption)

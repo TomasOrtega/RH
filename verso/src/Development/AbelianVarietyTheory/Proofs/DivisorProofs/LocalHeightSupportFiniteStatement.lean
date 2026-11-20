@@ -24,8 +24,10 @@ open CategoryTheory AlgebraicGeometry IsDedekindDomain GlobalTheory.TrueGeo Glob
 open Classical GlobalTheory.HtAdd
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.CoverFinSupp.finite_support | exact GlobalTheory.Mean4O.CoverFinSupp.finite_support | (intros; apply GlobalTheory.Mean4O.CoverFinSupp.finite_support <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4O.CoverFinSupp.finite_support` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalHeightSupportFinite.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.local_height_support_finite : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (V : Cover Y) (A : Adl C Y)
     (L : GlobalTheory.HermLB V.p) (k : ℕ), k ≠ 0 → V.Induces A L k → ∀ x : Y.X, IsClosed ({x} : Set Y.X) →

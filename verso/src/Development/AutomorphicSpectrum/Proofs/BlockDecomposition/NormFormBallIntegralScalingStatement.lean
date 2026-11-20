@@ -8,8 +8,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilGaussScale.integral_valBall_dilation | exact GlobalTheory.CompanionTheory.WeilGaussScale.integral_valBall_dilation | (intros; apply GlobalTheory.CompanionTheory.WeilGaussScale.integral_valBall_dilation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WeilGaussScale.integral_valBall_dilation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNormFormBallIntegralScaling.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.norm_form_ball_integral_scaling : ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (t : Eˣ) (n : ℤ),
   ∫ u in (valBall E n : Set E), (χ (Algebra.norm F (t : E) * Algebra.norm F u) : ℂ) ∂muE E χ =

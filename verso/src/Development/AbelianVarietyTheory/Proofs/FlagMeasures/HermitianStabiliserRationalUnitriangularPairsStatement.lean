@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.RatStab.stab_rat | exact GlobalTheory.HL.RatStab.stab_rat | (intros; apply GlobalTheory.HL.RatStab.stab_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.RatStab.stab_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHermitianStabiliserRationalUnitriangularPairs.lean&line=277#L277)
 -/
 theorem _root_.GlobalTheory.T.hermitianStabiliser_rational_unitriangular_pairs : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), ∀ s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) → ((∀ i j, j < i → s' i j = 0) ∧ (∀ i, s' i i = 1)) → ((s.map sig).transpose * G.Zh * s' = G.Zh ↔ ∃ h ∈ G.St, (∀ j, h (G.f j) = ∑ i, s i j • G.f i) ∧ ∀ j, h (G.f' j) = ∑ i, s' i j • G.f' i) := by
   first | exact @GlobalTheory.HL.RatStab.stab_rat | exact GlobalTheory.HL.RatStab.stab_rat | (intros; apply GlobalTheory.HL.RatStab.stab_rat <;> assumption)

@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaShift.exists_morphism_affine_cover | exact GlobalTheory.ThetaShift.exists_morphism_affine_cover | (intros; apply GlobalTheory.ThetaShift.exists_morphism_affine_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaShift.exists_morphism_affine_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaFourthPowerUnderIsogeny.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.theta_fourth_power_under_isogeny : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

@@ -26,8 +26,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.LowPos.lowered_rank_pos | exact GlobalTheory.CovTop.LowPos.lowered_rank_pos | (intros; apply GlobalTheory.CovTop.LowPos.lowered_rank_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.LowPos.lowered_rank_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRankPosNegativeWeightBundle.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.rank_pos_negative_weight_bundle : GlobalTheory.Published.ScholzeWeinsteinB → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → Covers fun Fm x _ ι p i Y _ _ => 0 < Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) := by
   first | exact @GlobalTheory.CovTop.LowPos.lowered_rank_pos | exact GlobalTheory.CovTop.LowPos.lowered_rank_pos | (intros; apply GlobalTheory.CovTop.LowPos.lowered_rank_pos <;> assumption)

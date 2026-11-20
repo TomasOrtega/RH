@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.DualCon
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm | exact GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm | (intros; apply GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemKernelDiagonalRestrictionOfSymmetricTrivial.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ P : LB (G ⊗ G).left, P.IsLB → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ (T : Over (Sp R)) (a : T ⟶ G), (∃ t : (P.pull (lift (snd G T ≫ a) (fst G T)).left).Gen, t.IsGen) → GlobalTheory.MemKL G (P.pull (lift (𝟙 G) (𝟙 G)).left) a := by
   first | exact @GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm | exact GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm | (intros; apply GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm <;> assumption)

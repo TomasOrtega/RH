@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer)
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfGen.latO_le_closure_halves | exact GlobalTheory.HalfGen.latO_le_closure_halves | (intros; apply GlobalTheory.HalfGen.latO_le_closure_halves <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfGen.latO_le_closure_halves` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHomLatticeCompletionLeClosureIsotropicHalves.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.homLatticeCompletion_le_closure_isotropicHalves : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)), ∀ u ∈ latO S T LS LT P, u ∈ AddSubgroup.closure {x | x ∈ latO S T LS LT P ∧ ∃ e, IsSplitIdem D e ∧ IsHalf e x} := by
   first | exact @GlobalTheory.HalfGen.latO_le_closure_halves | exact GlobalTheory.HalfGen.latO_le_closure_halves | (intros; apply GlobalTheory.HalfGen.latO_le_closure_halves <;> assumption)

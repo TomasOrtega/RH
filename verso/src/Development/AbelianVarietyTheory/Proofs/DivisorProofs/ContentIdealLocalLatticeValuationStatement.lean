@@ -17,8 +17,10 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineLocVal.valAt_le_of_smul_mem_latLoc | exact GlobalTheory.LineLocVal.valAt_le_of_smul_mem_latLoc | (intros; apply GlobalTheory.LineLocVal.valAt_le_of_smul_mem_latLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineLocVal.valAt_le_of_smul_mem_latLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContentIdealLocalLatticeValuation.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.content_ideal_local_lattice_valuation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →

@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatModel.exists_obj_of_isogenous_model | exact GlobalTheory.LatModel.exists_obj_of_isogenous_model | (intros; apply GlobalTheory.LatModel.exists_obj_of_isogenous_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatModel.exists_obj_of_isogenous_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeesawLeftRestrictionIsPair.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.cm_order_l_adic_endomorphism_integral : GlobalTheory.Published.AbelianDualCrystal → GlobalTheory.Published.AbelianDeRham →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

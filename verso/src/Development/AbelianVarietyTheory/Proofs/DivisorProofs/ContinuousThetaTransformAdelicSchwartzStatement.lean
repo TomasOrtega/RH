@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTrCont.continuous_thetaTr | exact GlobalTheory.ThetaTrCont.continuous_thetaTr | (intros; apply GlobalTheory.ThetaTrCont.continuous_thetaTr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTrCont.continuous_thetaTr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContinuousThetaTransformAdelicSchwartz.lean&line=263#L263)
 -/
 theorem _root_.GlobalTheory.T.continuous_thetaTransform_adelicSchwartz : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

@@ -15,8 +15,10 @@ open GlobalTheory.LogPole
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame | exact GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame | (intros; apply GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsKaehlerBasisDifferentialsOfTopFormFrame.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.exists_kaehlerBasis_differentials_of_topFormFrame : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (m : ℕ), SmoothOfRelativeDimension m p → ∀ (U : X.Opens) (x : Fin m → Γ(X, U)), GlobalTheory.TopForm.IsFrame (GlobalTheory.TopForm.dOn p x) → ∃ b : Module.Basis (Fin m) Γ(X, U) (GlobalTheory.TopForm.Omega (algX p U)), ∀ i, b i = GlobalTheory.TopForm.dFun (algX p U) (x i) := by
   first | exact @GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame | exact GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame | (intros; apply GlobalTheory.TopForm.FrameBasis.exists_basis_of_isFrame <;> assumption)

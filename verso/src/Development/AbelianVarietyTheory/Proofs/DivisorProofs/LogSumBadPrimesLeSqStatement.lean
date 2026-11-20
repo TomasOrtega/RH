@@ -31,8 +31,10 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum GlobalTheory.ShFam GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions.TH
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadLogCov.logSum_badPrimes_le_sq | exact GlobalTheory.BadLogCov.logSum_badPrimes_le_sq | (intros; apply GlobalTheory.BadLogCov.logSum_badPrimes_le_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadLogCov.logSum_badPrimes_le_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLogSumBadPrimesLeSq.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.logSum_badPrimes_le_mul_sq : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → GlobalTheory.FlatTw.logSum (GlobalTheory.FlatTw.badPrimes T.Q.H Y.d.l₂) ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 := by
   first | exact @GlobalTheory.BadLogCov.logSum_badPrimes_le_sq | exact GlobalTheory.BadLogCov.logSum_badPrimes_le_sq | (intros; apply GlobalTheory.BadLogCov.logSum_badPrimes_le_sq <;> assumption)

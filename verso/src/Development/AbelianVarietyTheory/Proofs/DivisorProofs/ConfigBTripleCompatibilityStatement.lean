@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.stepB_anisotropic | exact GlobalTheory.ThK.stepB_anisotropic | (intros; apply GlobalTheory.ThK.stepB_anisotropic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.stepB_anisotropic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigBTripleCompatibility.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.config_b_triple_compatibility : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)) (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

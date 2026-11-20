@@ -20,8 +20,10 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieInt.colSub_unitary_of_coinv | exact GlobalTheory.LieInt.colSub_unitary_of_coinv | (intros; apply GlobalTheory.LieInt.colSub_unitary_of_coinv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieInt.colSub_unitary_of_coinv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FColumnSubstitutionUnitaryOfKillsLieCoinvariants.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants : ∀ (D : D7) (ε : Bool) (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (eT : D.what₂.Tau → ℚ)
     (n₀ : D.what₂.Tau → ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q] (q : PolF D X.rank M.rank →ₗ[ℂ] Q),

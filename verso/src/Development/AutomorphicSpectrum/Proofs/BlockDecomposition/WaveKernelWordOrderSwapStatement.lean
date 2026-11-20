@@ -9,8 +9,10 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.WaveMult
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap | exact GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap | (intros; apply GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWaveKernelWordOrderSwap.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.wave_kernel_word_order_swap : WaveSpeed → RCalc → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (w w' : List (Bool × ℕ)) (g : ℝ → ℝ) (T : ℝ) (K : Mat n → (E.V →L[ℂ] E.V)), IsBump g T → IsKer μ E (w ++ w') g K → IsKer μ E (w' ++ w) g K := by
   first | exact @GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap | exact GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap | (intros; apply GlobalTheory.CompanionTheory.WaveMult.KerSwap.isKer_swap <;> assumption)

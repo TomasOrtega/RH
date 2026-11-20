@@ -17,8 +17,10 @@ import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.CellLastRow.indN_lastRow_tl`. Consider the case `exact GlobalTheory.CellLastRow.indN_lastRow_tl`. Consider the case `(intros; apply GlobalTheory.CellLastRow.indN_lastRow_tl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellLastRow.indN_lastRow_tl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLastRowCongruenceIndicatorDiagonalUniformizerMul.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.lastRowCongruenceIndicator_diagonalUniformizer_mul : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ),

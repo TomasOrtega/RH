@@ -15,8 +15,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CorankOneNormal.exists_modification | exact GlobalTheory.CorankOneNormal.exists_modification | (intros; apply GlobalTheory.CorankOneNormal.exists_modification <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CorankOneNormal.exists_modification` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormalModelNonvanishingWeights.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.normal_model_nonvanishing_weights : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (A ι : Type) [Finite A] [Finite ι]

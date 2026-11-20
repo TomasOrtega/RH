@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlCastRfl
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.MidColumn.parInd_colRep_equiv_cellMid | exact GlobalTheory.IndLineGL.MidColumn.parInd_colRep_equiv_cellMid | (intros; apply GlobalTheory.IndLineGL.MidColumn.parInd_colRep_equiv_cellMid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.MidColumn.parInd_colRep_equiv_cellMid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FParabolicInductionColumnEquiv.lean&line=210#L210)
 -/
 theorem _root_.GlobalTheory.T.parabolic_induction_column_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (b : SizeMatrix (Two (Fin a) (Fin a')) fun j : Fin 3 => Fin (blk3 m j))

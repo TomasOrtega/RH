@@ -19,8 +19,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarExist.haar_exists | exact GlobalTheory.HaarExist.haar_exists | (intros; apply GlobalTheory.HaarExist.haar_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarExist.haar_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsHaarFinitePointsFourierJacobiBessel.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_haar_finitePoints_fourierJacobi_bessel : ∀ (D : D7) (V : HSp D), (∃ μ : Measure (GfC V), μ.IsHaarMeasure) ∧ ∀ (V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ), (∃ μ : Measure ((jacGrp d).subgroupOf (GfC V)), μ.IsHaarMeasure) ∧ ∀ (A L : HSp D) (o : OrthDec V₀ A L), ∃ μ : Measure ((besGrp d o).subgroupOf (GfC V)), μ.IsHaarMeasure := by
   first | exact @GlobalTheory.HaarExist.haar_exists | exact GlobalTheory.HaarExist.haar_exists | (intros; apply GlobalTheory.HaarExist.haar_exists <;> assumption)

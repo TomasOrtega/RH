@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPsiLocNe
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep GlobalTheory.RSJ GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 open scoped ENNReal NNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WhitCols.whit_eq_colWhit | exact GlobalTheory.WhitCols.whit_eq_colWhit | (intros; apply GlobalTheory.WhitCols.whit_eq_colWhit; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WhitCols.whit_eq_colWhit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGlobalWhittakerCoeffEqIteratedColumnTransform.lean&line=181#L181)
 -/
 theorem _root_.GlobalTheory.T.globalWhittakerCoeff_eq_iteratedColumnTransform : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (f : GA E (m + 1) → ℂ), Continuous f →
     (∀ γ ∈ mirU E (m + 1) 0, ∀ g, f (ratGL E (m + 1) γ * g) = f g) →

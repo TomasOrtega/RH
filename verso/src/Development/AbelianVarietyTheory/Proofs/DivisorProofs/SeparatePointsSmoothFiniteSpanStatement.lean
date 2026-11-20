@@ -7,8 +7,10 @@ open scoped TensorProduct NNReal Matrix ComplexConjugate
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinSep.exists_finDim_separating | exact GlobalTheory.FinSep.exists_finDim_separating | (intros; apply GlobalTheory.FinSep.exists_finDim_separating <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinSep.exists_finDim_separating` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeparatePointsSmoothFiniteSpan.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.separate_points_smooth_finite_span : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

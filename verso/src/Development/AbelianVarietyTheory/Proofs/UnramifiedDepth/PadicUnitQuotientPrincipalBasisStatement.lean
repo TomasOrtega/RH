@@ -17,8 +17,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceMono.place_monogenic | exact GlobalTheory.PlaceMono.place_monogenic | (intros; apply GlobalTheory.PlaceMono.place_monogenic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceMono.place_monogenic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FPadicUnitQuotientPrincipalBasis.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.padic_unit_quotient_principal_basis : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] (w : PlaceU p OE), IsDomain ((ℤ_[p] ⊗[ℤ] OE) ⧸ Ideal.span {1 - w.e}) ∧ IsPrincipalIdealRing ((ℤ_[p] ⊗[ℤ] OE) ⧸ Ideal.span {1 - w.e}) ∧ ∃ (α : ℤ_[p] ⊗[ℤ] OE) (b : Module.Basis (Fin w.n) ℤ_[p] (LinearMap.range (LinearMap.mulLeft ℤ_[p] w.e))), ∀ k, (b k : ℤ_[p] ⊗[ℤ] OE) = w.e * α ^ (k : ℕ) := by
   first | exact @GlobalTheory.PlaceMono.place_monogenic | exact GlobalTheory.PlaceMono.place_monogenic | (intros; apply GlobalTheory.PlaceMono.place_monogenic <;> assumption)

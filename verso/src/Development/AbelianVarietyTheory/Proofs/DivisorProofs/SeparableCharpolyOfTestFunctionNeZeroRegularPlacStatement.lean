@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.regvan | exact GlobalTheory.BCT.regvan | (intros; apply GlobalTheory.BCT.regvan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.regvan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeparableCharpolyOfTestFunctionNeZeroRegularPlac.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.separable_charpoly_of_testFunction_ne_zero_regularPlace : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (f : ∀ w : Pl E, UL n w → ℂ), IsTest (KL n) K' f → ∀ w ∈ S, (∀ y, f w y ≠ 0 → y.1.val.charpoly.Separable) → ∀ (x : finU E n) (γ : UE E n), globFn S f (x⁻¹ * finPt γ * x) ≠ 0 → γ.1.val.charpoly.Separable := by
   first | exact @GlobalTheory.BCT.regvan | exact GlobalTheory.BCT.regvan | (intros; apply GlobalTheory.BCT.regvan <;> assumption)

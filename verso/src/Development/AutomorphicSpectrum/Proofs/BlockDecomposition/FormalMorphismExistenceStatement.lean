@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.FormalA
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out PositivityTheory.FormalThickening
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MorphismAlgebraisation.exists_hom_of_thickenings | exact GlobalTheory.CompanionTheory.MorphismAlgebraisation.exists_hom_of_thickenings | (intros; apply GlobalTheory.CompanionTheory.MorphismAlgebraisation.exists_hom_of_thickenings <;> as …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MorphismAlgebraisation.exists_hom_of_thickenings` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFormalMorphismExistence.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.formal_morphism_existence : GEClosed → IsoOfThick →
   ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R →

@@ -6,8 +6,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagPairExists.exists_normal_modification_flagPair | exact GlobalTheory.FlagPairExists.exists_normal_modification_flagPair | (intros; apply GlobalTheory.FlagPairExists.exists_normal_modification_flagPair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagPairExists.exists_normal_modification_flagPair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormalModelTrivializingBlowup.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.normal_model_trivializing_blowup : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (n : ℕ) (r : Fin n → ℕ) (E E' : Fin n → B.X.Modules) (φ : ∀ i, B.GenIso (E i) (E' i)), (∀ i, GlobalTheory.VB.IsVB (E i) (r i) ∧ GlobalTheory.VB.IsVB (E' i) (r i)) → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ ∀ i, Nonempty (GlobalTheory.Vert.Model.FlagPair ((φ i).pull f.comp_str) (r i)) := by
   first | exact @GlobalTheory.FlagPairExists.exists_normal_modification_flagPair | exact GlobalTheory.FlagPairExists.exists_normal_modification_flagPair | (intros; apply GlobalTheory.FlagPairExists.exists_normal_modification_flagPair <;> assumption)

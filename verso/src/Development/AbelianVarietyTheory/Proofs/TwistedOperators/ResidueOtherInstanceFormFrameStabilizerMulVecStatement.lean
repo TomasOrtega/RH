@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjChar.resT_hT_mulVec_stab | exact GlobalTheory.SeeConjChar.resT_hT_mulVec_stab | (intros; apply GlobalTheory.SeeConjChar.resT_hT_mulVec_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjChar.resT_hT_mulVec_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FResidueOtherInstanceFormFrameStabilizerMulVec.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.residue_otherInstanceForm_frameStabilizer_mulVec : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (w : Fin (Yc D 0).rank → Fin (Yc D 0).rank → EAf D), RedIs β PP w → ∀ N ∈ St β, ∀ y : Fin (Yc D 0).rank → EAf D, (∀ z : Fin (Yc D 0).rank → EAf D, (∀ i, Matrix.mulVec (β⁻¹).val z i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → GlobalTheory.SeeConjChar.hT X h y z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → ∀ j, GlobalTheory.SeeConjChar.hT X h y (Matrix.mulVec N.val (w j)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ GlobalTheory.SeeConjChar.resT PP (GlobalTheory.SeeConjChar.hT X h y (Matrix.mulVec N.val (w j))) = ∑ l, GlobalTheory.SeeConjChar.resT PP (GlobalTheory.SeeConjChar.hT X h y (w l)) * (redFn β PP N).val l j := by
   first | exact @GlobalTheory.SeeConjChar.resT_hT_mulVec_stab | exact GlobalTheory.SeeConjChar.resT_hT_mulVec_stab | (intros; apply GlobalTheory.SeeConjChar.resT_hT_mulVec_stab <;> assumption)

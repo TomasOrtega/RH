@@ -19,8 +19,10 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoALoc.isoA_locCo_iso | exact GlobalTheory.IsoALoc.isoA_locCo_iso | (intros; apply GlobalTheory.IsoALoc.isoA_locCo_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoALoc.isoA_locCo_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermSkewAdaptedLocalModel.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.herm_skew_adapted_local_model : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (W : Spc F E d) (W₁ : Spc F E d₁)

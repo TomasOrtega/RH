@@ -30,8 +30,10 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LinCoords.coords | exact GlobalTheory.LinCoords.coords | (intros; apply GlobalTheory.LinCoords.coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LinCoords.coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnipotentMapsForThetaTriple.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.exists_unipotent_maps_for_theta_triple : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

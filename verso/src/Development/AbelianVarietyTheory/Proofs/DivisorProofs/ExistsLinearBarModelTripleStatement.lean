@@ -8,8 +8,10 @@ open MeasureTheory Filter NumberField IsDedekindDomain Formalism.MainNotions.Glo
 open scoped Matrix GlobalTheory.VacAny
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LinBarAt.exists_isLinBar_v₁ | exact GlobalTheory.LinBarAt.exists_isLinBar_v₁ | (intros; apply GlobalTheory.LinBarAt.exists_isLinBar_v₁ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LinBarAt.exists_isLinBar_v₁` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLinearBarModelTriple.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.exists_linear_bar_model_triple : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a a' : ℕ}
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

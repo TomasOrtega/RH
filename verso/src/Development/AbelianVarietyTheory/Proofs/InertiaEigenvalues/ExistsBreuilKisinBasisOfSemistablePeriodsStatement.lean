@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKLim.exists_pre_of_wseed | exact GlobalTheory.BKLim.exists_pre_of_wseed | (intros; apply GlobalTheory.BKLim.exists_pre_of_wseed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKLim.exists_pre_of_wseed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsBreuilKisinBasisOfSemistablePeriods.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_breuilKisinBasis_of_semistablePeriods : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])), (∀ g, IsUnit (ρ g)) → ∀ (s : WSeed bk d ρ τ), ∃ (N : ℕ) (F : Pre bk N d ρ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (Z : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)), Y.map (inclW l) = inclW l τ ^ s.N • F.T ∧ IsUnit Z ∧ ∀ i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev i → s.W * Z.map i = Y.map bk.iA := by
   first | exact @GlobalTheory.BKLim.exists_pre_of_wseed | exact GlobalTheory.BKLim.exists_pre_of_wseed | (intros; apply GlobalTheory.BKLim.exists_pre_of_wseed <;> assumption)

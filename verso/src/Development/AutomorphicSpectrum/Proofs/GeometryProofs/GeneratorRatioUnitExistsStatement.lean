@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1)
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso | exact GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGeneratorRatioUnitExists.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.generator_ratio_unit_exists : ∀ (X Y F : Scheme.{0}) (L : LB X) (M : LB Y) (f : F ⟶ X) (g : F ⟶ Y), L.IsLB → M.IsLB → ∀ (w : LB.Iso (L.pull f) (M.pull g)), w.IsGen → ∀ (Y' : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y' ⟶ F)) (φL : K → (Y' ⟶ X)) (φM : K → (Y' ⟶ Y)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φL ε)) (b : LB.Gen (LB.LinComb M φM ε)), (∀ i, φ i ≫ f = φL i) → (∀ i, φ i ≫ g = φM i) → c.IsGen → b.IsGen → ∃ u : Γ(Y', ⊤)ˣ, Tr w φ φL φM ε c b u := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso | exact GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.exists_ratio_iso <;> assumption)

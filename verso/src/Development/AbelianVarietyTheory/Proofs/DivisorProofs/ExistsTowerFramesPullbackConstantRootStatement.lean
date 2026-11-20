@@ -15,8 +15,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep.BaseTerms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.exists_frPull_tower | exact GlobalTheory.GSep.exists_frPull_tower | (intros; apply GlobalTheory.GSep.exists_frPull_tower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.exists_frPull_tower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTowerFramesPullbackConstantRoot.lean&line=183#L183)
 -/
 theorem _root_.GlobalTheory.T.exists_tower_frames_pullback_constant_root : ∀ {I : Type} (X₁ : GlobalTheory.GSep.GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (𝔗 : GlobalTheory.GSep.Tower X₁ act), ∃ k : X₁.S.Gam → ℕ,
     ∀ (z₁ : X₁.M.Z) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ →

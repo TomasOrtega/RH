@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSubquotientOfEquiv
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.JacStages
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JacStagesExact.isSubquotient_relJacD | exact GlobalTheory.JacStagesExact.isSubquotient_relJacD | (intros; apply GlobalTheory.JacStagesExact.isSubquotient_relJacD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JacStagesExact.isSubquotient_relJacD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsSubquotientRelativeJacquetBlockLevi.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.isSubquotient_relativeJacquet_blockLevi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : ℕ) (d : Fin s → ℕ) (t : Fin s → ℕ) (d' : ∀ a, Fin (t a) → ℕ)

@@ -15,8 +15,10 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNo
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unitTorus_unit | exact GlobalTheory.unitTorus_unit | (intros; apply GlobalTheory.unitTorus_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unitTorus_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsUnitaryScalarBlendSelfAdjointIdempotent.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_scalarBlend_selfAdjoint_idempotent : ∀ (I : AutInst) (P : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (c : I.E ⊗[I.F] Af I.F), (∀ y, P *ᵥ (P *ᵥ y) = P *ᵥ y) → (∀ x y, hA I (P *ᵥ x) y = hA I x (P *ᵥ y)) → c * sigA I c = 1 → ∃ h : I.Gf, I.fmat h = c • 1 + (1 - c) • P ∧ I.fmat h⁻¹ = sigA I c • 1 + (1 - sigA I c) • P := by
   first | exact @GlobalTheory.unitTorus_unit | exact GlobalTheory.unitTorus_unit | (intros; apply GlobalTheory.unitTorus_unit <;> assumption)

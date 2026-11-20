@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchFamilyCont.continuous_family | exact GlobalTheory.ArchFamilyCont.continuous_family | (intros; apply GlobalTheory.ArchFamilyCont.continuous_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchFamilyCont.continuous_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FArchimedeanOneParameterFamilyContinuous.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.archimedeanOneParameterFamily_continuous : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

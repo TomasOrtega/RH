@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat | exact GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat | (intros; apply GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFactorizableSiegelWeilFiniteSet.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.factorizable_siegel_weil_finite_set : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) (φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (A : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → (∀ v, IsCompact (A v) ∧ IsOpen (A v)) → (∀ v, v ∉ S → A v = latV b v) → GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A) := by
   first | exact @GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat | exact GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat | (intros; apply GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat <;> assumption)

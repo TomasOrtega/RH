@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WSum.Sep.exists_separating | exact GlobalTheory.CompanionTheory.WSum.Sep.exists_separating | (intros; apply GlobalTheory.CompanionTheory.WSum.Sep.exists_separating <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WSum.Sep.exists_separating` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FInjectivePairingFiniteFamily.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.injective_pairing_finite_family : ∀ (D : D7) (r : ℕ) (θ : InfFam D), IsInfFam θ → ∀ α : D.host.F, α ≠ 0 → ∃ (d : ℕ) (a : Fin d → HermE D r), Function.Injective (fun (β : HermE D r) (k : Fin d) => pairF θ α (a k) β) := by
   first | exact @GlobalTheory.CompanionTheory.WSum.Sep.exists_separating | exact GlobalTheory.CompanionTheory.WSum.Sep.exists_separating | (intros; apply GlobalTheory.CompanionTheory.WSum.Sep.exists_separating <;> assumption)

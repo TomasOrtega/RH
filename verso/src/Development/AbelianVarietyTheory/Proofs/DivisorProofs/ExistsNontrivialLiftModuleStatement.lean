@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockQuot.exists_lift | exact GlobalTheory.FockQuot.exists_lift | (intros; apply GlobalTheory.FockQuot.exists_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockQuot.exists_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNontrivialLiftModule.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.exists_nontrivial_lift_module : ∀ (P Q R S : ℕ) (x t : ℚ), GlobalTheory.RealLift.HasForm P Q R S x → ∃ (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr ∧ Nontrivial M.V := by
   first | exact @GlobalTheory.FockQuot.exists_lift | exact GlobalTheory.FockQuot.exists_lift | (intros; apply GlobalTheory.FockQuot.exists_lift <;> assumption)

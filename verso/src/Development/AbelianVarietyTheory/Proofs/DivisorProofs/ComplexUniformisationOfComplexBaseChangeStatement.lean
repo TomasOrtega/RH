@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PELU.unif_of_isBC | exact GlobalTheory.PELU.unif_of_isBC | (intros; apply GlobalTheory.PELU.unif_of_isBC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PELU.unif_of_isBC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FComplexUniformisationOfComplexBaseChange.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.complexUniformisation_of_complexBaseChange : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (R : Type) [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop) (F' : Fam ℂ O Λ g), IsBC F' F σ → Nonempty (Unif F' (RingHom.id ℂ) ρ N C) → Nonempty (Unif F σ ρ N C) := by
   first | exact @GlobalTheory.PELU.unif_of_isBC | exact GlobalTheory.PELU.unif_of_isBC | (intros; apply GlobalTheory.PELU.unif_of_isBC <;> assumption)

@@ -9,8 +9,10 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevRepZApply
 open ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq | exact GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq | (intros; apply GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardH1LevelRepFormula.lean&line=210#L210)
 -/
 theorem _root_.GlobalTheory.T.card_H1_level_rep_formula : ∀ {O : Type} [CommRing O] {G : Type} [Group G] [TopologicalSpace G]
     {M : Type} [AddCommGroup M] [Module O M] (ρ : Representation O G M) (ϖ : O) (n : ℕ),

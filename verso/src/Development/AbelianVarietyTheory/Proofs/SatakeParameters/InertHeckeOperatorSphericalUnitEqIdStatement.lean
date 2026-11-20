@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open Formalism.UG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneAct.heckeFunI_unit | exact GlobalTheory.OneAct.heckeFunI_unit | (intros; apply GlobalTheory.OneAct.heckeFunI_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneAct.heckeFunI_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FInertHeckeOperatorSphericalUnitEqId.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.inertHeckeOperator_sphericalUnit_eq_id : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (f : GAf L n → W), (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv (dosetInd ℂ (KU Dv.σw n) 1) f = f := by
   first | exact @GlobalTheory.OneAct.heckeFunI_unit | exact GlobalTheory.OneAct.heckeFunI_unit | (intros; apply GlobalTheory.OneAct.heckeFunI_unit <;> assumption)

@@ -7,8 +7,10 @@ import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
 import Development.AbelianVarietyTheory.Counterexamples.RotationExamples.MeasureFailsForLargeConstant
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovolCore.lcv_div_le_neg_slope_sq | exact GlobalTheory.CovolCore.lcv_div_le_neg_slope_sq | (intros; apply GlobalTheory.CovolCore.lcv_div_le_neg_slope_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovolCore.lcv_div_le_neg_slope_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCovolumePerRankLeNegSlopeScaled.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.covolumePerRank_le_neg_slope_scaled : ∀ (K V : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (N : (K →+* ℂ) → V → ℝ), GlobalTheory.AllWt.HasGram N →

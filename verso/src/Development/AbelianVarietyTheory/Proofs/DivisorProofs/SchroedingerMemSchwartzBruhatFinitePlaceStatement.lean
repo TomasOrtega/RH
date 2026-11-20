@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrSBFin.schr_mem_SB | exact GlobalTheory.SchrSBFin.schr_mem_SB | (intros; apply GlobalTheory.SchrSBFin.schr_mem_SB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrSBFin.schr_mem_SB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchroedingerMemSchwartzBruhatFinitePlace.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.schroedinger_mem_schwartzBruhat_finitePlace : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (ψ : AddChar (Fv F v) ℂ),
     Continuous ψ → ∀ {κ : Type} [Fintype κ] (w : (κ → Fv F v) × (κ → Fv F v)) (φ : (κ → Fv F v) → ℂ),

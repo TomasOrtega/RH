@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocForm.locForm | exact GlobalTheory.LocForm.locForm | (intros; apply GlobalTheory.LocForm.locForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocForm.locForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalSectionOrderFactorisation.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.local_section_order_factorisation : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsArithVar p 1 → ∀ (σ : k →+* ℂ) (c : AlgChart p σ 1) (W : X.Opens) (f : Γ(X, W)), f ≠ 0 → ∀ (y : CxPts p σ), y ∈ c.e.source → ∀ hW : y.pt ∈ W, ∃ u : ReciprocityTheory.L2DbarEstimates.V 1 → ℂ, (∀ᶠ v in 𝓝 (c.e y), DifferentiableAt ℂ u v) ∧ u (c.e y) ≠ 0 ∧ ∀ᶠ v in 𝓝 (c.e y), ev p σ W f (c.e.symm v) = u v * (v 0 - c.e y 0) ^ germOrd f hW := by
   first | exact @GlobalTheory.LocForm.locForm | exact GlobalTheory.LocForm.locForm | (intros; apply GlobalTheory.LocForm.locForm <;> assumption)

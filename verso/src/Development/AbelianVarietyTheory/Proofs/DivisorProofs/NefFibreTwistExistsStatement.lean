@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleTwistNef.exists_nefFib_twists | exact GlobalTheory.AmpleTwistNef.exists_nefFib_twists | (intros; apply GlobalTheory.AmpleTwistNef.exists_nefFib_twists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleTwistNef.exists_nefFib_twists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNefFibreTwistExists.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.nef_fibre_twist_exists : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (p : X ⟶ Sp (𝓞 F)), IsProjOver p → ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p), ∃ H : HermLB p, ∀ (X' : Scheme.{0}) (q : X' ⟶ Sp (𝓞 F)), IsProjOver q → ∀ (π : X' ⟶ X) (hπ : π ≫ p = q), NefFib (H.pull π hπ) ∧ ∀ i, NefFib ((H.pull π hπ).tens ((L i).pull π hπ)) ∧ NefFib ((H.pull π hπ).tens ((L i).pull π hπ).dual) := by
   first | exact @GlobalTheory.AmpleTwistNef.exists_nefFib_twists | exact GlobalTheory.AmpleTwistNef.exists_nefFib_twists | (intros; apply GlobalTheory.AmpleTwistNef.exists_nefFib_twists <;> assumption)

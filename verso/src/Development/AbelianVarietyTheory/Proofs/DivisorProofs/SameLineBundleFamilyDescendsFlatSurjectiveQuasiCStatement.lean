@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.same_of_fpqc | exact GlobalTheory.DualCon.same_of_fpqc | (intros; apply GlobalTheory.DualCon.same_of_fpqc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.same_of_fpqc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSameLineBundleFamilyDescendsFlatSurjectiveQuasiC.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.sameLineBundleFamily_descends_flat_surjective_quasiCompact : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (T U Y Y' : Over S) (N : LB (A ⊗ T).left) (M : LB (A ⊗ U).left), Fam A N → Fam A M → ∀ (y : Y ⟶ T) (u : Y ⟶ U) (c : Y' ⟶ Y), Flat c.left → Surjective c.left → QuasiCompact c.left → Same A N M (c ≫ y) (c ≫ u) → Same A N M y u := by
   first | exact @GlobalTheory.DualCon.same_of_fpqc | exact GlobalTheory.DualCon.same_of_fpqc | (intros; apply GlobalTheory.DualCon.same_of_fpqc <;> assumption)

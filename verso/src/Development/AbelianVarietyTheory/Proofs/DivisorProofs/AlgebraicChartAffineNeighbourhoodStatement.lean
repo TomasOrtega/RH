@@ -19,8 +19,10 @@ open GlobalTheory.HodgeLocGeo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Mean4O GlobalTheory.Mean4 ReciprocityTheory.AnForm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory GlobalTheory.CxPts
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.exists_frames_analytic_chart | exact GlobalTheory.HodgeLocGeo.exists_frames_analytic_chart | (intros; apply GlobalTheory.HodgeLocGeo.exists_frames_analytic_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeLocGeo.exists_frames_analytic_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraicChartAffineNeighbourhood.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.algebraic_chart_affine_neighbourhood : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : FlagCpt Z e) (σ : F →+* ℂ) (d : ℕ) (c' : AlgChart Y.Y.str σ d) (p0 : Y.Y.pts σ), p0 ∈ c'.finChart.source →
     ∃ (U : Y.Y.X.Opens) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1))

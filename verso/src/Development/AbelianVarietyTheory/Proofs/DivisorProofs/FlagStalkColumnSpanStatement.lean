@@ -10,8 +10,10 @@ open GlobalTheory.QCoh (freeModule)
 open GlobalTheory.Twist (resM)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan | exact GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan | (intros; apply GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagStalkColumnSpan.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.flag_stalk_column_span : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : ℕ) (y : Fl ι N) (g : ι → GL (Fin N) ((Fl ι N).presheaf.stalk y)), flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g = (Fl ι N).fromSpecStalk y → stalkStep ι N τ l y = colSpan (g τ).1 l := by
   first | exact @GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan | exact GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan | (intros; apply GlobalTheory.FlagZ.Univ.stalkStep_eq_colSpan <;> assumption)

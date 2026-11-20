@@ -15,8 +15,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BlockForms.growth_comp_blockEmb | exact GlobalTheory.BlockForms.growth_comp_blockEmb | (intros; apply GlobalTheory.BlockForms.growth_comp_blockEmb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BlockForms.growth_comp_blockEmb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspBlockConstantTermVanishing.lean&line=361#L361)
 -/
 theorem _root_.GlobalTheory.T.cusp_block_constant_term_vanishing : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

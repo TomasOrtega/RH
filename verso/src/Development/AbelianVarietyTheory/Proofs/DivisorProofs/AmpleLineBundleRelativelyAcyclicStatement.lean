@@ -12,8 +12,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple | exact GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple | (intros; apply GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAmpleLineBundleRelativelyAcyclic.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.ample_line_bundle_relatively_acyclic : GlobalTheory.Published.AmpleVanishing → ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → IsRelAcyclic (A.hom ≫ p) A.hom L := by
   first | exact @GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple | exact GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple | (intros; apply GlobalTheory.RelAcyclicAmple.isRelAcyclic_of_relAmple <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
 open GlobalTheory.PRep GlobalTheory.SmGL Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmGL.RowOneCell.cell_equiv | exact GlobalTheory.SmGL.RowOneCell.cell_equiv | (intros; apply GlobalTheory.SmGL.RowOneCell.cell_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmGL.RowOneCell.cell_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellFunctorTransposedTwoBlock.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.cell_functor_transposed_two_block : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ)

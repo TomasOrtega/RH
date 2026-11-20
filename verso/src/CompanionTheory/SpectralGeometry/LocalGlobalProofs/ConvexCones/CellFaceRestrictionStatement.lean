@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRe
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.CompanionTheory.Ar.Fan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut | exact GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut | (intros; apply GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FConvexCones%2FCellFaceRestriction.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.cell_face_restriction : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), IsPolyFan bar q ψ → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → Dominates bar X → ∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ v → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut v s h → IsCell bar ψ (fun j => v (s j)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut | exact GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut | (intros; apply GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut <;> assumption)

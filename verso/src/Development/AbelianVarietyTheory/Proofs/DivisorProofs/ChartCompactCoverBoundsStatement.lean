@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open AlgebraicGeometry CategoryTheory MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.L2DbarEstimates GlobalTheory GlobalTheory.ShFam GlobalTheory.ChernReg GlobalTheory.CxPts GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverCharts.exists_charts_margin | exact GlobalTheory.CoverCharts.exists_charts_margin | (intros; apply GlobalTheory.CoverCharts.exists_charts_margin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverCharts.exists_charts_margin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChartCompactCoverBounds.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.chart_compact_cover_bounds : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P →
     ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ), ∃ (n : ℕ) (ch : Fin n → AlgChart (O.var c).str σ (O.var c).dim)

@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint | exact GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint | (intros; apply GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAppellHumbertHomCompatible.lean&line=291#L291)
 -/
 theorem _root_.GlobalTheory.T.appell_humbert_hom_compatible : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M₁ M₂ : LB A.left) (u₁ : HolUnif A M₁ g) (u₂ : HolUnif A M₂ g) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)

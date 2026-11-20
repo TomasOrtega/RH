@@ -18,8 +18,10 @@ open GlobalTheory.Poinc.Sep
 
 open GlobalTheory.Poinc.Tors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.FormalMul.b_mul | exact GlobalTheory.Poinc.Sep.FormalMul.b_mul | (intros; apply GlobalTheory.Poinc.Sep.FormalMul.b_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.FormalMul.b_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFormalPointsAbelianPartsMultiply.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.formal_points_abelian_parts_multiply : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G), ∀ (h h' : (𝟙_ (Over (Sp V))) ⟶ G) (g g' g'' : GtPt D.toPre (𝟙_ (Over (Sp V)))), GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre h g → GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre h' g' → GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre (h * h') g'' → g''.b = g.b * g'.b := by
   first | exact @GlobalTheory.Poinc.Sep.FormalMul.b_mul | exact GlobalTheory.Poinc.Sep.FormalMul.b_mul | (intros; apply GlobalTheory.Poinc.Sep.FormalMul.b_mul <;> assumption)

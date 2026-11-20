@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange | exact GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange | (intros; apply GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemberBaseChangeInjectiveLocalCompleteNormal.lean&line=234#L234)
 -/
 theorem _root_.GlobalTheory.T.member_baseChange_injective_local_complete_normal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (V' : Type) [CommRing V'] [IsDomain V'] [IsLocalRing V'] (j : V →+* V'), IsCN V' → Function.Injective j → IsLocalHom j → ∃ (m' : ℕ) (t' : Fin m' → V') (δ' : Fin m' → LinearMap.BilinForm ℤ X) (𝔫 : UMem X₁ z₁ act V' (j.comp ev) X t' δ'), ∀ a mu, 𝔪.YY a mu → 𝔫.YY a mu := by
   first | exact @GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange | exact GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange | (intros; apply GlobalTheory.Poinc.Sep.MemBC.uMem_baseChange <;> assumption)

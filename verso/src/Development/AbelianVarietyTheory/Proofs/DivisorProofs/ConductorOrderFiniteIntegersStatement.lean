@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatModel.finite_int_orderC | exact GlobalTheory.LatModel.finite_int_orderC | (intros; apply GlobalTheory.LatModel.finite_int_orderC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatModel.finite_int_orderC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConductorOrderFiniteIntegers.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.conductor_order_finite_integers : ∀ (E : Type) [Field E] [NumberField E] (c : Ideal (OF E)), Module.Finite ℤ (orderC c) := by
   first | exact @GlobalTheory.LatModel.finite_int_orderC | exact GlobalTheory.LatModel.finite_int_orderC | (intros; apply GlobalTheory.LatModel.finite_int_orderC <;> assumption)

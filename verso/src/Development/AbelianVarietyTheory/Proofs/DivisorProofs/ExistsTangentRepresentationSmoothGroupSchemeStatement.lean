@@ -10,8 +10,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh GlobalTheory.AbTan
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TanRepr.exists_tanRep | exact GlobalTheory.TanRepr.exists_tanRep | (intros; apply GlobalTheory.TanRepr.exists_tanRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TanRepr.exists_tanRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTangentRepresentationSmoothGroupScheme.lean&line=211#L211)
 -/
 theorem _root_.GlobalTheory.T.exists_tangentRepresentation_smooth_groupScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], Smooth A.hom → ∃ (W : Type) (_ : AddCommGroup W) (_ : Module R W), Module.Finite R W ∧ Module.Projective R W ∧ Nonempty (TanRep A W) := by
   first | exact @GlobalTheory.TanRepr.exists_tanRep | exact GlobalTheory.TanRepr.exists_tanRep | (intros; apply GlobalTheory.TanRepr.exists_tanRep <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_finite_free_chart_away_of_atPrime | exact GlobalTheory.exists_finite_free_chart_away_of_atPrime | (intros; apply GlobalTheory.exists_finite_free_chart_away_of_atPrime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_finite_free_chart_away_of_atPrime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionPointOpenLocalization.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.finite_free_local_chart : ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (T : Scheme.{0}) (π : T ⟶ Sp R)
     [LocallyOfFinitePresentation π] [QuasiCompact π] [QuasiSeparated π]

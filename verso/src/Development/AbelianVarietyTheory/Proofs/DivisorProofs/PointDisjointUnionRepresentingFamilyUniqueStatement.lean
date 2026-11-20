@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover | exact GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover | (intros; apply GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointDisjointUnionRepresentingFamilyUnique.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.point_disjointUnion_representingFamily_unique : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] {κ : Type} [Finite κ] (X : Over S) (V : κ → X.left.Opens), (⨆ i, V i = ⊤) → (Pairwise fun i i' => Disjoint (V i) (V i')) → ∀ (Bt : Over S) (B : κ → Over S) (j : ∀ i, B i ⟶ Bt) [∀ i, IsOpenImmersion (j i).left], (⨆ i, (j i).left.opensRange = ⊤) → (Pairwise fun i i' => Disjoint (j i).left.opensRange (j i').left.opensRange) → ∀ (b : ∀ i, B i ⟶ Over.mk ((V i).ι ≫ X.hom)) (bt : Bt ⟶ X), (∀ i, j i ≫ bt = b i ≫ Over.homMk (V i).ι) → ∀ (P : ∀ i, LB (A ⊗ B i).left) (Pt : LB (A ⊗ Bt).left), (∀ i, Rep A (b i) (P i)) → Pt.IsLB → (∀ i, LBIso (Pt.pull (A ◁ j i).left) (P i)) → ∀ (T : Over S) (x y : T ⟶ Bt), x ≫ bt = y ≫ bt → Same A Pt Pt x y → x = y := by
   first | exact @GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover | exact GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover | (intros; apply GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover <;> assumption)

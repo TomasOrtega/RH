@@ -14,8 +14,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.IwaAd.iwaRedA | exact GlobalTheory.CompanionTheory.IwaAd.iwaRedA | (intros; apply GlobalTheory.CompanionTheory.IwaAd.iwaRedA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.IwaAd.iwaRedA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWhittakerNondegenerateOfIwasawa.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.whittaker_nondegenerate_of_iwasawa : GlobalTheory.CompanionTheory.IwaAd.WhitKA → PositivityTheory.PfSWUS.WhitNDg := by
   first | exact @GlobalTheory.CompanionTheory.IwaAd.iwaRedA | exact GlobalTheory.CompanionTheory.IwaAd.iwaRedA | (intros; apply GlobalTheory.CompanionTheory.IwaAd.iwaRedA <;> assumption)

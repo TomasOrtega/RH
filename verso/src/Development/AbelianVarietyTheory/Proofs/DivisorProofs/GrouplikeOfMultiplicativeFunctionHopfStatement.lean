@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HopfPoints.exists_element_eval_eq_character | exact GlobalTheory.HopfPoints.exists_element_eval_eq_character | (intros; apply GlobalTheory.HopfPoints.exists_element_eval_eq_character <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HopfPoints.exists_element_eval_eq_character` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGrouplikeOfMultiplicativeFunctionHopf.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_element_of_multiplicative_function_hopf : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (χ : (A →ₐ[R] K) → K), (∀ x y z : A →ₐ[R] K, toConv z = toConv x * toConv y → χ z = χ x * χ y) → (∀ x, χ x ≠ 0) → ∃ a : A, ∀ x : A →ₐ[R] K, x a = χ x := by
   first | exact @GlobalTheory.HopfPoints.exists_element_eval_eq_character | exact GlobalTheory.HopfPoints.exists_element_eval_eq_character | (intros; apply GlobalTheory.HopfPoints.exists_element_eval_eq_character <;> assumption)

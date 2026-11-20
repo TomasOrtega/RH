@@ -9,8 +9,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacRealPf.vacReal | exact GlobalTheory.VacRealPf.vacReal | (intros; apply GlobalTheory.VacRealPf.vacReal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacRealPf.vacReal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnfoldedVacuaAreRealDatumLargeDepth.lean&line=179#L179)
 -/
 theorem _root_.GlobalTheory.T.unfoldedVacuaAreRealDatum_largeDepth : Big fun ch => VacReal ch := by
   first | exact @GlobalTheory.VacRealPf.vacReal | exact GlobalTheory.VacRealPf.vacReal | (intros; apply GlobalTheory.VacRealPf.vacReal <;> assumption)

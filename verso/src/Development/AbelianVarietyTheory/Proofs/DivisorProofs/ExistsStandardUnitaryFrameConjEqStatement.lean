@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.TestLat GlobalTheory.SumSize GlobalTheory.RowClaim GlobalTheory.ClassCount
 open GlobalTheory.FrameTransport
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameTransport.exists_frConj_eq | exact GlobalTheory.FrameTransport.exists_frConj_eq | (intros; apply GlobalTheory.FrameTransport.exists_frConj_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameTransport.exists_frConj_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsStandardUnitaryFrameConjEq.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.exists_standardUnitary_frameConj_eq : ∀ {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E), Formalism.UG.cT (↑D.sp.cm.sig) (fr : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (fr : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = 1 → ∀ M : GL (Fin V.rank) (Lev.EAf D), M ∈ UA D.sp.cm V.gram → ∃ h : StandardLatticesGL3.GA D V.rank, GlobalTheory.FrameTransport.frConj fr h.1 = M := by
   first | exact @GlobalTheory.FrameTransport.exists_frConj_eq | exact GlobalTheory.FrameTransport.exists_frConj_eq | (intros; apply GlobalTheory.FrameTransport.exists_frConj_eq <;> assumption)

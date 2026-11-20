@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilAdm.realcont | exact GlobalTheory.WeilAdm.realcont | (intros; apply GlobalTheory.WeilAdm.realcont <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilAdm.realcont` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchSchwartzL2BoundedIntertwinerContinuous.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.archSchwartz_L2Bounded_intertwiner_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ]
     (L : ((κ → mixedEmbedding.mixedSpace D.host.F) × (κ → mixedEmbedding.mixedSpace D.host.F)) ≃ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace D.host.F) × (κ → mixedEmbedding.mixedSpace D.host.F)))

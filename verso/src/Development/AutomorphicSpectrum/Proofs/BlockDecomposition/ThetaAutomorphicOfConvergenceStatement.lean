@@ -11,8 +11,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto | exact GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto | (intros; apply GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FThetaAutomorphicOfConvergence.lean&line=302#L302)
 -/
 theorem _root_.GlobalTheory.T.theta_automorphic_of_convergence : GlobalTheory.Published.WeilThetaConvergence → PositivityTheory.PfSWUS.ThetaAuto := by
   first | exact @GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto | exact GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto | (intros; apply GlobalTheory.CompanionTheory.ThetaAutoPf.thetaAuto <;> assumption)

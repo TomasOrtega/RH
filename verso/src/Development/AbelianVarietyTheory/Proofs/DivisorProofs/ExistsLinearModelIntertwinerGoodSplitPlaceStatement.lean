@@ -21,8 +21,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LinBarExist.exists_isLinBar | exact GlobalTheory.LinBarExist.exists_isLinBar | (intros; apply GlobalTheory.LinBarExist.exists_isLinBar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LinBarExist.exists_isLinBar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLinearModelIntertwinerGoodSplitPlace.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_linearModel_intertwiner_goodSplitPlace : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

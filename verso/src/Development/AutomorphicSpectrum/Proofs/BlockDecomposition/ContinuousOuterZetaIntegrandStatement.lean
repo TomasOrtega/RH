@@ -7,8 +7,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Unfolding.AqCont.continuous_Aq | exact GlobalTheory.CompanionTheory.GL2Unfolding.AqCont.continuous_Aq | (intros; apply GlobalTheory.CompanionTheory.GL2Unfolding.AqCont.continuous_Aq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2Unfolding.AqCont.continuous_Aq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FContinuousOuterZetaIntegrand.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.continuous_outer_zeta_integrand : ForS fun F _ _ _ _ _ _ ψ => ∀ (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ),
   Continuous W₀ → Continuous W' → Continuous (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2) →

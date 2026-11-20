@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.BasicNotions Formalism.DegreeFormula GlobalTheory GlobalTheory.ArInt GlobalTheory.VB GlobalTheory.CovTest GlobalTheory.FlagPoly GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TwoLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoLat.induces_lineAdl_neg | exact GlobalTheory.TwoLat.induces_lineAdl_neg | (intros; apply GlobalTheory.TwoLat.induces_lineAdl_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoLat.induces_lineAdl_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoverInducesDualLineBundle.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.cover_induces_dual_line_bundle : ∀ (D : D7) (O : Setup D), O.Core → ∀ (R : ℝ) (c : O.s.Comp) (V : Cover (O.var c)) (st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ) (L : HermLB V.p), V.Induces (lineAdl O R c st 1) L 1 → V.Induces (lineAdl O R c st (-1)) L.dual 1 := by
   first | exact @GlobalTheory.TwoLat.induces_lineAdl_neg | exact GlobalTheory.TwoLat.induces_lineAdl_neg | (intros; apply GlobalTheory.TwoLat.induces_lineAdl_neg <;> assumption)

@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ArchDecay.piRc_decay | exact GlobalTheory.CompanionTheory.ArchDecay.piRc_decay | (intros; apply GlobalTheory.CompanionTheory.ArchDecay.piRc_decay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ArchDecay.piRc_decay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRealWeilActionLocalBoundContinuous.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.real_weil_action_local_bound_continuous : ∀ (n : ℤ) (t : ℝ) (g₀ : GL (Fin 2) ℝ), 0 < (g₀.val).det → ∃ W ∈ nhds g₀, ∃ A : ℝ,
   (∀ g ∈ W, ∀ x : ℂ, ‖piRc (chC n (Complex.I * t)) g (PhiInf n) x‖ ≤ A * ((1 + ‖x‖) ^ 4)⁻¹) ∧

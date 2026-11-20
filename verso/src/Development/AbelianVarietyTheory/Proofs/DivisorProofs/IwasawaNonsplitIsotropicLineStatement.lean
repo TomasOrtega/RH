@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertLineTrans.exists_stab_line | exact GlobalTheory.InertLineTrans.exists_stab_line | (intros; apply GlobalTheory.InertLineTrans.exists_stab_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertLineTrans.exists_stab_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIwasawaNonsplitIsotropicLine.lean&line=227#L227)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_nonsplit_isotropic_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →

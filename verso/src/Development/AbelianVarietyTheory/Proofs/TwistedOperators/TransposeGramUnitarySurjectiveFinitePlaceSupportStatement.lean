@@ -17,8 +17,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.KapOnto.kapX_onto | exact GlobalTheory.SquareAgree.KapOnto.kapX_onto | (intros; apply GlobalTheory.SquareAgree.KapOnto.kapX_onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.KapOnto.kapX_onto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTransposeGramUnitarySurjectiveFinitePlaceSupport.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.transposeGramUnitary_surjective_finitePlaceSupported : ∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d)
     (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F),

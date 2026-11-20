@@ -33,8 +33,10 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL | exact GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL | (intros; apply GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFinitePartEqIntegralCombinationOfMemCompletedLat.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.finitePart_eq_integralCombination_of_mem_completedLattice : ∀ {D : D7} {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Y : Fin n → Formalism.L2.Theta.AE D),
     (fun i => Formalism.IndefR.Datum.toEAf D (Y i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) B →

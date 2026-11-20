@@ -8,8 +8,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.XiBound.main | exact GlobalTheory.XiBound.main | (intros; apply GlobalTheory.XiBound.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.XiBound.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUniversalSeriesCoeffBoundedInSupOfTwistSeriesSid.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.universalSeriesCoeff_boundedInSup_of_twistSeriesSideData : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV) → XiBdd Y.Z.rd := by
   first | exact @GlobalTheory.XiBound.main | exact GlobalTheory.XiBound.main | (intros; apply GlobalTheory.XiBound.main <;> assumption)

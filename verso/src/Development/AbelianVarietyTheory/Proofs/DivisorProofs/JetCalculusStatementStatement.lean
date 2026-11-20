@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 open GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.LatJet.An
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JetCalcPf.jetCalc | exact GlobalTheory.JetCalcPf.jetCalc | (intros; apply GlobalTheory.JetCalcPf.jetCalc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JetCalcPf.jetCalc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJetCalculusStatement.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.jet_calculus_statement : JetCalc := by
   first | exact @GlobalTheory.JetCalcPf.jetCalc | exact GlobalTheory.JetCalcPf.jetCalc | (intros; apply GlobalTheory.JetCalcPf.jetCalc <;> assumption)

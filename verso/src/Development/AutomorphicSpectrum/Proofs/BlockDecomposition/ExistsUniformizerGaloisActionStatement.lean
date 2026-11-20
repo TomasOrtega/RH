@@ -19,8 +19,10 @@ open ValuativeRel GroundTheory.LocalField GroundTheory.LocalField.FormalGroup
 open scoped GroundTheory.PAdicHodge.CyclNorms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTHodge.UnitAct.main | exact GlobalTheory.CompanionTheory.LTHodge.UnitAct.main | (intros; apply GlobalTheory.CompanionTheory.LTHodge.UnitAct.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTHodge.UnitAct.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsUniformizerGaloisAction.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformizer_galois_action : ∀ {l : ℕ} [Fact l.Prime] {K : FinExt l} {χ : ↥(GK K) →* (↥K.1)ˣ}, IsLTChar K χ →
     ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]

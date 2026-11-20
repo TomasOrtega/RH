@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham | exact GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham | (intros; apply GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRelativeDimensionAbelianTorsionTower.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_relativeDimension_abelian_torsionTower : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R], IsNilpotent (p : R) → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ G : PDivGroup p R, G.TorsionTower A → ∃ g, SmoothOfRelativeDimension g A.hom := by
   first | exact @GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham | exact GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham | (intros; apply GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham <;> assumption)

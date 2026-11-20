@@ -12,8 +12,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Eq8
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Eq8.endChar_endU | exact GlobalTheory.Poinc.Eq8.endChar_endU | (intros; apply GlobalTheory.Poinc.Eq8.endChar_endU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Eq8.endChar_endU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisationEndomorphismClosedFibreTorusCharac.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_endomorphism_closedFibreTorus_characterMap : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D : DegData V₁ (maximalIdeal V₁)) (P : PolAV (Sp (FractionRing V₁))) (G : Over (Sp V₁)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V₁) D P G) (E : EndU U.toUnifPre), EndChar U E.aG E.h := by
   first | exact @GlobalTheory.Poinc.Eq8.endChar_endU | exact GlobalTheory.Poinc.Eq8.endChar_endU | (intros; apply GlobalTheory.Poinc.Eq8.endChar_endU <;> assumption)

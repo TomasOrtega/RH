@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.XiTopEqProd
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.MainNotions Formalism.L2.Ker GlobalTheory.TwU GlobalTheory.TwV GlobalTheory.TwTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwTopQ.locq_twist | exact GlobalTheory.TwTopQ.locq_twist | (intros; apply GlobalTheory.TwTopQ.locq_twist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwTopQ.locq_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FColumnLastStepLocalFactorTwistPrimeLaw.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.columnLastStep_localFactor_twist_prime_law : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 + 1 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) (Nat.le_of_succ_le hi)).Ch) (β' : (St (t.m2 + 1 + 1) hi).Ch)

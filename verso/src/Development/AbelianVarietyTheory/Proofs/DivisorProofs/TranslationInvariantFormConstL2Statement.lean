@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationInvarian
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant | exact GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant | (intros; apply GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTranslationInvariantFormConstL2.lean&line=259#L259)
 -/
 theorem _root_.GlobalTheory.T.translation_invariant_form_const_l2 : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (μ : @MeasureTheory.Measure V (borel V)), @MeasureTheory.Measure.IsAddHaarMeasure V _ _ (borel V) μ →

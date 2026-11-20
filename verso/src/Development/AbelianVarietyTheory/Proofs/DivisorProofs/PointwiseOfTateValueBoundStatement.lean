@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPairDetCovec
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.ptSt_of_steps | exact GlobalTheory.FlatModel.ptSt_of_steps | (intros; apply GlobalTheory.FlatModel.ptSt_of_steps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.ptSt_of_steps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointwiseOfTateValueBound.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.pointwise_of_tate_value_bound : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt → BoundSt → PtSt := by
   first | exact @GlobalTheory.FlatModel.ptSt_of_steps | exact GlobalTheory.FlatModel.ptSt_of_steps | (intros; apply GlobalTheory.FlatModel.ptSt_of_steps <;> assumption)

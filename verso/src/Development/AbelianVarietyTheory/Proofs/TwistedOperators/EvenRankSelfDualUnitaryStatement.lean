@@ -20,8 +20,10 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open GlobalTheory.RatMoveJets
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatMoveIop.iop_pull_rat | exact GlobalTheory.RatMoveIop.iop_pull_rat | (intros; apply GlobalTheory.RatMoveIop.iop_pull_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatMoveIop.iop_pull_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEvenRankSelfDualUnitary.lean&line=290#L290)
 -/
 theorem _root_.GlobalTheory.T.even_rank_self_dual_unitary : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {δ t0 : ℂ}, Crv D D.host.ccK δ →
     GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0 → ∀ {N N' : ℕ} {e0 : VC D N N' → ℂ}, oddE0 D D.host.ccK δ t0 N N' e0 → Even (N * N') →

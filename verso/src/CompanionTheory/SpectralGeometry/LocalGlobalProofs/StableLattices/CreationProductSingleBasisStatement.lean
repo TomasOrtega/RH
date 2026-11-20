@@ -8,8 +8,10 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Chains.prod_cre_single | exact GlobalTheory.CompanionTheory.Chains.prod_cre_single | (intros; apply GlobalTheory.CompanionTheory.Chains.prod_cre_single <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Chains.prod_cre_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCreationProductSingleBasis.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.creation_product_single_basis : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (l : List (Pos n)) (S : Finset (Pos n)) (w : V),
     l.Nodup → (∀ i ∈ l, i ∉ S) → ∃ c : ℂ, c ≠ 0 ∧

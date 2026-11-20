@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power | exact GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power | (intros; apply GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGradedCoverVanishingInduction.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.graded_cover_vanishing_induction : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF R C) (Fil : ℤ → IdF Φ.A),
     IsFil Φ Fil → ∀ (s n : ℕ) (W : Fin (n + 2) → ObjectProperty C), (∀ T, (∃ α, W α T) → (Fil s).S T = ⊥) →

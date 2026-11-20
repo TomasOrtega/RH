@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_unit_normalisation | exact GlobalTheory.Mum.exists_unit_normalisation | (intros; apply GlobalTheory.Mum.exists_unit_normalisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_unit_normalisation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOriginNormalisationUnitAtTraits.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_origin_normalisation_unit_at_traits : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D), ∃ k₀ : ℕ, ∀ k ≥ k₀, ∀ Φ : IntFam (maximalIdeal R) D.toPre k → SecK C.P.L.L C.α k, (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ ∀ F, T.Exp a b (Φ F) F) → ∃ Φ' : IntFam (maximalIdeal R) D.toPre k → SecK C.P.L.L C.α k, ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ u : Wˣ, ∀ F, T.Exp 1 u (Φ' F) F := by
   first | exact @GlobalTheory.Mum.exists_unit_normalisation | exact GlobalTheory.Mum.exists_unit_normalisation | (intros; apply GlobalTheory.Mum.exists_unit_normalisation <;> assumption)

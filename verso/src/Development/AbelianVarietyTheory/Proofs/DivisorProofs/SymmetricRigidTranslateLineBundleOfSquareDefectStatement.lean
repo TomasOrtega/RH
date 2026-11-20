@@ -17,8 +17,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj Limits
 open scoped CategoryTheory.Obj
 open GlobalTheory.CechPic (Pic cls lam)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymTranslate.sym_rigTransl_of_sq | exact GlobalTheory.SymTranslate.sym_rigTransl_of_sq | (intros; apply GlobalTheory.SymTranslate.sym_rigTransl_of_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymTranslate.sym_rigTransl_of_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricRigidTranslateLineBundleOfSquareDefect.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.symmetric_rigidTranslateLineBundle_of_square_defect : ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMonObj B] (L : LB B.left) (hL : L.IsLB), (∃ t : LB.Gen (Theta B L), t.IsGen) → ∀ a : 𝟙_ (Over (Sp K)) ⟶ B, CechPic.pull (GrpObj.inv : B ⟶ B).left (cls L hL) - cls L hL = lam (cls L hL) (toUnit B ≫ a ^ 2) (𝟙 B) → Out.Sym B (GlobalTheory.RigidTranslate.rigTransl L a) := by
   first | exact @GlobalTheory.SymTranslate.sym_rigTransl_of_sq | exact GlobalTheory.SymTranslate.sym_rigTransl_of_sq | (intros; apply GlobalTheory.SymTranslate.sym_rigTransl_of_sq <;> assumption)

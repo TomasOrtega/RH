@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixHt.mixArch_iso_symm_congr | exact GlobalTheory.MixHt.mixArch_iso_symm_congr | (intros; apply GlobalTheory.MixHt.mixArch_iso_symm_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixHt.mixArch_iso_symm_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedArchLogNormIntegralIsometrySymmCongr.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.mixedArchLogNormIntegral_isometry_symm_congr : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ) (L : Fin e → HermLB q) (M : HermLB q) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), (∀ L' : Fin e → HermLB q, (∀ a, (L a).Isometric (L' a)) → mixArch L M hr = mixArch L' M hr) ∧ (∀ τ : Equiv.Perm (Fin e), mixArch (fun a => L (τ a)) M hr = mixArch L M hr) ∧ ∀ (M' : HermLB q) (r' : M'.B.ι → Y.functionFieldˣ) (hr' : IsRatSec M'.B r'), M'.div hr' = M.div hr → (∀ σ, Set.EqOn (logNorm (M'.φ σ) r') (logNorm (M.φ σ) r) (offSupp q σ (M.div hr))) → mixArch L M' hr' = mixArch L M hr := by
   first | exact @GlobalTheory.MixHt.mixArch_iso_symm_congr | exact GlobalTheory.MixHt.mixArch_iso_symm_congr | (intros; apply GlobalTheory.MixHt.mixArch_iso_symm_congr <;> assumption)

@@ -18,8 +18,10 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin | exact GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin | (intros; apply GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMorphismToProjSpacePreimageNonzeroLocusLinearFor.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.morphismToProjSpace_preimage_nonzeroLocus_linearForm : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (H : LB X) (m N : ℕ) (s : Fin (m + 1) → LB.Sec H) (t : Fin (N + 1) → LB.Sec H) (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R), H.IsLB → ∀ (ht : ⨆ j, nonzeroLocus (t j) = ⊤), (∀ i, s i = ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • t j) → ∀ i, GlobalTheory.ProjSpace.toProj f t ht ⁻¹ᵁ nonzeroLocus (GlobalTheory.SpanVA.lin a i) = nonzeroLocus (s i) := by
   first | exact @GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin | exact GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin | (intros; apply GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin <;> assumption)

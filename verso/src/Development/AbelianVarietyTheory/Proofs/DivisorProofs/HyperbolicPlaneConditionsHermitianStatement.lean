@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipLineHyp.conj_commutator_eq_pow | exact GlobalTheory.UnipLineHyp.conj_commutator_eq_pow | (intros; apply GlobalTheory.UnipLineHyp.conj_commutator_eq_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipLineHyp.conj_commutator_eq_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHyperbolicPlaneConditionsHermitian.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.hyperbolic_plane_conditions_hermitian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d₂ : ℕ) (X : Spc F E n)
     (H : Plane E n d₂), (∀ i j, σ (X.J j i) = X.J i j) → (∀ e : E, σ (σ e) = e) →

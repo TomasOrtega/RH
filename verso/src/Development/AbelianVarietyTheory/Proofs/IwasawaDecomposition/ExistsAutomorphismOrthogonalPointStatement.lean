@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLUBRangeOf
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Geo GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory.ProjVar.Var GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.DeKeyTrue GlobalTheory.Toroidal
 open CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.LiftOrth.exists_lift_hodge | exact GlobalTheory.ShFam.LiftOrth.exists_lift_hodge | (intros; apply GlobalTheory.ShFam.LiftOrth.exists_lift_hodge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.LiftOrth.exists_lift_hodge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAutomorphismOrthogonalPoint.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_automorphism_orthogonal_point : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (Φ : s.Flag) (σ : D.what₂.LL →+* ℂ) (k : (s.U (Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ))).Comp) (xx : ((s.U (Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ))).X k).dom), ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth ((s.U (Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ))).X k) xx.1 → ∃ (ψ : ℂ →+* ℂ) (q : Σ k : s.Comp, (geoTrue D.what₂.LL).pts (Φ.C k).Y σ) (g : (Φ.C q.1).FrameAt q.2), (ψ = RingHom.id ℂ ∨ ψ = starRingEnd ℂ) ∧ Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ) = ψ.comp (GlobalTheory.ShFam.embOf κ.e σ) ∧ IsHodgeFrame s.U ((Φ.C q.1).down q.2) g ∧ (Φ.C q.1).Carries q.2.1 g ∧ ((Φ.C q.1).down q.2).1 = spMap ψ ≫ (cxPt s.T.Z ((s.U (Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ))).un k xx)).1 ∧ (cxFrame s.T.Z ((s.U (Formalism.L2.PjFree.goodOf κ.c (GlobalTheory.ShFam.embOf κ.e σ))).un k xx)).IsMap ψ g := by
   first | exact @GlobalTheory.ShFam.LiftOrth.exists_lift_hodge | exact GlobalTheory.ShFam.LiftOrth.exists_lift_hodge | (intros; apply GlobalTheory.ShFam.LiftOrth.exists_lift_hodge <;> assumption)

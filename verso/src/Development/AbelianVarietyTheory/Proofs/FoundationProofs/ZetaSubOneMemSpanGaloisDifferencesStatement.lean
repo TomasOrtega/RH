@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryCon
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
 open GlobalTheory.K5 GlobalTheory.KumDlog
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KumIdeal.zeta_sub_one_mem_span | exact GlobalTheory.KumIdeal.zeta_sub_one_mem_span | (intros; apply GlobalTheory.KumIdeal.zeta_sub_one_mem_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KumIdeal.zeta_sub_one_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FZetaSubOneMemSpanGaloisDifferences.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.zeta_sub_one_mem_span_galois_differences : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω) (n : ℕ) (r : Ω), IsInt p r → (∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r) →
   ∀ j : ℕ, 1 ≤ j → ∀ g ∈ Hinf T, g r ≠ r →

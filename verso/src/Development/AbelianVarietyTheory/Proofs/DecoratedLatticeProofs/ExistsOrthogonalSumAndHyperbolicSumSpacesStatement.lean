@@ -16,8 +16,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Spl
 open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrthSumSp.exists_orthSum_hypSum | exact GlobalTheory.OrthSumSp.exists_orthSum_hypSum | (intros; apply GlobalTheory.OrthSumSp.exists_orthSum_hypSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrthSumSp.exists_orthSum_hypSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsOrthogonalSumAndHyperbolicSumSpaces.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.exists_orthogonalSum_and_hyperbolicSum_spaces : ∀ (D : D7), (∀ A L : HSp D, A.SigOK → L.SigOK → ∃ (S : HSp D) (_ : OrthDec S A L), S.SigOK ∧ ∀ τ, S.sig τ = A.sig τ + L.sig τ) ∧ ∀ (A : HSp D) (ρ : ℕ), A.SigOK → ∃ (S : HSp D) (_ : HypDec S A ρ), S.SigOK ∧ ∀ τ, S.sig τ = A.sig τ + (ρ, ρ) := by
   first | exact @GlobalTheory.OrthSumSp.exists_orthSum_hypSum | exact GlobalTheory.OrthSumSp.exists_orthSum_hypSum | (intros; apply GlobalTheory.OrthSumSp.exists_orthSum_hypSum <;> assumption)

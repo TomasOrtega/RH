@@ -15,8 +15,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum polyd
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatJet.detGen_apply_ne_zero_of_isDiff | exact GlobalTheory.LatJet.detGen_apply_ne_zero_of_isDiff | (intros; apply GlobalTheory.LatJet.detGen_apply_ne_zero_of_isDiff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatJet.detGen_apply_ne_zero_of_isDiff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantNonzeroDifferentials.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.determinant_nonzero_differentials : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (L : LB X.A.left)
     (u : HolUnif X.A L (Module.finrank ℚ F)) (δ : X.DetGen) (v : Fin (Module.finrank ℚ F) → X.Lie)

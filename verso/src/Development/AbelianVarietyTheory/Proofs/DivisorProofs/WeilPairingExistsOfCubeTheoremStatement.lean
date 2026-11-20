@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.CurveRootGeome
 open GlobalTheory.Cris (dp0)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilHom.exists_isWeilHom | exact GlobalTheory.WeilHom.exists_isWeilHom | (intros; apply GlobalTheory.WeilHom.exists_isWeilHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilHom.exists_isWeilHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilPairingExistsOfCubeTheorem.lean&line=271#L271)
 -/
 theorem _root_.GlobalTheory.T.weil_pairing_exists_of_cube_theorem : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P → ∀ (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A), ∃ w : 𝒜 ⟶ 𝒜.dual, IsWeilHom t t P w := by
   first | exact @GlobalTheory.WeilHom.exists_isWeilHom | exact GlobalTheory.WeilHom.exists_isWeilHom | (intros; apply GlobalTheory.WeilHom.exists_isWeilHom <;> assumption)

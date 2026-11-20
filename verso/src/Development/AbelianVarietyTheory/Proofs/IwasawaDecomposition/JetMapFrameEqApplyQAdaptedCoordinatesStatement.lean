@@ -13,8 +13,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JetChain.jetMap_frame_eq_applyQ | exact GlobalTheory.JetChain.jetMap_frame_eq_applyQ | (intros; apply GlobalTheory.JetChain.jetMap_frame_eq_applyQ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JetChain.jetMap_frame_eq_applyQ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FJetMapFrameEqApplyQAdaptedCoordinates.lean&line=236#L236)
 -/
 theorem _root_.GlobalTheory.T.jetMap_frame_eq_applyQ_adapted_coordinates : ∀ (D : D7) {p : ℕ} [Fact p.Prime] (N0 N1 : ℕ) (hN : N0 ≤ N1)
     (T : MvPowerSeries (D.what₂.Tau × Fin N1 × Fin N0) ℂ_[p]) (s : D.what₂.Tau → ℂ_[p])

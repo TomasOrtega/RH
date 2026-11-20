@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.StandardOrderExtendedBasisApplyLowBlock
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepData.om_support_period | exact GlobalTheory.StepData.om_support_period | (intros; apply GlobalTheory.StepData.om_support_period <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepData.om_support_period` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLinearWeilActionSupportAndPeriodIntegral.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.linearWeilAction_support_and_period_integral : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A B : Type} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (ϖ : kˣ), valuation k (ϖ : k) < 1 → ∀ (i : ℕ)

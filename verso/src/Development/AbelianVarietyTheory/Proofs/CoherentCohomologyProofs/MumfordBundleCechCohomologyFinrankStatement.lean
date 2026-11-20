@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | exact GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | (intros; apply GlobalTheory.MumfordCohom.finrank_cechLB_translDiff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumfordCohom.finrank_cechLB_translDiff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FMumfordBundleCechCohomologyFinrank.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.mumford_bundle_cech_cohomology_finrank : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (P.A ⊗ P.A).left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ∀ n, Module.finrank K ((cechLB (P.A ⊗ P.A).hom (translDiff P.A P.L (𝟙 P.A)) D).homology n) = if n = P.g then 1 else 0 := by
   first | exact @GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | exact GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | (intros; apply GlobalTheory.MumfordCohom.finrank_cechLB_translDiff <;> assumption)

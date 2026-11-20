@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhitKerLeComapMap
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir GlobalTheory.CompanionTheory.BZNuPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZNuPair.whit_iSup_range_eq_top | exact GlobalTheory.CompanionTheory.BZNuPair.whit_iSup_range_eq_top | (intros; apply GlobalTheory.CompanionTheory.BZNuPair.whit_iSup_range_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZNuPair.whit_iSup_range_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWhittakerTwoBlockIntertwinersSpan.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.whittaker_two_block_intertwiners_span : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (X : Fin 2 → Type)
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)),

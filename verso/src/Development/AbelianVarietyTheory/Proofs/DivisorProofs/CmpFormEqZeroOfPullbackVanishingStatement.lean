@@ -14,8 +14,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal | exact GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal | (intros; apply GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmpFormEqZeroOfPullbackVanishing.lean&line=181#L181)
 -/
 theorem _root_.GlobalTheory.T.cmpForm_eq_zero_of_pullback_vanishing : ∀ (K : Type) [Field K] (X : Over (Sp K)), Smooth X.hom → ∀ f : Form (X.hom ≫ 𝟙 (Sp K)), (∀ (L : Type) [Field L] (σ : K →+* L), ∃ (X' : Over (Sp L)) (φ : X'.left ⟶ X.left) (m : IsMor (dp0 K) (X.hom ≫ 𝟙 (Sp K)) (dp0 L) (X'.hom ≫ 𝟙 (Sp L)) σ φ), IsPullback φ X'.hom X.hom (spMap σ) ∧ ∀ u : epsR L ⟶ X', tanVal u (m.pullForm f) = 0) → GlobalTheory.CechDR.cmpForm (X.hom ≫ 𝟙 (Sp K)) f = 0 := by
   first | exact @GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal | exact GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal | (intros; apply GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal <;> assumption)

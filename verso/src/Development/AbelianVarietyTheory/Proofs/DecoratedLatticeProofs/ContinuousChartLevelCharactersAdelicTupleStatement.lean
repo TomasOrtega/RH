@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.ChiCont.chi_continuous | exact GlobalTheory.AdForm.ChiCont.chi_continuous | (intros; apply GlobalTheory.AdForm.ChiCont.chi_continuous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.ChiCont.chi_continuous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FContinuousChartLevelCharactersAdelicTuple.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.continuous_chartLevelCharacters_adelic_tuple : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i ≤ B.R.m) β, Continuous fun κ => ((A.chi i β κ : ℂˣ) : ℂ) := by
   first | exact @GlobalTheory.AdForm.ChiCont.chi_continuous | exact GlobalTheory.AdForm.ChiCont.chi_continuous | (intros; apply GlobalTheory.AdForm.ChiCont.chi_continuous <;> assumption)

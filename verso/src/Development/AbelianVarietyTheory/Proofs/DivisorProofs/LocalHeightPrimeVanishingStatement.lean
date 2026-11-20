@@ -15,8 +15,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 open GlobalTheory.EqHalf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm | exact GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm | (intros; apply GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalHeightPrimeVanishing.lean&line=419#L419)
 -/
 theorem _root_.GlobalTheory.T.local_height_prime_vanishing : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)

@@ -14,8 +14,10 @@ open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo GlobalT
 open ReciprocityTheory.AnForm.R (conePts)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local | exact GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFibreDensityIndependentProjection.lean&line=374#L374)
 -/
 theorem _root_.GlobalTheory.T.fibre_density_independent_projection : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))

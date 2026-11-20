@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ReferenceMetricMulD
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverNorm.Isom.isometric_of_norms | exact GlobalTheory.CoverNorm.Isom.isometric_of_norms | (intros; apply GlobalTheory.CoverNorm.Isom.isometric_of_norms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverNorm.Isom.isometric_of_norms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsometricOfSameNorms.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.isometric_of_same_norms : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L L' : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ), Norms V L f a l → Norms V L' f a l → L.Isometric L' := by
   first | exact @GlobalTheory.CoverNorm.Isom.isometric_of_norms | exact GlobalTheory.CoverNorm.Isom.isometric_of_norms | (intros; apply GlobalTheory.CoverNorm.Isom.isometric_of_norms <;> assumption)

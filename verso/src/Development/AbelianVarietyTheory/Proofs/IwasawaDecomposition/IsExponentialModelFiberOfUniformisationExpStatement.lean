@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ShFam.Hor.LogCh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx | exact GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx | (intros; apply GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsExponentialModelFiberOfUniformisationExp.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.isExponential_modelFiber_of_uniformisationExp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (σ₀ : KA l →+* ℂ) (Fu : FamilyUnif Xo σ₀ ty) (y : Sp ℂ ⟶ Xo.XF c) (i : Fin Fu.n) (P : (Fu.Di i).La →+ (Fin g → ℂ)) (p : Sp ℂ ⟶ Z.X) (hu : Fu.u i P = y ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) (hp : y ≫ Z.jQ ≫ pullback.fst Z.s (spMap β) = p), IsPeriod (Fu.Di i) ty P → IsExpAt Z.t p (pushEx Z Fu y i P p hu hp) := by
   first | exact @GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx | exact GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx | (intros; apply GlobalTheory.ShFam.Hor.LogCh.isExpAt_pushEx <;> assumption)

@@ -9,8 +9,10 @@ open PositivityTheory.RgTw (Mat)
 open GlobalTheory.CompanionTheory.GLK (e1 e2 f1)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose | exact GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose | (intros; apply GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FKActionSkewAdjointL2.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.k_action_skew_adjoint_l2 : ∀ (n : ℕ) [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix.unitaryGroup (Fin n) ℂ)] (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ], (∀ u : Mat n → ℂ, ContDiffOn ℝ ∞ u (GLs n) → ∀ X : Mat n, Xᴴ = -X → ∫ k : Matrix.unitaryGroup (Fin n) ℂ, Rd X u k.1 ∂κ = 0) → ∀ (a b : Fin n) (x y : GlobalTheory.CompanionTheory.ModelS.SmF n), GlobalTheory.CompanionTheory.ModelS.ipK κ (GlobalTheory.CompanionTheory.ModelS.Kf a b x) y = GlobalTheory.CompanionTheory.ModelS.ipK κ x (GlobalTheory.CompanionTheory.ModelS.Kf b a y) := by
   first | exact @GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose | exact GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose | (intros; apply GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose <;> assumption)

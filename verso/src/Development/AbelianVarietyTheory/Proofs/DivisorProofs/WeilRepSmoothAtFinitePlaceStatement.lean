@@ -31,8 +31,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothAtPlace.weil_smooth_at | exact GlobalTheory.SmoothAtPlace.weil_smooth_at | (intros; apply GlobalTheory.SmoothAtPlace.weil_smooth_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothAtPlace.weil_smooth_at` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepSmoothAtFinitePlace.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.weilRep_smooth_at_finitePlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

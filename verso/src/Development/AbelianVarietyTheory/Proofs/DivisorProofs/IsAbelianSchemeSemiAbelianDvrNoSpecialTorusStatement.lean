@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero | exact GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero | (intros; apply GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsAbelianSchemeSemiAbelianDvrNoSpecialTorus.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.isAbelianScheme_semiAbelian_dvr_noSpecialTorus : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G], IsSemiAbelian G → IsProper ((Over.pullback (spMap (algebraMap W L))).obj G).hom → ∀ E : TorusExtension (GlobalTheory.SS.spFibre G), (letI := E.addCommGroup; Module.finrank ℤ E.X) = 0 → IsAbelianScheme G := by
   first | exact @GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero | exact GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero | (intros; apply GlobalTheory.ToricRankZero.isAbelianScheme_of_finrank_eq_zero <;> assumption)

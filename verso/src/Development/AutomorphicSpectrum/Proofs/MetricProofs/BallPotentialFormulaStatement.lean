@@ -12,8 +12,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FBallPotentialFormula.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.ball_potential_formula : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (W : Ψ → Matrix (Fin j') (Fin j) ℂ), ballPot q (ballPt q W) = -∑ τ, Real.log (1 - W τ * (W τ)ᴴ).det.re := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit segre fibre IsGoodProj IsSheet HermLine IsSmoothHerm sheetDensity maDensity ptsIntegral ptsIntegralAt pot)
 open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.sheetDensity_eq_of_isSheet | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.sheetDensity_eq_of_isSheet | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.sheetDensity_eq_of_isSheet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MixZ.ArchEq.sheetDensity_eq_of_isSheet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSheetDensityLogNormFormula.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.sheet_density_log_norm_formula : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (P : Ideal (Pol n)) (D : ℕ) (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D)
     (B A : HermLine (Bk n)) (f g : Pol n), ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (D + 1) → IsGoodProj P Ψ → IsSmoothHerm B →

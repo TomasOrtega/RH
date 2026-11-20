@@ -15,8 +15,10 @@ open GlobalTheory.ThK.EvAt0.PolD GlobalTheory.ArchUniq GlobalTheory.ArchUniq.Coo
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaneDec.point_dec | exact GlobalTheory.PlaneDec.point_dec | (intros; apply GlobalTheory.PlaneDec.point_dec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaneDec.point_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianSkewAdaptedDecomposition.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.hermitian_skew_adapted_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁)

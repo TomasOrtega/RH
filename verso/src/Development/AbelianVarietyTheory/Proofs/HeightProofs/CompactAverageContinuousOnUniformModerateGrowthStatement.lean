@@ -17,8 +17,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KAvgGrowth.continuousOn_and_umg_kAvg | exact GlobalTheory.KAvgGrowth.continuousOn_and_umg_kAvg | (intros; apply GlobalTheory.KAvgGrowth.continuousOn_and_umg_kAvg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KAvgGrowth.continuousOn_and_umg_kAvg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FCompactAverageContinuousOnUniformModerateGrowth.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.compactAverage_continuousOn_uniformModerateGrowth : ∀ (n : ℕ) (ε : Fin n → Bool) (f : GlobalTheory.TypeSum.Mx n → ℂ), ContinuousOn f (UJset ε) → GlobalTheory.TypeSum.UMG ε f →
     ∀ e : ↥(Formalism.REAL.KG ε) → ℂ, Continuous e →

@@ -11,8 +11,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac | exact GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac | (intros; apply GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsIrreducibleTensorOfJacquetSubquotient.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_irreducible_tensor_of_jacquet_subquotient : GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : Irr k n) (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ (Levi k fun a => Fin (d a)) Y), τ.IsIrreducible → IsSubquotient τ (jac e π.π) → ∃ σ : ∀ a, Irr k (d a), IsSubquotient τ (piTensor fun a => (σ a).π) := by
   first | exact @GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac | exact GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac | (intros; apply GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac <;> assumption)

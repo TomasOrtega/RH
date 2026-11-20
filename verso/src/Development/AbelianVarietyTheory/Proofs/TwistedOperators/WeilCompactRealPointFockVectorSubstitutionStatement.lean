@@ -10,8 +10,10 @@ open scoped TensorProduct Matrix
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowReal.om_fock_compact_all | exact GlobalTheory.RowReal.om_fock_compact_all | (intros; apply GlobalTheory.RowReal.om_fock_compact_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowReal.om_fock_compact_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilCompactRealPointFockVectorSubstitution.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.weil_compactRealPoint_fockVector_substitution : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (p : Pair T), p.InRange D.R.m →
     ∀ (pS pT : D.what₂.Tau → ℕ), (∀ ρ, pS ρ ≤ (G.pS p).rank) → (∀ ρ, pT ρ ≤ (G.pT p).rank) →

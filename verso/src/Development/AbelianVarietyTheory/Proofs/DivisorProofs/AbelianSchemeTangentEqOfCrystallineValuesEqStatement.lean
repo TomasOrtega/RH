@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOf
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieInj.tangent_eq_of_tanVal_eq | exact GlobalTheory.LieInj.tangent_eq_of_tanVal_eq | (intros; apply GlobalTheory.LieInj.tangent_eq_of_tanVal_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieInj.tangent_eq_of_tanVal_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeTangentEqOfCrystallineValuesEq.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_tangent_eq_of_crystallineValues_eq : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ v w : epsR R ⟶ A, IsTangent v → IsTangent w → (∀ f : Form (A.hom ≫ 𝟙 (Sp R)), tanVal v f = tanVal w f) → v = w := by
   first | exact @GlobalTheory.LieInj.tangent_eq_of_tanVal_eq | exact GlobalTheory.LieInj.tangent_eq_of_tanVal_eq | (intros; apply GlobalTheory.LieInj.tangent_eq_of_tanVal_eq <;> assumption)

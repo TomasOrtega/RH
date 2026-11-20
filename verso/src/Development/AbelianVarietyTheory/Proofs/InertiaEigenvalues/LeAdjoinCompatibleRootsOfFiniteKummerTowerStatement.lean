@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KinfFin.main | exact GlobalTheory.KinfFin.main | (intros; apply GlobalTheory.KinfFin.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KinfFin.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLeAdjoinCompatibleRootsOfFiniteKummerTower.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.le_adjoin_compatibleRoots_of_finite_kummerTower : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (ϖ : PiSys l e) (F : IntermediateField ℚ_[l] (Om l)), FiniteDimensional ℚ_[l] F → F ≤ ϖ.Kinf → ∃ n : ℕ, F ≤ IntermediateField.adjoin ℚ_[l] {ϖ.seq n ^ e} := by
   first | exact @GlobalTheory.KinfFin.main | exact GlobalTheory.KinfFin.main | (intros; apply GlobalTheory.KinfFin.main <;> assumption)

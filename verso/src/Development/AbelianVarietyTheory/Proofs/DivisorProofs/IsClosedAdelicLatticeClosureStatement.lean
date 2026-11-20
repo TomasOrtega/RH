@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarOfIsCompact
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatHatClosed.isClosed_latHat | exact GlobalTheory.LatHatClosed.isClosed_latHat | (intros; apply GlobalTheory.LatHatClosed.isClosed_latHat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatHatClosed.isClosed_latHat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsClosedAdelicLatticeClosure.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.isClosed_adelic_lattice_closure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (X : Spc F E n), X.L.IsLattice E → IsClosed ((latHat X : AddSubgroup (Fin n → AE F E)) : Set (Fin n → AE F E)) := by
   first | exact @GlobalTheory.LatHatClosed.isClosed_latHat | exact GlobalTheory.LatHatClosed.isClosed_latHat | (intros; apply GlobalTheory.LatHatClosed.isClosed_latHat <;> assumption)

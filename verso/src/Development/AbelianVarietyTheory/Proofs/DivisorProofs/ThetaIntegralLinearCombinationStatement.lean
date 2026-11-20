@@ -15,8 +15,10 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTorsion.AlgMap.main | exact GlobalTheory.CMTorsion.AlgMap.main | (intros; apply GlobalTheory.CMTorsion.AlgMap.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTorsion.AlgMap.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaIntegralLinearCombination.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.elliptic_curve_map_to_abelian : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt) (n : ℕ) (u : HolUnif X.A (X.diag c) n) (Λ : PeriodPair) (Ω : ℂ), Ω ≠ 0 → ∀ β : Fin n → ℂ, (∀ l ∈ Λ.lattice, l • β ∈ u.Λ) → ∃ f : scheme (curve Λ Ω) ⟶ X.A.left, f ≫ X.A.hom = toSpec (curve Λ Ω) ∧ ∀ z, pt Λ Ω z ≫ f = (u.ex (z • β)).left := by
   first | exact @GlobalTheory.CMTorsion.AlgMap.main | exact GlobalTheory.CMTorsion.AlgMap.main | (intros; apply GlobalTheory.CMTorsion.AlgMap.main <;> assumption)

@@ -10,8 +10,10 @@ open GroundTheory.Global.AdicLiesOver
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | exact GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | (intros; apply GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWhittakerInducedOfFunctionalEquation.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.whittaker_induced_of_functional_equation : Ad3.SchwartzSpaceL2.FeGen → ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ μ₁ μ₂ : Fˣ →* ℂˣ, IsUnit1 μ₁ → IsUnit1 μ₂ → WhittakerModelGL2 ψ μ₁ μ₂ (V2 ψ μ₁ μ₂) := by
   first | exact @GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | exact GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | (intros; apply GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space <;> assumption)

@@ -23,8 +23,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NadelApp.nadel_canonical_add | exact GlobalTheory.NadelApp.nadel_canonical_add | (intros; apply GlobalTheory.NadelApp.nadel_canonical_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NadelApp.nadel_canonical_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNadelVanishingCanonicalAddBoundary.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.nadel_vanishing_canonical_add_boundary : GlobalTheory.Published.NadelVanishingPair → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp ℂ) (D : ℕ) [SmoothOfRelativeDimension D q], IsProjOver q → letI := algebraΓOfHom q; ∀ (K : CanonLB q D) (B M₀ : LB X) (hB : B.IsLB) (D₀ : CartierDiv X) (m' r : ℕ), 0 < m' → 0 < r → D₀.Eff → IsNef ℂ M₀ → IsBig ℂ M₀ → (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![B] : ℚ) = interNumRed ℂ C ![toLB D₀] / m' + interNumRed ℂ C ![M₀] / r) → ∃ J : X.IdealSheafData, (∀ y : X, y ∈ J.support ↔ ¬ KltAt q D (qWeil D₀ m') y) ∧ ∀ i, 0 < i → Subsingleton (coh (twist (idealModule J) (tens K.bundle B)) i) := by
   first | exact @GlobalTheory.NadelApp.nadel_canonical_add | exact GlobalTheory.NadelApp.nadel_canonical_add | (intros; apply GlobalTheory.NadelApp.nadel_canonical_add <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertCoeffRing.exists_coeff | exact GlobalTheory.VertCoeffRing.exists_coeff | (intros; apply GlobalTheory.VertCoeffRing.exists_coeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertCoeffRing.exists_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInvariantFieldCoefficientsOfLinearVectorFi.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.exists_invariant_field_coefficients_of_linear_vectorField : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom →
     ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) →

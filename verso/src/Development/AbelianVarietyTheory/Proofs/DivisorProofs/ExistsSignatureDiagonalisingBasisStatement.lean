@@ -9,8 +9,10 @@ open scoped TensorProduct Matrix
 open NumberField Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchFrameConj.exists_frame_mem_conj | exact GlobalTheory.ArchFrameConj.exists_frame_mem_conj | (intros; apply GlobalTheory.ArchFrameConj.exists_frame_mem_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchFrameConj.exists_frame_mem_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSignatureDiagonalisingBasis.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_signature_diagonalising_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ K' : Subgroup (GAd σ J), GlobalTheory.UAut.IsMaxCpt σ J K' →

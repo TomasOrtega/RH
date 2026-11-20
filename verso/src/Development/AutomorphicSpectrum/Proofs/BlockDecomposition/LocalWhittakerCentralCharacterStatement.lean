@@ -11,8 +11,10 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.CenTheta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CenTheta.W_central | exact GlobalTheory.CompanionTheory.CenTheta.W_central | (intros; apply GlobalTheory.CompanionTheory.CenTheta.W_central <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CenTheta.W_central` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalWhittakerCentralCharacter.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.local_whittaker_central_character : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok → ∀ (a : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)), m.W (dg2 a a * g) = omW m a * m.W g := by
   first | exact @GlobalTheory.CompanionTheory.CenTheta.W_central | exact GlobalTheory.CompanionTheory.CenTheta.W_central | (intros; apply GlobalTheory.CompanionTheory.CenTheta.W_central <;> assumption)

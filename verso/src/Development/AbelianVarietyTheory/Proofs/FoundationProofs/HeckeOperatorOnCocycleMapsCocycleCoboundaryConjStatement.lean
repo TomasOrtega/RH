@@ -5,8 +5,10 @@ open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
 open scoped Manifold
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj | exact GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj | (intros; apply GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeOperatorOnCocycleMapsCocycleCoboundaryConj.lean&line=185#L185)
 -/
 theorem _root_.GlobalTheory.T.heckeOperatorOnCocycleMaps_cocycle_coboundary_conj : ∀ (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (ι : Type) [Fintype ι] (α : Matrix (Fin 2) (Fin 2) ℤ) (δ : ι → Matrix (Fin 2) (Fin 2) ℤ), 0 < α.det → IsDCReps Γ α δ → (∀ z ∈ Z1 Γ w, hk Γ w δ z ∈ Z1 Γ w) ∧ (∀ z ∈ B1 Γ w, hk Γ w δ z ∈ B1 Γ w) ∧ ∀ z, cj (hk Γ w δ z) = hk Γ w δ (cj z) := by
   first | exact @GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj | exact GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj | (intros; apply GlobalTheory.HeckeFamilyMatrices.HkC.hk_cocycle_coboundary_conj <;> assumption)

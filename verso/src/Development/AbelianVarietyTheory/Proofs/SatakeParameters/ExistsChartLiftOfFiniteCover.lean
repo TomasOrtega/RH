@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Edge1
 open GlobalTheory.WH GlobalTheory.PD GlobalTheory.W1 GlobalTheory.CechDR KaehlerDifferential
 open scoped TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Cb.exists_chart_lift_of_finite_cover | exact UpperTheory.Cb.exists_chart_lift_of_finite_cover`.
+/- English proof (citation)
+Apply `UpperTheory.Cb.exists_chart_lift_of_finite_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FExistsChartLiftOfFiniteCover.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.exists_chart_lift_of_finite_cover : ∀ (d a : ℕ) (F K K' : Type) [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra ℂ K] [Algebra ℂ K'] [Algebra F K] [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K'] (x : Fin (d + 1) → F) (j2 : K →ₐ[ℂ] K'),
   IsFinCover ℂ K x → IsFinCover ℂ K' x →

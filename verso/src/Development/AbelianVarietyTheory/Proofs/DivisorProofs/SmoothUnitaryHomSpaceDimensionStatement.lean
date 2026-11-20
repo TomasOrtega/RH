@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMidJacAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorIntMMemSB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweFlipPair.uniq | exact GlobalTheory.HoweFlipPair.uniq | (intros; apply GlobalTheory.HoweFlipPair.uniq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweFlipPair.uniq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothUnitaryHomSpaceDimension.lean&line=170#L170)
 -/
 theorem _root_.GlobalTheory.T.smooth_unitary_hom_space_dimension : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ν α : kˣ →* ℂˣ), GlobalTheory.KSplit.IsSmU ν → GlobalTheory.KSplit.IsSmU α →
     ∀ (U V V' : Type) [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']

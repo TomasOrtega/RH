@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.ShiftPhase.shift | exact GlobalTheory.Hk3.ShiftPhase.shift | (intros; apply GlobalTheory.Hk3.ShiftPhase.shift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.ShiftPhase.shift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPhaseConditionSubIntegralMatrix.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.phaseCondition_sub_integral_matrix : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (A : Matrix (Fin n) (Fin n) L) (ψ : AddChar L ℂ),

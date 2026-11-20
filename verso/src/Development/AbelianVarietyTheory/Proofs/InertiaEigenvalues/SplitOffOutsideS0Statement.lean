@@ -10,8 +10,10 @@ open Formalism.IndefR.Lev Formalism.L2.DIV Formalism.IndefR.Mult
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitOffS0.main | exact GlobalTheory.SplitOffS0.main | (intros; apply GlobalTheory.SplitOffS0.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitOffS0.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSplitOffOutsideS0.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.split_off_outside_S0 : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ : Setup X}, ρ.Good → ∀ (i : X.Tw) (Q : Finset (Pl D.host.E)), (∀ P' ∈ Q, P' ∈ X.S0 i) → ∀ (P : Pl D.host.E), IsSplitPl D.host P → P ∉ X.S0 i → Bridge.SplitOff P (Q : Set (Pl D.host.E)) := by
   first | exact @GlobalTheory.SplitOffS0.main | exact GlobalTheory.SplitOffS0.main | (intros; apply GlobalTheory.SplitOffS0.main <;> assumption)

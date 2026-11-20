@@ -9,8 +9,10 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.L2.Th1.D (F1 F2 OwOK TrDual phFF)
 open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerStd.BeData.exists_of_curveData | exact GlobalTheory.KerStd.BeData.exists_of_curveData | (intros; apply GlobalTheory.KerStd.BeData.exists_of_curveData <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerStd.BeData.exists_of_curveData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsOfInertPrimeEllipticCurveLocalData.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_of_inertPrimeEllipticCurveLocalData : ∀ (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)), CurveData p g2 g3 s2 ε σ F → ∀ (d : ℕ) [NeZero d], Even d → ∃ (om oms : Fin (d / 2) → MaximalUnramifiedExtension p) (ζ : MaximalUnramifiedExtension p), BeData p d σ F (cob F (phFF p g2 g3 s2 ε)) om oms ζ := by
   first | exact @GlobalTheory.KerStd.BeData.exists_of_curveData | exact GlobalTheory.KerStd.BeData.exists_of_curveData | (intros; apply GlobalTheory.KerStd.BeData.exists_of_curveData <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnita
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitsConjOfMinpolyEqOfSeparable
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxRegLoc.local_class_scalar_norm_sep | exact GlobalTheory.CxRegLoc.local_class_scalar_norm_sep`.
+/- English proof (citation)
+Apply `GlobalTheory.CxRegLoc.local_class_scalar_norm_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarrisTaylorRegularConjugateLocalScalarNorm.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.harrisTaylor_regular_conjugate_local_scalar_norm : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →

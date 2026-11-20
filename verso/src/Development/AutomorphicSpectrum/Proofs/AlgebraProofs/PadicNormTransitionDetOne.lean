@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.Xgf.padic_norm_transition_det_one | exact PositivityTheory.Xgf.padic_norm_transition_det_one`.
+/- English proof (citation)
+Apply `PositivityTheory.Xgf.padic_norm_transition_det_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FSesquilinearFractions%2FDTransUnit.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (x e : I → D.La) (T : Matrix I I E) (ℓ : Nat.Primes), IsLocBasis (𝓞 E) ℓ x → IsLocBasis (𝓞 E) ℓ e → IsTransition D x e T → ∀ j : E →+* ℂ_[ℓ], ‖j T.det‖ = 1 := by
   first | exact @PositivityTheory.Xgf.padic_norm_transition_det_one | exact PositivityTheory.Xgf.padic_norm_transition_det_one

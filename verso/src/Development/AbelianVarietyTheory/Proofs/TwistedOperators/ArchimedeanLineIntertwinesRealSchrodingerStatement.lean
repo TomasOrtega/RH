@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchFam.schr_equiv | exact GlobalTheory.ArchFam.schr_equiv | (intros; apply GlobalTheory.ArchFam.schr_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchFam.schr_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FArchimedeanLineIntertwinesRealSchrodinger.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.archimedeanLine_intertwines_realSchrodinger : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

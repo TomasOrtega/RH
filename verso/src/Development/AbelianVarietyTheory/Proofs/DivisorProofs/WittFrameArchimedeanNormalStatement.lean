@@ -16,8 +16,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MajPos.exists_conj_mem_majCpt | exact GlobalTheory.MajPos.exists_conj_mem_majCpt | (intros; apply GlobalTheory.MajPos.exists_conj_mem_majCpt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MajPos.exists_conj_mem_majCpt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameArchimedeanNormal.lean&line=299#L299)
 -/
 theorem _root_.GlobalTheory.T.witt_frame_archimedean_normal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

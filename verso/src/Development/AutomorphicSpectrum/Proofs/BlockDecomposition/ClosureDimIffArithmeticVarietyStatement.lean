@@ -16,8 +16,10 @@ open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar | exact GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar | (intros; apply GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FClosureDimIffArithmeticVariety.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.closure_dim_iff_arithmetic_variety : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) (d : ℕ), CharZero ((MP ℤ m n).residueField x) → (topologicalKrullDim (closure ({x} : Set (MP ℤ m n))) = (d : ℕ) ↔ Geo.IsArithVar (ptIdeal x) d) := by
   first | exact @GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar | exact GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar | (intros; apply GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar <;> assumption)

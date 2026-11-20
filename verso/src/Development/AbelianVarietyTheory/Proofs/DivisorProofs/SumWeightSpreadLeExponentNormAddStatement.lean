@@ -8,8 +8,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.L2.Theta Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.AllWt GlobalTheory.LevGeo
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamSpread.sum_spread_laU_le | exact GlobalTheory.LamSpread.sum_spread_laU_le | (intros; apply GlobalTheory.LamSpread.sum_spread_laU_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamSpread.sum_spread_laU_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumWeightSpreadLeExponentNormAdd.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.sum_weightSpread_le_exponentNorm_add : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (k : (U σ).Comp), (∑ τ, ((U σ).X k).spread (laU (U σ) a n k) τ) ≤ ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) := by
   first | exact @GlobalTheory.LamSpread.sum_spread_laU_le | exact GlobalTheory.LamSpread.sum_spread_laU_le | (intros; apply GlobalTheory.LamSpread.sum_spread_laU_le <;> assumption)

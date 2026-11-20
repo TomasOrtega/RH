@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle | exact GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle | (intros; apply GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftsAgreeOfCocycle.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.exists_lifts_agree_of_cocycle_alt : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →

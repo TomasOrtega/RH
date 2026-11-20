@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.Flat.DegZ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map | exact GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIntersectionHiddenFirst.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.intersection_first : ∀ (R S : Type) [CommRing R] [CommRing S] (f : R →+* S) (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B B₂ : Germ.FB R d O) (C C₂ : Germ.FB S d O) (φ ψ : Germ.Pt R 1 d) (lam : Germ.PS R 2 d), IsMapOf f B C → IsMapOf f B₂ C₂ → IsIso B B₂ φ ψ lam → IsIso C C₂ (fun i => MvPowerSeries.map f (φ i)) (fun i => MvPowerSeries.map f (ψ i)) (MvPowerSeries.map f lam) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map | exact GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_phases | exact GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_phases | (intros; apply GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_phases <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_phases` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsIntegralGramOfPhaseConditions.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_gram_of_phase_conditions : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (ψ : AddChar L ℂ),

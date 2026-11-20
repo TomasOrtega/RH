@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualPullMet.exists_isIsometry_dual_pull | exact GlobalTheory.DualPullMet.exists_isIsometry_dual_pull | (intros; apply GlobalTheory.DualPullMet.exists_isIsometry_dual_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualPullMet.exists_isIsometry_dual_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualPullbackHermitianIsometry.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.dual_pullback_hermitian_isometry : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (f : Y ⟶ X) (hf : f ≫ p = q) (r : ℕ) (E : HermVB p r) (F : Y.Modules) (φ : (Scheme.Modules.pullback f).obj E.E ≅ F), ∃ χ : (E.dual.pull f hf).E ≅ VB.dual F, (E.dual.pull f hf).h.IsIsometry ((E.h.pull f hf).map φ).dual χ := by
   first | exact @GlobalTheory.DualPullMet.exists_isIsometry_dual_pull | exact GlobalTheory.DualPullMet.exists_isIsometry_dual_pull | (intros; apply GlobalTheory.DualPullMet.exists_isIsometry_dual_pull <;> assumption)

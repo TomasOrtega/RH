@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjRead.exists_lift_redIs | exact GlobalTheory.SeeConjRead.exists_lift_redIs | (intros; apply GlobalTheory.SeeConjRead.exists_lift_redIs <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjRead.exists_lift_redIs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFrameLiftingPrescribedReductions.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.exists_frame_lifting_prescribed_reductions : ∀ {D : D7} {n : ℕ} (β₀ : GL (Fin n) (EAf D)) (S : Finset (Pl D.host.E)) (W : Pl D.host.E → Fin n → Fin n → EAf D), (∀ Q ∈ S, ∀ i j, ((β₀⁻¹).val * colMat (W Q)) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → (∀ Q ∈ S, Valued.v (GlobalTheory.StdFrames.cpt Q ((β₀⁻¹).val * colMat (W Q)).det) = 1) → ∃ β : GL (Fin n) (EAf D), GlobalTheory.NormSum.AdLattice.lat β = GlobalTheory.NormSum.AdLattice.lat β₀ ∧ ∀ Q ∈ S, RedIs β Q (W Q) := by
   first | exact @GlobalTheory.SeeConjRead.exists_lift_redIs | exact GlobalTheory.SeeConjRead.exists_lift_redIs | (intros; apply GlobalTheory.SeeConjRead.exists_lift_redIs <;> assumption)

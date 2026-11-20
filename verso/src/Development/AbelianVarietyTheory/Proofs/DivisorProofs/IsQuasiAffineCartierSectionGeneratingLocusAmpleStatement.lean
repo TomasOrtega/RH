@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.LocusQA.isQuasiAffine_locus | exact GlobalTheory.Desc.LocusQA.isQuasiAffine_locus | (intros; apply GlobalTheory.Desc.LocusQA.isQuasiAffine_locus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.LocusQA.isQuasiAffine_locus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsQuasiAffineCartierSectionGeneratingLocusAmple.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.isQuasiAffine_cartierSectionGeneratingLocus_ample : ∀ (Y : Scheme.{0}) [IsIntegral Y] [CompactSpace Y] [QuasiSeparatedSpace Y] (D : CartierDiv Y), AmpleDiv D → ∀ (k : ℕ), 1 ≤ k → ∀ s ∈ Sec D k, ∀ V : Y.Opens, (V : Set Y) = locus D k s → V.toScheme.IsQuasiAffine := by
   first | exact @GlobalTheory.Desc.LocusQA.isQuasiAffine_locus | exact GlobalTheory.Desc.LocusQA.isQuasiAffine_locus | (intros; apply GlobalTheory.Desc.LocusQA.isQuasiAffine_locus <;> assumption)

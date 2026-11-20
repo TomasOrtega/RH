@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split | exact GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split | (intros; apply GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCharacterEqOneOfTrivialSplitPlaces.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.heckeCharacter_eq_one_of_trivial_splitPlaces : ∀ (D : D7) (ν : (AE D)ˣ →* Circle), IsHeckeChar D ν → (∀ e, IsSplitIdem D e → ∀ x : (AE D)ˣ, (e + cA D e) * ((x : AE D) - 1) = (x : AE D) - 1 → ν x = 1) → ∀ x, ν x = 1 := by
   first | exact @GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split | exact GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split | (intros; apply GlobalTheory.HeckeSplitAll.heckeChar_eq_one_of_split <;> assumption)

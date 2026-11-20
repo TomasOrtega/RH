@@ -20,8 +20,10 @@ open scoped Pointwise
 open Formalism.IndefR.Datum
 open GlobalTheory.Grid
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfModTorus.halfMod_torus | exact GlobalTheory.HalfModTorus.halfMod_torus | (intros; apply GlobalTheory.HalfModTorus.halfMod_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfModTorus.halfMod_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHalfPowerDetAbsRealDiagonalTorus.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.halfPowerDetAbs_realDiagonal_torus : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (r n : ℕ) (t : Fin r → ℝ), (∀ i, 0 < t i) →
     ∀ α : GL (Fin r) (Formalism.L2.Theta.AE D), α.1.map (finPart D) = 1 →

@@ -12,8 +12,10 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds | exact GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds | (intros; apply GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FExistsPrincipalLevelSubgroupOpen.lean&line=162#L162)
 -/
 theorem _root_.GlobalTheory.T.exists_principalLevel_subgroup_open : ∀ (D : D7) (V : HSp D), ∀ N : ℕ, (∃ Kf : Subgroup (GA D V), IsLevelK V N Kf) ∧ (0 < N → {k : GA D V | FinCong V N k} ∈ 𝓝 (1 : GA D V)) := by
   first | exact @GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds | exact GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds | (intros; apply GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds <;> assumption)

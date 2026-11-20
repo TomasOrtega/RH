@@ -8,8 +8,10 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.latchar1 | exact GlobalTheory.CompanionTheory.LFUDom.latchar1 | (intros; apply GlobalTheory.CompanionTheory.LFUDom.latchar1 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LFUDom.latchar1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLatticeCharacterIntegralValue.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.lattice_character_integral_value : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ A : GL (Fin 2) F,
   (∀ b, ((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 b ∈ 𝒪[F]) →

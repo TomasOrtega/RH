@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolDeg.psiUnitOn_of_rescale | exact GlobalTheory.PolDeg.psiUnitOn_of_rescale | (intros; apply GlobalTheory.PolDeg.psiUnitOn_of_rescale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolDeg.psiUnitOn_of_rescale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiUnitOnOfRescaledPsiUnitOn.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.psiUnitOn_of_rescaled_psiUnitOn : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (g : D.X → (FractionRing R)ˣ) (y : D.X) (U : Set (Sp R)) (a b : R), (g y : FractionRing R) * algebraMap R (FractionRing R) a = algebraMap R (FractionRing R) b → (∀ p ∈ U, a ∉ (p : PrimeSpectrum R).asIdeal ∧ b ∉ (p : PrimeSpectrum R).asIdeal) → PsiUnitOn (GlobalTheory.PolDeg.rescale D g) y U → PsiUnitOn D y U := by
   first | exact @GlobalTheory.PolDeg.psiUnitOn_of_rescale | exact GlobalTheory.PolDeg.psiUnitOn_of_rescale | (intros; apply GlobalTheory.PolDeg.psiUnitOn_of_rescale <;> assumption)

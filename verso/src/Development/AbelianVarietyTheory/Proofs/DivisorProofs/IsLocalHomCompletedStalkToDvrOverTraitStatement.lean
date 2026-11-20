@@ -13,8 +13,10 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square | exact GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square | (intros; apply GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLocalHomCompletedStalkToDvrOverTrait.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.isLocalHom_completedStalk_to_dvr_over_trait : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω) (x : M.Z) (R : Type) [CommRing R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), IsCpl j → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V) (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (h : V →+* V') (g' : R →+* V') (ξ : Sp V ⟶ M.Z), Irreducible (h ϖ) → ξ (IsLocalRing.closedPoint V) = x → spMap g' ≫ (spMap j ≫ M.Z.fromSpecStalk x) = spMap h ≫ ξ → IsLocalHom g' := by
   first | exact @GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square | exact GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square | (intros; apply GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square <;> assumption)

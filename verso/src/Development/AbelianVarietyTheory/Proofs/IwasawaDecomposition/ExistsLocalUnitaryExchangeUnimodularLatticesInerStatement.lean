@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.L2.Col Formalism.HermitianLatticesTh
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertExchange.exchange | exact GlobalTheory.InertExchange.exchange | (intros; apply GlobalTheory.InertExchange.exchange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertExchange.exchange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLocalUnitaryExchangeUnimodularLatticesIner.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_local_unitary_exchange_unimodular_lattices_inert : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)),
   conjPrime₂ P = P → (∃ x : 𝓞 E, cO E x - x ∉ P.asIdeal) →

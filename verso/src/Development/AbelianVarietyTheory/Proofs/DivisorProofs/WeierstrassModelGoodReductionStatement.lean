@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceRingCurve.exists_curve | exact GlobalTheory.PlaceRingCurve.exists_curve | (intros; apply GlobalTheory.PlaceRingCurve.exists_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceRingCurve.exists_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeierstrassModelGoodReduction.lean&line=227#L227)
 -/
 theorem _root_.GlobalTheory.T.weierstrass_model_good_reduction : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (J : ℂ), IsIntegral ℤ J →
     ∃ (k₁ : IntermediateField ℚ ℂ) (R₁ : Subring ℂ) (W : WeierstrassCurve R₁), FiniteDimensional ℚ k₁ ∧

@@ -16,8 +16,10 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieAdd LieCongr IsLieLinear lieCoord)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusFibre.isClosedImmersion_special | exact GlobalTheory.TorusFibre.isClosedImmersion_special | (intros; apply GlobalTheory.TorusFibre.isClosedImmersion_special <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusFibre.isClosedImmersion_special` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusClosedImmersionGenericFromSpecial.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.torus_closed_immersion_special_of_generic : GlobalTheory.CovTop.Hypotheses2 → ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Spec (CommRingCat.of R))) [GrpObj G], IsSemiAbelian G → ∀ (r : ℕ) (u : torus R r ⟶ G), IsMonHom u → IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R K).map u).left → IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R (IsLocalRing.ResidueField R)).map u).left := by
   first | exact @GlobalTheory.TorusFibre.isClosedImmersion_special | exact GlobalTheory.TorusFibre.isClosedImmersion_special | (intros; apply GlobalTheory.TorusFibre.isClosedImmersion_special <;> assumption)

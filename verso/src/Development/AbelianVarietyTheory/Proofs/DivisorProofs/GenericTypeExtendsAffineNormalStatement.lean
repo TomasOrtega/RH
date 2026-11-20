@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel | exact GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel | (intros; apply GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericTypeExtendsAffineNormal.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.generic_type_extends_affine_normal : GlobalTheory.Published.RaynaudExtension → GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (X Z : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (g : X ⟶ Z) (tZ : SAB H Z), GlobalTheory.IsNormalScheme X → ∀ (t₀ : SAB H (Sp (Kbar X))), Nonempty (SABMap t₀ tZ (genPt X ≫ g)) → IsOfType Dw t₀ → ∀ (U : AffOp X) (t : SAB H (Sp U.Bp)), Nonempty (SABMap t tZ (U.toX ≫ g)) → ∀ (GG : PDivGroup p U.Bp) (θ : TorsionMap t.G GG), IsModel (Kbar X) θ → θ.IsIsoOver (abLocus t.G) := by
   first | exact @GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel | exact GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel | (intros; apply GlobalTheory.GroupBplus.Aff.isIsoOver_abLocus_of_isModel <;> assumption)

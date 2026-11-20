@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.StdSphVal.val_std | exact GlobalTheory.CompanionTheory.StdSphVal.val_std | (intros; apply GlobalTheory.CompanionTheory.StdSphVal.val_std <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.StdSphVal.val_std` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnramifiedThetaValueIndicator.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.unramified_theta_value_indicator : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → L.std → Unr c v → ∀ k ∈ integralGL (Qv v) 2, ∀ ξ : K,

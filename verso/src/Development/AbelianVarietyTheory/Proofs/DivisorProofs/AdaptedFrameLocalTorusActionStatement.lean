@@ -11,8 +11,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 open GlobalTheory.LineFrame
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviFrameSplit.levi_frame_conj | exact GlobalTheory.LeviFrameSplit.levi_frame_conj | (intros; apply GlobalTheory.LeviFrameSplit.levi_frame_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviFrameSplit.levi_frame_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedFrameLocalTorusAction.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.adapted_frame_local_torus_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m) (hcm : IsCMExt F E σ)

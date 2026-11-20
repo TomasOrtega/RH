@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameThetaInteg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.ExpVExps.re_cuspExp | exact GlobalTheory.ThK.ExpVExps.re_cuspExp | (intros; apply GlobalTheory.ThK.ExpVExps.re_cuspExp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.ExpVExps.re_cuspExp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameThetaIntegralDual.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.witt_frame_theta_integral_dual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

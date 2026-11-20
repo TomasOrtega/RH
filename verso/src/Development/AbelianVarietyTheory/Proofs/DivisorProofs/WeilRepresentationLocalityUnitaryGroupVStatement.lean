@@ -22,8 +22,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilLocality.locality | exact GlobalTheory.WeilLocality.locality | (intros; apply GlobalTheory.WeilLocality.locality <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilLocality.locality` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepresentationLocalityUnitaryGroupV.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.weilRepresentationLocality_unitaryGroupV' : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

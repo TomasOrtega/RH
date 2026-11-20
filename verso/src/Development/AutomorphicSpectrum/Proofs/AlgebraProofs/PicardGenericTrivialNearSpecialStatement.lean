@@ -20,8 +20,10 @@ open GlobalTheory.CechPic GlobalTheory.AbDual
 open GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase (IsPrincipalPol sqToBase)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero.near_zero | exact GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero.near_zero | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero.near_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero.near_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FPicardGenericTrivialNearSpecial.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.picard_generic_trivial_near_special : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Ring.DimensionLEOne R]
     [Algebra R C] [IsFractionRing R C] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →

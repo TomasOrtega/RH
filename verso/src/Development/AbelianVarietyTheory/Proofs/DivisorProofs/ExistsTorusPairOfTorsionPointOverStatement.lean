@@ -17,8 +17,10 @@ open GlobalTheory.Poinc.Sep
 
 open GlobalTheory.Poinc.Tors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver | exact GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver | (intros; apply GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTorusPairOfTorsionPointOver.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_torus_pair_of_torsion_point_over : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G) (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ N : ℕ, 1 ≤ N → ∀ (g : GtPtF D.toPre (FractionRing V)) (w : Frm D.toPre (FractionRing V) 1 g.b) (x : TFK (R := V) (FractionRing V) ⟶ A.A) (fr : FrAt x), (∃ o, GtPtF.IsNsmul N g o ∧ o.IsZero) → w.IsGen → fr.IsGen → LiesOver U.toUnifPre w₀ g w x fr → ∃ p : QkPt D.toPre (FractionRing V) N, p.y = 0 ∧ p.g = g ∧ QkToAkU U.toUnifPre (FractionRing V) N p x := by
   first | exact @GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver | exact GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver | (intros; apply GlobalTheory.Poinc.Sep.LiesPair.exists_pair_of_liesOver <;> assumption)

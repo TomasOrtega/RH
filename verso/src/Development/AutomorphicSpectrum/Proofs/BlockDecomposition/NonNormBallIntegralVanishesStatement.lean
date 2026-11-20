@@ -8,8 +8,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NormFib.map_norm_add_translate_eq_smul | exact GlobalTheory.CompanionTheory.NormFib.map_norm_add_translate_eq_smul | (intros; apply GlobalTheory.CompanionTheory.NormFib.map_norm_add_translate_eq_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.NormFib.map_norm_add_translate_eq_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNonNormBallIntegralVanishes.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.non_norm_ball_integral_vanishes : ∀ (F E : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

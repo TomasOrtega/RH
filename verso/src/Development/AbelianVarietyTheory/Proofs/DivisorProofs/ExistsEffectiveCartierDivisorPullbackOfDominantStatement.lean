@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cartier.exists_pull_dominant | exact GlobalTheory.Cartier.exists_pull_dominant | (intros; apply GlobalTheory.Cartier.exists_pull_dominant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cartier.exists_pull_dominant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEffectiveCartierDivisorPullbackOfDominant.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_effective_cartierDivisorPullback_of_dominant : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f] (D₀ : CartierDiv W), D₀.Eff → ∃ D₁ : CartierDiv M, D₁.Eff ∧ ∀ x g, D₀.IsEqn (f x) g → D₁.IsEqn x (Units.map (GlobalTheory.functionFieldMap f).toMonoidHom g) := by
   first | exact @GlobalTheory.Cartier.exists_pull_dominant | exact GlobalTheory.Cartier.exists_pull_dominant | (intros; apply GlobalTheory.Cartier.exists_pull_dominant <;> assumption)

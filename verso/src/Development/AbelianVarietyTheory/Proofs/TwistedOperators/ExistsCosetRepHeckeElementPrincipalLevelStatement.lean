@@ -11,8 +11,10 @@ noncomputable section
 open NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeDC.exists_rep | exact GlobalTheory.HeckeDC.exists_rep | (intros; apply GlobalTheory.HeckeDC.exists_rep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeDC.exists_rep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsCosetRepHeckeElementPrincipalLevel.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_coset_rep_hecke_element_principal_level : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),

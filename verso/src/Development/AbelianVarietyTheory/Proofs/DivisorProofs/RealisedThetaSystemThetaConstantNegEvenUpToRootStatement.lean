@@ -13,8 +13,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaParity.theta_neg | exact GlobalTheory.ThetaParity.theta_neg | (intros; apply GlobalTheory.ThetaParity.theta_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaParity.theta_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealisedThetaSystemThetaConstantNegEvenUpToRoot.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.realisedThetaSystem_thetaConstant_neg_even_upToRoot : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (a : S.Gam), ∃ c ε : Ω, c ^ 2 = 1 ∧ ε ^ ((S.r * S.N) ^ 2) = 1 ∧ S.th (-a) = c * ε * S.th a := by
   first | exact @GlobalTheory.ThetaParity.theta_neg | exact GlobalTheory.ThetaParity.theta_neg | (intros; apply GlobalTheory.ThetaParity.theta_neg <;> assumption)

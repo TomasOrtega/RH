@@ -18,8 +18,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatGL.evR_flat_chg | exact GlobalTheory.FlatGL.evR_flat_chg | (intros; apply GlobalTheory.FlatGL.evR_flat_chg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatGL.evR_flat_chg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatSectionFrameInvariance.lean&line=198#L198)
 -/
 theorem _root_.GlobalTheory.T.flat_section_frame_invariance : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (τ : Psi H) {f : Rul Xo c}, f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0) →

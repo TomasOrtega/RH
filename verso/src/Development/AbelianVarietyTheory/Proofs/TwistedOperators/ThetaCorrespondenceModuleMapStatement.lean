@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoinvLine.coinv_kills_line_deriv | exact GlobalTheory.CoinvLine.coinv_kills_line_deriv | (intros; apply GlobalTheory.CoinvLine.coinv_kills_line_deriv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoinvLine.coinv_kills_line_deriv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaCorrespondenceModuleMap.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.theta_correspondence_module_map : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ωA : WRep W X) (ωB : WRep W₁ X) (Pi : ModuleCat.{0} ℂ)

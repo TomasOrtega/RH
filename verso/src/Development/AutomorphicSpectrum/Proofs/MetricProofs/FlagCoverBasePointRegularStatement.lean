@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFlagCoverBasePointRegular.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.flag_cover_base_point_regular : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (zb : (Σ k, baseIdx ι' M'.blk k) → ℂ) (s : M.Ω), zb ∈ mcPts (mCoordIdeal M'.x) → RegAt M.x (mCoordIdeal (zb ∘ Cv.v)) s → RegAt M'.x (mCoordIdeal zb) (Cv.φ s) ∧ valAt M'.x (Cv.φ s) zb = valAt M.x s (zb ∘ Cv.v) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.RegPhi.regAt_φ_valAt <;> assumption)

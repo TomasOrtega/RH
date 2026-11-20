@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogPole.exists_ksCompare | exact GlobalTheory.LogPole.exists_ksCompare | (intros; apply GlobalTheory.LogPole.exists_ksCompare <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogPole.exists_ksCompare` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKodairaSpencerComparison.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.kodaira_spencer_comparison : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c), ∃ s : ℚ, s ≠ 0 ∧ KSCompare TF s := by
   first | exact @GlobalTheory.LogPole.exists_ksCompare | exact GlobalTheory.LogPole.exists_ksCompare | (intros; apply GlobalTheory.LogPole.exists_ksCompare <;> assumption)

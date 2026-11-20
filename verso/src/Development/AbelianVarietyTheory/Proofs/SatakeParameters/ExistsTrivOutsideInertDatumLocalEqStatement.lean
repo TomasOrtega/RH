@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteInertH
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertLift.exists_trivOutside_loc_eq | exact GlobalTheory.InertLift.exists_trivOutside_loc_eq | (intros; apply GlobalTheory.InertLift.exists_trivOutside_loc_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertLift.exists_trivOutside_loc_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsTrivOutsideInertDatumLocalEq.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.exists_trivOutside_inertDatum_local_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (k : GL (Fin n) (w.adicCompletion L)), k ∈ Formalism.UG.GU Dv.σw n → ∃ x : GAf L n, TrivOutside {v} x ∧ Dv.loc x = k := by
   first | exact @GlobalTheory.InertLift.exists_trivOutside_loc_eq | exact GlobalTheory.InertLift.exists_trivOutside_loc_eq | (intros; apply GlobalTheory.InertLift.exists_trivOutside_loc_eq <;> assumption)

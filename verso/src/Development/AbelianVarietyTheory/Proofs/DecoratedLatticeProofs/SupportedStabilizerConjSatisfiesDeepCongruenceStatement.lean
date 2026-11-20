@@ -9,8 +9,10 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt | exact GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt | (intros; apply GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSupportedStabilizerConjSatisfiesDeepCongruence.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.supportedStabilizer_conj_satisfies_deepCongruence : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (v : GlobalTheory.FinPl.Pl D), ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal → ∀ κ : GA D (D.sp.Y 0), κ ∈ grpAt (D.sp.Y 0) (· = v) → (iotaX X h κ).2 ∈ X.B.I.Kset → K2cong X.B.I X.B.g X.e0 X.z0 X.bw ((X.xu u)⁻¹ * (iotaX X h κ).2 * X.xu u) := by
   first | exact @GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt | exact GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt | (intros; apply GlobalTheory.Core.Mi.KTwoAwayLevel.k2cong_conj_of_grpAt <;> assumption)

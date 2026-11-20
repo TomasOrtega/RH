@@ -12,8 +12,10 @@ open GlobalTheory.ChainPts.PullHT (pullA)
 open scoped TensorProduct
 open GlobalTheory.ChainPts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerVB.isVB_kernel_of_pres | exact GlobalTheory.KerVB.isVB_kernel_of_pres | (intros; apply GlobalTheory.KerVB.isVB_kernel_of_pres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerVB.isVB_kernel_of_pres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelVectorBundleOfPresentation.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.kernel_vector_bundle_of_presentation : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : GlobalTheory.Vert.Model O) (P₁ P₃ : Pres B) (r : ℕ) (F : B.X.Modules) (j : F ⟶ P₁.mod), GlobalTheory.VB.IsVB F r → Nonempty (cokernel j ≅ P₃.mod) → GlobalTheory.VB.IsVB (kernel j) r := by
   first | exact @GlobalTheory.KerVB.isVB_kernel_of_pres | exact GlobalTheory.KerVB.isVB_kernel_of_pres | (intros; apply GlobalTheory.KerVB.isVB_kernel_of_pres <;> assumption)

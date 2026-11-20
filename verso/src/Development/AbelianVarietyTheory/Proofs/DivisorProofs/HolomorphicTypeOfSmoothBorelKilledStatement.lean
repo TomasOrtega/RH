@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.holFn_of_killed | exact GlobalTheory.HolDict.holFn_of_killed | (intros; apply GlobalTheory.HolDict.holFn_of_killed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.holFn_of_killed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicTypeOfSmoothBorelKilled.lean&line=421#L421)
 -/
 theorem _root_.GlobalTheory.T.holomorphicType_of_smooth_borelKilled : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ f, SmFn Hm f → KilledFn Hm x₀ w f → HolFn Hm q x₀ w f := by
   first | exact @GlobalTheory.HolDict.holFn_of_killed | exact GlobalTheory.HolDict.holFn_of_killed | (intros; apply GlobalTheory.HolDict.holFn_of_killed <;> assumption)

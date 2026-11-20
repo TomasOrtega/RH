@@ -10,8 +10,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusPart.extend_torus_hom_dvr | exact GlobalTheory.TorusPart.extend_torus_hom_dvr | (intros; apply GlobalTheory.TorusPart.extend_torus_hom_dvr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusPart.extend_torus_hom_dvr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExtendSplitTorusHomOverDvr.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.extend_splitTorus_hom_over_dvr : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G],
     IsSemiAbelian G → ∀ (G₁ : Over (Sp (FractionRing V))) [GrpObj G₁] (φ₁ : G₁.left ⟶ G.left),

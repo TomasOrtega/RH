@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMat
 open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep Formalism.UG GlobalTheory.BCT
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.congConj_iff | exact GlobalTheory.congConj_iff | (intros; apply GlobalTheory.congConj_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.congConj_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrincipalCongruenceGLConjMaxCompactIff.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.principalCongruenceGL_conj_maxCompact_iff : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (m k : ℕ) (c N : GLw m w), c ∈ GlobalTheory.LFun.KGL w m → ((c⁻¹ * N * c ∈ GlobalTheory.LFun.KGL w m ∧ ∀ i j, Valued.v ((c⁻¹ * N * c).val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))) ↔ (N ∈ GlobalTheory.LFun.KGL w m ∧ ∀ i j, Valued.v (N.val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ)))) := by
   first | exact @GlobalTheory.congConj_iff | exact GlobalTheory.congConj_iff | (intros; apply GlobalTheory.congConj_iff <;> assumption)

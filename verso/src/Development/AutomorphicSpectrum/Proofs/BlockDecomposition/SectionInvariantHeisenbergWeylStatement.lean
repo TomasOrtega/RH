@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FJE.LawW.law_w | exact GlobalTheory.CompanionTheory.FJE.LawW.law_w | (intros; apply GlobalTheory.CompanionTheory.FJE.LawW.law_w <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FJE.LawW.law_w` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSectionInvariantHeisenbergWeyl.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.section_invariant_heisenberg_weyl : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (χ : (AE D)ˣ →* Circle) (s : ℂ) (f : G D n → ℂ), IsLaw χ s f → ∀ (x : Mx D ρ p) (h : G D n), f (M.w * M.nzx 0 x * h) = f (M.w * h) := by
   first | exact @GlobalTheory.CompanionTheory.FJE.LawW.law_w | exact GlobalTheory.CompanionTheory.FJE.LawW.law_w | (intros; apply GlobalTheory.CompanionTheory.FJE.LawW.law_w <;> assumption)

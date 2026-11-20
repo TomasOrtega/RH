@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor | exact GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor | (intros; apply GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBijectiveLocallyConstantComapAlgClosureTensorOfH.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.bijective_locallyConstant_comap_algClosure_tensor_of_henselian : ∀ (Λ : Type) (A : Type) [CommRing A] [IsLocalRing A] [HenselianLocalRing A] [IsSepClosed (IsLocalRing.ResidueField A)] (B : Type) [CommRing B] [Algebra A B] [Algebra.IsIntegral A B], Function.Bijective (fun φ : LocallyConstant (PrimeSpectrum B) Λ => φ.comap ⟨PrimeSpectrum.comap (Algebra.TensorProduct.includeRight : B →ₐ[A] AlgebraicClosure (IsLocalRing.ResidueField A) ⊗[A] B).toRingHom, PrimeSpectrum.continuous_comap _⟩) := by
   first | exact @GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor | exact GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor | (intros; apply GlobalTheory.bijective_locallyConstant_comap_algebraicClosure_tensor <;> assumption)

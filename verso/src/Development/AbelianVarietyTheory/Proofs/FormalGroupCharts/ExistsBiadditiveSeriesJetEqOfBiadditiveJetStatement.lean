@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dLin transF IsInvPair dAct)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ChartCmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartBilin.exists_biadd_jEq | exact GlobalTheory.ChartBilin.exists_biadd_jEq | (intros; apply GlobalTheory.ChartBilin.exists_biadd_jEq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartBilin.exists_biadd_jEq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FExistsBiadditiveSeriesJetEqOfBiadditiveJet.lean&line=180#L180)
 -/
 theorem _root_.GlobalTheory.T.exists_biadditive_series_jetEq_of_biadditiveJet : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (m : ℕ), 2 ≤ m → ∀ g : PS k 2 d, Biadd m B k g → ∃ g' : PS k 2 d, (∀ m', Biadd m' B k g') ∧ JEq m g g' := by
   first | exact @GlobalTheory.ChartBilin.exists_biadd_jEq | exact GlobalTheory.ChartBilin.exists_biadd_jEq | (intros; apply GlobalTheory.ChartBilin.exists_biadd_jEq <;> assumption)

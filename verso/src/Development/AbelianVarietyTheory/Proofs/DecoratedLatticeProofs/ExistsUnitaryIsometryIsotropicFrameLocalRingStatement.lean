@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WittFrame.exists_isometry_frame | exact GlobalTheory.WittFrame.exists_isometry_frame | (intros; apply GlobalTheory.WittFrame.exists_isometry_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WittFrame.exists_isometry_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsUnitaryIsometryIsotropicFrameLocalRing.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryIsometry_isotropicFrame_localRing : ∀ (O : Type) [CommRing O] [IsLocalRing O] (s : O →+* O), (∀ x, s (s x) = x) → (∃ τ : O, τ + s τ = 1) → (∀ u : O, IsUnit u → s u = u → ∃ x : O, s x * x = u) → ∀ (n r : ℕ) (Q : Matrix (Fin n) (Fin n) O), Formalism.UG.cT s Q = Q → IsUnit Q → ∀ C C' : Matrix (Fin n) (Fin r) O, (∃ L : Matrix (Fin r) (Fin n) O, L * C = 1) → (∃ L : Matrix (Fin r) (Fin n) O, L * C' = 1) → Formalism.UG.cT s C * Q * C = 0 → Formalism.UG.cT s C' * Q * C' = 0 → ∃ k : GL (Fin n) O, Formalism.UG.cT s k.1 * Q * k.1 = Q ∧ k.1 * C = C' := by
   first | exact @GlobalTheory.WittFrame.exists_isometry_frame | exact GlobalTheory.WittFrame.exists_isometry_frame | (intros; apply GlobalTheory.WittFrame.exists_isometry_frame <;> assumption)

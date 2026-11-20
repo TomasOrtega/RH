@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.exists_twDat | exact GlobalTheory.AdForm.exists_twDat | (intros; apply GlobalTheory.AdForm.exists_twDat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.exists_twDat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsTupleChainAdelicData.lean&line=329#L329)
 -/
 theorem _root_.GlobalTheory.T.exists_tupleChain_adelicData : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι), ∃ (Ch : ℕ → Type) (_ : ∀ i, Fintype (Ch i)) (A : TwDat I l Z u a Ch), A.Is ∧ Nonempty (Unique (Ch B.R.m)) ∧ ∀ i, i < B.R.m → ∀ β, A.kb i β = TC.kStd X u (B.R.N i) := by
   first | exact @GlobalTheory.AdForm.exists_twDat | exact GlobalTheory.AdForm.exists_twDat | (intros; apply GlobalTheory.AdForm.exists_twDat <;> assumption)

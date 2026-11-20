@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.Geomet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span | exact GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span | (intros; apply GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHodgeInnerProductOnSpan.lean&line=308#L308)
 -/
 theorem _root_.GlobalTheory.T.hodge_inner_product_on_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S' S : Scheme.{0}) (t₀ : SAB H S') (t : SAB H S) (f : S' ⟶ S) (_ : SABMap t₀ t f) (z₀ : Sp ℂ ⟶ S') (V : Type) [AddCommGroup V] [Module ℂ V] (Mz : LieModel t.G (z₀ ≫ f) V) (core : InnerProductSpace.Core ℂ V) (W : Set V), (0 : V) ∈ W → Submodule.span ℂ W = ⊤ → (∀ a ∈ W, ∀ b ∈ W, HodgeIP t.G t.PP.L (z₀ ≫ f) (Mz.pt a) (Mz.pt b) (core.inner a b)) → ∀ a b : V, HodgeIP t.G t.PP.L (z₀ ≫ f) (Mz.pt a) (Mz.pt b) (core.inner a b) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span | exact GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span | (intros; apply GlobalTheory.CompanionTheory.Ar.HodgeExt.hodgeInnerProduct_of_span <;> assumption)

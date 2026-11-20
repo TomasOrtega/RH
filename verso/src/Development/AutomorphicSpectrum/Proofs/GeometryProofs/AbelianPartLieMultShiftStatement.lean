@@ -13,8 +13,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenDecompositionE
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart | exact GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart | (intros; apply GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAbelianPartLieMultShift.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.abelian_part_lie_mult_shift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (L : Type) [Field L] [CharZero L] (z : Sp L ⟶ S) (P : AbPart t z), ∃ r : ℕ, ∀ (k : Type) [Field k] [IsAlgClosed k] (g : L →+* k) (τ : 𝓞 E →+* k) (n : ℕ), LieMult P.tK.act (spMap g) τ n → r ≤ n ∧ LieMult P.tB.act (spMap g) τ (n - r) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart | exact GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart | (intros; apply GlobalTheory.CompanionTheory.Ar.AbMult.lieMult_abPart <;> assumption)

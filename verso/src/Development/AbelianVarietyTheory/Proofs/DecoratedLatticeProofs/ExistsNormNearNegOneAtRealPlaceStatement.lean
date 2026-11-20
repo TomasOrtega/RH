@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemConnectedComp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUnits
 open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.HeckeGal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormSign.exists_norm_sign | exact GlobalTheory.NormSign.exists_norm_sign | (intros; apply GlobalTheory.NormSign.exists_norm_sign <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormSign.exists_norm_sign` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsNormNearNegOneAtRealPlace.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.exists_norm_near_neg_one_at_real_place : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (j : K →+* ℂ), NumberField.ComplexEmbedding.IsReal j → ∀ (T : Finset (HeightOneSpectrum (𝓞 K))) (M : ℕ) (W : Set (Ideles E)), W ∈ nhds (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E (InfinitePlace.mk (j.comp (algebraMap E K))) (-1)) → ∃ a : Kˣ, (∀ w ∈ T, w.valuation K ((a : K) - 1) ≤ WithZero.exp (-(M : ℤ))) ∧ Units.map (ReciprocityTheory.Neutral.Bridge.HCFR.infPart E) (diagUnits E (Units.map (Algebra.norm E (S := K)) a)) ∈ W := by
   first | exact @GlobalTheory.NormSign.exists_norm_sign | exact GlobalTheory.NormSign.exists_norm_sign | (intros; apply GlobalTheory.NormSign.exists_norm_sign <;> assumption)

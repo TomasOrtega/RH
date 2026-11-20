@@ -7,8 +7,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix ValuativeRel GlobalTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.TopLevelInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlipAdm.isAdmissible_flip | exact GlobalTheory.FlipAdm.isAdmissible_flip | (intros; apply GlobalTheory.FlipAdm.isAdmissible_flip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlipAdm.isAdmissible_flip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitThetaGridIsAdmissibleFlipTensor.lean&line=180#L180)
 -/
 theorem _root_.GlobalTheory.T.splitThetaGrid_isAdmissible_flipTensor : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ), IsUnif ϖ → HasConductor ψ 1 → 1 ≤ e →
     ∀ (St : Γ.PiLocalization₂) (x : ℕ × ℕ), CondLE ϖ e (Γ.nu x.1 x.2) → PassesThrough x.1 x.2 St.path →

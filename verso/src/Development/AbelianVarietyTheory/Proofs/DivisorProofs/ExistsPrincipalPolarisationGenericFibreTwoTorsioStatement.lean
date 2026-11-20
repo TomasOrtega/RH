@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistAV.exists_translate_pol | exact GlobalTheory.TwistAV.exists_translate_pol | (intros; apply GlobalTheory.TwistAV.exists_translate_pol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistAV.exists_translate_pol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPrincipalPolarisationGenericFibreTwoTorsio.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.exists_principal_polarisation_genericFibre_twoTorsion_translate : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ a : 𝟙_ (Over (Sp R)) ⟶ G, a ^ 2 = 1 → ∀ P : GlobalTheory.UU.CP G, LBIso P.L.L (U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left) → ∃ (A₂ : PolAV (Sp (FractionRing R))) (gen₂ : (Over.pullback (jK R)).obj G ≅ A₂.A), IsMonHom gen₂.hom ∧ LBIso (A₂.L.pull gen₂.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) := by
   first | exact @GlobalTheory.TwistAV.exists_translate_pol | exact GlobalTheory.TwistAV.exists_translate_pol | (intros; apply GlobalTheory.TwistAV.exists_translate_pol <;> assumption)

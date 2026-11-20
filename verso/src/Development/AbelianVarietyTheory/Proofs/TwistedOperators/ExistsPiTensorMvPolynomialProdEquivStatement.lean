@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyInvFunEq
 open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries GlobalTheory.OneFunctional Formalism.BasicNotions GlobalTheory.Branching
 open scoped TensorProduct DirectSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolyTensor.exists_piTensor_equiv | exact GlobalTheory.PolyTensor.exists_piTensor_equiv | (intros; apply GlobalTheory.PolyTensor.exists_piTensor_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolyTensor.exists_piTensor_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPiTensorMvPolynomialProdEquiv.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.exists_piTensor_mvPolynomial_prod_equiv : ∀ (ι σ : Type) [Fintype ι], ∃ e : (⨂[ℂ] _ : ι, MvPolynomial σ ℂ) ≃ₗ[ℂ] MvPolynomial (ι × σ) ℂ, ∀ f : ι → MvPolynomial σ ℂ, e (PiTensorProduct.tprod ℂ f) = ∏ τ, rename (Prod.mk τ) (f τ) := by
   first | exact @GlobalTheory.PolyTensor.exists_piTensor_equiv | exact GlobalTheory.PolyTensor.exists_piTensor_equiv | (intros; apply GlobalTheory.PolyTensor.exists_piTensor_equiv <;> assumption)

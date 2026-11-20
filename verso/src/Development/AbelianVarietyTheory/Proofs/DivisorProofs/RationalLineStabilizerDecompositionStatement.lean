@@ -13,8 +13,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatStabLevi.rat_levi_dec | exact GlobalTheory.RatStabLevi.rat_levi_dec | (intros; apply GlobalTheory.RatStabLevi.rat_levi_dec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatStabLevi.rat_levi_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalLineStabilizerDecomposition.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.rational_line_stabilizer_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {n d₁ : ℕ} (W : Spc F E n) (W₁ : Spc F E d₁) (H' : Plane E n d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ p ∈ ratU σ W.J, ∀ t : (AE F E)ˣ, mat p *ᵥ incV F H'.x = t.1 • incV F H'.x →

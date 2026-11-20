@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.mem_closure_of_isIntegralElem_affine_le | exact GlobalTheory.Mum.mem_closure_of_isIntegralElem_affine_le | (intros; apply GlobalTheory.Mum.mem_closure_of_isIntegralElem_affine_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.mem_closure_of_isIntegralElem_affine_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemSubringClosureOfIsIntegralElemAffineOpenLe.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.mem_subringClosure_of_isIntegralElem_affineOpen_le : ∀ {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) (V W : S.Opens) (hWV : W ≤ V),
     IsAffineOpen V → IsAffineOpen W → ∀ b : Γ(Sp K, gp ⁻¹ᵁ W), (gp.app W).hom.IsIntegralElem b →

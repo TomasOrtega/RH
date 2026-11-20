@@ -18,8 +18,10 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockSubstHarm.rename_fockSubst_mem_HHa | exact GlobalTheory.FockSubstHarm.rename_fockSubst_mem_HHa | (intros; apply GlobalTheory.FockSubstHarm.rename_fockSubst_mem_HHa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockSubstHarm.rename_fockSubst_mem_HHa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFockSubstitutionPreservesHarmonicLetterPolynomia.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.fockSubstitution_preserves_harmonicLetterPolynomials : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (m n : ℕ) (lt : LtN Dw n ≃ FVar D m n),
     m = Dw.p + Dw.q → (∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) → IsLetters Dw lt →

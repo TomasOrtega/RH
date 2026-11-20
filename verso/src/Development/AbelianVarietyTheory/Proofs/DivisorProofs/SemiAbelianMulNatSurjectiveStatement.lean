@@ -10,8 +10,10 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SemiAbSurj.surjective_pow | exact GlobalTheory.SemiAbSurj.surjective_pow | (intros; apply GlobalTheory.SemiAbSurj.surjective_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SemiAbSurj.surjective_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianMulNatSurjective.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.semiAbelian_mul_nat_surjective : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ m : ℕ, m ≠ 0 → Surjective ((𝟙 G) ^ m : G ⟶ G).left := by
   first | exact @GlobalTheory.SemiAbSurj.surjective_pow | exact GlobalTheory.SemiAbSurj.surjective_pow | (intros; apply GlobalTheory.SemiAbSurj.surjective_pow <;> assumption)

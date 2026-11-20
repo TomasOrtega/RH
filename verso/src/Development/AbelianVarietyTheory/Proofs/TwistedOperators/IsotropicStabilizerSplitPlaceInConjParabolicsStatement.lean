@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitStab.splitStab | exact GlobalTheory.SplitStab.splitStab | (intros; apply GlobalTheory.SplitStab.splitStab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitStab.splitStab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsotropicStabilizerSplitPlaceInConjParabolics.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.isotropicStabilizer_splitPlace_inConjParabolics : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (s : SplitAt D.sp.cm.sig V.gram (frameLat V) v)
     (W : Submodule D.host.E V.V), GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W →

@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.TopFlip
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopFlip.ZMatQ.bigZeta_eq_smul_smallZeta_change | exact GlobalTheory.TopFlip.ZMatQ.bigZeta_eq_smul_smallZeta_change | (intros; apply GlobalTheory.TopFlip.ZMatQ.bigZeta_eq_smul_smallZeta_change <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopFlip.ZMatQ.bigZeta_eq_smul_smallZeta_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBigZetaIntegralEqSmulSmallZetaIntegralOfIntegral.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.bigZetaIntegral_eq_smul_smallZetaIntegral_of_integralChange : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a : ℕ) (A' : Type) [Fintype A'] [DecidableEq A'] (C : Type) [Fintype C] [DecidableEq C]
       (C₁ : Type) [Fintype C₁] [DecidableEq C₁] (eC : C ≃ C₁) (σ : Fin a ⊕ A' ≃ C) (σ₁ : Fin a ⊕ A' ≃ C₁)

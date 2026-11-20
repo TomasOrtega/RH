@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsKMeas
 open Matrix MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 GlobalTheory.HCXi
 open scoped ENNReal ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCXi.VLev.vHalf_level | exact GlobalTheory.HCXi.VLev.vHalf_level | (intros; apply GlobalTheory.HCXi.VLev.vHalf_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCXi.VLev.vHalf_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCovolumeBounds%2FHalfVolumeLeviRecursion.lean&line=172#L172)
 -/
 theorem _root_.GlobalTheory.T.half_volume_levi_recursion : ∀ k r' : ℕ, 1 ≤ k → ∀ x ∈ GV k (1 + r'), ∃ g₁ ∈ GV k r', ∀ y ∈ GV k r', vHalf k (1 + r') (x * ιLev k 1 r' y) = sqLen (x *ᵥ e0 k r') ^ (-(((2 * (1 + r') + k : ℕ) : ℝ) / 2)) * vHalf k r' (g₁ * y) := by
   first | exact @GlobalTheory.HCXi.VLev.vHalf_level | exact GlobalTheory.HCXi.VLev.vHalf_level | (intros; apply GlobalTheory.HCXi.VLev.vHalf_level <;> assumption)

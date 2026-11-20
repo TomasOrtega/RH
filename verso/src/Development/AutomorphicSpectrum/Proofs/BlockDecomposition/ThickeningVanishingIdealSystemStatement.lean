@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningSecti
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out MvPolynomial GlobalTheory.CompanionTheory.GE
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family | exact GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family | (intros; apply GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FThickeningVanishingIdealSystem.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.thickening_vanishing_ideal_system : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (N : ℕ)
     (Cs : ℕ → Scheme.{0}) (i : ∀ e, Cs e ⟶ (thickObj R I e (PO R N)).left)

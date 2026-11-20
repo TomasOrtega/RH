@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TangentBaseChange.exists_tangent_baseChange | exact GlobalTheory.TangentBaseChange.exists_tangent_baseChange | (intros; apply GlobalTheory.TangentBaseChange.exists_tangent_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TangentBaseChange.exists_tangent_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentPullbackChainCompat.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.tangent_pullback_chain_compat : ∀ (R₀ R : Subring ℂ) (ic : R₀ →+* R), (∀ x, ((ic x : R) : ℂ) = x) →
   ∀ (G₀ : Over (Sp R₀)) [GrpObj G₀] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp ℂ)) [GrpObj A]

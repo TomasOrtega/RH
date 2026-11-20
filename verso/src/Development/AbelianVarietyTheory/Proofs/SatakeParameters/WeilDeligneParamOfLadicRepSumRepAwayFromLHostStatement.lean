@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open Formalism.BasicNotions.Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom | exact GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom | (intros; apply GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FWeilDeligneParamOfLadicRepSumRepAwayFromLHost.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.weilDeligneParamOfLadicRep_sumRep_awayFrom_l_host : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a b : ℕ) (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l)) (w : PlE D.host) (hw : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal), Continuous (fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) → Continuous (fun g => ((ρ' g : GL (Fin b) (Qbar l)) : Matrix (Fin b) (Fin b) (Qbar l))) → GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') = (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ).lpSum (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ') := by
   first | exact @GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom | exact GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom | (intros; apply GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom <;> assumption)

@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualPr
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published.SiegelOneVector GlobalTheory.CompanionTheory.SiegelND GlobalTheory.CompanionTheory.SiegelND.Coef GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 open scoped TensorProduct ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo | exact GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHermitianCoordinatesMeasurePreserving.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.hermitian_coordinates_measure_preserving : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ n : ℕ, (GlobalTheory.CompanionTheory.SW.coordHerm R σ b lam n).map (hCo R σ b) = Measure.pi fun _ : Idx n d => lam := by
   first | exact @GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo | exact GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordHerm_map_hCo <;> assumption)

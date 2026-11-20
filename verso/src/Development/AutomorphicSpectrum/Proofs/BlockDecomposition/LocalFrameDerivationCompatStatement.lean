@@ -8,8 +8,10 @@ set_option autoImplicit false
 open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistableComparison CrystallineSemistableComparison.Pb GlobalTheory.CompanionTheory.ConeLocal
 open GlobalTheory.CatH (face toLast)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeLocal.coef_mem_jacSpan | exact GlobalTheory.CompanionTheory.ConeLocal.coef_mem_jacSpan | (intros; apply GlobalTheory.CompanionTheory.ConeLocal.coef_mem_jacSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ConeLocal.coef_mem_jacSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalFrameDerivationCompat.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.local_frame_derivation_compat : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (s : ℕ) {V V' : X.Opens} (hVV : V ≤ V'), IsAffineOpen V' → ∀ {d : ℕ} (c : Coord q V d),
     letI := (strV q V).toAlgebra

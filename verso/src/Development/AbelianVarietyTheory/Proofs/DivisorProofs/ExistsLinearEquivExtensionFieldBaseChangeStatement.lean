@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.Mum.UpExt GlobalTheory.FieldBaseChange ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldBaseChange.exists_bijective_extension | exact GlobalTheory.FieldBaseChange.exists_bijective_extension | (intros; apply GlobalTheory.FieldBaseChange.exists_bijective_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldBaseChange.exists_bijective_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLinearEquivExtensionFieldBaseChange.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_linearEquiv_extension_fieldBaseChange : ∀ (K F V V' W W' : Type) [Field K] [Field F] [Algebra K F] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V'] [AddCommGroup W] [Module F W] [AddCommGroup W'] [Module F W'] (a : V →ₛₗ[algebraMap K F] W) (d : V' →ₛₗ[algebraMap K F] W'), GlobalTheory.FieldBaseChange.IsExtension a → GlobalTheory.FieldBaseChange.IsExtension d → ∀ e : V →ₗ[K] V', Function.Bijective e → ∃ e' : W →ₗ[F] W', Function.Bijective e' ∧ ∀ v, e' (a v) = d (e v) := by
   first | exact @GlobalTheory.FieldBaseChange.exists_bijective_extension | exact GlobalTheory.FieldBaseChange.exists_bijective_extension | (intros; apply GlobalTheory.FieldBaseChange.exists_bijective_extension <;> assumption)

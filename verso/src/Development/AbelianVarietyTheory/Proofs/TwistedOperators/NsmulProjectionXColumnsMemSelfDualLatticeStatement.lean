@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjXCols.nsmul_projX_mem_latBig | exact GlobalTheory.ProjXCols.nsmul_projX_mem_latBig | (intros; apply GlobalTheory.ProjXCols.nsmul_projX_mem_latBig <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjXCols.nsmul_projX_mem_latBig` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FNsmulProjectionXColumnsMemSelfDualLattice.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.nsmul_projection_xColumns_mem_selfDual_lattice : OnStd fun {D} _ _ {sc} {G} _ F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latBig G (2 * ρ + 1), N • (u ⬝ (F.dB ρ h).jX ⬝ (F.dB ρ h).pX) ∈ latBig G (2 * ρ + 1) := by
   first | exact @GlobalTheory.ProjXCols.nsmul_projX_mem_latBig | exact GlobalTheory.ProjXCols.nsmul_projX_mem_latBig | (intros; apply GlobalTheory.ProjXCols.nsmul_projX_mem_latBig <;> assumption)

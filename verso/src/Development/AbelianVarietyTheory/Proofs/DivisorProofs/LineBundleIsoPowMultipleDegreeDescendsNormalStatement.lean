@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull | exact GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull | (intros; apply GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleIsoPowMultipleDegreeDescendsNormal.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.lineBundleIso_pow_multiple_degree_descends_normal : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω] (M : RatModel k Ω) (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra k Ω'] [IsScalarTower k Ω Ω'] [FiniteDimensional Ω Ω'] (M' : RatModel k Ω') (π : M'.Z ⟶ M.Z) (A B : LB M.Z) (d : ℕ), Geo.Tor.IsNormalScheme M.Z → IsFinite π → M'.pt ≫ π = spMap (algebraMap Ω Ω') ≫ M.pt → A.IsLB → B.IsLB → Module.finrank Ω Ω' ∣ d → LBIso (A.pull π) (B.pull π) → LBIso (lbPow A d) (lbPow B d) := by
   first | exact @GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull | exact GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull | (intros; apply GlobalTheory.UMin.NormIso.lbIso_lbPow_of_pull <;> assumption)

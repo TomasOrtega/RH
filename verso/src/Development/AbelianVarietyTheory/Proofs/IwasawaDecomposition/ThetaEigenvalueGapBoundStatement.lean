@@ -15,8 +15,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR | exact GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR | (intros; apply GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FThetaEigenvalueGapBound.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.theta_eigenvalue_gap_bound : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => (∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L)) ∧ ∀ (τ : (w.D Z).what₂.Tau) (n : ℕ), n + 1 < (w.D Z).R.r → 100 * ((w.D Z).R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt ((w.D Z).hc τ) n - Formalism.L2.NTheta.lamAt ((w.D Z).hc τ) (n + 1) := by
   first | exact @GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR | exact GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR | (intros; apply GlobalTheory.HeightCounting.Up.ParamsLayer.params_gapR <;> assumption)

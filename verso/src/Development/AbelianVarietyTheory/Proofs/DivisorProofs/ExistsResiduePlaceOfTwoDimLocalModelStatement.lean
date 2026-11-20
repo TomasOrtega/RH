@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.residuePlace_of_locModel | exact GlobalTheory.FieldPair.residuePlace_of_locModel | (intros; apply GlobalTheory.FieldPair.residuePlace_of_locModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.residuePlace_of_locModel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsResiduePlaceOfTwoDimLocalModel.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_residuePlace_of_twoDimLocalModel : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (Q : Subring L) (hQ : IsLocModel cL Q) (t u : Q),
   Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) → ringKrullDim Q = 2 →

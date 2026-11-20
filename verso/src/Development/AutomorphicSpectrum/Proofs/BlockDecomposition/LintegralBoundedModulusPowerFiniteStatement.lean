@@ -7,8 +7,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MHInt.lintegral_indicator_modulus_rpow_lt_top | exact GlobalTheory.CompanionTheory.MHInt.lintegral_indicator_modulus_rpow_lt_top | (intros; apply GlobalTheory.CompanionTheory.MHInt.lintegral_indicator_modulus_rpow_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MHInt.lintegral_indicator_modulus_rpow_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLintegralBoundedModulusPowerFinite.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.lintegral_bounded_modulus_power_finite : ForS fun F _ _ _ _ _ _ _ => ∀ B e : ℝ, 0 < e →
   ∫⁻ a : Fˣ, Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a => ENNReal.ofReal ((modulus (a : F) : ℝ) ^ e)) a ∂multHaar F < ⊤ := by

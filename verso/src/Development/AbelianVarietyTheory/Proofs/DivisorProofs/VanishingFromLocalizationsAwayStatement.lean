@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime | exact GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime | (intros; apply GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVanishingFromLocalizationsAway.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_local_covering : ∀ (B : Type) [CommRing B] (s : Set B), (∀ P : PrimeSpectrum B, ∃ f ∈ s, f ∉ P.asIdeal) → ∀ b : B, (∀ f ∈ s, algebraMap B (Localization.Away f) b = 0) → b = 0 := by
   first | exact @GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime | exact GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime | (intros; apply GlobalTheory.PDiv.eq_zero_of_away_eq_zero_of_forall_prime <;> assumption)

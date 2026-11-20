@@ -15,8 +15,10 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.GalCut GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodCsdTwist.exists_goodCsd_twist | exact GlobalTheory.GoodCsdTwist.exists_goodCsd_twist | (intros; apply GlobalTheory.GoodCsdTwist.exists_goodCsd_twist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodCsdTwist.exists_goodCsd_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsGoodConjSelfDualTwistSplitUnramified.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.exists_good_conjSelfDual_twist_split_unramified : AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l a : ℕ), 1 ≤ a → ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), InScope .good l π χ → ∀ w₀ : HeightOneSpectrum (𝓞 E), GlobalTheory.UnitaryBC.IsSplitAt w₀ → ∃ (κ : HChar E) (m : (E →+* ℂ) → ℤ), κ.IsAlg m ∧ κ.UnrAt w₀ ∧ InScope .csd l (π.twist κ) (quadChar E ^ a) := by
   first | exact @GlobalTheory.GoodCsdTwist.exists_goodCsd_twist | exact GlobalTheory.GoodCsdTwist.exists_goodCsd_twist | (intros; apply GlobalTheory.GoodCsdTwist.exists_goodCsd_twist <;> assumption)

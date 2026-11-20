@@ -12,8 +12,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeatV.valR_cst_eq_iota | exact GlobalTheory.HeatV.valR_cst_eq_iota | (intros; apply GlobalTheory.HeatV.valR_cst_eq_iota <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeatV.valR_cst_eq_iota` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointValueFractionFieldEqBasicOpenExtension.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.pointValue_fractionField_eq_basicOpen_extension : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (Ω : Type) [CommRing Ω] [IsDomain Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ G.left), x' ≫ G.hom = spMap φ → ∀ (c : R) (iota : Γ(Sp R, (GlobalTheory.HeatV.bo R c).1) →+* FractionRing Ω), (∀ r, iota (GlobalTheory.HeatV.resV R c r) = algebraMap Ω (FractionRing Ω) (φ r)) → ∀ (O : G.left.Opens) (h : O ≤ G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1), ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x') ⁻¹ᵁ O → ∀ θ, valR (spMap (algebraMap Ω (FractionRing Ω)) ≫ x') O (GlobalTheory.HeatV.cst G.hom _ h θ) = iota θ := by
   first | exact @GlobalTheory.HeatV.valR_cst_eq_iota | exact GlobalTheory.HeatV.valR_cst_eq_iota | (intros; apply GlobalTheory.HeatV.valR_cst_eq_iota <;> assumption)

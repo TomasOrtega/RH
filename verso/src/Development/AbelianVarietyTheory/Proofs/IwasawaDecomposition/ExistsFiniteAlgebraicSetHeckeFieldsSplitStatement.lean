@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.HFld.Transp.transp | exact GlobalTheory.Mem.HFld.Transp.transp | (intros; apply GlobalTheory.Mem.HFld.Transp.transp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.HFld.Transp.transp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsFiniteAlgebraicSetHeckeFieldsSplit.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_algebraic_set_heckeFields_split : ∀ (B0 : Base) (px0 : PreX B0.toPre) (I0 : Col2.ColIn B0 px0), B0.fields.Ok → I0.Ok →
   ∃ s : Finset ℂ, (∀ z ∈ s, IsAlgebraic ℚ z) ∧

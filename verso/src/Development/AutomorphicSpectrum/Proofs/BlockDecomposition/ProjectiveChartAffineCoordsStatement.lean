@@ -7,8 +7,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.ChartRestriction.G.Geo.Tor CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeTransfer.main | exact GlobalTheory.CompanionTheory.ConeTransfer.main | (intros; apply GlobalTheory.CompanionTheory.ConeTransfer.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ConeTransfer.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProjectiveChartAffineCoords.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.projective_chart_affine_coords : KH.LocGr → KH.PolyTf → KH.GrAff →
     ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)

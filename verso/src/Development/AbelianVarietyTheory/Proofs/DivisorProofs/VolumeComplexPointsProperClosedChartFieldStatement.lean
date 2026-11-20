@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernNull.chart_null_field | exact GlobalTheory.ChernNull.chart_null_field | (intros; apply GlobalTheory.ChernNull.chart_null_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernNull.chart_null_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVolumeComplexPointsProperClosedChartField.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.volume_complexPoints_properClosed_chart_field : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (Z : Set X), IsClosed Z → genericPoint X ∉ Z → ∀ c : AlgChart p σ D, volume (c.e '' (c.e.source ∩ {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z})) = 0 := by
   first | exact @GlobalTheory.ChernNull.chart_null_field | exact GlobalTheory.ChernNull.chart_null_field | (intros; apply GlobalTheory.ChernNull.chart_null_field <;> assumption)

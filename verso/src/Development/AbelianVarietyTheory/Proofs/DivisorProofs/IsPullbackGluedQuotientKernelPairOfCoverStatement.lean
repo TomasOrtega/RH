@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlueQuotPB.isPullback_translation_of_cover | exact GlobalTheory.GlueQuotPB.isPullback_translation_of_cover | (intros; apply GlobalTheory.GlueQuotPB.isPullback_translation_of_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlueQuotPB.isPullback_translation_of_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackGluedQuotientKernelPairOfCover.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.isPullback_gluedQuotient_kernelPair_of_cover : ∀ (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A H G : Over S) [GrpObj A] [GrpObj H] (i : H ⟶ A) (Q : A ⟶ G)
     (B : ∀ j, Over (𝒰.X j)) (ψ : ∀ j, (B j).left ⟶ G.left) (q : ∀ j, (Over.pullback (𝒰.f j)).obj A ⟶ B j),

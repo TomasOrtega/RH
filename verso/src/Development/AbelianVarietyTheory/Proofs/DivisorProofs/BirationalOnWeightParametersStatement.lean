@@ -26,8 +26,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSApp.birOn_u₁_u₂ | exact GlobalTheory.HSApp.birOn_u₁_u₂ | (intros; apply GlobalTheory.HSApp.birOn_u₁_u₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSApp.birOn_u₁_u₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBirationalOnWeightParameters.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.birational_on_weight_parameters : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → Hypotheses2 → Size → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, BirOn Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ 0) ∧ BirOn Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₂ 0) := by
   first | exact @GlobalTheory.HSApp.birOn_u₁_u₂ | exact GlobalTheory.HSApp.birOn_u₁_u₂ | (intros; apply GlobalTheory.HSApp.birOn_u₁_u₂ <;> assumption)

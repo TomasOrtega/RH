@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge GlobalTheory.LogCris GlobalTheory.PDA CrystallineSemistableComparison CrystallineSemistableComparison.CH CrystallineSemistableComparison.PAlg CrystallineSemistableComparison.B
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ContAcr.acr_cont | exact GlobalTheory.CompanionTheory.ContAcr.acr_cont | (intros; apply GlobalTheory.CompanionTheory.ContAcr.acr_cont <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ContAcr.acr_cont` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FContinuousFunctionsPeriodRingSeparation.lean&line=274#L274)
 -/
 theorem _root_.GlobalTheory.T.continuous_functions_period_ring_separation : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), (∀ x : (A.cont ℤ_[l]).Acr n, IsLocallyConstant fun z => mapAcr (A.evCont z) n x) ∧ (∀ x : (A.cont ℤ_[l]).Acr n, (∀ z, mapAcr (A.evCont z) n x = 0) → x = 0) ∧ ∀ (𝔞 : Ideal ((base l).Acr n)) (f : ℤ_[l] → A.Acr n), IsLocallyConstant f → (∀ z, f z ∈ 𝔞.map (mapAcr A.fromBase n)) → ∃ x ∈ 𝔞.map (mapAcr (A.cont ℤ_[l]).fromBase n), ∀ z, mapAcr (A.evCont z) n x = f z := by
   first | exact @GlobalTheory.CompanionTheory.ContAcr.acr_cont | exact GlobalTheory.CompanionTheory.ContAcr.acr_cont | (intros; apply GlobalTheory.CompanionTheory.ContAcr.acr_cont <;> assumption)

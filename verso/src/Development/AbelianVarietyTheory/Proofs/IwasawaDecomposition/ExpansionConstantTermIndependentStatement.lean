@@ -7,8 +7,10 @@ open GlobalTheory.LN GlobalTheory.TorRef GlobalTheory.IntegralCombination
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosedIndep.main | exact GlobalTheory.ClosedIndep.main | (intros; apply GlobalTheory.ClosedIndep.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosedIndep.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExpansionConstantTermIndependent.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.expansion_constant_term_independent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]

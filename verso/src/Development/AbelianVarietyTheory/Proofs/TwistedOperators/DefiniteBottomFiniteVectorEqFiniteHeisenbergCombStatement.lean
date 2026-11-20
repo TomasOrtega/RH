@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BottomFinComb.finVec_isFinComb | exact GlobalTheory.BottomFinComb.finVec_isFinComb | (intros; apply GlobalTheory.BottomFinComb.finVec_isFinComb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BottomFinComb.finVec_isFinComb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDefiniteBottomFiniteVectorEqFiniteHeisenbergComb.lean&line=180#L180)
 -/
 theorem _root_.GlobalTheory.T.definiteBottom_finiteVector_eq_finite_heisenbergComb : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,

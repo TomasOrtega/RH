@@ -13,8 +13,10 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 open PI.DSInfCharCap (actU Egl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinStable.exists_finDim_stable | exact GlobalTheory.KFinStable.exists_finDim_stable | (intros; apply GlobalTheory.KFinStable.exists_finDim_stable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinStable.exists_finDim_stable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteDimensionalInvariantSubspace.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.finite_dimensional_invariant_subspace : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Nontrivial H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsAdmRep ε ρ → ∀ T : ℕ → Module.End ℂ (kFinVec ε ρ), (∀ κ ∈ Kset ε, ∀ (k : ℕ) (v w : kFinVec ε ρ), (w : H) = ρ κ v → ((T k w : kFinVec ε ρ) : H) = ρ κ (T k v : H)) → ∃ S : Submodule ℂ (kFinVec ε ρ), FiniteDimensional ℂ S ∧ S ≠ ⊥ ∧ ∀ k, ∀ w ∈ S, T k w ∈ S := by
   first | exact @GlobalTheory.KFinStable.exists_finDim_stable | exact GlobalTheory.KFinStable.exists_finDim_stable | (intros; apply GlobalTheory.KFinStable.exists_finDim_stable <;> assumption)

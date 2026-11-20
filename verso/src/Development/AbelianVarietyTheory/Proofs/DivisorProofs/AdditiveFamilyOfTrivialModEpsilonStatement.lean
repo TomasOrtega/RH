@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.fam_of_triv_mod_eps | exact GlobalTheory.DualOpen.fam_of_triv_mod_eps | (intros; apply GlobalTheory.DualOpen.fam_of_triv_mod_eps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualOpen.fam_of_triv_mod_eps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdditiveFamilyOfTrivialModEpsilon.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.additiveFamily_of_trivial_mod_epsilon : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (k : Type) [Field k] (s : Sp (DualNumber k) ⟶ S) (D : LB (A ⊗ Over.mk s).left) (hD : D.IsLB), GlobalTheory.CechPic.pull (A ◁ ptMap s (dnFst k)).left (cls D hD) = 0 → Fam A D := by
   first | exact @GlobalTheory.DualOpen.fam_of_triv_mod_eps | exact GlobalTheory.DualOpen.fam_of_triv_mod_eps | (intros; apply GlobalTheory.DualOpen.fam_of_triv_mod_eps <;> assumption)

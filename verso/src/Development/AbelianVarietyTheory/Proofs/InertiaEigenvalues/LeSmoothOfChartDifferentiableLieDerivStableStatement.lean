@@ -17,8 +17,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WordAppendSing
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.UnitaryBC GroundTheory.Global GroundTheory.Global.IdeleGroup
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothClosure.le_Sm | exact GlobalTheory.SmoothClosure.le_Sm | (intros; apply GlobalTheory.SmoothClosure.le_Sm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothClosure.le_Sm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLeSmoothOfChartDifferentiableLieDerivStable.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.le_smooth_of_chartDifferentiable_lieDerivStable : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Submodule ℂ (GA E a → ℂ)), (∀ F ∈ S, ∀ g : GA E a, DifferentiableOn ℝ (chart F g) (invSet E a)) → (∀ F ∈ S, ∀ X : Lie E a, lieD X F ∈ S) → S ≤ Sm E a := by
   first | exact @GlobalTheory.SmoothClosure.le_Sm | exact GlobalTheory.SmoothClosure.le_Sm | (intros; apply GlobalTheory.SmoothClosure.le_Sm <;> assumption)

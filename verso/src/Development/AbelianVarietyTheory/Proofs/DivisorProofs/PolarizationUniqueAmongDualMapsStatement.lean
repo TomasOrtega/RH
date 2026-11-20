@@ -17,8 +17,10 @@ open GlobalTheory GlobalTheory.GroupBplus GlobalTheory.GroupBplus.Closed
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg | exact GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg | (intros; apply GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarizationUniqueAmongDualMaps.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.dualHom_bidual_comp_eq_neg_of_weil_pairing : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), ∀ φ : GG ⟶ GG.dual, (∀ ψ ψ' : GG ⟶ GG.dual, (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ (tau tw I y))) n = muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ' (tau tw I y))) n) → ψ = ψ') → (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))) n = ((I.ζ (p ^ n) ^ Dw.EF x y : kˣ) : k)) → GG.bidual.hom ≫ dualHom GG GG.dual φ = -φ := by
   first | exact @GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg | exact GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg | (intros; apply GlobalTheory.GroupBplus.Closed.bidual_comp_dualHom_eq_neg <;> assumption)

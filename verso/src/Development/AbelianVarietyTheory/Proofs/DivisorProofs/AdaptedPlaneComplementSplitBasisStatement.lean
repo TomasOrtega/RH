@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdaptedPlaneBasis.isSplitBasis_of_isAdapted | exact GlobalTheory.AdaptedPlaneBasis.isSplitBasis_of_isAdapted | (intros; apply GlobalTheory.AdaptedPlaneBasis.isSplitBasis_of_isAdapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdaptedPlaneBasis.isSplitBasis_of_isAdapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneComplementSplitBasis.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_complement_split_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s : ℕ),

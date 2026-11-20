@@ -11,8 +11,10 @@ open GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory
 open IsDedekindDomain GlobalTheory.WholeFlag.Glue GlobalTheory.WholeFlag.GlueProof
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen | exact GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen | (intros; apply GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeChartLineBaseRegular.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.hodge_chart_line_base_regular : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (L : Fin g → LB V.X) (m : ℕ) (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ), Hyp A p V W U H J d T L m r → ∀ (q : Idx ι L) (z : V.G), V.j z ∈ chartOpen V U H L m r q → ∀ (k : ℕ) (hk : k ≤ g), UnitAt z (minorAt (H q.1 * ((T (V.π z)).map V.φ)⁻¹) k hk (q.2.1 k)) := by
   first | exact @GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen | exact GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen | (intros; apply GlobalTheory.WholeFlag.GlueProof.unitAt_minor_of_mem_chartOpen <;> assumption)

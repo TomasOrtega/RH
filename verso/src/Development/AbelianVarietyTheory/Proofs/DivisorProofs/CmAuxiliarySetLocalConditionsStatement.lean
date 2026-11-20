@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FilEig.fil_baseChange_eq_iSup_eigK | exact GlobalTheory.FilEig.fil_baseChange_eq_iSup_eigK | (intros; apply GlobalTheory.FilEig.fil_baseChange_eq_iSup_eigK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FilEig.fil_baseChange_eq_iSup_eigK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmAuxiliarySetLocalConditions.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.cm_auxiliary_set_local_conditions : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)

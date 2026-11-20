@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLine.Twist.lineModel_true | exact GlobalTheory.HTLine.Twist.lineModel_true | (intros; apply GlobalTheory.HTLine.Twist.lineModel_true <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLine.Twist.lineModel_true` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLineModelTrueOfFalse.lean&line=258#L258)
 -/
 theorem _root_.GlobalTheory.T.lineModel_true_of_false : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : Mdl Y i₀) st (x : Letter Dw), HasPRatio Z st → Nonempty (LineModel Z false st x) → Nonempty (LineModel Z true st x) := by
   first | exact @GlobalTheory.HTLine.Twist.lineModel_true | exact GlobalTheory.HTLine.Twist.lineModel_true | (intros; apply GlobalTheory.HTLine.Twist.lineModel_true <;> assumption)

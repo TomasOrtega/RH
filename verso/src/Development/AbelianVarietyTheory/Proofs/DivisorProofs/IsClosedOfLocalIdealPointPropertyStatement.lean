@@ -4,8 +4,10 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtClosed.closed_of_points | exact GlobalTheory.PtClosed.closed_of_points | (intros; apply GlobalTheory.PtClosed.closed_of_points <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtClosed.closed_of_points` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsClosedOfLocalIdealPointProperty.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.isClosed_of_local_ideal_point_property : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (x : Sp R' ⟶ S), P R' x → P R'' (spMap g ≫ x)) →

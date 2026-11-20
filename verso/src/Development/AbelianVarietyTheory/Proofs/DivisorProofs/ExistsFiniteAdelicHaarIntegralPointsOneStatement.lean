@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedPr
 open scoped Matrix GlobalTheory.VacAny ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RatWeilOp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinAdeleHaarNorm.exists_addHaar_integral_eq_one | exact GlobalTheory.FinAdeleHaarNorm.exists_addHaar_integral_eq_one | (intros; apply GlobalTheory.FinAdeleHaarNorm.exists_addHaar_integral_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinAdeleHaarNorm.exists_addHaar_integral_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteAdelicHaarIntegralPointsOne.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteAdelicHaar_integralPoints_one : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)],
     ∃ μf : Measure (κ → Af F), μf.IsAddHaarMeasure ∧ μf {y | ∀ i (v : HeightOneSpectrum (𝓞 F)), evalV F v (y i) ∈ v.adicCompletionIntegers F} = 1 := by

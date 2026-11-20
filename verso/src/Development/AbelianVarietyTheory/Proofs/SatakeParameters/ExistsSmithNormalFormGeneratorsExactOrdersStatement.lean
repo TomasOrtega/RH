@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmithNormalFormIntegralMatrix
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.snf_generators | exact GlobalTheory.Hk3.snf_generators | (intros; apply GlobalTheory.Hk3.snf_generators <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.snf_generators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsSmithNormalFormGeneratorsExactOrders.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.exists_smithNormalForm_generators_exactOrders : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L), Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →
   ∀ (n : ℕ) (a : GL (Fin n) L), ∃ (r : ℕ) (M : Matrix (Fin n) (Fin r) L) (e : Fin r → ℕ),

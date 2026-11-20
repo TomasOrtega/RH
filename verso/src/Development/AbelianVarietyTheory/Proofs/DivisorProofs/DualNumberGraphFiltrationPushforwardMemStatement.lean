@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTRealise.push_mem_graphFil | exact GlobalTheory.HTRealise.push_mem_graphFil | (intros; apply GlobalTheory.HTRealise.push_mem_graphFil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTRealise.push_mem_graphFil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualNumberGraphFiltrationPushforwardMem.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.dualNumberGraphFiltration_pushforward_mem : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (g : A₀ ⟶ A₀) [IsMonHom g] (f : HdR A₀ →ₗ[k] HdR A₀), (∀ x ∈ Fil A₀, f (push (dp0 k) (𝟙 _) g x) - push (dp0 k) (𝟙 _) g (f x) ∈ Fil A₀) → ∀ d ∈ GlobalTheory.HTRealise.graphFil A₀ f, push (epsDP k) (GlobalTheory.DeRham.epsRed k) g d ∈ GlobalTheory.HTRealise.graphFil A₀ f := by
   first | exact @GlobalTheory.HTRealise.push_mem_graphFil | exact GlobalTheory.HTRealise.push_mem_graphFil | (intros; apply GlobalTheory.HTRealise.push_mem_graphFil <;> assumption)

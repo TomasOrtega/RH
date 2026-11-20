@@ -11,8 +11,10 @@ noncomputable section
 open NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeConjPart.conj_part | exact GlobalTheory.HeckeConjPart.conj_part | (intros; apply GlobalTheory.HeckeConjPart.conj_part <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeConjPart.conj_part` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjPrimeSmulLatticeHeckeElementLe.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.conjPrime_smul_lattice_heckeElement_le : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (g a₀ : GA D V),
     Formalism.L2.NTheta.IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 →

@@ -18,8 +18,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BlockRealLine.isRealLine_blockEmb_exp | exact GlobalTheory.BlockRealLine.isRealLine_blockEmb_exp | (intros; apply GlobalTheory.BlockRealLine.isRealLine_blockEmb_exp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BlockRealLine.isRealLine_blockEmb_exp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsRealLineBlockEmbeddingExpInfinitePlace.lean&line=194#L194)
 -/
 theorem _root_.GlobalTheory.T.isRealLine_blockEmbedding_exp_infinitePlace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

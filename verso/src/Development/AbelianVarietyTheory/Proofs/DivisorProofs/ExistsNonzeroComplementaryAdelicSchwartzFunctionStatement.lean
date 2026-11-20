@@ -22,8 +22,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RestComplement.exists_rest_ne_zero | exact GlobalTheory.RestComplement.exists_rest_ne_zero | (intros; apply GlobalTheory.RestComplement.exists_rest_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RestComplement.exists_rest_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonzeroComplementaryAdelicSchwartzFunction.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_complementary_adelicSchwartz_function : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     (f : (κ → Fv F v) → ℂ), f ∈ GlobalTheory.WeilM.SB (κ → Fv F v) →

@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | exact GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | (intros; apply GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsNeZeroLatticeVacuumSelfDual.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_latticeVacuum_selfDual : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ Γ ≤ latO S T (LS : Set _) (LT : Set _) (fun _ => True), ∃ f, VacG ψ S T Γ f ∧ f ≠ 0 := by
   first | exact @GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | exact GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | (intros; apply GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero <;> assumption)

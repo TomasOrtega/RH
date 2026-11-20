@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatTransverseLagrangiaStatement
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SvNAnyChar.stoneVonNeumann_any_char | exact GlobalTheory.SvNAnyChar.stoneVonNeumann_any_char | (intros; apply GlobalTheory.SvNAnyChar.stoneVonNeumann_any_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SvNAnyChar.stoneVonNeumann_any_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStoneVonNeumannSchwartzBruhatAnyCharacter.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.stoneVonNeumann_schwartzBruhat_anyCharacter : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Invertible (2 : k)] {κ : Type} [Fintype κ] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →

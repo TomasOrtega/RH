@@ -12,8 +12,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FSignatureUnitaryBlocksInvertible.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.signature_unitary_blocks_invertible : ∀ (j j' : ℕ) (u : Matrix (Sg j j') (Sg j j') ℂ), IsSgU u → IsUnit u.toBlocks₁₁.det ∧ IsUnit u.toBlocks₂₂.det ∧ (1 - moebW u 0 * (moebW u 0)ᴴ) * (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ) = 1 ∧ (1 - moebW u 0 * (moebW u 0)ᴴ).PosDef := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks <;> assumption)

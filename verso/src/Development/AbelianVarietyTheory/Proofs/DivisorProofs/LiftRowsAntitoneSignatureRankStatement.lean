@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowRow.lift_rows_antitone | exact GlobalTheory.LowRow.lift_rows_antitone | (intros; apply GlobalTheory.LowRow.lift_rows_antitone <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowRow.lift_rows_antitone` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftRowsAntitoneSignatureRank.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.liftRows_antitone_signature_rank : ∀ (D : D7) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau), Antitone (aPlAt D i σ ρ) ∧ Antitone (aMiAt D i σ ρ) ∧ pW D i ρ + qW D i ρ = (Wc D i).rank ∧ (Wc D i).rank ≤ (Vc D i).rank := by
   first | exact @GlobalTheory.LowRow.lift_rows_antitone | exact GlobalTheory.LowRow.lift_rows_antitone | (intros; apply GlobalTheory.LowRow.lift_rows_antitone <;> assumption)

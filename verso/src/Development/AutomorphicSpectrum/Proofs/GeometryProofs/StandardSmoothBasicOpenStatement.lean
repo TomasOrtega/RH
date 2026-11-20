@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap PSpace valR)
 open ReciprocityTheory.ChartRestriction.G.Geo.ResK
 open GlobalTheory.ProjSpace GlobalTheory.Points GlobalTheory.TuplePoint GlobalTheory.CompanionTheory.Ar.SncRes
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away | exact GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away | (intros; apply GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FStandardSmoothBasicOpen.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.standard_smooth_basic_open : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (Z : Scheme.{0}) (ζ : Sp Ω ⟶ Z) [IsDominant ζ] [IsReduced Z] (g : Z ⟶ Sp ℚ) (e : ℕ) (W : Z.Opens) (hW : IsAffineOpen W) (h : ⊤ ≤ ζ ⁻¹ᵁ W) (A : Subalgebra ℚ Ω) (hA : Set.range (valMap ζ W h).hom = A) (σ : Γ(Z, W)) (g₀ : A) (hg : (g₀ : Ω) = valR ζ W σ) [Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away g₀)], SmoothOfRelativeDimension e ((Z.basicOpen σ).ι ≫ g) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away | exact GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away | (intros; apply GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away <;> assumption)

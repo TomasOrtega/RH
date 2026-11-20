@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv | exact GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv | (intros; apply GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsProjSpaceMapOfTupleHasDivisor.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_projSpace_map_of_tuple_hasDivisor : ∀ (k Ω o : Type) [CommRing k] [Field Ω] [Algebra k Ω] [CommRing o] (β : o →+* k) (M : RatModel k Ω) (n : ℕ) (c : Fin (n + 1) → Ω), M.HasDiv c → ∃ h : M.Z ⟶ PSpace o n, h ≫ PSpace.str o n = M.s ≫ spMap β ∧ PCrd (M.pt ≫ h) c := by
   first | exact @GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv | exact GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv | (intros; apply GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv <;> assumption)

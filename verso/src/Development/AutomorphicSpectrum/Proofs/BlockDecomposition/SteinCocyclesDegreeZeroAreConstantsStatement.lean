@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SteinCocyclesDe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cup1CoboundaryMemBoundaries
 open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.HopfC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HopfC.stein_cn | exact GlobalTheory.CompanionTheory.HopfC.stein_cn | (intros; apply GlobalTheory.CompanionTheory.HopfC.stein_cn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HopfC.stein_cn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSteinCocyclesDegreeZeroAreConstants.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.stein_cocycles_degree_zero_are_constants : DictSt → ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), Stein F → (∀ f : Cn F 0, dn F 0 f = 0 → ∃ r : R, f = r • (1 : Cn F 0)) ∧ ∀ r : R, r • (1 : Cn F 0) = 0 → r = 0 := by
   first | exact @GlobalTheory.CompanionTheory.HopfC.stein_cn | exact GlobalTheory.CompanionTheory.HopfC.stein_cn | (intros; apply GlobalTheory.CompanionTheory.HopfC.stein_cn <;> assumption)

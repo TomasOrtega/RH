@@ -10,8 +10,10 @@ open GlobalTheory.LGrp (IsUnitarisable IsIrrSmooth bcParam)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaLaw.zeta_law | exact GlobalTheory.ZetaLaw.zeta_law | (intros; apply GlobalTheory.ZetaLaw.zeta_law <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaLaw.zeta_law` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteLevelDatumVectorTransformsByLevelCharacter.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.finiteLevelDatumVector_transforms_by_levelCharacter : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) i t σ s P cμ cη m ω BW f₀ f c io, IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ k ∈ levG (Wc D i) (R.βW i) (R.datWp i P), ω (1, k) f = levChi (Wc D i) (R.βW i) (R.datWp i P) k • f := by
   first | exact @GlobalTheory.ZetaLaw.zeta_law | exact GlobalTheory.ZetaLaw.zeta_law | (intros; apply GlobalTheory.ZetaLaw.zeta_law <;> assumption)

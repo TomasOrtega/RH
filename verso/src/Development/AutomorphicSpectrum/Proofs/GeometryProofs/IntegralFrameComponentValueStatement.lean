@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalT
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero | exact GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIntegralFrameComponentValue.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.integral_frame_component_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Z : Comp Xo c) (ex : Ix Dw → ℤ) (f : Rul Xo c), f ∈ GlobalTheory.AllWt.secZ Xo c ex → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (A : Subring (Om Z)) (ev : A →+* T.Fr), FinTr.RegAt h Z io A ev y.1 → evI y f ≠ 0 → ∀ hb : evC h Z f ∈ A, ev ⟨_, hb⟩ ≠ 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero | exact GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.FinTr.ev_genValue_ne_zero <;> assumption)

@@ -15,8 +15,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatClosed.closed_of_eq_riem | exact GlobalTheory.FlatClosed.closed_of_eq_riem | (intros; apply GlobalTheory.FlatClosed.closed_of_eq_riem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatClosed.closed_of_eq_riem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRiemannFormClosed.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.riemann_form_closed : ∀ (n g : ℕ) (X : V n → Fl g) (α : V n → Alt n) (v : V n), ContDiffAt ℝ ∞ X v → (∀ᶠ u in 𝓝 v, IsType 1 1 (α u) ∧ ∀ ξ ζ : V n, eval₂ (α u) ξ ζ = (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.riem (fderiv ℝ X u ξ) (fderiv ℝ X u ζ) : ℝ)) → delAt α v = 0 ∧ dbarAt α v = 0 := by
   first | exact @GlobalTheory.FlatClosed.closed_of_eq_riem | exact GlobalTheory.FlatClosed.closed_of_eq_riem | (intros; apply GlobalTheory.FlatClosed.closed_of_eq_riem <;> assumption)

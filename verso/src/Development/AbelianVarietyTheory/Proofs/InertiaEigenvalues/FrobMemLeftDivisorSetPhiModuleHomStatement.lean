@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BddOfMemLdivSe
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BK.Hom.frob_mem_ldivSet_target | exact GlobalTheory.BK.Hom.frob_mem_ldivSet_target | (intros; apply GlobalTheory.BK.Hom.frob_mem_ldivSet_target <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BK.Hom.frob_mem_ldivSet_target` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFrobMemLeftDivisorSetPhiModuleHom.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.frob_mem_leftDivisorSet_phiModuleHom : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (P : PhiMod O K l e a ι) (Q : PhiMod O K l e a κ) (F : GlobalTheory.BK.Hom P Q), ∃ M : ℕ, ∀ τ, ∀ h ∈ F.ldivSet (τ - 1), E K l e ^ M * frob K l h ∈ F.ldivSet τ := by
   first | exact @GlobalTheory.BK.Hom.frob_mem_ldivSet_target | exact GlobalTheory.BK.Hom.frob_mem_ldivSet_target | (intros; apply GlobalTheory.BK.Hom.frob_mem_ldivSet_target <;> assumption)

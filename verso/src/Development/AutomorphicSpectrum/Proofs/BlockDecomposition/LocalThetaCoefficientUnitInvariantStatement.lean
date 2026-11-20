@@ -13,8 +13,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.fL_mul_unit | exact GlobalTheory.CompanionTheory.FexTheta.fL_mul_unit | (intros; apply GlobalTheory.CompanionTheory.FexTheta.fL_mul_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.fL_mul_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalThetaCoefficientUnitInvariant.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.local_theta_coefficient_unit_invariant : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → (¬ L.IsSp ∨ (Unr c v ∧ L.std)) → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K) (x : (Qv v)ˣ),

@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open Matrix
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaCplV.exists_isURep_of_stable | exact GlobalTheory.ThetaCplV.exists_isURep_of_stable | (intros; apply GlobalTheory.ThetaCplV.exists_isURep_of_stable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaCplV.exists_isURep_of_stable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteDimTranslationRepUnitaryModel.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.finite_dim_translation_rep_unitary_model : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] (j : K →* G), Continuous j → ∀ H : Subgroup G, (∀ k, j k ∈ H) → ∀ T : Submodule ℂ (G → ℂ), FiniteDimensional ℂ T → (∀ t ∈ T, Continuous t) → (∀ h, ∀ t ∈ T, GlobalTheory.ThetaCplV.rt H h t ∈ T) → ∃ (m : ℕ) (τ : K → (EuclideanSpace ℂ (Fin m) →L[ℂ] EuclideanSpace ℂ (Fin m))), GlobalTheory.Dec.IsURep τ ∧ ∀ f ∈ GlobalTheory.ThetaCplV.typeSet (GlobalTheory.ThetaCplV.rt H) ⊤ T, ∃ L : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] (G → ℂ), (∀ k w x, L (τ k w) x = L w (x * j k)) ∧ f ∈ LinearMap.range L := by
   first | exact @GlobalTheory.ThetaCplV.exists_isURep_of_stable | exact GlobalTheory.ThetaCplV.exists_isURep_of_stable | (intros; apply GlobalTheory.ThetaCplV.exists_isURep_of_stable <;> assumption)

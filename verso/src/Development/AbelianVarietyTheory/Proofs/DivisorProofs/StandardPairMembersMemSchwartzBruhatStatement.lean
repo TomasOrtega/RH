@@ -11,8 +11,10 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdPairSB.stdPair_mem_SB | exact GlobalTheory.StdPairSB.stdPair_mem_SB | (intros; apply GlobalTheory.StdPairSB.stdPair_mem_SB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdPairSB.stdPair_mem_SB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardPairMembersMemSchwartzBruhat.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.standardPair_members_mem_schwartzBruhat : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ν : kˣ →* ℂˣ) (ϖ : kˣ)
     (c a a' : ℕ), GlobalTheory.SplitFlip.IsUnif ϖ → GlobalTheory.SplitFlip.CondLE ϖ c ν →

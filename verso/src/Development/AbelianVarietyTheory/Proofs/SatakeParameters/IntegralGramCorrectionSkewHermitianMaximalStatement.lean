@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.GramSep.eint | exact GlobalTheory.Hk3.GramSep.eint | (intros; apply GlobalTheory.Hk3.GramSep.eint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.GramSep.eint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIntegralGramCorrectionSkewHermitianMaximal.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.integral_gramCorrection_skewHermitian_maximal : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L), Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → (∀ x, Valued.v (σ x) = Valued.v x) →
   ∀ (n r : ℕ) (JS a : GL (Fin n) L) (M : Matrix (Fin n) (Fin r) L) (e : Fin r → ℕ) (Γ : Matrix (Fin r) (Fin r) L),

@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Eq8 GlobalTheory.Poinc.Sep.Spz Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.Spz.endOn_exists | exact GlobalTheory.Poinc.Sep.Spz.endOn_exists | (intros; apply GlobalTheory.Poinc.Sep.Spz.endOn_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.Spz.endOn_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSemiAbelianEndExtendingAbelianSchemeEnd.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_semiAbelianEnd_extending_abelianSchemeEnd : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∀ f : ρ.P.A ⟶ ρ.P.A, IsMonHom f → ∃ Fm : FinalForm.G ⟶ FinalForm.G, EndOn FinalForm f Fm := by
   first | exact @GlobalTheory.Poinc.Sep.Spz.endOn_exists | exact GlobalTheory.Poinc.Sep.Spz.endOn_exists | (intros; apply GlobalTheory.Poinc.Sep.Spz.endOn_exists <;> assumption)

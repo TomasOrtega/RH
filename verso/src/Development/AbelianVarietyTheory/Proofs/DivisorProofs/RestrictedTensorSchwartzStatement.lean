@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorSquareIntegral.exists_const_tensor | exact GlobalTheory.TensorSquareIntegral.exists_const_tensor | (intros; apply GlobalTheory.TensorSquareIntegral.exists_const_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorSquareIntegral.exists_const_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRestrictedTensorSchwartz.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.restricted_tensor_schwartz : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) (vac vac₁ : ∀ v : Pl F, (κ → Fv F v) → ℂ)

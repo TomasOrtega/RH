@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet | exact GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet | (intros; apply GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsThetaPtOfThetaConstantsAndFirstJets.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.isThetaPt_of_thetaConstantsAndFirstJets : ∀ (K : Type) [Field K] (x : KeyIn K) (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → (m : K) ≠ 0 → ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)) (ϑ : I → K) (J : I → Fin g → K), ThJet x hg m pt ϑ J → IsThetaPt x.P m pt fun i => fnOf (ϑ i) := by
   first | exact @GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet | exact GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet | (intros; apply GlobalTheory.MBLow.ThetaOfJet.isThetaPt_of_thJet <;> assumption)

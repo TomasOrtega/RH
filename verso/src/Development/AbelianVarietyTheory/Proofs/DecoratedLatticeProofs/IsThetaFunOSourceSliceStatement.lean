@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer InDual)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixModel.OrthDec.isThetaFunO_slice | exact GlobalTheory.MixModel.OrthDec.isThetaFunO_slice | (intros; apply GlobalTheory.MixModel.OrthDec.isThetaFunO_slice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixModel.OrthDec.isThetaFunO_slice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsThetaFunOSourceSlice.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.isThetaFunO_source_slice : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (f : WO S T → ℂ) (y : WO L T), IsThetaFunO ψ S T f → IsThetaFunO ψ A T (fun w => f ((o.resS T).symm (w, y))) := by
   first | exact @GlobalTheory.MixModel.OrthDec.isThetaFunO_slice | exact GlobalTheory.MixModel.OrthDec.isThetaFunO_slice | (intros; apply GlobalTheory.MixModel.OrthDec.isThetaFunO_slice <;> assumption)

@@ -18,8 +18,10 @@ open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeV
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent | exact GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent | (intros; apply GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIsotropicIdempotentOfSplitFactor.lean&line=189#L189)
 -/
 theorem _root_.GlobalTheory.T.exists_isotropic_idempotent_of_split_factor : ∀ {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E] {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (γ : GL (Fin n) E), GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular σ J γ → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClauseAlg σ J γ → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClausePlus σ J γ → ∀ (k : ℕ) (K : Fin k → Type) [∀ i, Field (K i)] [∀ i, Algebra F (K i)], Nonempty (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusAlg σ J (γ : Matrix (Fin n) (Fin n) E) ≃ₐ[F] ∀ i, K i) → ∀ i, ¬ IsField (K i ⊗[F] E) → ∃ ε ∈ GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix (Fin n) (Fin n) E), ε * ε = ε ∧ ε ≠ 0 ∧ Formalism.UG.cT (σ : E →+* E) ε * J * ε = 0 := by
   first | exact @GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent | exact GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent | (intros; apply GlobalTheory.SplitFactorIdem.exists_isotropic_idempotent <;> assumption)

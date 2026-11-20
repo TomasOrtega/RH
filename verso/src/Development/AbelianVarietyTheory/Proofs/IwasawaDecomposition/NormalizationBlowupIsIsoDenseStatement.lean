@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BlowOpen.lifts_to_normalisation | exact GlobalTheory.BlowOpen.lifts_to_normalisation | (intros; apply GlobalTheory.BlowOpen.lifts_to_normalisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BlowOpen.lifts_to_normalisation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNormalizationBlowupIsIsoDense.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.normalization_blowup_isIso_dense : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (Z X' N V : Scheme.{0})
     (s : Z ⟶ Sp R) (b : X' ⟶ Z) (ν : N ⟶ X') (U : Z.Opens) (jV : V ⟶ pullback s (spMap (algebraMap R K))),

@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefTensorProof.coefTensor | exact GlobalTheory.CoefTensorProof.coefTensor | (intros; apply GlobalTheory.CoefTensorProof.coefTensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefTensorProof.coefTensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDualCoefSpaceIsTensorOverRealPlaces.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.dualCoefSpace_isTensorOverRealPlaces : CoefTensor := by
   first | exact @GlobalTheory.CoefTensorProof.coefTensor | exact GlobalTheory.CoefTensorProof.coefTensor | (intros; apply GlobalTheory.CoefTensorProof.coefTensor <;> assumption)

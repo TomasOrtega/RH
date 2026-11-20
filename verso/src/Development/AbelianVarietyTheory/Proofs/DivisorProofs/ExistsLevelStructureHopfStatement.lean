@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.exists_level | exact GlobalTheory.GroupBplus.Aff.exists_level | (intros; apply GlobalTheory.GroupBplus.Aff.exists_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.exists_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLevelStructureHopf.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_level_structure_hopf : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∃ (A : Type) (_ : CommRing A) (_ : HopfAlgebra R A) (_ : IsCocomm R A) (_ : Module.Finite R A) (_ : Module.Projective R A) (θ : TorsPt G N A), IsLevel K θ := by
   first | exact @GlobalTheory.GroupBplus.Aff.exists_level | exact GlobalTheory.GroupBplus.Aff.exists_level | (intros; apply GlobalTheory.GroupBplus.Aff.exists_level <;> assumption)

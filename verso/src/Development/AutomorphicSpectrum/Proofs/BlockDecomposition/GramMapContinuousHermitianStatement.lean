@@ -10,8 +10,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts | exact GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGramMapContinuousHermitian.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.gram_map_continuous_hermitian : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (ρ : D.what₂.Tau), Continuous (fun y : Mx D V.rank r => (inner V y y : Mx D r r)) ∧ ∀ y : Mx D V.rank r, (inner V y y : Mx D r r) ∈ hermA D r ∧ compAt θ ρ (inner V y y : Mx D r r) = (compAt θ ρ y).conjTranspose * gramAt D V ρ * compAt θ ρ y := by
   first | exact @GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts | exact GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts <;> assumption)

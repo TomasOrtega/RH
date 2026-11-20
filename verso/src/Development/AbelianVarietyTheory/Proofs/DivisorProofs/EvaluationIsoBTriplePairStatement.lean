@@ -7,8 +7,10 @@ open scoped TensorProduct GlobalTheory.VacAny
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VanishLocInv.inv_local | exact GlobalTheory.VanishLocInv.inv_local | (intros; apply GlobalTheory.VanishLocInv.inv_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VanishLocInv.inv_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEvaluationIsoBTriplePair.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.evaluation_iso_b_triple_pair : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)),

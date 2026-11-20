@@ -21,8 +21,10 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechPic
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetDRVert.topSelf_detDR_eq_zero | exact GlobalTheory.DetDRVert.topSelf_detDR_eq_zero | (intros; apply GlobalTheory.DetDRVert.topSelf_detDR_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetDRVert.topSelf_detDR_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopSelfCurveCharNotInBadSet.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.top_self_curve_char_not_in_bad_set : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (W : O.LatModel (GlobalTheory.FlagAr.setB O.Y B) c) (τ : D.what₂.Tau)

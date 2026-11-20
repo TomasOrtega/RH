@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TestConstTerm.unipIntegralsVanish_tensor | exact GlobalTheory.TestConstTerm.unipIntegralsVanish_tensor | (intros; apply GlobalTheory.TestConstTerm.unipIntegralsVanish_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TestConstTerm.unipIntegralsVanish_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnipotentIntegralsPureTensorVanishOfLocal.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local : ∀ (D : D7) (V : HSp D) (𝔉 : IsoFlag V) (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ)
     (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), (∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w) →

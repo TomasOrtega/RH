@@ -8,8 +8,10 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.exists_compatible_isometries | exact GlobalTheory.LowFilt.exists_compatible_isometries | (intros; apply GlobalTheory.LowFilt.exists_compatible_isometries <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowFilt.exists_compatible_isometries` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCompatibleIsometriesCoisotropicKernels.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.exists_compatible_isometries_coisotropic_kernels : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (y : ℕ → D.La →ₗ[𝓞 E] X), (∀ n, 0 < n → Cois D (y n) n) →

@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TriFlag.deg_on_curve | exact GlobalTheory.TriFlag.deg_on_curve | (intros; apply GlobalTheory.TriFlag.deg_on_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TriFlag.deg_on_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTriangularFramesOnSmoothCurves.lean&line=179#L179)
 -/
 theorem _root_.GlobalTheory.T.triangular_frames_on_smooth_curves : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X) {A : Type}
     [CommRing A] (s : X ⟶ Sp A) (ε : 𝓞 E →+* A) (q : ℕ) [Fact q.Prime] {W Y : Scheme.{0}} (b : W ⟶ X) (a : W ⟶ Y)

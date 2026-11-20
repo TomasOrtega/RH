@@ -12,8 +12,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CartanFinite.exists_isCartanSystem | exact GlobalTheory.CartanFinite.exists_isCartanSystem | (intros; apply GlobalTheory.CartanFinite.exists_isCartanSystem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CartanFinite.exists_isCartanSystem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsCartanSystem.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.exists_cartan_system : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ 𝒯 : Finset (Subgroup (UJ ε)), IsCartanSystem 𝒯 := by
   first | exact @GlobalTheory.CartanFinite.exists_isCartanSystem | exact GlobalTheory.CartanFinite.exists_isCartanSystem | (intros; apply GlobalTheory.CartanFinite.exists_isCartanSystem <;> assumption)

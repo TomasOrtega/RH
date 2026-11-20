@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensCube.theta_tens | exact GlobalTheory.Mum.TensCube.theta_tens | (intros; apply GlobalTheory.Mum.TensCube.theta_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensCube.theta_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorDataCubicalStructureValues.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.tensorData_cubicalStructure_values : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N'), ∀ x y u, (N'.θ x y u : F) * wv T ν ν' (x * y * u) * wv T ν ν' x * wv T ν ν' y * wv T ν ν' u =
     ((∏ i, ∏ j, (N.θ (cmp T ν ν' x i * cmp T ν ν' x j) (cmp T ν ν' y i * cmp T ν ν' y j) (cmp T ν ν' u i * cmp T ν ν' u j) /

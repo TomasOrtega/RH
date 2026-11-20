@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellInt.quotInt_finiteCells | exact GlobalTheory.CellInt.quotInt_finiteCells | (intros; apply GlobalTheory.CellInt.quotInt_finiteCells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellInt.quotInt_finiteCells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FQuotientIntegralFinitelyManyCellsWeightedSum.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.quotientIntegral_finitelyManyCells_weightedSum : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (R K : Subgroup G), IsClosed (R : Set G) → IsCompact (K : Set G) → IsOpen (K : Set G) → ∀ (ρ : Measure R) (μ : Measure G), ρ.IsHaarMeasure → ρ.IsInvInvariant → μ.IsHaarMeasure → μ.IsMulRightInvariant → ∀ T : Finset G, ∃ (T' : Finset G) (w : G → ℂ), T' ⊆ T ∧ ∀ f : G → ℂ, (∀ r ∈ R, ∀ g, f (r * g) = f g) → (∀ k ∈ K, ∀ g, f (g * k) = f g) → (∀ g, f g ≠ 0 → ∃ q ∈ T, ∃ r ∈ R, ∃ k ∈ K, g = r * q * k) → IsQuotIntL1 ρ μ f (∑ q ∈ T', w q * f q) := by
   first | exact @GlobalTheory.CellInt.quotInt_finiteCells | exact GlobalTheory.CellInt.quotInt_finiteCells | (intros; apply GlobalTheory.CellInt.quotInt_finiteCells <;> assumption)

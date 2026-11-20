@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensTor.exists_ptRel | exact GlobalTheory.Mum.TensTor.exists_ptRel | (intros; apply GlobalTheory.Mum.TensTor.exists_ptRel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensTor.exists_ptRel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTensorTorsionPointOfComponentTuple.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.exists_tensor_torsion_point_of_component_tuple : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (k : ℕ) (ps : Fin r → QkPt D.toPre F k), ∃ p' : QkPt D'.toPre F k, PtRel T ν ν' p' ps := by
   first | exact @GlobalTheory.Mum.TensTor.exists_ptRel | exact GlobalTheory.Mum.TensTor.exists_ptRel | (intros; apply GlobalTheory.Mum.TensTor.exists_ptRel <;> assumption)

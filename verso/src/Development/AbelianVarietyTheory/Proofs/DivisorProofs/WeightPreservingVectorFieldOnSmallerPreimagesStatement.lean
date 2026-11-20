@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Heat.WtSub.isWt_field_of_le | exact GlobalTheory.Heat.WtSub.isWt_field_of_le | (intros; apply GlobalTheory.Heat.WtSub.isWt_field_of_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Heat.WtSub.isWt_field_of_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightPreservingVectorFieldOnSmallerPreimages.lean&line=171#L171)
 -/
 theorem _root_.GlobalTheory.T.weight_preserving_vectorField_on_smaller_preimages : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (V : Q.P.A.left.affineOpens) (d : Fld Y.H.left), IsField (Y.q.left ⁻¹ᵁ V.1) d → (∀ (α : Q.X) f, IsWt Y α (Y.q.left ⁻¹ᵁ V.1) f → IsWt Y α _ (d _ f)) → ∀ (α : Q.X) (V' : Q.P.A.left.Opens), V' ≤ V.1 → ∀ f, IsWt Y α (Y.q.left ⁻¹ᵁ V') f → IsWt Y α (Y.q.left ⁻¹ᵁ V') (d _ f) := by
   first | exact @GlobalTheory.Heat.WtSub.isWt_field_of_le | exact GlobalTheory.Heat.WtSub.isWt_field_of_le | (intros; apply GlobalTheory.Heat.WtSub.isWt_field_of_le <;> assumption)

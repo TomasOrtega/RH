@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.WeierstrassCurve
 open scoped CategoryTheory.Obj UpperHalfPlane
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeierstrassCurve.exists_polAV_invariants | exact GlobalTheory.WeierstrassCurve.exists_polAV_invariants | (intros; apply GlobalTheory.WeierstrassCurve.exists_polAV_invariants <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeierstrassCurve.exists_polAV_invariants` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsPolarisedAbelianSchemeLieBasisInvariants.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_polarisedAbelianScheme_lieBasis_invariants : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R), IsUnit W.Δ → ∃ (P : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A), P.g = 1 ∧ IsLieBasis ![v] ∧ (∀ (R' : Type) [CommRing R'] (f' : R →+* R') (P' : Out.PolAV (Sp R')) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR R' ⟶ P'.A), IsPolFibre f' P P' φ' → IsVecOver f' φ' v v' → IsLieBasis ![v']) ∧ (∀ (s' : R →+* ℂ) (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s' P P' φ' → IsVecOver s' φ' v v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∃ L : PeriodPair, (∀ z : ℂ, z ∈ L.lattice ↔ z • w' ∈ u'.Λ) ∧ s' W.c₄ = 12 * L.g₂ ∧ s' W.c₆ = 216 * L.g₃ ∧ s' W.Δ = L.g₂ ^ 3 - 27 * L.g₃ ^ 2) := by
   first | exact @GlobalTheory.WeierstrassCurve.exists_polAV_invariants | exact GlobalTheory.WeierstrassCurve.exists_polAV_invariants | (intros; apply GlobalTheory.WeierstrassCurve.exists_polAV_invariants <;> assumption)

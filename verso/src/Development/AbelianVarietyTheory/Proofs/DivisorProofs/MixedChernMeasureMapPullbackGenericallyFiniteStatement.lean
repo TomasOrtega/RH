@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.map_part_pull_of_genFinite | exact GlobalTheory.Mix.map_part_pull_of_genFinite | (intros; apply GlobalTheory.Mix.map_part_pull_of_genFinite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.map_part_pull_of_genFinite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernMeasureMapPullbackGenericallyFinite.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.mixedChernMeasure_map_pullback_genericallyFinite : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (L : Fin D → MLine p σ) (ε : ℤˣ), Measure.map (ptMap π hπ σ) (part (fun i => (L i).pull π hπ) ε) = (π.residueDegree (genericPoint Y) : ENNReal) • part L ε := by
   first | exact @GlobalTheory.Mix.map_part_pull_of_genFinite | exact GlobalTheory.Mix.map_part_pull_of_genFinite | (intros; apply GlobalTheory.Mix.map_part_pull_of_genFinite <;> assumption)

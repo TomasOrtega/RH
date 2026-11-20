@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HopfFitt.exists_integral | exact GlobalTheory.HopfFitt.exists_integral | (intros; apply GlobalTheory.HopfFitt.exists_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HopfFitt.exists_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIntegralCartierDual.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_cartier_dual : ∀ (R : Type) [CommRing R] (D : Type) [CommRing D] [HopfAlgebra R D] [Module.Finite R D] (g : ℕ) (x : Fin g → Cot R D) (r c : R), (∀ w : Cot R D, r • w ∈ Submodule.span R (Set.range x)) → (∀ w : Cot R D, c • w = 0) → ∃ (k : ℕ) (Λ : D), (∀ d : D, d * Λ = algebraMap R D (Coalgebra.counit (R := R) d) * Λ) ∧ Coalgebra.counit (R := R) Λ = r ^ k * c ^ g := by
   first | exact @GlobalTheory.HopfFitt.exists_integral | exact GlobalTheory.HopfFitt.exists_integral | (intros; apply GlobalTheory.HopfFitt.exists_integral <;> assumption)

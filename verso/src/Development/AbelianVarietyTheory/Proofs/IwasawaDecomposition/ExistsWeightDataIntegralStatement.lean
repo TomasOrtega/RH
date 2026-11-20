@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentAndT
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.FormsStep.wt_weights | exact GlobalTheory.HeightCounting.FormsStep.wt_weights | (intros; apply GlobalTheory.HeightCounting.FormsStep.wt_weights <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.FormsStep.wt_weights` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsWeightDataIntegral.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_weight_data_integral : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE),
     (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) →

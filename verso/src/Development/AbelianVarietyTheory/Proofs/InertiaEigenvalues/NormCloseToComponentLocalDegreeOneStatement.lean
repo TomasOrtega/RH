@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one | exact GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one | (intros; apply GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormCloseToComponentLocalDegreeOne.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.norm_close_to_component_localDegreeOne : ∀ (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E'] (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)) (w' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E')) (i : w.adicCompletion E ≃+* w'.adicCompletion E'), Continuous i → (∀ x : E, i (algebraMap E _ x) = algebraMap E' _ (algebraMap E E' x)) → ∀ M : ℕ, ∃ M' : ℕ, ∀ (c : E) (z : E'), c ≠ 0 → (∀ w'' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E'), w''.asIdeal.comap (algebraMap (NumberField.RingOfIntegers E) (NumberField.RingOfIntegers E')) = w.asIdeal → w'' ≠ w' → w''.valuation E' (z - 1) ≤ WithZero.exp (-(M' : ℤ))) → w'.valuation E' (z / algebraMap E E' c - 1) ≤ WithZero.exp (-(M' : ℤ)) → w.valuation E (Algebra.norm E z / c - 1) ≤ WithZero.exp (-(M : ℤ)) := by
   first | exact @GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one | exact GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one | (intros; apply GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes | exact GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes | (intros; apply GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularAtIffForallSpecializes.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (D : CartierDiv X) (x : X) (f : X.functionFieldˣ), D.RegularAt x (f : X.functionField) ↔ ∀ z, z ⤳ x → 0 ≤ Scheme.ord (f : X.functionField) z + D.mult z := by
   first | exact @GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes | exact GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes | (intros; apply GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes <;> assumption)

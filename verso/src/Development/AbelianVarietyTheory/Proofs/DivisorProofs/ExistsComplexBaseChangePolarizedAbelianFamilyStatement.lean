@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PELU.exists_isBC | exact GlobalTheory.PELU.exists_isBC | (intros; apply GlobalTheory.PELU.exists_isBC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PELU.exists_isBC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsComplexBaseChangePolarizedAbelianFamily.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_complexBaseChange_polarizedAbelianFamily : ∀ (O : Type) [Ring O] (g : ℕ) (R : Type) [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g), ∃ F' : Fam ℂ O Λ g, IsBC F' F σ := by
   first | exact @GlobalTheory.PELU.exists_isBC | exact GlobalTheory.PELU.exists_isBC | (intros; apply GlobalTheory.PELU.exists_isBC <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPsiLocNe
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep GlobalTheory.RSJ GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 open scoped ENNReal NNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.mspanR_cont_left_avg | exact GlobalTheory.JSW.mspanR_cont_left_avg | (intros; apply GlobalTheory.JSW.mspanR_cont_left_avg; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.mspanR_cont_left_avg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCuspFormRapidSpanContinuousAutomorphicCuspidal.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.cuspFormRapidSpan_continuous_automorphic_cuspidal : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π : CuspSub E (m + 1))
     (ω : HChar E), ω.IsUnitary → π.HasCentChar ω → ∀ φ ∈ GlobalTheory.JSW.mspanR π, Continuous φ ∧

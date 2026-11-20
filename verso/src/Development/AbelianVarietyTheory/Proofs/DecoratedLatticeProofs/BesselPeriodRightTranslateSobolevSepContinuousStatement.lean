@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.sepCont_per_rTrans | exact GlobalTheory.Core.Mi.sepCont_per_rTrans | (intros; apply GlobalTheory.Core.Mi.sepCont_per_rTrans <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.sepCont_per_rTrans` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselPeriodRightTranslateSobolevSepContinuous.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.besselPeriod_rightTranslate_sobolevSepContinuous : ∀ (D : D7) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (S : D.what₂.Tau → SPar) (M : DSModel B.V S) (J : Set (GA D B.V)) (χ : GA D B.V → ℂ) (t : GA D B.V) (φ : GA D B.A → ℂ), IsInfFam θ → IsStdChar D ψ (-1) → IsContAut B.A φ → ∀ T ∈ MultT θ M J χ, ∃ Λ : SmT M →ₗ[ℂ] ℂ, SepCont M Λ ∧ ∀ x, Λ x = B.per ψ φ (rTrans t (T x)) := by
   first | exact @GlobalTheory.Core.Mi.sepCont_per_rTrans | exact GlobalTheory.Core.Mi.sepCont_per_rTrans | (intros; apply GlobalTheory.Core.Mi.sepCont_per_rTrans <;> assumption)

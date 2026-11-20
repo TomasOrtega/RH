@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pinch.exists_fam_of_pull | exact GlobalTheory.Pinch.exists_fam_of_pull | (intros; apply GlobalTheory.Pinch.exists_fam_of_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pinch.exists_fam_of_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdditiveFamilyOfPullbackFiniteSurjective.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_additiveFamily_of_pullback_finiteSurjective : ∀ (S : Scheme.{0}) (A U U' : Over S) [GrpObj A] [IsLocallyNoetherian U.left], IsAbelianScheme A → ∀ (p : U' ⟶ U), IsFinite p.left → Surjective p.left → ∀ (N' : LB (A ⊗ U').left) (h : Fam A N') (c : Pic (A ⊗ U).left), GlobalTheory.CechPic.pull (A ◁ p).left c = cls N' h.isLB → ∃ M : LB (A ⊗ U).left, Fam A M ∧ Same A M N' p (𝟙 U') := by
   first | exact @GlobalTheory.Pinch.exists_fam_of_pull | exact GlobalTheory.Pinch.exists_fam_of_pull | (intros; apply GlobalTheory.Pinch.exists_fam_of_pull <;> assumption)

@@ -8,8 +8,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaUniqReal.eq_of_eq_realPt | exact GlobalTheory.ThetaUniqReal.eq_of_eq_realPt | (intros; apply GlobalTheory.ThetaUniqReal.eq_of_eq_realPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaUniqReal.eq_of_eq_realPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaFunctionOrientedModelEqOfRealAdelicPoints.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.thetaFunction_orientedModel_eq_of_realAdelicPoints : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (f₁ f₂ : WO S T → ℂ),
     IsThetaFunO ψ S T f₁ → IsThetaFunO ψ S T f₂ →

@@ -12,8 +12,10 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn | exact GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FKeyInputFromPpData.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.key_input_from_pp_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L), 1 ≤ D.g → ∀ (s : Out.H0 D.t.PP.L 1) (e : Fin D.g → D.B.carrier), KeyDeg.NonVan D.t.G.hom s → LinearIndependent (𝓞 L) e → Submodule.span (𝓞 L) (Set.range e) = ⊤ → ∃ (x : KeyIn L) (th : D.t.PP.L.Sec) (hg : x.P.g = D.g) (v : Fin x.P.g → (epsR (𝓞 L) ⟶ D.t.G)), KeyDeg.SameSec s th ∧ KeyDeg.NonVan D.t.G.hom th ∧ KeyOver (algebraMap (𝓞 L) L) D.t th x v ∧ IsLieBasis v ∧ ∀ i, (v i).left = (D.MB.pt (e (i.cast hg))).left := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn | exact GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.KeyDatum.exists_keyIn <;> assumption)

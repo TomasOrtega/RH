@@ -16,8 +16,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiEvenCoordUnit.main | exact GlobalTheory.PsiEvenCoordUnit.main | (intros; apply GlobalTheory.PsiEvenCoordUnit.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiEvenCoordUnit.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiEvenCoordinatesNegDifferByUnit.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.psiEven_coordinates_neg_differ_by_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R), D.PsiEven →
     ∀ (y : D.X) (x x' : (FractionRing R)ˣ), IsPsiCoord D y x → IsPsiCoord D (-y) x' →

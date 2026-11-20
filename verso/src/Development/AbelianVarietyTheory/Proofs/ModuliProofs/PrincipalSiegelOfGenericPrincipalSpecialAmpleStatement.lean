@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special | exact GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special | (intros; apply GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FPrincipalSiegelOfGenericPrincipalSpecialAmple.lean&line=224#L224)
 -/
 theorem _root_.GlobalTheory.T.principal_siegel_of_generic_principal_special_ample : Out.Laws → Out.Laws2 → ∀ (h k : ℕ), Odd k → 3 ≤ k → ∀ (B : Type) [CommRing B] (ζ : B) (C O : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C] [CommRing O] [IsLocalRing O] [Algebra O C], IsUnitBall O C → ∀ p : ℕ, p.Prime → ‖(p : C)‖ < 1 → ∀ (β : B →+* O) (c : SiegPre h k ζ (spMap β)), (∃ c' : SiegPre h k ζ (spMap (algebraMap O C) ≫ spMap β), SiegPB c' c (spMap (algebraMap O C)) ∧ c'.Principal) → Out.RelAmple (Over.mk (pullback.snd c.A.hom (spMap (IsLocalRing.residue O)))) (c.diag.pull (pullback.fst c.A.hom (spMap (IsLocalRing.residue O)))) → c.Principal := by
   first | exact @GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special | exact GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special | (intros; apply GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special <;> assumption)

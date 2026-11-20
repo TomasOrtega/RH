@@ -8,8 +8,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
 open GlobalTheory.CompanionTheory.Ar.Flat.Rep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap | exact GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FComponentSpecializationFieldExt.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.isValFam_of_field_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (F F' : Type) [Field F] [Field F'] (f : F →+* F') (y : Sp F ⟶ Xo.XF c) (y' : Sp F' ⟶ Xo.XF c), y' = spMap f ≫ y → ∀ (n : ℕ) (b : Fin n → Z.V) (v : Vecs y n) (v' : Vecs y' n), (∀ i, (v' i).left = spMap (dualMap f) ≫ (v i).left) → IsValFam Z y b v → IsValFam Z y' b v' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap | exact GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.Rep.isValFam_spMap <;> assumption)

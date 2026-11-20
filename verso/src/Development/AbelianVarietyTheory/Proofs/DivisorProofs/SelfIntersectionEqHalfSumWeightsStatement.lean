@@ -17,8 +17,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurveSelf.isSelfInter_fnB_curve | exact GlobalTheory.CurveSelf.isSelfInter_fnB_curve | (intros; apply GlobalTheory.CurveSelf.isSelfInter_fnB_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurveSelf.isSelfInter_fnB_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfIntersectionEqHalfSumWeights.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.self_intersection_eq_half_sum_weights : ∀ (k : Type) [CommRing k] (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'],
     IsArithVar (spMap (algebraMap k k')) 0 → ∀ (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ)

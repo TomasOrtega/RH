@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InducedCharIntertwi
 open scoped TensorProduct
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetIndProd.detInd_equiv_prod₂ | exact GlobalTheory.DetIndProd.detInd_equiv_prod₂ | (intros; apply GlobalTheory.DetIndProd.detInd_equiv_prod₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetIndProd.detInd_equiv_prod₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantInducedRepEquivProduct.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.determinant_induced_rep_equiv_product : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ),

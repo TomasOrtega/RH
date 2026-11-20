@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.labTors_galConj | exact GlobalTheory.Mum.labTors_galConj | (intros; apply GlobalTheory.Mum.labTors_galConj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.labTors_galConj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsTorsionLabelingGaloisConjugateAlgClosure.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.isTorsionLabeling_galoisConjugate_algClosure : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (σ : Kb R →ₐ[FractionRing R] Kb R) (k : ℕ), 1 ≤ k → ∀ (x x' : QkPt D.toPre (Kb R) k → (TFK (R := R) (Kb R) ⟶ A.A)), LabTors D.toPre A k x → (∀ p p', QkExt σ.toRingHom p p' → (x' p').left = spMap σ.toRingHom ≫ (x p).left) → LabTors D.toPre A k x' := by
   first | exact @GlobalTheory.Mum.labTors_galConj | exact GlobalTheory.Mum.labTors_galConj | (intros; apply GlobalTheory.Mum.labTors_galConj <;> assumption)

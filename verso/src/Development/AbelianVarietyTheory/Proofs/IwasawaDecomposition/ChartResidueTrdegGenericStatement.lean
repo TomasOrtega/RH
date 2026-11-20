@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatD
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullFlagDim.trdeg_ge_of_generic | exact GlobalTheory.FullFlagDim.trdeg_ge_of_generic | (intros; apply GlobalTheory.FullFlagDim.trdeg_ge_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullFlagDim.trdeg_ge_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChartResidueTrdegGeneric.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.chart_residue_trdeg_generic : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}

@@ -13,8 +13,10 @@ open GlobalTheory.FlagFormDeg (apolar)
 open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VdmApolarPair.apolar_psq_vdm | exact GlobalTheory.VdmApolarPair.apolar_psq_vdm | (intros; apply GlobalTheory.VdmApolarPair.apolar_psq_vdm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VdmApolarPair.apolar_psq_vdm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVandermondeSecondDerivative.lean&line=260#L260)
 -/
 theorem _root_.GlobalTheory.T.vandermonde_second_derivative : ∀ r : ℕ, ∃ κ : ℝ, ∀ a b : Fin r, apolar ((∑ i : Fin r, MvPolynomial.X (some i) ^ 2) * ∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i)) : MvPolynomial (Option (Fin r)) ℝ) (MvPolynomial.X (some a) * (MvPolynomial.X (some b) * ∏ i : Fin r, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i)))) = κ * ((if a = b then (r : ℝ) + 1 else 0) - 1) := by
   first | exact @GlobalTheory.VdmApolarPair.apolar_psq_vdm | exact GlobalTheory.VdmApolarPair.apolar_psq_vdm | (intros; apply GlobalTheory.VdmApolarPair.apolar_psq_vdm <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHS.exists_suppOn_sec₀_eq | exact GlobalTheory.CompHS.exists_suppOn_sec₀_eq | (intros; apply GlobalTheory.CompHS.exists_suppOn_sec₀_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHS.exists_suppOn_sec₀_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSupportedRuleOfFlagComponentSection.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.exists_supportedRule_of_flagComponentSection : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : FlagCover Y) (Z : Comp Xo c) (e : Ix Dw → ℤ) (m : H0 (str₀ X Z) (LL₀ X Z e) (U₀ X Z)), ∃ f : GlobalTheory.AllWt.secZ Xo c e, (f : Rul Xo c) ∈ GlobalTheory.AllWt.suppOn Z ∧ sec₀ X Z e f = m := by
   first | exact @GlobalTheory.CompHS.exists_suppOn_sec₀_eq | exact GlobalTheory.CompHS.exists_suppOn_sec₀_eq | (intros; apply GlobalTheory.CompHS.exists_suppOn_sec₀_eq <;> assumption)

@@ -8,8 +8,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.NX
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_desc_of_isKsForm | exact GlobalTheory.exists_desc_of_isKsForm | (intros; apply GlobalTheory.exists_desc_of_isKsForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_desc_of_isKsForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsDescentMapNonzeroOfSmallFieldForm.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_descent_map_nonzero_of_small_field_form : ∀ (D : D7) (S : RatDat D.ntw) (j : ℕ), (S.A j).IsKsForm → ∀ (i : D.ntw.Tw) (b : Bool) (x : S.WL j), x ≠ 0 →
     ∃ Φ : S.WL j →+ Fm S i j b, Φ x ≠ 0 ∧

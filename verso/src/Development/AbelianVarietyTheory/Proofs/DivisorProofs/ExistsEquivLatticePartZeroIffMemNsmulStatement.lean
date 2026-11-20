@@ -16,8 +16,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.exists_equiv_y_eq_zero_iff | exact GlobalTheory.LowFilt.exists_equiv_y_eq_zero_iff | (intros; apply GlobalTheory.LowFilt.exists_equiv_y_eq_zero_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowFilt.exists_equiv_y_eq_zero_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEquivLatticePartZeroIffMemNsmul.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_equiv_latticePart_zero_iff_mem_nsmul : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : DegPre R), D₀.TauBimult →
     ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 0 < n → ∀ p : QkPt D₀ F n,

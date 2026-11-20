@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermDiagCM.diagonal_of_conj_form | exact GlobalTheory.HermDiagCM.diagonal_of_conj_form | (intros; apply GlobalTheory.HermDiagCM.diagonal_of_conj_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermDiagCM.diagonal_of_conj_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmLatticeSpansRealSpace.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.cm_lattice_spans_real_space : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), 0 < d → δ ^ 2 = -(d : K) →
     ∀ g : ℂ ≃+* ℂ, (∀ x, g (io x) = io x) →

@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenRealSchur.lift_vanish_single | exact GlobalTheory.GenRealSchur.lift_vanish_single | (intros; apply GlobalTheory.GenRealSchur.lift_vanish_single <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenRealSchur.lift_vanish_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FThetaLiftVanishesSingleCoefficientOfKernelKills.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.theta_lift_vanishes_single_coefficient_of_kernel_kills : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H), R.thF i t y = 0 → ∀ (x : LowT (R.MW i (sg0 D A))) (w : (R.cV i).W) (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y (R.ptP i t (R.ioP i x w)) l g = 0 := by
   first | exact @GlobalTheory.GenRealSchur.lift_vanish_single | exact GlobalTheory.GenRealSchur.lift_vanish_single | (intros; apply GlobalTheory.GenRealSchur.lift_vanish_single <;> assumption)

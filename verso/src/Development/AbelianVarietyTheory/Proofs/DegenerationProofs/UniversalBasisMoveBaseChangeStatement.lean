@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ThetaReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnivBasisMove.univBasis_move | exact GlobalTheory.UnivBasisMove.univBasis_move | (intros; apply GlobalTheory.UnivBasisMove.univBasis_move <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnivBasisMove.univBasis_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FUniversalBasisMoveBaseChange.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.universalBasis_move_baseChange : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (P : PolAV S) (P' : PolAV S') (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ → LBIso P'.L (P.L.pull φ) → ∀ (n : ℤ) (κ : Type) [Fintype κ] (T₀ : Over S) (τ : S' ⟶ T₀.left), τ ≫ T₀.hom = f → ∀ b₀ : κ → SecM P.A P.L n T₀, UnivBasis P n b₀ → ∃ b : κ → SecM P'.A P'.L n (baseOver S'), UnivBasis P' n b := by
   first | exact @GlobalTheory.UnivBasisMove.univBasis_move | exact GlobalTheory.UnivBasisMove.univBasis_move | (intros; apply GlobalTheory.UnivBasisMove.univBasis_move <;> assumption)

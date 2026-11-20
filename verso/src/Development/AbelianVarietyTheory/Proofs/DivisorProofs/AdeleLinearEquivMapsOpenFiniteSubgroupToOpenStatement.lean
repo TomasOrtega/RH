@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilAdm.fintrans | exact GlobalTheory.WeilAdm.fintrans | (intros; apply GlobalTheory.WeilAdm.fintrans <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilAdm.fintrans` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdeleLinearEquivMapsOpenFiniteSubgroupToOpen.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.adeleLinearEquiv_maps_open_finite_subgroup_to_open : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (B : ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) ≃ₗ[AdeleRing (𝓞 F) F] ((κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)))

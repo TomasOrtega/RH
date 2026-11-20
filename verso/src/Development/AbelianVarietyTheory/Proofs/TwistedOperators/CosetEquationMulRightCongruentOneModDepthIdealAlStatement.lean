@@ -28,8 +28,10 @@ open scoped ComplexConjugate TensorProduct
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosDualStep.coset_equation_mul_right_congruent_one_mod_depthIdeal | exact GlobalTheory.CosDualStep.coset_equation_mul_right_congruent_one_mod_depthIdeal | (intros; apply GlobalTheory.CosDualStep.coset_equation_mul_right_congruent_one_mod_depthIdeal <;> …`.
+/- English proof (citation)
+Apply `GlobalTheory.CosDualStep.coset_equation_mul_right_congruent_one_mod_depthIdeal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCosetEquationMulRightCongruentOneModDepthIdealAl.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.coset_equation_mul_right_congruent_one_mod_depthIdeal_alt : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ x₀, IsOntoMod G i x₀ → ∀ e : AE D, IsIdemSum e G.pl.W0 →
     ∀ g : GA D (G.V (.core i)), ∀ u ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))), ∀ u' ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))),

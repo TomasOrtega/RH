@@ -9,8 +9,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.FewEq
 open GlobalTheory.AbLaw (rs)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre | exact GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre | (intros; apply GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFirstCohomologyRankBoundAtClosedPoint.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.first_cohomology_rank_bound_at_closed_point : DepSt → ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsSeparated s →
     ∀ n r : ℕ, n < r →

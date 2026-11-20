@@ -13,8 +13,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumPureMemAlgD
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolKerFin.polZero_om_fin | exact GlobalTheory.PolKerFin.polZero_om_fin | (intros; apply GlobalTheory.PolKerFin.polZero_om_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolKerFin.polZero_om_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFinitePlaceUnitaryPointKeepsZeroMatchedData.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.finitePlace_unitaryPoint_keeps_zeroMatchedData : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

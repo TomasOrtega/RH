@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSecOn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.VB GlobalTheory.FlagZ GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Loc.exists_adapted | exact GlobalTheory.FlagZ.Loc.exists_adapted | (intros; apply GlobalTheory.FlagZ.Loc.exists_adapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Loc.exists_adapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagLocallyAdaptedAffineFrame.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.flag_locally_adapted_affine_frame : ∀ {ι : Type} [Fintype ι] {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ)
     (fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N) (t : T),

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AHWeilAny.weilIs_exp_riemannForm | exact GlobalTheory.AHWeilAny.weilIs_exp_riemannForm | (intros; apply GlobalTheory.AHWeilAny.weilIs_exp_riemannForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AHWeilAny.weilIs_exp_riemannForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilPairingRiemannForm.lean&line=214#L214)
 -/
 theorem _root_.GlobalTheory.T.weil_pairing_torsion_points : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB →
     ∀ (n : ℕ) (u : HolUnif A L n) (Hm : Matrix (Fin n) (Fin n) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ →

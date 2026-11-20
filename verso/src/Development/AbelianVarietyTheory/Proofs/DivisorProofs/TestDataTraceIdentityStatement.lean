@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt GlobalTheory.Chamber GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTClass.kT_eq_classKernel | exact GlobalTheory.KTClass.kT_eq_classKernel | (intros; apply GlobalTheory.KTClass.kT_eq_classKernel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KTClass.kT_eq_classKernel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTestDataTraceIdentity.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.test_data_trace_identity : ∀ {D : D7} {V : HSp D}, GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → ∀ {lam : D.what₂.Tau → Fin V.rank → ℤ} {S : D.what₂.Tau → SPar} {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)} {μ : Measure (GA D V)} {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}, IsTestData V lam M T U μa μf μ fa ff → ∀ (Φ : WittFrame V) (K : Subgroup (GA D V)) (γ : GF V) (Tr : A0 (wittIndex V)) (x : GA D V), kT Φ K {δ | IsConj γ δ} (tensor D.sp.cm.sig V.gram fa ff) Tr x = classKernel (GQ V) (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x := by
   first | exact @GlobalTheory.KTClass.kT_eq_classKernel | exact GlobalTheory.KTClass.kT_eq_classKernel | (intros; apply GlobalTheory.KTClass.kT_eq_classKernel <;> assumption)

@@ -21,8 +21,10 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZUnf.lowerRows_determine | exact GlobalTheory.CompanionTheory.ZUnf.lowerRows_determine | (intros; apply GlobalTheory.CompanionTheory.ZUnf.lowerRows_determine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZUnf.lowerRows_determine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRowsProportionalOfTransform.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.rows_proportional_of_transform : ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n ρ p : ℕ} (hn : ρ + p = n) (a b c d a₂ b₂ c₂ d₂ : Matrix (Fin p) (Fin p) K) (ζ ζ₂ : Matrix (Fin ρ) (Fin ρ) K)
       (η η₂ : Matrix (Fin ρ) (Fin p) K) (T : Matrix (Fin n) (Fin n) K),

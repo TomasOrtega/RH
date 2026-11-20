@@ -18,8 +18,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KSpan
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.UnitaryBC GroundTheory.Global GroundTheory.Global.IdeleGroup
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel | exact GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel | (intros; apply GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHasFDerivAtRealChartRapidKernelOperator.lean&line=171#L171)
 -/
 theorem _root_.GlobalTheory.T.hasFDerivAt_realChart_rapidKernelOperator : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (G : GA E a → ℂ) (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), GlobalTheory.JSW.IsRapidInf ν k γ → GlobalTheory.MSpanDecay.Good G → ∀ (g : GA E a) (y : GL (Fin a) (Cinf E)), ∃ L : Lie E a →L[ℝ] ℂ, HasFDerivAt (chart (fun g : GA E a => ∫ x, k x * G (g * infGL E a (γ x)) ∂ν) g) L (toL y.val) ∧ ∀ Z : Lie E a, L Z = ∫ x, k x * lieD (toL (((γ x)⁻¹).val * ((y⁻¹).val * Matrix.of Z) * (γ x).val)) G (g * infGL E a (y * γ x)) ∂ν := by
   first | exact @GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel | exact GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel | (intros; apply GlobalTheory.MSpanDecay.KernelDeriv.hasFDerivAt_chart_kernel <;> assumption)

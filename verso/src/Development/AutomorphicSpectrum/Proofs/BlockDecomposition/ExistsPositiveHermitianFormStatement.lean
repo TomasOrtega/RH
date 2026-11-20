@@ -7,8 +7,10 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm | exact GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm | (intros; apply GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsPositiveHermitianForm.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.exists_positive_hermitian_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (N : GL (Fin n) E),
   N.val.charpoly.Separable → (∀ τ : E →+* ℂ, ∀ z ∈ (N.val.charpoly.map τ).roots, ‖z‖ = 1) →

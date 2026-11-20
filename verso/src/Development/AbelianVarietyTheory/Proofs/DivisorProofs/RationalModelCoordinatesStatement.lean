@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLagr.ratCoord_linear_injective | exact GlobalTheory.MixedLagr.ratCoord_linear_injective | (intros; apply GlobalTheory.MixedLagr.ratCoord_linear_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLagr.ratCoord_linear_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalModelCoordinates.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.rational_model_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W),

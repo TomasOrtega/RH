@@ -8,8 +8,10 @@ open scoped TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.PerId.exists_perT | exact GlobalTheory.Mem.R3.Rw.PerId.exists_perT | (intros; apply GlobalTheory.Mem.R3.Rw.PerId.exists_perT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.Rw.PerId.exists_perT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsPeriodMapFormsEquivRowLiftFormsUpperLevel.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_periodMapForms_equiv_rowLiftForms_upperLevel : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok) (Xg : Finset (Gc B w.px → B.LL)) (tr : TrI B w.px) (p : PkB B w.C (Gc B w.px)) (tA : ∀ a : w.I.ι, Tie1 (w.st Z).toD7.what₂.embLL (mAU (w.st Z) w.I hX Xg tr true a) (p.sA true a)), ∃ d : PerD p, Nonempty (PerT w Z hX Xg tr p (fun a x => (tA a).j x) d) := by
   first | exact @GlobalTheory.Mem.R3.Rw.PerId.exists_perT | exact GlobalTheory.Mem.R3.Rw.PerId.exists_perT | (intros; apply GlobalTheory.Mem.R3.Rw.PerId.exists_perT <;> assumption)

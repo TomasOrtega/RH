@@ -13,8 +13,10 @@ open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheor
 open scoped CategoryTheory.Obj
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTPull.exists_objMap_pull | exact GlobalTheory.HTPull.exists_objMap_pull | (intros; apply GlobalTheory.HTPull.exists_objMap_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTPull.exists_objMap_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHarrisTaylorObjectPullbackBis.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.exists_harrisTaylorObject_pullback : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp R) (f : S' ⟶ S) (o : Obj b N s), ∃ o' : Obj b N (f ≫ s), Nonempty (ObjMap o' o f) := by
   first | exact @GlobalTheory.HTPull.exists_objMap_pull | exact GlobalTheory.HTPull.exists_objMap_pull | (intros; apply GlobalTheory.HTPull.exists_objMap_pull <;> assumption)

@@ -19,8 +19,10 @@ open scoped GlobalTheory.VacAny
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacShiftB.vac_fixed | exact GlobalTheory.VacShiftB.vac_fixed | (intros; apply GlobalTheory.VacShiftB.vac_fixed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacShiftB.vac_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerLocalIdealMem.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_local_ideal_mem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {a b : ℕ} (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

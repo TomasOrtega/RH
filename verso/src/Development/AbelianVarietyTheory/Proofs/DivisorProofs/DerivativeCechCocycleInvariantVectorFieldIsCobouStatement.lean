@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechKS
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechInv.deriv_cocycle_isCoboundary | exact GlobalTheory.CechInv.deriv_cocycle_isCoboundary | (intros; apply GlobalTheory.CechInv.deriv_cocycle_isCoboundary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechInv.deriv_cocycle_isCoboundary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDerivativeCechCocycleInvariantVectorFieldIsCobou.lean&line=292#L292)
 -/
 theorem _root_.GlobalTheory.T.derivative_cechCocycle_invariantVectorField_isCoboundary : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (J : Type) (V : J → A.left.Opens), ⨆ a, V a = ⊤ → ∀ φ : ∀ a b, Γ(A.left, V a ⊓ V b), (∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) → valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c)) → ∀ v : epsR K ⟶ A, IsTangent v → ∃ ψ : J → PtFn (A.hom ≫ 𝟙 (Sp K)), (∀ a, IsNat (V a) (ψ a)) ∧ ∀ (a b : J) (P : GPt A), P.In (V a) → P.In (V b) → (valR (P.trx v) _ (φ a b)).snd = ψ a P - ψ b P := by
   first | exact @GlobalTheory.CechInv.deriv_cocycle_isCoboundary | exact GlobalTheory.CechInv.deriv_cocycle_isCoboundary | (intros; apply GlobalTheory.CechInv.deriv_cocycle_isCoboundary <;> assumption)

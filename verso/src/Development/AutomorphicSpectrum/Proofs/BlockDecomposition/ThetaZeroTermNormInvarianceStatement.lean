@@ -22,8 +22,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant | exact GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant | (intros; apply GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant <;> as …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.theta_zero_term_norm_diagonal_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FThetaZeroTermNormInvariance.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.theta_zero_term_norm_invariance : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (DK : DatK K) (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (S : Finset (PlK K)), AdmK DK c n t S →

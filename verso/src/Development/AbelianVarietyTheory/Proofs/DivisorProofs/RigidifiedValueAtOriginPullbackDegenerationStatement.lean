@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.OrigValPull.origVal_pull | exact GlobalTheory.Mum.OrigValPull.origVal_pull | (intros; apply GlobalTheory.Mum.OrigValPull.origVal_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.OrigValPull.origVal_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRigidifiedValueAtOriginPullbackDegeneration.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.rigidifiedValueAtOrigin_pullback_degeneration : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D') (k : ℕ) (x : D'.X) (b : D.SecB k (hD.xe x)) (b' : D'.SecB k x) (v : R), PullB hD x b b' → OrigVal D b v → OrigVal D' b' (φ v) := by
   first | exact @GlobalTheory.Mum.OrigValPull.origVal_pull | exact GlobalTheory.Mum.OrigValPull.origVal_pull | (intros; apply GlobalTheory.Mum.OrigValPull.origVal_pull <;> assumption)

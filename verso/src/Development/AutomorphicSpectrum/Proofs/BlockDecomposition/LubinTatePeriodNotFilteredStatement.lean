@@ -8,8 +8,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product | exact GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product | (intros; apply GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLubinTatePeriodNotFiltered.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_period_not_filtered : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ),
     (∀ (g : GQ l) (hg : g ∈ GK K), (∀ u ∈ GroundTheory.PAdicHodge.unramifiedClosure l, g u = u) →

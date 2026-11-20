@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.qkPt_algClosure_bijective | exact GlobalTheory.Mum.qkPt_algClosure_bijective | (intros; apply GlobalTheory.Mum.qkPt_algClosure_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.qkPt_algClosure_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelPointsAlgClosureFractionRingBijective.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.levelPoints_algClosure_fractionRing_bijective : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (D : DegPre R) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (em : Kb R →ₐ[FractionRing R] F) (N : ℕ), 1 ≤ N → (∀ p : QkPt D (Kb R) N, ∃! p' : QkPt D F N, QkExt em.toRingHom p p') ∧ ∀ p' : QkPt D F N, ∃! p : QkPt D (Kb R) N, QkExt em.toRingHom p p' := by
   first | exact @GlobalTheory.Mum.qkPt_algClosure_bijective | exact GlobalTheory.Mum.qkPt_algClosure_bijective | (intros; apply GlobalTheory.Mum.qkPt_algClosure_bijective <;> assumption)

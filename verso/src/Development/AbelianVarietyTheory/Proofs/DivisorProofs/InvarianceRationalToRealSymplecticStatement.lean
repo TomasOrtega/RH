@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRR.isInvFun_of_rat | exact GlobalTheory.ThetaRR.isInvFun_of_rat | (intros; apply GlobalTheory.ThetaRR.isInvFun_of_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRR.isInvFun_of_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvarianceRationalToRealSymplectic.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.invariance_rational_to_real_symplectic : ∀ (g : ℕ) (F : symMat g → symMat g → Ext (1 + 1)), IsHermFun g F → (∀ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, (∀ i l, ∃ r : ℚ, γ.mat i l = r) → IsInvFun F γ) → ∀ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, IsInvFun F γ := by
   first | exact @GlobalTheory.ThetaRR.isInvFun_of_rat | exact GlobalTheory.ThetaRR.isInvFun_of_rat | (intros; apply GlobalTheory.ThetaRR.isInvFun_of_rat <;> assumption)

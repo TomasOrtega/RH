@@ -18,8 +18,10 @@ open scoped TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.exists_adelicCore_transport_enlargedCoefficientBase | exact GlobalTheory.Mem.R3.Rw.exists_adelicCore_transport_enlargedCoefficientBase | (intros; apply GlobalTheory.Mem.R3.Rw.exists_adelicCore_transport_enlargedCoefficientBase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.Rw.exists_adelicCore_transport_enlargedCoefficientBase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAdelicCoreTransportEnlargedCoefficientBase.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicCore_transport_enlargedCoefficientBase_alt : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt),

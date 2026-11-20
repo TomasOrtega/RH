@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 open Formalism.L2.DIV (kP Pl LevelP)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatLevEq.latLev_eq_UA_inf_St | exact GlobalTheory.LatLevEq.latLev_eq_UA_inf_St | (intros; apply GlobalTheory.LatLevEq.latLev_eq_UA_inf_St <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatLevEq.latLev_eq_UA_inf_St` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLatticeLevelEqUnitaryInfFrameStabilizer.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.latticeLevel_eq_unitary_inf_frame_stabilizer : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), Formalism.IndefR.Lev.IsBaseFrame V β Λ 1 → GlobalTheory.Mass.Levels.latLev V = Formalism.L2.DIV.UA D.sp.cm V.gram ⊓ Formalism.L2.DIV.St β := by
   first | exact @GlobalTheory.LatLevEq.latLev_eq_UA_inf_St | exact GlobalTheory.LatLevEq.latLev_eq_UA_inf_St | (intros; apply GlobalTheory.LatLevEq.latLev_eq_UA_inf_St <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeHeis.locOp_rho_om_comm | exact GlobalTheory.ConeHeis.locOp_rho_om_comm | (intros; apply GlobalTheory.ConeHeis.locOp_rho_om_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeHeis.locOp_rho_om_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalStabilizerEigenIdele.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.local_stabilizer_eigen_idele : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

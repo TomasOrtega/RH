@@ -9,8 +9,10 @@ open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheor
 open GlobalTheory.BigOn GlobalTheory.BigOn.Exp Formalism.L2.Theta GlobalTheory.ExportSeries GlobalTheory.ConjTwist Formalism.IndefR.Lev
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.TwConj.hasTuples_of_conj | exact GlobalTheory.BigOn.Exp.TwConj.hasTuples_of_conj | (intros; apply GlobalTheory.BigOn.Exp.TwConj.hasTuples_of_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigOn.Exp.TwConj.hasTuples_of_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTwistConjugateTuplesSameRealisationExtension.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.twist_conjugate_tuples_same_realisation_extension : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
   ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D)

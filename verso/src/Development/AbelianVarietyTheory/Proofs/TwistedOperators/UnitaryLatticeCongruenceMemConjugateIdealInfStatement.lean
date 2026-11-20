@@ -10,8 +10,10 @@ open scoped TensorProduct InnerProductSpace nonZeroDivisors Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CongSelfDual.congLev_conj | exact GlobalTheory.CongSelfDual.congLev_conj | (intros; apply GlobalTheory.CongSelfDual.congLev_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CongSelfDual.congLev_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryLatticeCongruenceMemConjugateIdealInf.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.unitaryLatticeCongruence_mem_conjugateIdeal_inf : ∀ {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSelfDualC V Λ → ∀ (𝔪 : Ideal (𝓞 D.host.E)) (g : GL (Fin V.rank) (Lev.EAf D)), g ∈ congLev D.sp.cm V.gram Λ 𝔪 → g ∈ congLev D.sp.cm V.gram Λ (𝔪 ⊓ D.host.conj • 𝔪) := by
   first | exact @GlobalTheory.CongSelfDual.congLev_conj | exact GlobalTheory.CongSelfDual.congLev_conj | (intros; apply GlobalTheory.CongSelfDual.congLev_conj <;> assumption)

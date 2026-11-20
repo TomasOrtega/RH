@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ConjugateOrderDa
 open NumberField IsDedekindDomain TensorProduct GlobalTheory.CMVal GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CondAway.clearsIdem_condQ_iff | exact GlobalTheory.CondAway.clearsIdem_condQ_iff | (intros; apply GlobalTheory.CondAway.clearsIdem_condQ_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CondAway.clearsIdem_condQ_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClearsIdempotentConductorIff.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.clears_idempotent_conductor_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (𝔣 : Ideal (OF E)) (Q : Finset (HeightOneSpectrum (OF E))) (l : ℕ), l.Prime → (∀ q ∈ Q, (l : OF E) ∉ q.asIdeal) → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → ∀ D : O, ClearsIdem K (condQ 𝔣 Q) D ↔ ClearsIdem K 𝔣 D := by
   first | exact @GlobalTheory.CondAway.clearsIdem_condQ_iff | exact GlobalTheory.CondAway.clearsIdem_condQ_iff | (intros; apply GlobalTheory.CondAway.clearsIdem_condQ_iff <;> assumption)

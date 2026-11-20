@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ContDiff InnerProductSpace Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmVecGelfComm.gelfH_rep | exact GlobalTheory.SmVecGelfComm.gelfH_rep | (intros; apply GlobalTheory.SmVecGelfComm.gelfH_rep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmVecGelfComm.gelfH_rep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGelfandInvariantActionCommuteUnitaryRepSmooth.lean&line=175#L175)
 -/
 theorem _root_.GlobalTheory.T.gelfandInvariantAction_commute_unitaryRep_smooth : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ (k : ℕ), ∀ g ∈ Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P), gelfH G (trRep σ P) k ((trRep σ P) g w) = (trRep σ P) g (gelfH G (trRep σ P) k w) := by
   first | exact @GlobalTheory.SmVecGelfComm.gelfH_rep | exact GlobalTheory.SmVecGelfComm.gelfH_rep | (intros; apply GlobalTheory.SmVecGelfComm.gelfH_rep <;> assumption)

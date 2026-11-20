@@ -26,8 +26,10 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MovedKappa.fock_jets_moved_vacuum | exact GlobalTheory.MovedKappa.fock_jets_moved_vacuum | (intros; apply GlobalTheory.MovedKappa.fock_jets_moved_vacuum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MovedKappa.fock_jets_moved_vacuum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsUnitScalarFourier.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.exists_unit_scalar_fourier : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

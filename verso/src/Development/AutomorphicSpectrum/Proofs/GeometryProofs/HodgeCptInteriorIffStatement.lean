@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor | exact GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor | (intros; apply GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHodgeCptInteriorIff.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.hodge_cpt_interior_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (A : HodgeCpt Y S y) (z : Sp ℂ ⟶ A.X), Mono (spMap β) → Mono Y.j ∧ (A.Interior z ↔ ∃ u : Spec (A.X.presheaf.stalk (centre z)) ⟶ Xo.XF c, u ≫ Y.j = A.X.fromSpecStalk (centre z) ≫ A.f) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor | exact GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor | (intros; apply GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor <;> assumption)

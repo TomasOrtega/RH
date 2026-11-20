@@ -7,8 +7,10 @@ import Formalism.LocalRingCardinality.DataCD
 open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosedMatGroup.closed_subgroup | exact GlobalTheory.ClosedMatGroup.closed_subgroup | (intros; apply GlobalTheory.ClosedMatGroup.closed_subgroup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosedMatGroup.closed_subgroup` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FClosedMatrixSubgroupTheorem.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.T.closed_matrix_subgroup_theorem : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)), PI.IsMatGroup S → (∀ X : lieE S, unrealify (X : EuclideanSpace ℝ _) ∈ lieOf S) ∧ ∀ ρ : ℝ, 0 < ρ → ∃ δ : ℝ, 0 < δ ∧ ∀ g ∈ S, (∀ i j, ‖(g - 1) i j‖ < δ) → Matrix.of.symm g ∈ expSet S (Metric.ball 0 ρ) := by
   first | exact @GlobalTheory.ClosedMatGroup.closed_subgroup | exact GlobalTheory.ClosedMatGroup.closed_subgroup | (intros; apply GlobalTheory.ClosedMatGroup.closed_subgroup <;> assumption)

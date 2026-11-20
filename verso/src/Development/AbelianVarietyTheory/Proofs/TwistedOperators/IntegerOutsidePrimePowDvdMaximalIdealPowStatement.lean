@@ -17,8 +17,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitPtLev.dvd_of_mem_maxIdeal_pow | exact GlobalTheory.SplitPtLev.dvd_of_mem_maxIdeal_pow | (intros; apply GlobalTheory.SplitPtLev.dvd_of_mem_maxIdeal_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitPtLev.dvd_of_mem_maxIdeal_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIntegerOutsidePrimePowDvdMaximalIdealPow.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.integer_outside_prime_pow_dvd_maximal_ideal_pow : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : GlobalTheory.FinPl.SplitPt D k) (w : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e w → ∀ (d : ℕ) (m : 𝓞 D.host.E),

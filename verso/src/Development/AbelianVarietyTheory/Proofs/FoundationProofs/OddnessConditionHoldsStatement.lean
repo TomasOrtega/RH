@@ -5,8 +5,10 @@ import Formalism.PairingDivisors.StatementH
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacuumScalar.vacuum_scalar | exact GlobalTheory.VacuumScalar.vacuum_scalar | (intros; apply GlobalTheory.VacuumScalar.vacuum_scalar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacuumScalar.vacuum_scalar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FOddnessConditionHolds.lean&line=618#L618)
 -/
 theorem _root_.GlobalTheory.T.oddness_condition_holds : ∀ D : D7, odd4 D := by
   first | exact @GlobalTheory.VacuumScalar.vacuum_scalar | exact GlobalTheory.VacuumScalar.vacuum_scalar | (intros; apply GlobalTheory.VacuumScalar.vacuum_scalar <;> assumption)

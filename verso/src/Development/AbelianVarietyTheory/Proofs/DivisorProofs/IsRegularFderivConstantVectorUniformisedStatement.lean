@@ -5,8 +5,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPer.isReg_fderiv_val | exact GlobalTheory.CechPer.isReg_fderiv_val | (intros; apply GlobalTheory.CechPer.isReg_fderiv_val <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPer.isReg_fderiv_val` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsRegularFderivConstantVectorUniformised.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.isRegular_fderiv_constant_vector_uniformised : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (U : A.left.Opens) (b : Γ(A.left, U)) (w : Fin g → ℂ), IsReg u.ex U fun z => fderiv ℂ (val u.ex U b) z w := by
   first | exact @GlobalTheory.CechPer.isReg_fderiv_val | exact GlobalTheory.CechPer.isReg_fderiv_val | (intros; apply GlobalTheory.CechPer.isReg_fderiv_val <;> assumption)

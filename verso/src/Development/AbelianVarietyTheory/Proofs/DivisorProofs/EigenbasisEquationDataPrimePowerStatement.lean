@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConstLatRel.relData_of_eqData | exact GlobalTheory.ConstLatRel.relData_of_eqData | (intros; apply GlobalTheory.ConstLatRel.relData_of_eqData <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConstLatRel.relData_of_eqData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenbasisEquationDataPrimePower.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.eigenbasis_equation_data_prime_power : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} {E : Type} [Field E] [NumberField E]
     (A A' : Fin g → Adl C Y) (β : Fin g → (E →+* F)) (sh : (E →+* F) → ℝ)

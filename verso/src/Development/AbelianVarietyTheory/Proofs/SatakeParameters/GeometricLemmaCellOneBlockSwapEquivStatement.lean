@@ -20,8 +20,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneBlockCell.cellFunctor_swap_equiv | exact GlobalTheory.OneBlockCell.cellFunctor_swap_equiv | (intros; apply GlobalTheory.OneBlockCell.cellFunctor_swap_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneBlockCell.cellFunctor_swap_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FGeometricLemmaCellOneBlockSwapEquiv.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.geometricLemmaCell_one_block_swap_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i)), d 1 = 1 →

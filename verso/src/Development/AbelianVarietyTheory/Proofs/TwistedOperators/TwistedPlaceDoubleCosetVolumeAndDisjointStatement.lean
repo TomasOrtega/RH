@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistedPlaceDoub
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainCells.vol_dcell_and_disjoint | exact GlobalTheory.ChainCells.vol_dcell_and_disjoint | (intros; apply GlobalTheory.ChainCells.vol_dcell_and_disjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainCells.vol_dcell_and_disjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTwistedPlaceDoubleCosetVolumeAndDisjoint.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.twistedPlace_doubleCoset_volume_and_disjoint : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →
   ∀ (r l t : ℕ) [MeasurableSpace (GL (Fin r ⊕ Blocks l t) k)] [BorelSpace (GL (Fin r ⊕ Blocks l t) k)]

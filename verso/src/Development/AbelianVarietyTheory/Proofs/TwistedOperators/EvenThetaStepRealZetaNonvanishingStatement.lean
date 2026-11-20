@@ -22,8 +22,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenOntoRealZeta.realZeta | exact GlobalTheory.EvenOntoRealZeta.realZeta | (intros; apply GlobalTheory.EvenOntoRealZeta.realZeta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenOntoRealZeta.realZeta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEvenThetaStepRealZetaNonvanishing.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.evenThetaStep_realZeta_nonvanishing : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, RealZeta D := by
   first | exact @GlobalTheory.EvenOntoRealZeta.realZeta | exact GlobalTheory.EvenOntoRealZeta.realZeta | (intros; apply GlobalTheory.EvenOntoRealZeta.realZeta <;> assumption)

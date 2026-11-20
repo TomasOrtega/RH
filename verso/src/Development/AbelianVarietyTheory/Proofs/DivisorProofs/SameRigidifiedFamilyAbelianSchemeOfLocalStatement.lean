@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.SameLocal.same_of_local | exact GlobalTheory.DualCon.SameLocal.same_of_local | (intros; apply GlobalTheory.DualCon.SameLocal.same_of_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.SameLocal.same_of_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSameRigidifiedFamilyAbelianSchemeOfLocal.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.sameRigidifiedFamily_abelianScheme_of_local : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (U T : Over (Sp R)) (M : LB (A ⊗ U).left) (N : LB (A ⊗ T).left) (hM : M.IsLB) (hN : N.IsLB), (∀ (Y : Over (Sp R)) (u : Y ⟶ U), evc hM (1 : Y ⟶ A) u = 0) → (∀ (Y : Over (Sp R)) (t : Y ⟶ T), evc hN (1 : Y ⟶ A) t = 0) → ∀ (Y : Over (Sp R)) (u : Y ⟶ U) (t : Y ⟶ T), (∀ y : Y.left, ∃ W : Y.left.Opens, y ∈ W ∧ Same A M N (Over.homMk W.ι rfl ≫ u : Over.mk (W.ι ≫ Y.hom) ⟶ U) (Over.homMk W.ι rfl ≫ t)) → Same A M N u t := by
   first | exact @GlobalTheory.DualCon.SameLocal.same_of_local | exact GlobalTheory.DualCon.SameLocal.same_of_local | (intros; apply GlobalTheory.DualCon.SameLocal.same_of_local <;> assumption)

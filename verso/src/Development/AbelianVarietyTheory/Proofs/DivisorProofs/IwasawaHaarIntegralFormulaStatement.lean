@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq | exact GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq | (intros; apply GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIwasawaHaarIntegralFormula.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_haar_integral_formula : ∀ (G Kt : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] [Group Kt] [TopologicalSpace Kt]

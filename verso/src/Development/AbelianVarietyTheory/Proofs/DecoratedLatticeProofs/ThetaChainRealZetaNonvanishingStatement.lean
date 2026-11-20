@@ -10,8 +10,10 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealZetaProof.realZeta | exact GlobalTheory.RealZetaProof.realZeta | (intros; apply GlobalTheory.RealZetaProof.realZeta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealZetaProof.realZeta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainRealZetaNonvanishing.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.thetaChain_realZeta_nonvanishing : GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ArchOnRecord D → GlobalTheory.ChainOnto.RealZeta D := by
   first | exact @GlobalTheory.RealZetaProof.realZeta | exact GlobalTheory.RealZetaProof.realZeta | (intros; apply GlobalTheory.RealZetaProof.realZeta <;> assumption)

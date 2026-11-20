@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsColimitCokernelCo
 open CategoryTheory Limits AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullbackSub.shortExact_preimage_of_epi_mono | exact GlobalTheory.PullbackSub.shortExact_preimage_of_epi_mono | (intros; apply GlobalTheory.PullbackSub.shortExact_preimage_of_epi_mono <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullbackSub.shortExact_preimage_of_epi_mono` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FShortExactOfPullbackCokernel.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.shortExact_of_pullback_cokernel : ∀ (X : Scheme.{0}) {A E₂ E₃ F : X.Modules} (b : E₂ ⟶ E₃) (ι : F ⟶ E₃) [Epi b] [Mono ι]
     (f : A ⟶ E₂) (e : A ⟶ pullback b ι) [IsIso e], f = e ≫ pullback.fst b ι →

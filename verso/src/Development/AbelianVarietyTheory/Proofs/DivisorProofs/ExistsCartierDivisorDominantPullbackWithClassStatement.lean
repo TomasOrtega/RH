@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cartier.exists_pullback_cartierDiv | exact GlobalTheory.Cartier.exists_pullback_cartierDiv | (intros; apply GlobalTheory.Cartier.exists_pullback_cartierDiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cartier.exists_pullback_cartierDiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCartierDivisorDominantPullbackWithClass.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.exists_cartierDivisor_dominant_pullback_with_class : ∀ (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (φ : X' ⟶ X) [IsDominant φ] (D : CartierDiv X), ∃ D' : CartierDiv X', cls (toLB D') (isLB_toLB D') = cls ((toLB D).pull φ) (LB.isLB_pull (isLB_toLB D) φ) ∧ ∀ (x : X') (g : X.functionFieldˣ), D.IsEqn (φ x) g → D'.IsEqn x (Units.map (GlobalTheory.functionFieldMap φ).toMonoidHom g) := by
   first | exact @GlobalTheory.Cartier.exists_pullback_cartierDiv | exact GlobalTheory.Cartier.exists_pullback_cartierDiv | (intros; apply GlobalTheory.Cartier.exists_pullback_cartierDiv <;> assumption)

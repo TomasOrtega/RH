@@ -9,8 +9,10 @@ open GlobalTheory.Dict (castFr)
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GeoLevel.exists_endo_approx | exact GlobalTheory.GeoLevel.exists_endo_approx | (intros; apply GlobalTheory.GeoLevel.exists_endo_approx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GeoLevel.exists_endo_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeCongruenceEndomorphism.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.lattice_congruence_endomorphism : ∀ (D : D7) (V : HSp D) (La : Type) [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), LatEmb V ι → ∀ (N : ℕ), 0 < N → ∀ κ : GA D V, FinCong V 1 κ → ∃ γ₀ : La →ₗ[𝓞 D.host.E] La, ∀ a, ∃ w ∈ latGHat V 1, (finHom V κ).1.mulVec (finVec V (ι a)) - finVec V (ι (γ₀ a)) = N • w := by
   first | exact @GlobalTheory.GeoLevel.exists_endo_approx | exact GlobalTheory.GeoLevel.exists_endo_approx | (intros; apply GlobalTheory.GeoLevel.exists_endo_approx <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKSmoothDer.hasDerivAt_thetaIntegral | exact GlobalTheory.ThKSmoothDer.hasDerivAt_thetaIntegral | (intros; apply GlobalTheory.ThKSmoothDer.hasDerivAt_thetaIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKSmoothDer.hasDerivAt_thetaIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealMultLiftDividedPowers.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.polynomial_theta_archimedean_lie_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

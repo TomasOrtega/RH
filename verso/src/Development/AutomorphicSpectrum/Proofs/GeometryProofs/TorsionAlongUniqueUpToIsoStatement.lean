@@ -10,8 +10,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFract
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT | exact GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTorsionAlongUniqueUpToIso.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.torsion_along_unique_up_to_iso : ∀ (R : Type) [CommRing R] [IsDomain R] (T₁ T₂ : Type) [CommGroup T₁] [CommGroup T₂] (Γ₁ : BT.QFGroup R T₁) (Γ₂ : BT.QFGroup R T₂) (S : Scheme.{0}) (G : Over S) [GrpObj G] (x : Sp R ⟶ S) (N : ℕ) (i₁ : Γ₁.G.left ⟶ G.left) (i₂ : Γ₂.G.left ⟶ G.left), Γ₁.IsTorsionAlong G x N i₁ → Γ₂.IsTorsionAlong G x N i₂ → ∃ b : T₁ ≃* T₂, ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T₁ →* Rˣ) (w : Module.Dual R L), Γ₁.IsHT i₁ M N χ w → Γ₂.IsHT i₂ M N (χ.comp b.symm.toMonoidHom) w := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT | exact GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.TorIso.exists_mulEquiv_isHT <;> assumption)

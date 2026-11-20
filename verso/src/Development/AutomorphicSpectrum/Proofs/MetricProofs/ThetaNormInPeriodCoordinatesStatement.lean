@@ -17,8 +17,10 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Nform.norm_mul_canTh | exact GlobalTheory.CompanionTheory.Ar.Nform.norm_mul_canTh | (intros; apply GlobalTheory.CompanionTheory.Ar.Nform.norm_mul_canTh <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Nform.norm_mul_canTh` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FThetaNormInPeriodCoordinates.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.theta_norm_in_period_coordinates : ∀ (g : ℕ) (X Y : Matrix (Fin g) (Fin g) ℝ) (a c : Fin g → ℝ) (h Hm : Matrix (Fin g) (Fin g) ℂ)
     (θ : (Fin g → ℂ) → ℂ) (κ : ℂ),

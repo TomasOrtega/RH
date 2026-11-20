@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.InertFrameLoc
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertTwo.valued_two_eq_one | exact GlobalTheory.InertTwo.valued_two_eq_one | (intros; apply GlobalTheory.InertTwo.valued_two_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertTwo.valued_two_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FValuedTwoEqOneInertPlaceCmField.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.valued_two_eq_one_inertPlace_cmField : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), IsInertAt D.host.F D.host.E v w → Valued.v (2 : w.adicCompletion D.host.E) = 1 := by
   first | exact @GlobalTheory.InertTwo.valued_two_eq_one | exact GlobalTheory.InertTwo.valued_two_eq_one | (intros; apply GlobalTheory.InertTwo.valued_two_eq_one <;> assumption)

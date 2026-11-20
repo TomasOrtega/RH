@@ -11,8 +11,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr | exact GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr | (intros; apply GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeightedTraceConjFrameToRealLieLoweringOperator.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.weightedTrace_conjFrameToRealLie_loweringOperator : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (R : GlobalTheory.SmoothForms.RealPoints C.θ T) (B : C.Bas), C.IsB B → ∀ (m : D.what₂.Tau → ℤ) (ρ : D.what₂.Tau) (c d : Fin T.rank), c < d → ∀ (Z Z' : Frame C.X.Ψ T.rank), Z ∈ GlobalTheory.HolRead.unitLie C.X → Z' ∈ GlobalTheory.HolRead.unitLie C.X → Z + I • Z' = GlobalTheory.HolRead.unitFr (C.m.e ρ) c d → GlobalTheory.AdSpan.ConjHol.trLin T m (GlobalTheory.AdSpan.ConjHol.toLieC C R B Z) + I * GlobalTheory.AdSpan.ConjHol.trLin T m (GlobalTheory.AdSpan.ConjHol.toLieC C R B Z') = 0 := by
   first | exact @GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr | exact GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr | (intros; apply GlobalTheory.AdSpan.ConjHol.trLin_toLieC_unitFr <;> assumption)

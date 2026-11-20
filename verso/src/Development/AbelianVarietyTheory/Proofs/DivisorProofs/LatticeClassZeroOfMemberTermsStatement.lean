@@ -11,8 +11,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.TermsLabel.yy_zero_of_terms | exact GlobalTheory.GSep.TermsLabel.yy_zero_of_terms | (intros; apply GlobalTheory.GSep.TermsLabel.yy_zero_of_terms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.TermsLabel.yy_zero_of_terms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeClassZeroOfMemberTerms.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.latticeClass_zero_of_member_terms : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (C : Type) (lab : C → X₁.S.Gam) (T : X → C → V), 𝔪.Terms x₀ lab T → ∀ c, 𝔪.YY (lab c) 0 := by
   first | exact @GlobalTheory.GSep.TermsLabel.yy_zero_of_terms | exact GlobalTheory.GSep.TermsLabel.yy_zero_of_terms | (intros; apply GlobalTheory.GSep.TermsLabel.yy_zero_of_terms <;> assumption)

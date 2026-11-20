@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvCoefUniq.coef_eq_zero | exact GlobalTheory.InvCoefUniq.coef_eq_zero | (intros; apply GlobalTheory.InvCoefUniq.coef_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvCoefUniq.coef_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantFieldCombinationKillingFunctionsCoeffZe.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.invariant_field_combination_killing_functions_coeff_zero : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ (W : G.left.Opens) (c : Fin n → Γ(G.left, W)), (∀ O, O ≤ W → ∀ f, ∑ a, rsT (c a) O * dd a O f = 0) → ∀ a, c a = 0 := by
   first | exact @GlobalTheory.InvCoefUniq.coef_eq_zero | exact GlobalTheory.InvCoefUniq.coef_eq_zero | (intros; apply GlobalTheory.InvCoefUniq.coef_eq_zero <;> assumption)

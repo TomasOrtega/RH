@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CasimirLowerBoundOn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CasimirBound.casimir_form_gt | exact GlobalTheory.CasimirBound.casimir_form_gt | (intros; apply GlobalTheory.CasimirBound.casimir_form_gt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CasimirBound.casimir_form_gt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCasimirLowerBoundOnStableSubspace.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.casimir_lower_bound_on_stable_subspace : ∀ (R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (c₀ : ℚ), IsKLieAct actW →

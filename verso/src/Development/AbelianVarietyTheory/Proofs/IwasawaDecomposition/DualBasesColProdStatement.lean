@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncreasingRowChoicePerColumn
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeylLatDualProof.dual_bases_colProd | exact GlobalTheory.WeylLatDualProof.dual_bases_colProd | (intros; apply GlobalTheory.WeylLatDualProof.dual_bases_colProd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeylLatDualProof.dual_bases_colProd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDualBasesColProd.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.dual_bases_colProd_alt : (∀ (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (h : MvPolynomial (Fin N × Fin N) ℚ),
     h ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r => Y.rowLen r) →

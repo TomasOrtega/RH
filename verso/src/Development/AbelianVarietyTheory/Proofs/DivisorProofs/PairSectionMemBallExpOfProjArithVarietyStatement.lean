@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSNef.bounded_norm | exact GlobalTheory.HSNef.bounded_norm | (intros; apply GlobalTheory.HSNef.bounded_norm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSNef.bounded_norm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPairSectionMemBallExpOfProjArithVariety.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.pairSection_mem_ball_exp_of_projArithVariety : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (a b : ℤ) (f : X.functionField), f ∈ P.H a b → ∃ u : ℝ, 0 ≤ u ∧ f ∈ P.Bl a b (Real.exp u) := by
   first | exact @GlobalTheory.HSNef.bounded_norm | exact GlobalTheory.HSNef.bounded_norm | (intros; apply GlobalTheory.HSNef.bounded_norm <;> assumption)

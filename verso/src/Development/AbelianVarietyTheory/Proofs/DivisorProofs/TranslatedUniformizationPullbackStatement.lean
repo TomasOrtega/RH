@@ -17,8 +17,10 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusPullFrame.exists_holUnif_pull_right | exact GlobalTheory.TorusPullFrame.exists_holUnif_pull_right | (intros; apply GlobalTheory.TorusPullFrame.exists_holUnif_pull_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusPullFrame.exists_holUnif_pull_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTranslatedUniformizationPullback.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.translated_uniformization_pullback : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L₀ : LB A.left) (g : ℕ) (u : HolUnif A L₀ g)
     (L : LB (A ⊗ A).left) (U : HolUnif (A ⊗ A) L (g + g)),

@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowRow.StdMass.massLower_of_stdV | exact GlobalTheory.LowRow.StdMass.massLower_of_stdV | (intros; apply GlobalTheory.LowRow.StdMass.massLower_of_stdV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowRow.StdMass.massLower_of_stdV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryMassLowerBoundOfOrthonormalLatticeFrames.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.unitaryMassLowerBound_of_orthonormalLatticeFrames : ∀ D : D7, StdV D → MassLower D := by
   first | exact @GlobalTheory.LowRow.StdMass.massLower_of_stdV | exact GlobalTheory.LowRow.StdMass.massLower_of_stdV | (intros; apply GlobalTheory.LowRow.StdMass.massLower_of_stdV <;> assumption)

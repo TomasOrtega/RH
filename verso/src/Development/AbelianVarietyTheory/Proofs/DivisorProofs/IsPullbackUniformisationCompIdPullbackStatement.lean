@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullUnifId.isPullUnif_comp_id | exact GlobalTheory.PullUnifId.isPullUnif_comp_id | (intros; apply GlobalTheory.PullUnifId.isPullUnif_comp_id <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullUnifId.isPullUnif_comp_id` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackUniformisationCompIdPullback.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.isPullbackUniformisation_comp_id_pullback : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R')
     (D : DegData R I) (D' D'' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre)

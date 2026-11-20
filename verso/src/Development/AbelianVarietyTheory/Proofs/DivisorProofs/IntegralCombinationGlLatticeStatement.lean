@@ -7,8 +7,10 @@ open ValuativeRel
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBInvSpan.span_translates_of_invariant | exact GlobalTheory.SBInvSpan.span_translates_of_invariant | (intros; apply GlobalTheory.SBInvSpan.span_translates_of_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBInvSpan.span_translates_of_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralCombinationGlLattice.lean&line=287#L287)
 -/
 theorem _root_.GlobalTheory.T.integral_combination_gl_lattice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ),
     (∀ (X : Matrix (Fin n) (Fin d) k) (c : k), c ≠ 0 → ∃ h : GL (Fin d) k, ∀ Y : Matrix (Fin n) (Fin d) k,

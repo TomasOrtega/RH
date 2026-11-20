@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.ZeroTerm.theta_zero_term_unipotent_invariant_adelic | exact GlobalTheory.CompanionTheory.FexTheta.ZeroTerm.theta_zero_term_unipotent_invariant_adelic | (intros; apply GlobalTheory.CompanionTheory.FexTheta.ZeroTerm.theta_zero_te …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.ZeroTerm.theta_zero_term_unipotent_invariant_adelic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FThetaZeroTermUnipotentInvariant.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.theta_zero_term_unipotent_invariant : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (n : ℤ) (t : ℝ)
   (M : ∀ v : Pl, LM c v), AdmM M → ∀ (x : 𝔸[ℚ]) (g : G2), thT n t M (uni2 x * g) 0 = thT n t M g 0 := by

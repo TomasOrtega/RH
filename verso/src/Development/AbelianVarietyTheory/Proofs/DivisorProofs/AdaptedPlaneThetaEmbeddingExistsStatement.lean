@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealFreq.injective_real_frequencies | exact GlobalTheory.RealFreq.injective_real_frequencies | (intros; apply GlobalTheory.RealFreq.injective_real_frequencies <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealFreq.injective_real_frequencies` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneThetaEmbeddingExists.lean&line=210#L210)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_theta_embedding_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

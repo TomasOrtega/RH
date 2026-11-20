@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbFGSpread.spread_to_fg_subfield | exact GlobalTheory.AbFGSpread.spread_to_fg_subfield | (intros; apply GlobalTheory.AbFGSpread.spread_to_fg_subfield <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbFGSpread.spread_to_fg_subfield` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianVarietyAmpleBundlesDescendFgSubfield.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.abelianVariety_ampleBundles_descend_fg_subfield : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (L M : LB A.left), L.IsLB → M.IsLB → RelAmple A L → RelAmple A M → LBIso (L.pull (GrpObj.inv : A ⟶ A).left) L → LBIso (M.pull (GrpObj.inv : A ⟶ A).left) M → ∃ (k₀ : IntermediateField ℚ K) (A₀ : Over (Sp k₀)) (_ : GrpObj A₀) (π : A.left ⟶ A₀.left) (L₀ M₀ : LB A₀.left), k₀.FG ∧ IsAbelianScheme A₀ ∧ IsGrpPullback A A₀ (spMap (algebraMap k₀ K)) π ∧ L₀.IsLB ∧ M₀.IsLB ∧ RelAmple A₀ L₀ ∧ RelAmple A₀ M₀ ∧ LBIso (L₀.pull (GrpObj.inv : A₀ ⟶ A₀).left) L₀ ∧ LBIso (M₀.pull (GrpObj.inv : A₀ ⟶ A₀).left) M₀ ∧ LBIso L (L₀.pull π) ∧ LBIso M (M₀.pull π) := by
   first | exact @GlobalTheory.AbFGSpread.spread_to_fg_subfield | exact GlobalTheory.AbFGSpread.spread_to_fg_subfield | (intros; apply GlobalTheory.AbFGSpread.spread_to_fg_subfield <;> assumption)

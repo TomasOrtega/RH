@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivPro
 import BuildAid.D3
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.speh_quotient_isL | exact GlobalTheory.speh_quotient_isL | (intros; apply GlobalTheory.speh_quotient_isL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.speh_quotient_isL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLanglandsQuotientOfSpehTypeProductIsL.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.langlandsQuotient_of_speh_type_product_isL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],
     GlobalTheory.Published.StandardCosocleGL → (∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →

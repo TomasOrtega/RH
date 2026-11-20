@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecializationMapCo
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.CxPts GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.GalCarry
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush | exact GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush | (intros; apply GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedLogPushforward.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.twisted_log_pushforward : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Tw Z), T.LnPush := by
   first | exact @GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush | exact GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush | (intros; apply GlobalTheory.ShFam.GalCarry.LnPushProof.lnPush <;> assumption)

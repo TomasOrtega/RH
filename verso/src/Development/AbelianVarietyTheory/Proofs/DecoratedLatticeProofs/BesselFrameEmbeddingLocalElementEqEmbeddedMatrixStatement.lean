@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocGrp.isLoc_embA | exact GlobalTheory.LocGrp.isLoc_embA | (intros; apply GlobalTheory.LocGrp.isLoc_embA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocGrp.isLoc_embA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselFrameEmbeddingLocalElementEqEmbeddedMatrix.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.besselFrame_embedding_localElement_eq_embedded_matrix : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.LocMod.Place D k) (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (B : BesLev D ρ) (s : k) (FA : GlobalTheory.LocMod.Frame k B.A.rank n) (F : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin c)), p.IsBesFrame B s FA F → ∀ (h : GA D B.A) (γ : GL n k), p.IsLoc FA h γ → p.IsLoc F (embA B.d B.o h) (GlobalTheory.RootEx.embX c γ) := by
   first | exact @GlobalTheory.LocGrp.isLoc_embA | exact GlobalTheory.LocGrp.isLoc_embA | (intros; apply GlobalTheory.LocGrp.isLoc_embA <;> assumption)

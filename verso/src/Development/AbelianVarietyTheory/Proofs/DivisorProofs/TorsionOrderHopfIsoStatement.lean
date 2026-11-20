@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord | exact GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord | (intros; apply GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionOrderHopfIso.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.torsion_order_hopf_iso : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] (io : A ≃ₐ[R] ord G N K), (∀ a b : Tors G N K, toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) (a * b)).comp (ord G N K).val).comp io.toAlgHom) = toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val).comp io.toAlgHom) * toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val).comp io.toAlgHom)) → ∃ θ : TorsPt G N A, ∀ (x : Tors G N K) (a : A), θ.pt K x a = (io a : Tors G N K → K) x := by
   first | exact @GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord | exact GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord | (intros; apply GlobalTheory.GroupBplus.Aff.exists_torsPt_of_ord <;> assumption)

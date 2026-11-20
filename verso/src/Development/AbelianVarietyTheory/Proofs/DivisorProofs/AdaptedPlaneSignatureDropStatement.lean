@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewComplementSig.hasSig_of_leftInverse | exact GlobalTheory.SkewComplementSig.hasSig_of_leftInverse | (intros; apply GlobalTheory.SkewComplementSig.hasSig_of_leftInverse <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewComplementSig.hasSig_of_leftInverse` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneSignatureDrop.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_signature_drop : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ r' s' i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ → W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ w : InfinitePlace F,

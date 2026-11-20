@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual PositivityTheory.ObstructionTrivialLocus GlobalTheory.CompanionTheory.TrivLoc
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TrivLoc.exists_chart_family | exact GlobalTheory.CompanionTheory.TrivLoc.exists_chart_family | (intros; apply GlobalTheory.CompanionTheory.TrivLoc.exists_chart_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TrivLoc.exists_chart_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProperIntegralPerfectFamilyExists.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.proper_integral_perfect_family_exists : ∀ (S : Scheme.{0}) (A Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ N : LB (A ⊗ Y).left, N.IsLB →
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (j : Spec (CommRingCat.of R) ⟶ Y.left),

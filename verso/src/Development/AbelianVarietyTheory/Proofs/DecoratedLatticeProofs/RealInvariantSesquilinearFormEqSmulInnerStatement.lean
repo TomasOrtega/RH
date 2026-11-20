@@ -16,8 +16,10 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefRealSchur.form_eq_smul_inner | exact GlobalTheory.CoefRealSchur.form_eq_smul_inner | (intros; apply GlobalTheory.CoefRealSchur.form_eq_smul_inner <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefRealSchur.form_eq_smul_inner` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRealInvariantSesquilinearFormEqSmulInner.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.real_invariant_sesquilinear_form_eq_smul_inner : ∀ (D : D7) (V : HSp D) (c : CoefA V), c.Is → ∀ (B : c.W →ₗ⋆[ℂ] c.W →ₗ[ℂ] ℂ), (∀ u ∈ GinfC V, ∀ x y, B (c.ρ u x) (c.ρ u y) = B x y) → ∃ z : ℂ, ∀ x y, B x y = z * ⟪x, y⟫_ℂ := by
   first | exact @GlobalTheory.CoefRealSchur.form_eq_smul_inner | exact GlobalTheory.CoefRealSchur.form_eq_smul_inner | (intros; apply GlobalTheory.CoefRealSchur.form_eq_smul_inner <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key | exact GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLineOfKeyDegree.lean&line=269#L269)
 -/
 theorem _root_.GlobalTheory.T.line_of_key_degree : KeyDegSt → LineSt := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key | exact GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.LineProof.line_of_key <;> assumption)

@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodDet.exists_detGen_isDet | exact GlobalTheory.PeriodDet.exists_detGen_isDet | (intros; apply GlobalTheory.PeriodDet.exists_detGen_isDet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodDet.exists_detGen_isDet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodsOfGoodReductionModel.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.periods_of_good_reduction_model : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)
     (L : Set E) (𝔠 : FracId (FR E)) (R : Subring ℂ) [IsDiscreteValuationRing R]

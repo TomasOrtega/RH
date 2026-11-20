@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif | exact GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif | (intros; apply GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGeometricFibreIsoOfTraitUniformisation.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_geometricFibreIso_of_traitUniformisation : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)), ∀ n : ℕ, n.Prime → Odd n → IsUnit (n : R) → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (φ : R →+* W), Function.Injective φ → IsLocalHom φ → ∀ (D' : DegData W (maximalIdeal W)) (G' : Over (Sp W)) [GrpObj G'] [IsCommMonObj G'] (A' : PolAV (Sp (FractionRing W))), Nonempty (IsPullDeg φ D.toPre D'.toPre) → IsSemiAbelian G' → Nonempty (Unif (maximalIdeal W) D' A' G') → (letI := A'.isAb.comm; GlobalTheory.ZH.HypS A'.A A'.L) → ∃ (A₀ : PolAV (Sp (Kb R))) (e₀ : Kb R →+* Kb W), (∀ r, e₀ (algebraMap (FractionRing R) (Kb R) (algebraMap R _ r)) = algebraMap (FractionRing W) (Kb W) (algebraMap W _ (φ r))) ∧ (letI := A₀.isAb.comm; GlobalTheory.ZH.HypS A₀.A A₀.L) ∧ GeomIso A₀ A' e₀ (algebraMap (FractionRing W) (Kb W)) := by
   first | exact @GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif | exact GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif | (intros; apply GlobalTheory.Mum.GeoDesc.exists_geomIso_of_unif <;> assumption)

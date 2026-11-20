@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzIntegralOfI
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSch.exists_schwartz_integral | exact GlobalTheory.ConeSch.exists_schwartz_integral | (intros; apply GlobalTheory.ConeSch.exists_schwartz_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeSch.exists_schwartz_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzIntegralOfIntegrableBounds.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.schwartz_integral_of_integrable_bounds : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace S] (ν : Measure S)
     (f : S → SchwartzMap D ℂ),

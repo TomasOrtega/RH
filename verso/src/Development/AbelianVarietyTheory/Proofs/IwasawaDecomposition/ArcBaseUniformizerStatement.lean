@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolArcSpec.chart_specialises | exact GlobalTheory.PolArcSpec.chart_specialises | (intros; apply GlobalTheory.PolArcSpec.chart_specialises <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolArcSpec.chart_specialises` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FArcBaseUniformizer.lean&line=236#L236)
 -/
 theorem _root_.GlobalTheory.T.arc_base_uniformizer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (W : ValuationSubring ℂ) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype)

@@ -7,8 +7,10 @@ open GlobalTheory.LN GlobalTheory.TorRef GlobalTheory.IntegralCombination
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntFam.intFam | exact GlobalTheory.IntFam.intFam | (intros; apply GlobalTheory.IntFam.intFam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntFam.intFam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsFineSectionFamilies.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_fine_section_families : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]

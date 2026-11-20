@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero | exact GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero | (intros; apply GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqZeroOfForallApplyHodgePrimitiveEqZero.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_forall_apply_hodgePrimitive_eq_zero : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → LieExact A → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[R] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → ∀ x : G.Lie, (∀ c, x (ψ c) = 0) → x = 0 := by
   first | exact @GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero | exact GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero | (intros; apply GlobalTheory.PDivGroup.eq_zero_of_forall_apply_psi_eq_zero <;> assumption)

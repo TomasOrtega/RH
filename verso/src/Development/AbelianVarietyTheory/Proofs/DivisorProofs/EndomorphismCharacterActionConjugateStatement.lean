@@ -11,8 +11,10 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.endChar_act | exact GlobalTheory.UPoinc.endChar_act | (intros; apply GlobalTheory.UPoinc.endChar_act <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.endChar_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEndomorphismCharacterActionConjugate.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.endomorphism_characterAction_conjugate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (a : 𝓞 E), EndChar P.U (t.act.act a) (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a)) := by
   first | exact @GlobalTheory.UPoinc.endChar_act | exact GlobalTheory.UPoinc.endChar_act | (intros; apply GlobalTheory.UPoinc.endChar_act <;> assumption)

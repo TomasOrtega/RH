@@ -9,8 +9,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.IntTerm.exhausts_of_generic | exact GlobalTheory.Poinc.IntTerm.exhausts_of_generic | (intros; apply GlobalTheory.Poinc.IntTerm.exhausts_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.IntTerm.exhausts_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionSectionsExhaustOfGenericGeometric.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.torsionSections_exhaust_of_generic_geometric : ∀ (V : Type) [CommRing V] [IsDomain V] [IsNoetherianRing V] (P : PolAV (Sp V)) (N : ℕ), 1 ≤ N → ∀ (C : Type) (b : C → (𝟙_ (Over (Sp V)) ⟶ P.A)), (∀ c, b c ^ N = 1) → (∀ p : TF (R := V) (AlgebraicClosure (FractionRing V)) ⟶ P.A, p ^ N = 1 → ∃ c, p = toUnit _ ≫ b c) → IntTerm.Exhausts P N b := by
   first | exact @GlobalTheory.Poinc.IntTerm.exhausts_of_generic | exact GlobalTheory.Poinc.IntTerm.exhausts_of_generic | (intros; apply GlobalTheory.Poinc.IntTerm.exhausts_of_generic <;> assumption)

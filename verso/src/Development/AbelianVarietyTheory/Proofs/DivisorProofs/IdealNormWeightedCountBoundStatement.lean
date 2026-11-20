@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdealBoxSum.lattice_sum_le | exact GlobalTheory.IdealBoxSum.lattice_sum_le | (intros; apply GlobalTheory.IdealBoxSum.lattice_sum_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdealBoxSum.lattice_sum_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealNormWeightedCountBound.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.ideal_norm_weighted_count_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ I₀ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, I₀ ≠ 0 →

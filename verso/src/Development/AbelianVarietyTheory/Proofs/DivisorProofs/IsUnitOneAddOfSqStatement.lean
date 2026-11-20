@@ -7,8 +7,10 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AltConv.norm_sum_altSign_integral_le | exact GlobalTheory.AltConv.norm_sum_altSign_integral_le | (intros; apply GlobalTheory.AltConv.norm_sum_altSign_integral_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AltConv.norm_sum_altSign_integral_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsUnitOneAddOfSq.lean&line=171#L171)
 -/
 theorem _root_.GlobalTheory.T.norm_signed_sum_integral_le : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (β : Lie E a → ℂ), ContDiff ℝ ∞ β →
     HasCompactSupport β → tsupport β ⊆ invSet E a → ∀ (m : ℕ) (R : ℝ), ∃ (c : ℝ) (Q : Set (Lie E a)),

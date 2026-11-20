@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.CubeDesc.cubicalBundle_descends | exact GlobalTheory.Mum.CubeDesc.cubicalBundle_descends | (intros; apply GlobalTheory.Mum.CubeDesc.cubicalBundle_descends <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.CubeDesc.cubicalBundle_descends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCubicalBundleModificationDescendsToGroup.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.cubicalBundle_modification_descends_to_group : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G M.π β → ∀ (θ : P'.L.L.Sec) (O : G.left.Opens), (∃ g ∈ O, G.hom g = closedPoint R) → (∀ g : G'.left, β g ∈ O → G.hom (β g) = closedPoint R → ∃ i, g ∈ G'.left.basicOpen (θ.f i)) → ∃ L : LB G.left, L.IsLB ∧ LBIso P'.L.L (L.pull β) := by
   first | exact @GlobalTheory.Mum.CubeDesc.cubicalBundle_descends | exact GlobalTheory.Mum.CubeDesc.cubicalBundle_descends | (intros; apply GlobalTheory.Mum.CubeDesc.cubicalBundle_descends <;> assumption)

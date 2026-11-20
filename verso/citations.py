@@ -17,8 +17,8 @@ SCOPE = re.compile(
     re.MULTILINE,
 )
 WRAPPER = re.compile(
-    rf"by first \| exact @(?P<name>{QUALIFIED}) \| exact (?P=name) "
-    r"\| \(intros; apply (?P=name)(?: <;> assumption|; all_goals assumption)\)"
+    rf"by first \| exact @(?P<name>{QUALIFIED}) \| exact (?P=name)"
+    r"(?: \| \(intros; apply (?P=name)(?: <;> assumption|; all_goals assumption)\))?"
 )
 DIRECT = re.compile(rf"(?:by exact )?@?(?P<name>_root_\.{QUALIFIED})")
 PRIVATE = re.compile(r"\bprivate\s+(?:theorem|lemma)\b")
@@ -83,7 +83,7 @@ def exported_claims(path):
     for event in events:
         if not apply_scope(scopes, event):
             return {}
-    return names if not scopes else {}
+    return names if all(not label for label, _ in scopes) else {}
 
 
 def citations(root, source, masked, claims):

@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MemLevRed.mem_lev_of_reductions | exact GlobalTheory.MemLevRed.mem_lev_of_reductions | (intros; apply GlobalTheory.MemLevRed.mem_lev_of_reductions <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MemLevRed.mem_lev_of_reductions` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemLevelOfTypePlaceReductions.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.mem_level_of_type_place_reductions : ∀ {D : D7} (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (LT : LevDat D.host.E ℂ T.rank) (y : GL (Fin T.rank) (EAf D)), LT.Q = ∅ → y ∈ UA D.sp.cm T.gram → y ∈ St βT → ∀ (a b : ∀ PP : ↥LT.Pg, GL (Fin T.rank) (kP PP.1)), (∀ PP, a PP ∈ blockTri (blkOf LT.r LT.t)) → (∀ PP, b PP ∈ blockTri (blkOf LT.r LT.t)) → (fun PP => upperLeftBlock LT.hr (a PP)) ∈ LT.P.H → (fun PP => upperLeftBlock LT.hr (b PP)) ∈ LT.P.H → (∀ PP : ↥LT.Pg, b PP * redFn βT PP.1 y = a PP) → y ∈ lev D.sp.cm T.gram βT LT := by
   first | exact @GlobalTheory.MemLevRed.mem_lev_of_reductions | exact GlobalTheory.MemLevRed.mem_lev_of_reductions | (intros; apply GlobalTheory.MemLevRed.mem_lev_of_reductions <;> assumption)

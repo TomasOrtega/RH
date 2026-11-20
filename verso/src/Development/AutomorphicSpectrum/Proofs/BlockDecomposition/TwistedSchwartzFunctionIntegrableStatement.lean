@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CompanionTheory.SiegelND.Integ
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.integrable_mul_phase | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.integrable_mul_phase | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.integrable_mul_phase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.integrable_mul_phase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTwistedSchwartzFunctionIntegrable.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.twisted_schwartz_function_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →

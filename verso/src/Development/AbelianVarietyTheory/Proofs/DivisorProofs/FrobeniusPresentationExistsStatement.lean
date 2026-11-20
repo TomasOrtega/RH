@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZeroPresZeroMod
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 open GlobalTheory GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.FrobFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one | exact GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one | (intros; apply GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusPresentationExists.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.frobenius_presentation_exists : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), ∀ (g : Γ(B.X, ⊤)), IsRootOfP p g p → ∀ R : Pres B, R.r = 1 → Kills g R.mod → ∃ R' : Pres B, IsFrob p R.mod R'.mod := by
   first | exact @GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one | exact GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one | (intros; apply GlobalTheory.FrobFilt.exists_pres_isFrob_of_rank_one <;> assumption)

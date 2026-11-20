@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DenseSum.unifLimit_prodSpan | exact GlobalTheory.DenseSum.unifLimit_prodSpan | (intros; apply GlobalTheory.DenseSum.unifLimit_prodSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DenseSum.unifLimit_prodSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaFunctionsSumUniformLimitProductSpan.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.thetaFunctions_sum_uniform_limit_product_span : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B), ∀ f, IsThetaFunO ψ S T f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.prodSpan (o.resS T) (IsThetaFunO ψ A T) (IsThetaFunO ψ B T)) f := by
   first | exact @GlobalTheory.DenseSum.unifLimit_prodSpan | exact GlobalTheory.DenseSum.unifLimit_prodSpan | (intros; apply GlobalTheory.DenseSum.unifLimit_prodSpan <;> assumption)

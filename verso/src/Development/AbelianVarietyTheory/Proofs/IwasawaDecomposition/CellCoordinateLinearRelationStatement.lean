@@ -8,8 +8,10 @@ open GlobalTheory.FlagMod (ev tanPull initSpan)
 open GlobalTheory.FlagEmb (plN plk lform LeftInv)
 open GlobalTheory.ProjSpace (pt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GrCl.CellLin.main | exact GlobalTheory.GrCl.CellLin.main | (intros; apply GlobalTheory.GrCl.CellLin.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GrCl.CellLin.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCellCoordinateLinearRelation.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.cell_coordinate_linear_relation : ∀ (R : Type) [CommRing R] (m a k b N : ℕ) (hk : k ≤ m) (D c : Fin m → Fin (N + 1) → R), a ≤ k → k ≤ b → LeftInv D c → ∀ q, ∃ (T : Type) (_ : Fintype T) (jj : T → GPm m a b) (e : T → R), ∀ w' : GPm m a b, gxi a b hk c w' q = ∑ t, (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (e t) * ∑ q', (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (gell a b hk D (jj t) q') * gxi a b hk c w' q' := by
   first | exact @GlobalTheory.GrCl.CellLin.main | exact GlobalTheory.GrCl.CellLin.main | (intros; apply GlobalTheory.GrCl.CellLin.main <;> assumption)

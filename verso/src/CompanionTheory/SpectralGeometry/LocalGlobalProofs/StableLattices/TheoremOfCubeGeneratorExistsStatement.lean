@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RigDescLink.descent_datum | exact GlobalTheory.CompanionTheory.RigDescLink.descent_datum | (intros; apply GlobalTheory.CompanionTheory.RigDescLink.descent_datum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RigDescLink.descent_datum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FTheoremOfCubeGeneratorExists.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.theorem_of_cube_generator_exists : ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ (q : X ⟶ Y) (M : LB (A ⊗ X).left), M.IsLB →
     Triv (ev M (1 : X ⟶ A) (𝟙 X)) →

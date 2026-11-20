@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth | exact GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth | (intros; apply GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLieOmegaLatticeVectorBundle.lean&line=192#L192)
 -/
 theorem _root_.GlobalTheory.T.lie_omega_lattice_vector_bundle : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] [IsCommMonObj G] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li), IsCptGen ξ → Smooth G.hom → M.lat.IsVB (Module.finrank Ω Li) ⊤ ∧ M.omLat.IsVB (Module.finrank Ω Li) ⊤ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth | exact GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth | (intros; apply GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth <;> assumption)

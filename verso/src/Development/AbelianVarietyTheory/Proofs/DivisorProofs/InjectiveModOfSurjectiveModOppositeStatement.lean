@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivOfIsometryApply
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.inj_mod_of_surj_mod | exact GlobalTheory.LowFilt.inj_mod_of_surj_mod | (intros; apply GlobalTheory.LowFilt.inj_mod_of_surj_mod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowFilt.inj_mod_of_surj_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInjectiveModOfSurjectiveModOpposite.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.injective_mod_of_surjective_mod_opposite : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (y : D.La →ₗ[𝓞 E] X) (n : ℕ), 0 < n → ∀ Z Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' →

@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.Geomet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.MetricOrth.main | exact GlobalTheory.CompanionTheory.Ar.MetricOrth.main | (intros; apply GlobalTheory.CompanionTheory.Ar.MetricOrth.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.MetricOrth.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsOrthogonalLieMetric.lean&line=317#L317)
 -/
 theorem _root_.GlobalTheory.T.exists_orthogonal_lie_metric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y), ∃ h : LieMetric 𝔐.M y, h.Orth 𝔐.t.act := by
   first | exact @GlobalTheory.CompanionTheory.Ar.MetricOrth.main | exact GlobalTheory.CompanionTheory.Ar.MetricOrth.main | (intros; apply GlobalTheory.CompanionTheory.Ar.MetricOrth.main <;> assumption)

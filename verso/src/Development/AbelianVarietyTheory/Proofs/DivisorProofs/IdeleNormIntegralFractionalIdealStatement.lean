@@ -10,8 +10,10 @@ open scoped Classical nonZeroDivisors
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.LocIdeal (locId)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateIdelic.integrable_tate | exact GlobalTheory.TateIdelic.integrable_tate | (intros; apply GlobalTheory.TateIdelic.integrable_tate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TateIdelic.integrable_tate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleNormIntegralFractionalIdeal.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.idele_norm_integral_fractional_ideal : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (μ : Measure (AE F E)ˣ), μ.IsHaarMeasure →
     ∀ (μi : Measure (idelesAt E (evI F))), μi.IsHaarMeasure → ∀ (s : ℕ), 2 ≤ s →

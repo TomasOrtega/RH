@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | exact GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | (intros; apply GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubsingletonCharacterLatticeOfGoodReductionTrait.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.subsingleton_characterLattice_of_goodReduction_trait : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F) (ξ : Sp T.V ⟶ F.X), jK T.V ≫ ξ = T.y → Subsingleton T.D.toPre.X := by
   first | exact @GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | exact GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | (intros; apply GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends <;> assumption)

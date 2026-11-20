@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeSignLevel.sign_char_trivial_on_congruence | exact GlobalTheory.HeckeSignLevel.sign_char_trivial_on_congruence | (intros; apply GlobalTheory.HeckeSignLevel.sign_char_trivial_on_congruence <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeSignLevel.sign_char_trivial_on_congruence` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleCharacterTrivialOnCongruence.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.idele_character_trivial_on_congruence : ∀ (F : Type) [Field F] [NumberField F] (φ : (AdeleRing (𝓞 F) F)ˣ →* Circle),
     Continuous φ → (∀ b, φ b = 1 ∨ φ b = -1) → (∀ b : (AdeleRing (𝓞 F) F)ˣ, (b : AdeleRing (𝓞 F) F).2 = 1 → φ b = 1) →

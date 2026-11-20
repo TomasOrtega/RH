@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKGal.StableFix.main | exact GlobalTheory.BKGal.StableFix.main | (intros; apply GlobalTheory.BKGal.StableFix.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKGal.StableFix.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBreuilKisinTensorAinfGaloisStableKummerFixed.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.breuilKisin_tensorAinf_galoisStable_kummerFixed : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), IsBK (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) → Ident.Stable (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) ∧ ∀ g : Gl l, sQ l g ∈ ϖ.GfieldInf a → ∀ v : ME P, I.act (sQ l g) g (toW (thetaW a LL) ϖ P v) = toW (thetaW a LL) ϖ P v := by
   first | exact @GlobalTheory.BKGal.StableFix.main | exact GlobalTheory.BKGal.StableFix.main | (intros; apply GlobalTheory.BKGal.StableFix.main <;> assumption)

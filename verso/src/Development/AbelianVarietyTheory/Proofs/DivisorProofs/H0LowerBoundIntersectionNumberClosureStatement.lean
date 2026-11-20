@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosureRR.h0_ge_of_lt_interNumRed | exact GlobalTheory.ClosureRR.h0_ge_of_lt_interNumRed | (intros; apply GlobalTheory.ClosureRR.h0_ge_of_lt_interNumRed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosureRR.h0_ge_of_lt_interNumRed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FH0LowerBoundIntersectionNumberClosure.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.h0_lower_bound_of_isAmple_cartierDiv : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ (A : CartierDiv X) (z : X) (k : ℕ) (q : ℚ),
   IsAmpleLB (toLB A) → letI := algebraΓOfHom p; topologicalKrullDim (closure ({z} : Set X)) = k →

@@ -13,8 +13,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.StdLocal.fL_std | exact GlobalTheory.CompanionTheory.FexTheta.StdLocal.fL_std | (intros; apply GlobalTheory.CompanionTheory.FexTheta.StdLocal.fL_std <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.StdLocal.fL_std` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FStandardLocalCoefficientValues.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.standard_local_coefficient_values : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → Unr c v → L.std → ∀ k ∈ integralGL (Qv v) 2, ∀ κ : Kˣ,

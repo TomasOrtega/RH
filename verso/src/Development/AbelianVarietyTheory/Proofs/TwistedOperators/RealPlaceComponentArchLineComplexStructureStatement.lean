@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.VacTransfer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CartanLinTransfer.compAt_archLine_cplxO | exact GlobalTheory.CartanLinTransfer.compAt_archLine_cplxO | (intros; apply GlobalTheory.CartanLinTransfer.compAt_archLine_cplxO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CartanLinTransfer.compAt_archLine_cplxO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPlaceComponentArchLineComplexStructure.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.realPlaceComponent_archLine_complexStructure : ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

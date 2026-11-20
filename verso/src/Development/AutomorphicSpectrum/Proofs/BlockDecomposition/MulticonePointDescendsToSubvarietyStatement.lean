@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.UnderSub.exists_cxPt_of_mem_mcPts | exact GlobalTheory.CompanionTheory.MPDict.UnderSub.exists_cxPt_of_mem_mcPts | (intros; apply GlobalTheory.CompanionTheory.MPDict.UnderSub.exists_cxPt_of_mem_mcPts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MPDict.UnderSub.exists_cxPt_of_mem_mcPts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMulticonePointDescendsToSubvariety.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.multicone_point_descends_to_subvariety : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i]
     (z : (Σ k, Bk n k) → ℂ), z ∈ mcPts (ptIdeal (i (genericPoint X))) →

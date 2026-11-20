@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.LiftRows (Given)
 open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl IsBase onHalf phiQ rdQ)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator | exact GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator | (intros; apply GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTwistPlaceChainStepDatumMulConjEqIndicator.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.twistPlaceChainStepDatum_mul_conj_eq_indicator : ∀ (D : D7) (PP : Pl D.host.E) (v : FinPl D) (φ : SplitProj D v), IsProjAt φ PP → ∀ (a b r : ℕ) (ξ : (kP PP)ˣ →* ℂˣ) (mu : (Fv D.host.F v)ˣ →* ℂˣ), LiftsChar φ PP mu ξ → ∀ x : Matrix (Fin b) (Fin a) (Fv D.host.F v), phiQ v r mu x * (starRingEnd ℂ) (phiQ v r mu x) = (GlobalTheory.NrmVol.suppQ v r).indicator (fun _ => (1 : ℂ)) x := by
   first | exact @GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator | exact GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator | (intros; apply GlobalTheory.NrmVol.phiQ_mul_conj_eq_indicator <;> assumption)

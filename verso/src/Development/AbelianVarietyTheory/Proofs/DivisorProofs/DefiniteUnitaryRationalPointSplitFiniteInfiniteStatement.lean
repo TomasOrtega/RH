@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct Topology
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.RatSplit.ratU_split | exact GlobalTheory.BCT.RatSplit.ratU_split | (intros; apply GlobalTheory.BCT.RatSplit.ratU_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.RatSplit.ratU_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDefiniteUnitaryRationalPointSplitFiniteInfinite.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.definiteUnitaryRationalPoint_split_finite_infinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), ∀ γ ∈ ratU E n, ∃ γ₀ : UE E n, splitFin E n γ = finPt γ₀ ∧ ∀ v : InfinitePlace E, cEmb v.embedding γ = GeneralLinearGroup.map v.embedding γ₀.1 := by
   first | exact @GlobalTheory.BCT.RatSplit.ratU_split | exact GlobalTheory.BCT.RatSplit.ratU_split | (intros; apply GlobalTheory.BCT.RatSplit.ratU_split <;> assumption)

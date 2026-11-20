@@ -10,8 +10,10 @@ open scoped TensorProduct CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AbLaw GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbelianQuotientField.exists_quotient | exact GlobalTheory.AbelianQuotientField.exists_quotient | (intros; apply GlobalTheory.AbelianQuotientField.exists_quotient <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbelianQuotientField.exists_quotient` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsQuotientAbelianVarietyFiniteSubgroupScheme.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_quotient_abelianVariety_finite_subgroupScheme : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (H : Over (Sp K)) [GrpObj H] (i : H ⟶ A), IsMonHom i → Mono i → IsFinite H.hom → ∃ (A' : Over (Sp K)) (_ : GrpObj A'), IsAbelianScheme A' ∧ ∃ q : A ⟶ A', IsMonHom q ∧ IsFinite q.left ∧ Flat q.left ∧ Surjective q.left ∧ IsPullback i (toUnit H) q η[A'] := by
   first | exact @GlobalTheory.AbelianQuotientField.exists_quotient | exact GlobalTheory.AbelianQuotientField.exists_quotient | (intros; apply GlobalTheory.AbelianQuotientField.exists_quotient <;> assumption)

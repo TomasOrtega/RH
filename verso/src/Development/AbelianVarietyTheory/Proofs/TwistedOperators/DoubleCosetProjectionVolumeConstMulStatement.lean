@@ -12,8 +12,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.CellMass
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellLevel.pr_vol | exact GlobalTheory.CellLevel.pr_vol | (intros; apply GlobalTheory.CellLevel.pr_vol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellLevel.pr_vol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDoubleCosetProjectionVolumeConstMul.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.doubleCosetProjection_volume_const_mul : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ ν : Measure (GfC (ch.G.V (.top j))), ν.IsHaarMeasure →
     ∃ κ' : ℝ, 0 < κ' ∧ ∀ t Φ β b, IsRep t ch.S.B s β b → ∀ M M' : Vol ch.G, M.Is t → IsTermVol t ch.S.toGridChoice Φ β M' →

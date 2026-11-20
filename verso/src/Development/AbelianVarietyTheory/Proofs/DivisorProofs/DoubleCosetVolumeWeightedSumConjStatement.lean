@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocPartMul
 open MeasureTheory Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbDesc.dsum_conj | exact GlobalTheory.OrbDesc.dsum_conj | (intros; apply GlobalTheory.OrbDesc.dsum_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrbDesc.dsum_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoubleCosetVolumeWeightedSumConj.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.doubleCosetVolumeWeightedSum_conj : ∀ (H : Type) [Group H] (T L U : Subgroup H) (Ψ : H → ℂ) (c : H),
   (∀ s ∈ T, ∀ t ∈ T, s * t = t * s) → (∀ t ∈ T, ∀ x, Ψ (t * x) = Ψ x) → (∀ l ∈ L, ∀ x, Ψ (x * l) = Ψ x) →

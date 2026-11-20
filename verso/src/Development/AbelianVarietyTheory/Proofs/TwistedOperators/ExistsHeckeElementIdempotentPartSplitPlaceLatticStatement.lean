@@ -11,8 +11,10 @@ noncomputable section
 open NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeLocLift.exists_hecke_ePart | exact GlobalTheory.HeckeLocLift.exists_hecke_ePart | (intros; apply GlobalTheory.HeckeLocLift.exists_hecke_ePart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeLocLift.exists_hecke_ePart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsHeckeElementIdempotentPartSplitPlaceLattic.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_heckeElement_idempotentPart_splitPlace_lattice : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (g : GA D V)
     (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),

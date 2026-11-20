@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspBlock.deltaHalf_midHom | exact GlobalTheory.CuspBlock.deltaHalf_midHom | (intros; apply GlobalTheory.CuspBlock.deltaHalf_midHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspBlock.deltaHalf_midHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModulusMiddleBlockDet.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.modulus_middle_block_det : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (l d N : ℕ), l + d ≤ N → ∀ g : GL (Fin d) k,

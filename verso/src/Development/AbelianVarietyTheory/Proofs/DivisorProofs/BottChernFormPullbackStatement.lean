@@ -9,8 +9,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.CxForm GlobalTheory.BcUnique
 open scoped ContDiff Real ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BcUnique.bcFld_isPull | exact GlobalTheory.BcUnique.bcFld_isPull | (intros; apply GlobalTheory.BcUnique.bcFld_isPull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BcUnique.bcFld_isPull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottChernFormPullback.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.bott_chern_form_pullback : ∀ {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' r s : ℕ} (A : HolAtlas M n) (A' : HolAtlas M' n') (T : HermSeq A r s) (T' : HermSeq A' r s) (f : M' → M), A.IsHolo A' f → T'.IsPull T f → bcFld T' = A.pullback A' f (bcFld T) := by
   first | exact @GlobalTheory.BcUnique.bcFld_isPull | exact GlobalTheory.BcUnique.bcFld_isPull | (intros; apply GlobalTheory.BcUnique.bcFld_isPull <;> assumption)

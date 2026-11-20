@@ -11,8 +11,10 @@ noncomputable section
 open NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeOffParts.off_parts | exact GlobalTheory.HeckeOffParts.off_parts | (intros; apply GlobalTheory.HeckeOffParts.off_parts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeOffParts.off_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeckeElementKeepsOneSubIdempotentPartLattice.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.hecke_element_keeps_one_sub_idempotent_part_lattice : ∀ (D : D7) (V : HSp D) (e : AE D) (ϖ : D.host.E) (k : ℕ) (g a₀ : GA D V),
     Formalism.L2.Theta.IsSplitIdem D e → Formalism.L2.NTheta.IsHeckeElt V e ϖ k a₀ →

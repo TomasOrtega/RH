@@ -6,8 +6,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root | exact GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root | (intros; apply GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericIsoDivisorClassRoot.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.generic_iso_divisor_class_root : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (Z : GlobalTheory.Vert.Model O) (L L' : Z.X.Modules) (r : ℕ) (hL : GlobalTheory.VB.IsVB L r) (hL' : GlobalTheory.VB.IsVB L' r) (φ : Z.GenIso L L') (e : L' ≅ L) (g : Γ(Z.X, ⊤)) (a : ℕ), 0 < a → IsRootOfP p g a → φ.inv = Z.genRes.map (e.hom ≫ smulHom L g) → a • (GlobalTheory.Vert.Model.GenIso.div φ hL hL').cls = r • Z.divP p := by
   first | exact @GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root | exact GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root | (intros; apply GlobalTheory.Vert.Model.GenIso.nsmul_cls_div_of_root <;> assumption)

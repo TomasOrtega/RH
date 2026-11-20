@@ -12,8 +12,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.CellMass
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrLevel.vol_prSet | exact GlobalTheory.PrLevel.vol_prSet | (intros; apply GlobalTheory.PrLevel.vol_prSet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrLevel.vol_prSet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FVolumePeriodProjectionSetEqFamilyLevel.lean&line=331#L331)
 -/
 theorem _root_.GlobalTheory.T.volume_periodProjectionSet_eq_familyLevel : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ (hj : j < D.R.m) (ν : Measure (GfC (ch.G.V (.top j)))),
     ν.IsHaarMeasure → ∃ c : ℝ, 0 < c ∧ ∀ t Φ β b, IsRep t ch.S.B s β b → ∀ hb : b j ∈ GfC _,

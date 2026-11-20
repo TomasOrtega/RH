@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop Glo
 open scoped ENNReal
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt | exact GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt | (intros; apply GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDerivativeBoundAllPoints.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.derivative_bound_all_points : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (f : (Φ.C k).Y.Fn), f ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (p : ℕ) [Fact p.Prime] (B : ℝ), 0 < B → (∀ (ι : AlgebraicClosure D.what₂.LL →+* ℂ_[p]) (y : AlgPt (Φ.C k).Y), drAt Φ k la p (spMap ι ≫ y.1) f ≤ B) → ∀ x : Sp ℂ_[p] ⟶ (Φ.C k).Y.X, drAt Φ k la p x f ≤ B := by
   first | exact @GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt | exact GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt | (intros; apply GlobalTheory.CovHt.Link.DenseBound.drAt_le_of_algPt <;> assumption)

@@ -35,8 +35,10 @@ open GlobalTheory.HSApp
 open GlobalTheory.LamT (CMPt)
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp | exact GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp | (intros; apply GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPowerCuspMultiplierGap.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.exists_power_cusp_multiplier_gap : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → ∀ f ∈ Y.V (wtOf _ la 0), ∃ (k : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (g h : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F), Dom a n ∧ 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n ∧ f ^ (k + 1) * g ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n ∧ t ≠ 0 ∧ g * h = t • 1 ∧ ∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v h := by
   first | exact @GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp | exact GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp | (intros; apply GlobalTheory.WtMatchBar.exists_pow_mul_mem_cusp <;> assumption)

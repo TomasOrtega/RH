@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionOfIsIsoRestrict
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjBlowup.exists_closedImmersion_of_generates | exact GlobalTheory.ProjBlowup.exists_closedImmersion_of_generates | (intros; apply GlobalTheory.ProjBlowup.exists_closedImmersion_of_generates <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjBlowup.exists_closedImmersion_of_generates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsClosedImmersionBlowupGeneratingSections.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.exists_closedImmersion_blowup_generatingSections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (J : X.IdealSheafData)
     (b : X' ⟶ X) (L₀ : LB X) (m : ℕ) (σ : Fin (m + 1) → L₀.Sec), IsProjOver s → FinalTheorems.Blowup b J →

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Gr
 open GlobalTheory.GLq GlobalTheory.Published Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GLq.GenericConstituent.exists_generic_constituent | exact GlobalTheory.GLq.GenericConstituent.exists_generic_constituent | (intros; apply GlobalTheory.GLq.GenericConstituent.exists_generic_constituent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GLq.GenericConstituent.exists_generic_constituent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsGenericConstituentHarishChandraCuspidal.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.exists_generic_constituent_harishChandra_cuspidal : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ (L : List (Pc g)) (n : ℕ), degL L = n → (∀ p ∈ L, IsCusp p.2) → ∃ ρ : Gn g n → ℂ, IsIrr ρ ∧ wh ψ ρ ≠ 0 ∧ ip ρ (hcL L n) ≠ 0 := by
   first | exact @GlobalTheory.GLq.GenericConstituent.exists_generic_constituent | exact GlobalTheory.GLq.GenericConstituent.exists_generic_constituent | (intros; apply GlobalTheory.GLq.GenericConstituent.exists_generic_constituent <;> assumption)

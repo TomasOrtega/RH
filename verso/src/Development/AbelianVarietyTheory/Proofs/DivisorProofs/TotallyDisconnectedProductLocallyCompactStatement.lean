@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLine
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SpanSchwartzBruhatProductEqTop
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBProdExt.exists_linear_bijOn_prod | exact GlobalTheory.SBProdExt.exists_linear_bijOn_prod | (intros; apply GlobalTheory.SBProdExt.exists_linear_bijOn_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBProdExt.exists_linear_bijOn_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTotallyDisconnectedProductLocallyCompact.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.totally_disconnected_product_locally_compact : ∀ {P Q P' Q' Z Z' : Type} [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P]
     [TotallyDisconnectedSpace P] [TopologicalSpace Q] [T2Space Q] [LocallyCompactSpace Q] [TotallyDisconnectedSpace Q]

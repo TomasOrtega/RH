@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjRead.pairTable_rev | exact GlobalTheory.SeeConjRead.pairTable_rev | (intros; apply GlobalTheory.SeeConjRead.pairTable_rev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjRead.pairTable_rev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFlagPairingTableIdempotentComponentNeOne.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.flagPairingTable_idempotentComponent_ne_one : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (PP : Pl D.host.E), ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → GlobalTheory.StdFrames.cpt PP (ewT X h) ≠ 1 → PairTable (hY D) (SmallAt PP) (e0T X h) (f0T X h) (fun i => bwdT X h (Fin.rev i)) (fun i => bwT X h (Fin.rev i)) (z0T X h) := by
   first | exact @GlobalTheory.SeeConjRead.pairTable_rev | exact GlobalTheory.SeeConjRead.pairTable_rev | (intros; apply GlobalTheory.SeeConjRead.pairTable_rev <;> assumption)

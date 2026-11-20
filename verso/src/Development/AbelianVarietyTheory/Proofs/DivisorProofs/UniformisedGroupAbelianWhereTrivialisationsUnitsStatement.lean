@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn | exact GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn | (intros; apply GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisedGroupAbelianWhereTrivialisationsUnits.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.uniformised_group_abelian_where_trivialisations_units : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ W : (Sp R).Opens, (∀ y, PsiUnitOn D.toPre y W) → (W : Set (Sp R)) ⊆ abLocus G := by
   first | exact @GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn | exact GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn | (intros; apply GlobalTheory.Mum.PsiUnitAb.subset_abLocus_of_psiUnitOn <;> assumption)

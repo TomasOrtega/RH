@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.InertSign
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TriangleSign.mu_eq_sign | exact GlobalTheory.TriangleSign.mu_eq_sign | (intros; apply GlobalTheory.TriangleSign.mu_eq_sign <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TriangleSign.mu_eq_sign` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FThetaTripleConstantEqNegOnePow.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.thetaTripleConstant_eq_neg_one_pow : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (A₁ A₂ A₃ : AddSubgroup (VC D N N')) (e : VC D N N' → ℂ) (μ : ℂ), Trip D T A₁ A₂ A₃ e μ → ∀ (P : Ideal (𝓞 D.host.E)) (r : ℕ), P.IsMaximal → (∀ a ∈ P, sgO D a ∈ P) → (∃ a, a - sgO D a ∉ P) → TriDat D T A₁ A₂ A₃ P r → μ = (-1) ^ r := by
   first | exact @GlobalTheory.TriangleSign.mu_eq_sign | exact GlobalTheory.TriangleSign.mu_eq_sign | (intros; apply GlobalTheory.TriangleSign.mu_eq_sign <;> assumption)

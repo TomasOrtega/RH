@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixIso.intg_int_pull | exact GlobalTheory.MixIso.intg_int_pull | (intros; apply GlobalTheory.MixIso.intg_int_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixIso.intg_int_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrableAgainstMixedChernFormIffPullIso.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.integrableAgainstMixedChernForm_iff_pull_iso : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (π : Y ⟶ X) [IsIso π] (hπ : π ≫ p = q) (D : ℕ) (L : Fin D → MLine p σ) (f : CxPts p σ → ℝ), (Intg (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) ↔ Intg L f) ∧ Mix.int (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) = Mix.int L f := by
   first | exact @GlobalTheory.MixIso.intg_int_pull | exact GlobalTheory.MixIso.intg_int_pull | (intros; apply GlobalTheory.MixIso.intg_int_pull <;> assumption)

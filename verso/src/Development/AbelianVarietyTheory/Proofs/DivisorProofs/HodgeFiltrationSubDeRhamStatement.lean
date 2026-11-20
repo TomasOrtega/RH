@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIffAlt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ConjugateFiltration
 open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.DeRham GlobalTheory.DeRhamSheaf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeQuotRank.isVB_cokernel_hodgeSub | exact GlobalTheory.HodgeQuotRank.isVB_cokernel_hodgeSub | (intros; apply GlobalTheory.HodgeQuotRank.isVB_cokernel_hodgeSub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeQuotRank.isVB_cokernel_hodgeSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeFiltrationSubDeRham.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.hodge_filtration_sub_de_rham : GlobalTheory.CovTop.Hypotheses2 → ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

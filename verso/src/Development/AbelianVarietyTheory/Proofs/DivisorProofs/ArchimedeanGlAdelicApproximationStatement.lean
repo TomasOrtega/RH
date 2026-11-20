@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.adelic_gl_prescribed_infinite | exact GlobalTheory.adelic_gl_prescribed_infinite | (intros; apply GlobalTheory.adelic_gl_prescribed_infinite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.adelic_gl_prescribed_infinite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanGlAdelicApproximation.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.archimedean_gl_adelic_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m : ℕ)
     (g : ∀ w : InfinitePlace F, GL (Fin m) (w.Completion ⊗[F] E)),

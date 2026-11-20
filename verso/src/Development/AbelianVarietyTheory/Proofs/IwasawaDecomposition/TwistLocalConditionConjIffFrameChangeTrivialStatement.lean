@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalCondMov
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC GlobalTheory.Mem.Col2.TC.ChTw GlobalTheory.Mem.Col2.TC.ChTw.Match Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one | exact GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one | (intros; apply GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTwistLocalConditionConjIffFrameChangeTrivial.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.twistLocalCondition_conj_iff_frameChange_trivial : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (a : I.ι)
     (Q : Finset (HeightOneSpectrum (𝓞 B.host.F))), (∀ v, v ∈ Q ↔ I.UnderQ a v) → ∀ (n : ℕ) (t s : GA B n) (θ : GLQ B.fields.E n (I.Q a)),

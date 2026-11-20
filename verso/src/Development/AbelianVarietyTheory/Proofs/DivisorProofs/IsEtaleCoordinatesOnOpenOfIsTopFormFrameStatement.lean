@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameEtale.isEtCoord_of_isFrame | exact GlobalTheory.FrameEtale.isEtCoord_of_isFrame | (intros; apply GlobalTheory.FrameEtale.isEtCoord_of_isFrame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameEtale.isEtCoord_of_isFrame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsEtaleCoordinatesOnOpenOfIsTopFormFrame.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.isEtaleCoordinatesOnOpen_of_isTopFormFrame : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (V : Y.Opens) (z : Fin n → Γ(Y, V)), IsFrame (dOn q z) → IsAffineOpen V ∧ IsEtCoord q V z := by
   first | exact @GlobalTheory.FrameEtale.isEtCoord_of_isFrame | exact GlobalTheory.FrameEtale.isEtCoord_of_isFrame | (intros; apply GlobalTheory.FrameEtale.isEtCoord_of_isFrame <;> assumption)

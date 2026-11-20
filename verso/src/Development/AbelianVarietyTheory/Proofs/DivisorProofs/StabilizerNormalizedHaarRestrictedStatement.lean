@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ConeSoB GlobalTheory.ThK.ConeEuler GlobalTheory.UnrEuler
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.ConeEuler.CompIntegral.integral_components | exact GlobalTheory.ThK.ConeEuler.CompIntegral.integral_components | (intros; apply GlobalTheory.ThK.ConeEuler.CompIntegral.integral_components <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.ConeEuler.CompIntegral.integral_components` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStabilizerNormalizedHaarRestricted.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.stabilizer_normalized_haar_restricted : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n r s : ℕ} {X : Spc F E n}, B.IsGood σ → X.IsHerm σ B r s →

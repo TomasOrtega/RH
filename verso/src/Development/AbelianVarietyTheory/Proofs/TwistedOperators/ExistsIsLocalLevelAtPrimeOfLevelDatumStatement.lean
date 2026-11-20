@@ -7,8 +7,10 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepVec.exists_isLocLevel | exact GlobalTheory.StepVec.exists_isLocLevel | (intros; apply GlobalTheory.StepVec.exists_isLocLevel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepVec.exists_isLocLevel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsIsLocalLevelAtPrimeOfLevelDatum.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_isLocalLevelAtPrimeOfLevelDatum : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (PP : Formalism.L2.DIV.Pl D.host.E)
     (r : v.adicCompletionIntegers D.host.F →+* Formalism.L2.DIV.kP PP), IsRedMap φ PP r →

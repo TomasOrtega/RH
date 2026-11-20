@@ -21,8 +21,10 @@ open scoped nonZeroDivisors
 open GlobalTheory.CosetOrth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjPlace.conj_place | exact GlobalTheory.ConjPlace.conj_place | (intros; apply GlobalTheory.ConjPlace.conj_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjPlace.conj_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConjugatePlaceValuationCountUnder.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.conjugatePlace_valuation_count_under : ∀ (D : D7), ∀ w : HeightOneSpectrum (𝓞 D.host.E), ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w'.asIdeal = D.host.conj • w.asIdeal ∧
     (∀ x : Formalism.MainNotions.StandardLatticesGL3.AE D, Valued.v (GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D x) w') = Valued.v (GlobalTheory.BotFormula.toFinE D x w)) ∧

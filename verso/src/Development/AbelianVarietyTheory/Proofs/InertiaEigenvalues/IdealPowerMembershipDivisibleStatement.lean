@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem | exact GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem | (intros; apply GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIdealPowerMembershipDivisible.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.ideal_power_membership_divisible : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (n : ℕ) (x : ZMod a → Ahat O K l e), ϖ.iD t K x ∈ Ideal.span {ϖ.iD t K (fun _ => Ehat O K l e) ^ n} → ∃ y : ZMod a → Ahat O K l e, x = (fun _ => Ehat O K l e) ^ n * y := by
   first | exact @GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem | exact GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem | (intros; apply GlobalTheory.BKReal.PiSys.eq_Ehat_pow_mul_of_iD_mem <;> assumption)

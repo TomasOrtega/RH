@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.TraitUniq.traitUniq | exact GlobalTheory.Poinc.TraitUniq.traitUniq | (intros; apply GlobalTheory.Poinc.TraitUniq.traitUniq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.TraitUniq.traitUniq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraitLatticesIsoFormsProportionalRamification.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.trait_lattices_iso_forms_proportional_ramification : TraitUniqSt := by
   first | exact @GlobalTheory.Poinc.TraitUniq.traitUniq | exact GlobalTheory.Poinc.TraitUniq.traitUniq | (intros; apply GlobalTheory.Poinc.TraitUniq.traitUniq <;> assumption)

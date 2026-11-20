@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero | exact GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero | (intros; apply GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechPicardEqZeroOfTrivialOnDisjointCover.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.cechPicard_eq_zero_of_trivial_on_disjoint_cover : ∀ {Y : Scheme.{0}} {κ : Type} [Finite κ] {Z : κ → Scheme.{0}} (f : ∀ i, Z i ⟶ Y) [∀ i, IsOpenImmersion (f i)], (⨆ i, (f i).opensRange = ⊤) → (Pairwise fun i i' => Disjoint (f i).opensRange (f i').opensRange) → ∀ d : Pic Y, (∀ i, GlobalTheory.CechPic.pull (f i) d = 0) → d = 0 := by
   first | exact @GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero | exact GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero | (intros; apply GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero <;> assumption)

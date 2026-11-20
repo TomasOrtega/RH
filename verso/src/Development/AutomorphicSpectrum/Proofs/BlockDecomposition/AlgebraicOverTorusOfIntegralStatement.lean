@@ -5,8 +5,10 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor CrystallineSemistableComparison.Pb
 attribute [local instance] MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS | exact GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS | (intros; apply GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAlgebraicOverTorusOfIntegral.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.algebraic_over_torus_of_integral : ∀ {K R : Type} [Field K] [CommRing R] [IsDomain R] [Algebra K R] {d : ℕ} (t : Fin d → Rˣ), (∀ r : R, IsIntegral (torusS K t Finset.univ) r) → Algebra.IsAlgebraic (Algebra.adjoin K (Set.range fun k => (t k : R))) R := by
   first | exact @GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS | exact GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS | (intros; apply GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS <;> assumption)

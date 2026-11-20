@@ -16,8 +16,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 open Formalism.L2.Pj GlobalTheory.RayEv
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolNearAmple.relAmple_near_of_polAt | exact GlobalTheory.PolNearAmple.relAmple_near_of_polAt | (intros; apply GlobalTheory.PolNearAmple.relAmple_near_of_polAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolNearAmple.relAmple_near_of_polAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FRelativeAmpleSpreadOfPolarizedFiber.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.relative_ample_spread_of_polarized_fiber : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsNoetherianRing R] (t : SAB H (Sp R)), IsProper t.G.hom → ∀ (C : Type) [Field C] (g : R →+* C), GlobalTheory.LN.PolAt t (spMap g) → ∃ s : R, g s ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (h : R →+* R'), IsUnit (h s) → ∀ (t' : SAB H (Sp R')), SABMap t' t (spMap h) → RelAmple t'.G t'.PP.L := by
   first | exact @GlobalTheory.PolNearAmple.relAmple_near_of_polAt | exact GlobalTheory.PolNearAmple.relAmple_near_of_polAt | (intros; apply GlobalTheory.PolNearAmple.relAmple_near_of_polAt <;> assumption)

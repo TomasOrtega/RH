@@ -17,8 +17,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowExtend.exists_pow_projections | exact GlobalTheory.PowExtend.exists_pow_projections | (intros; apply GlobalTheory.PowExtend.exists_pow_projections <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowExtend.exists_pow_projections` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEighthPowerProjectionsExtendFromGeneric.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.exists_eighth_power_projections_extend_from_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (G C : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj C] [IsCommMonObj C], IsSemiAbelian G → IsAbelianScheme C → ∀ pr' : Fin 8 → ((Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj C), (∀ a, IsMonHom (pr' a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ (Over.pullback (jK R)).obj C)), ∃! x : T' ⟶ (Over.pullback (jK R)).obj G, ∀ a, x ≫ pr' a = y a) → ∃ prO : Fin 8 → (G ⟶ C), (∀ a, IsMonHom (prO a)) ∧ (∀ a, (Over.pullback (jK R)).map (prO a) = pr' a) ∧ ∀ (T' : Over (Sp R)) (y : Fin 8 → (T' ⟶ C)), ∃! x : T' ⟶ G, ∀ a, x ≫ prO a = y a := by
   first | exact @GlobalTheory.PowExtend.exists_pow_projections | exact GlobalTheory.PowExtend.exists_pow_projections | (intros; apply GlobalTheory.PowExtend.exists_pow_projections <;> assumption)

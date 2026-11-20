@@ -16,8 +16,10 @@ open GlobalTheory.HodgeLocGeo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Mean4O GlobalTheory.Mean4 ReciprocityTheory.AnForm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory GlobalTheory.CxPts
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocCoord.pn_eq_normSq_mul_near | exact GlobalTheory.HodgeLocCoord.pn_eq_normSq_mul_near | (intros; apply GlobalTheory.HodgeLocCoord.pn_eq_normSq_mul_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeLocCoord.pn_eq_normSq_mul_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAnalyticEquationLocus.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.analytic_equation_locus : ∀ {F : Type} [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) {e : ℕ} (c' : AlgChart Y.str σ e)
     (p0 : Y.pts σ), p0 ∈ c'.finChart.source → ∀ (Δ : Y.Dv) (a : Y.Fnˣ) (U : Y.X.Opens), under p0 ∈ U →

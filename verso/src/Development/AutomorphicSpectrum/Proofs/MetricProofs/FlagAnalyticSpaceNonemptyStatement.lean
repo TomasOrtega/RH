@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFlagAnalyticSpaceNonempty.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.flag_analytic_space_nonempty : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d), Nonempty FA.S.X := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty <;> assumption)

@@ -6,8 +6,10 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGener
 import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.HtPt.Ktw.k_twins | exact PositivityTheory.HtPt.Ktw.k_twins`.
+/- English proof (citation)
+Apply `PositivityTheory.HtPt.Ktw.k_twins` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FKTwins.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0} → NefProductNonneg.Statement ∧ VeryAmpleNefPlusAmple.Statement ∧ SectionCount.Statement := by
   first | exact @PositivityTheory.HtPt.Ktw.k_twins | exact PositivityTheory.HtPt.Ktw.k_twins

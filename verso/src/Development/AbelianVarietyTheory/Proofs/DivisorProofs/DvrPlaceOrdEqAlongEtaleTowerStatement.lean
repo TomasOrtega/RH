@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.UnramOrd.ord_eq_of_etTower | exact GlobalTheory.FieldPair.UnramOrd.ord_eq_of_etTower | (intros; apply GlobalTheory.FieldPair.UnramOrd.ord_eq_of_etTower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.UnramOrd.ord_eq_of_etTower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDvrPlaceOrdEqAlongEtaleTower.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.dvrPlace_ord_eq_along_etaleTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (P : Place cL) (P0 : Place cK),

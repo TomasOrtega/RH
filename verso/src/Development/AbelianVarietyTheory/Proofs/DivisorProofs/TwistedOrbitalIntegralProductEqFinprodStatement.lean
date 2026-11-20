@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.twOrb_globFn_eq_finprod | exact GlobalTheory.BCT.twOrb_globFn_eq_finprod | (intros; apply GlobalTheory.BCT.twOrb_globFn_eq_finprod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.twOrb_globFn_eq_finprod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedOrbitalIntegralProductEqFinprod.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.twistedOrbitalIntegral_product_eq_finprod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → ∀ γ : UE E n, γ.1.val.charpoly.Separable → twOrb (MonoidHom.id _) (globLev S (KL n)) (finPt γ) (globFn S f) = ∏ᶠ w ∈ S, twOrb (MonoidHom.id _) (KL n w) (locPt w γ) (f w) := by
   first | exact @GlobalTheory.BCT.twOrb_globFn_eq_finprod | exact GlobalTheory.BCT.twOrb_globFn_eq_finprod | (intros; apply GlobalTheory.BCT.twOrb_globFn_eq_finprod <;> assumption)

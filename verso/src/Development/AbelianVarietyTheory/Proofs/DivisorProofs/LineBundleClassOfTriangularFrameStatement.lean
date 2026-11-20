@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.Vert GlobalTheory.TriFrame Global
 open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TriFrame.cls_det_eq_of_tri | exact GlobalTheory.TriFrame.cls_det_eq_of_tri | (intros; apply GlobalTheory.TriFrame.cls_det_eq_of_tri <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TriFrame.cls_det_eq_of_tri` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleClassOfTriangularFrame.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.line_bundle_class_of_triangular_frame : ∀ (X : Scheme.{0}) [IsIntegral X] (A : X.Opens) (G : X.Modules) (σ : Fin 1 → Γ(G, A)) (hσ : IsFrame σ) (L : LB X) (hL : L.IsLB) (ρ : ∀ k, Γ(X, A ⊓ L.U k)), genericPoint X ∈ A → IsGenOn A L ρ → Tri hσ (fun _ => L) (fun _ => ρ) → ∀ hG : IsVB G 1, CechPic.cls _ hG.isLB_det = CechPic.cls L hL := by
   first | exact @GlobalTheory.TriFrame.cls_det_eq_of_tri | exact GlobalTheory.TriFrame.cls_det_eq_of_tri | (intros; apply GlobalTheory.TriFrame.cls_det_eq_of_tri <;> assumption)

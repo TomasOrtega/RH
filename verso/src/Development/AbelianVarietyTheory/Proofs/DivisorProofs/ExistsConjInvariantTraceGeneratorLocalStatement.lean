@@ -8,8 +8,10 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealTheta.exists_bar_inv_trace_gen | exact GlobalTheory.RealTheta.exists_bar_inv_trace_gen | (intros; apply GlobalTheory.RealTheta.exists_bar_inv_trace_gen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealTheta.exists_bar_inv_trace_gen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConjInvariantTraceGeneratorLocal.lean&line=175#L175)
 -/
 theorem _root_.GlobalTheory.T.exists_conj_invariant_trace_generator_local : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (𝔭 : Ideal (𝓞 E))
     (h𝔭 : 𝔭.IsMaximal),

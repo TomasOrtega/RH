@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.WittDec.maj_and_witt | exact GlobalTheory.Core.Rk.WittDec.maj_and_witt | (intros; apply GlobalTheory.Core.Rk.WittDec.maj_and_witt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.WittDec.maj_and_witt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMajorantExistsAndWittDecomposition.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.majorant_exists_and_witt_decomposition : ∀ (D : D7) (W : HSp D), HSpace.SigOK W → (∃ b : GL (Fin W.rank) (AE D), IsMaj W b) ∧ (IsAniso W ∨ ∃ (W₀ : HSp D) (r' : ℕ) (_ : HypDec W W₀ r'), IsAniso W₀ ∧ 0 < r') := by
   first | exact @GlobalTheory.Core.Rk.WittDec.maj_and_witt | exact GlobalTheory.Core.Rk.WittDec.maj_and_witt | (intros; apply GlobalTheory.Core.Rk.WittDec.maj_and_witt <;> assumption)

@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.DualCon
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerAxes.triv_of_memKL_pair | exact GlobalTheory.KerAxes.triv_of_memKL_pair | (intros; apply GlobalTheory.KerAxes.triv_of_memKL_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerAxes.triv_of_memKL_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTrivialEvaluationsOfMemKernelSymmetricPair.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.trivial_evaluations_of_mem_kernel_symmetric_pair : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ P : LB (G ⊗ G).left, P.IsLB → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ (T : Over (Sp R)) (a b : T ⟶ G), GlobalTheory.MemKL (G ⊗ G) P (lift a b) → (∃ t : (P.pull (lift (snd G T ≫ a) (fst G T)).left).Gen, t.IsGen) ∧ (∃ t : (P.pull (lift (snd G T ≫ b) (fst G T)).left).Gen, t.IsGen) := by
   first | exact @GlobalTheory.KerAxes.triv_of_memKL_pair | exact GlobalTheory.KerAxes.triv_of_memKL_pair | (intros; apply GlobalTheory.KerAxes.triv_of_memKL_pair <;> assumption)

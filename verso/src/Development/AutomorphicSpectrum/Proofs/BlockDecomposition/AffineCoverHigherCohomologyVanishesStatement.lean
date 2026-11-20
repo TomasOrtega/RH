@@ -7,8 +7,10 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.AffineVanishing
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.VBAff.subsingleton_H | exact GlobalTheory.CompanionTheory.VBAff.subsingleton_H | (intros; apply GlobalTheory.CompanionTheory.VBAff.subsingleton_H <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.VBAff.subsingleton_H` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAffineCoverHigherCohomologyVanishes.lean&line=557#L557)
 -/
 theorem _root_.GlobalTheory.T.affine_cover_higher_cohomology_vanishes : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} (str : ∀ W : X.Opens, O →+* Γ(X, W)) (W : X.Opens) (hW : IsAffineOpen W)
     {ι : Type} [Fintype ι] (U : ι → X.Opens) (hU : (⨆ α, U α) = W) (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i))

@@ -12,8 +12,10 @@ open GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.StdFrames
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareConv.bigConv | exact GlobalTheory.SquareConv.bigConv | (intros; apply GlobalTheory.SquareConv.bigConv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareConv.bigConv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBigThetaKernelIntegrable.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.big_theta_kernel_integrable : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     IntegrableOn (kerBig ch.W Θ g g₁) (M.fd _) (M.ν _) := by

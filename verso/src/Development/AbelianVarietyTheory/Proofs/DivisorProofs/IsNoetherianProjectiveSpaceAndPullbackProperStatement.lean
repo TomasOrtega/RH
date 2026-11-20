@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.pspace_noeth_and_pullback | exact GlobalTheory.Mum.pspace_noeth_and_pullback | (intros; apply GlobalTheory.Mum.pspace_noeth_and_pullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.pspace_noeth_and_pullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsNoetherianProjectiveSpaceAndPullbackProper.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.isNoetherian_projectiveSpace_and_pullback_proper : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → ∀ N : ℕ, IsNoetherian (PSpace R N) ∧ IsNoetherian (pullback (PSpace.str R N) π) := by
   first | exact @GlobalTheory.Mum.pspace_noeth_and_pullback | exact GlobalTheory.Mum.pspace_noeth_and_pullback | (intros; apply GlobalTheory.Mum.pspace_noeth_and_pullback <;> assumption)

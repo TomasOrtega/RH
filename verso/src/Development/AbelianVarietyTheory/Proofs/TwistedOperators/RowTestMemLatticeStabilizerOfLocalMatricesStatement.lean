@@ -12,8 +12,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatOfHasLoc.mem_latGrp_of_hasLoc | exact GlobalTheory.LatOfHasLoc.mem_latGrp_of_hasLoc | (intros; apply GlobalTheory.LatOfHasLoc.mem_latGrp_of_hasLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatOfHasLoc.mem_latGrp_of_hasLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRowTestMemLatticeStabilizerOfLocalMatrices.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.rowTest_mem_latticeStabilizer_of_localMatrices : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t, ∀ j, 1 ≤ j → ∀ (hj : j ≤ D.R.m) (x : GA D (ch.G.V (.grid D.R.m j)))
     (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntIndMemSB
 open MeasureTheory Matrix ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisUnit.norm_char_unit_eq_one | exact GlobalTheory.HeisUnit.norm_char_unit_eq_one | (intros; apply GlobalTheory.HeisUnit.norm_char_unit_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisUnit.norm_char_unit_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormCharacterUnitEqOneHeisenberg.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.norm_character_unit_eq_one_heisenberg : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ},
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),

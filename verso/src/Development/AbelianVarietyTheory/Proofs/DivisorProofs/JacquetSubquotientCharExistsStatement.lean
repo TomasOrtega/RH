@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDetProdConstAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeSignatureSum
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.DetProd
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.MidJacCell.midJac_detInd | exact GlobalTheory.ThK.MidJacCell.midJac_detInd | (intros; apply GlobalTheory.ThK.MidJacCell.midJac_detInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.MidJacCell.midJac_detInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJacquetSubquotientCharExists.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.jacquet_subquotient_char_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.GeometricLemmaFiltration →

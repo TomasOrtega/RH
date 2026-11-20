@@ -12,8 +12,10 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair | exact GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair | (intros; apply GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIsAlgebraicHeckeCharOfRegularAlgebraicPolarizedP.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.isAlgebraicHeckeChar_of_regularAlgebraic_polarizedPair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a → ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → PolarizedPair π χ → ∃ n : (maximalRealSubfield E →+* ℂ) → ℤ, IsAlgPos χ n := by
   first | exact @GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair | exact GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair | (intros; apply GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair <;> assumption)

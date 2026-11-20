@@ -12,8 +12,10 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef | exact GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef | (intros; apply GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBaseWeightEqForcedLiftWeight.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.baseWeight_eq_forcedLiftWeight : ∀ (X : Stages) (i : Fin X.toD7.R.m) (τ : X.B.fields.Tau) (a : Fin X.B.R.nV),
     (X.B.wts.lamV ((i : ℕ) + 1) τ).w a =

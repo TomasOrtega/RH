@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AHPos.exists_lb_of_posDef | exact GlobalTheory.AHPos.exists_lb_of_posDef | (intros; apply GlobalTheory.AHPos.exists_lb_of_posDef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AHPos.exists_lb_of_posDef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAppellHumbertExistsLineBundlePosDefHermitian.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.appellHumbert_exists_lineBundle_posDef_hermitian : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (L₀ : LB A.left) (u₀ : HolUnif A L₀ g) (H₀ : Matrix (Fin g) (Fin g) ℂ) (χ₀ : u₀.Λ → ℂ), L₀.IsLB → u₀.IsAH H₀ χ₀ →

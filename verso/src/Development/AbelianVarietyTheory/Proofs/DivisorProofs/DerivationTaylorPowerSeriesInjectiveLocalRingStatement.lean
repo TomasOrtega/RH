@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
 open IsLocalRing GlobalTheory.FormalOrigin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TaylorInj.taylor_injective | exact GlobalTheory.TaylorInj.taylor_injective | (intros; apply GlobalTheory.TaylorInj.taylor_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TaylorInj.taylor_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDerivationTaylorPowerSeriesInjectiveLocalRing.lean&line=226#L226)
 -/
 theorem _root_.GlobalTheory.T.derivationTaylorPowerSeries_injective_localRing : ∀ (R A : Type) [CommRing R] [IsLocalRing R] [Algebra ℚ R] [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (inc : R →+* A) (ev : A →+* R), (∀ r, ev (inc r) = r) → ∀ (n : ℕ) (ds : Fin n → Derivation ℤ A A) (z : Fin n → A), (∀ i, ev (z i) = 0) → (∀ a i, ev (ds a (z i)) = if a = i then 1 else 0) → maximalIdeal A = (maximalIdeal R).map inc ⊔ Ideal.span (Set.range z) → ∀ f, taylor ev (fun i => ⇑(ds i)) f = 0 → f = 0 := by
   first | exact @GlobalTheory.TaylorInj.taylor_injective | exact GlobalTheory.TaylorInj.taylor_injective | (intros; apply GlobalTheory.TaylorInj.taylor_injective <;> assumption)

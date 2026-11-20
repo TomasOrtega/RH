@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusPart.exists_finite_torusExtension_act | exact GlobalTheory.TorusPart.exists_finite_torusExtension_act | (intros; apply GlobalTheory.TorusPart.exists_finite_torusExtension_act <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusPart.exists_finite_torusExtension_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusPartOfPulledAction.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.torus_part_of_pulled_action : ∀ (O : Type) [CommRing O] (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
     (G : Over (Sp K)) [GrpObj G], IsSemiAbelian G → ∀ (i : OAct O G) (G' : Over (Sp Ω)) [GrpObj G'] (i' : OAct O G')

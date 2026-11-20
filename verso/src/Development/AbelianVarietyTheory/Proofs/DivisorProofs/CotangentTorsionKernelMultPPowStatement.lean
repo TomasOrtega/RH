@@ -18,8 +18,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.OpenOmega
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OpenOmega.ker_cnθ_le | exact GlobalTheory.OpenOmega.ker_cnθ_le | (intros; apply GlobalTheory.OpenOmega.ker_cnθ_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OpenOmega.ker_cnθ_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCotangentTorsionKernelMultPPow.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.cotangent_torsion_kernel_mult_p_pow : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n), Module.Finite R (Wmod G) → Module.Projective R (Wmod G) → (∀ l : Wmod G →ₗ[R] R, ∃ (v : TM R R ⟶ G) (h : zeroSec R R ≫ v = η[G]), ∀ w, Phi v h w = l w) → SpecProp θ n hs → ∀ w : Wmod G, cnθ θ n hs w = 0 → w ∈ (Ideal.span {(p : R) ^ n} • ⊤ : Submodule R (Wmod G)) := by
   first | exact @GlobalTheory.OpenOmega.ker_cnθ_le | exact GlobalTheory.OpenOmega.ker_cnθ_le | (intros; apply GlobalTheory.OpenOmega.ker_cnθ_le <;> assumption)

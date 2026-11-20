@@ -12,8 +12,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TangentFirstOrder.fst_eq_of_tangent | exact GlobalTheory.TangentFirstOrder.fst_eq_of_tangent | (intros; apply GlobalTheory.TangentFirstOrder.fst_eq_of_tangent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TangentFirstOrder.fst_eq_of_tangent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionValueEqAtFirstOrderOfTangents.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.section_value_eq_at_first_order_of_tangents : ∀ (K C : Type) [Field K] [Field C] [Algebra K C] (P : PolAV (Sp K))
     (ρ : LB.Gen (P.L.pull (eSec P.A))) (k : ℕ) (t : LB.Sec (LPow P.A P.L (k : ℤ) (Over.mk (spMap (algebraMap K C)))))

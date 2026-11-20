@@ -8,8 +8,10 @@ open scoped TensorProduct nonZeroDivisors
 open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.StepData GlobalTheory.StdFrames Formalism.L2.Host Formalism.L2.DIV
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per | exact GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per | (intros; apply GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatTensorDependsBelowAndSmallTranslationInvaria.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.flatTensor_depends_below_and_small_translation_invariant : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (ϖ : kˣ) (e : ℕ) (T : G.Args → ℂ) (keep : Bool) (g : G.VertexGroup), IsUnif ϖ → HasConductor ψ 1 → G.IsTensor ϖ e (oppositePath G.m) T → (∀ (x x' : ColArgs G) (y y' : RowArgs G), (∀ j, j < G.m → x j = x' j) → (∀ i, i < G.m → y i = y' i) → flatTensor hs ψ ν (moved G keep g T) x y = flatTensor hs ψ ν (moved G keep g T) x' y') ∧ ∃ n : ℕ, ∀ (x a : ColArgs G) (y b : RowArgs G), (∀ j, j < G.m → ∀ r s, valuation k (a j r s) ≤ valuation k ((ϖ ^ n : kˣ) : k)) → (∀ i, i < G.m → ∀ r s, valuation k (b i r s) ≤ valuation k ((ϖ ^ n : kˣ) : k)) → flatTensor hs ψ ν (moved G keep g T) (x + a) (y + b) = flatTensor hs ψ ν (moved G keep g T) x y := by
   first | exact @GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per | exact GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per | (intros; apply GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per <;> assumption)

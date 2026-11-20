@@ -11,8 +11,10 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CtS.isInt_blk_iff | exact GlobalTheory.CompanionTheory.CtS.isInt_blk_iff | (intros; apply GlobalTheory.CompanionTheory.CtS.isInt_blk_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CtS.isInt_blk_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBlockIntegralIff.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.block_integral_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsInt w (blk h w m X).val ↔ IsInt w m.1.val ∧ IsInt w m.2.val ∧ IsInt w (m.1.val * X) := by
   first | exact @GlobalTheory.CompanionTheory.CtS.isInt_blk_iff | exact GlobalTheory.CompanionTheory.CtS.isInt_blk_iff | (intros; apply GlobalTheory.CompanionTheory.CtS.isInt_blk_iff <;> assumption)

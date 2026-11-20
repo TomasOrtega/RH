@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Complement
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewDetParity.det_eq_unit_mul_norm | exact GlobalTheory.SkewDetParity.det_eq_unit_mul_norm | (intros; apply GlobalTheory.SkewDetParity.det_eq_unit_mul_norm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewDetParity.det_eq_unit_mul_norm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewHermitianDetEqUnitMulNormAtInert.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.skewHermitian_det_eq_unit_mul_norm_at_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s → Even n →

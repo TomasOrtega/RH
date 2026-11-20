@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInje
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ActPolyCoeff.polyAction_coeff_poly | exact GlobalTheory.ActPolyCoeff.polyAction_coeff_poly | (intros; apply GlobalTheory.ActPolyCoeff.polyAction_coeff_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ActPolyCoeff.polyAction_coeff_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FWeightActionMatrixCoeffPolynomialInEntries.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.weightAction_matrixCoeff_polynomial_in_entries : ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (F : Formalism.L2.DIV.Pol K ι n)
     (ψ : Formalism.L2.DIV.Pol K ι n →ₗ[K] K), ∃ P : MvPolynomial ((ι ⊕ ι) × Fin n × Fin n) K, ∀ g : ι → GL (Fin n) K,

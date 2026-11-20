@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocConst.unip_integral_vanish | exact GlobalTheory.LocConst.unip_integral_vanish | (intros; apply GlobalTheory.LocConst.unip_integral_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocConst.unip_integral_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTypeIdempotentUnipotentIntegralVanishSplitPlace.lean&line=275#L275)
 -/
 theorem _root_.GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (v : T.S) (a : ℕ), 0 < a → a < V.rank →
     GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.NoFixed (T.τ v) (GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical (ResF v.1) V.rank a) →

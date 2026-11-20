@@ -19,8 +19,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen | exact GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen | (intros; apply GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.isIrreducible_of_geomIrr_of_le_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricallyIrreducibleOpenIrreducible.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.geometrically_irreducible_open_irreducible : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime],
     (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens),

@@ -13,8 +13,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero | exact GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FBallDomainOpenConvexZero.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.ball_domain_open_convex_zero : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n), IsOpen (ballDom q) ∧ Convex ℝ (ballDom q) ∧ (0 : Fin n → ℂ) ∈ ballDom q := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero | exact GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.BallConvex.ballDom_open_convex_zero <;> assumption)

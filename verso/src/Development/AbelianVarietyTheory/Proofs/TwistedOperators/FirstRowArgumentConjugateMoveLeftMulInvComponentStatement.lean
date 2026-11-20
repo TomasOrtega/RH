@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FirstRowCoord.rowAt_first_move | exact GlobalTheory.FirstRowCoord.rowAt_first_move | (intros; apply GlobalTheory.FirstRowCoord.rowAt_first_move <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FirstRowCoord.rowAt_first_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFirstRowArgumentConjugateMoveLeftMulInvComponent.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.firstRowArgument_conjugateMove_left_mul_inv_component : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T},
     t ∈ U → ∀ w ∈ locPl G t, ∀ (k : FinPt G (.grid 0 D.R.m))

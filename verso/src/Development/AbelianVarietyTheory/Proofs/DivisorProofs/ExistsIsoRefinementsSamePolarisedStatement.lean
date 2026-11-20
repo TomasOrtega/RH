@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumCmp.SamePolIso.exists_iso | exact GlobalTheory.MumCmp.SamePolIso.exists_iso | (intros; apply GlobalTheory.MumCmp.SamePolIso.exists_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumCmp.SamePolIso.exists_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIsoRefinementsSamePolarised.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_iso_refinements_same_polarised : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ D : DegPre R), SamePol D₀ D →
   ∃ (β : D₀.P.A ≅ D.P.A) (xe : D₀.X ≃+ D.X), IsMonHom β.hom ∧ (∀ χ, D₀.c χ ≫ β.hom = D.c (xe χ)) ∧

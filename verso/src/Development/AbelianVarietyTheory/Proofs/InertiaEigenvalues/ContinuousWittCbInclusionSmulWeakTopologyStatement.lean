@@ -10,8 +10,10 @@ open scoped Topology PowerSeries.WithPiTopology
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeakClosed.continuous_inclR_io_smul | exact GlobalTheory.WeakClosed.continuous_inclR_io_smul | (intros; apply GlobalTheory.WeakClosed.continuous_inclR_io_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeakClosed.continuous_inclR_io_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FContinuousWittCbInclusionSmulWeakTopology.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.continuous_wittCbInclusion_smul_weakTopology : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ} {LL : FinExt l} {h : Good K s LL} {W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))} (E : EtSit P AI K s LL h W) (T : Lt K LL) {d e : ℕ} (b : LatB T d) (bO : Module.Basis (Fin e) ℤ_[l] ↥(OL LL)) (y : TW (RW LL) T), letI := twTop T b; letI := aTop (K := K) bO; Continuous fun a : AA K LL => inclR LL (E.tie.io a) • y := by
   first | exact @GlobalTheory.WeakClosed.continuous_inclR_io_smul | exact GlobalTheory.WeakClosed.continuous_inclR_io_smul | (intros; apply GlobalTheory.WeakClosed.continuous_inclR_io_smul <;> assumption)

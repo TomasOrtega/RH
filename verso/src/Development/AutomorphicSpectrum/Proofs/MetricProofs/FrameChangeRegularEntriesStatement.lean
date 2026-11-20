@@ -6,8 +6,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFrameChangeRegularEntries.lean&line=280#L280)
 -/
 theorem _root_.GlobalTheory.T.frame_change_regular_entries : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (F₁ F₂ : FrameData ι Ψ N M.Ω M.blk), zb ∈ mcPts (mCoordIdeal M.x) → M.IsFrame F₁ → M.IsFrame F₂ → M.GoodAt F₁ (mCoordIdeal zb) → M.GoodAt F₂ (mCoordIdeal zb) → ∀ (τ : Ψ) (r s : Fin N), RegAt M.x (mCoordIdeal zb) (((F₁.T τ)⁻¹ * F₂.T τ) r s) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg.change_regular <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIs
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInductionPreservesSubquotient
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult GlobalTheory.SmGL.Exponents
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append | exact GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append | (intros; apply GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProductIrreducibleAppendEquiv.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.product_irreducible_append_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p q r t : ℕ) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t) (h : ∑ a, (Fin.append x y a).1 = r + t), Nonempty ((prod₂ (prodIrr x hx) (prodIrr y hy)).Equiv (prodIrr (Fin.append x y) h)) := by
   first | exact @GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append | exact GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append | (intros; apply GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append <;> assumption)

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyAnnihilatesCommutingLinearCombination
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination | exact GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination | (intros; apply GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolyAnnihilatesCommutingLinearCombination.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_poly_annihilates_commuting_linear_combination : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] {ι : Type} [Fintype ι] (A : ι → Module.End ℂ M),
     (∀ i j, Commute (A i) (A j)) → ∀ (c : ι → ℂ) (P : ι → Polynomial ℂ), (∀ i, P i ≠ 0) →

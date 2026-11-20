@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper | exact GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper | (intros; apply GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_ …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FHolomorphicSectionModerateGrowth.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_section_moderate_growth : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsProper p → ∀ (B : LB Y), B.IsLB → ∀ s ∈ fibSec p (RingHom.id ℂ) B, (∀ j, ContinuousOn (s j) (ptsIn p (RingHom.id ℂ) (B.U j))) → ∀ (i : B.ι) (V : Y.Opens), IsAffineOpen V → V ≤ B.U i → ∃ (n : ℕ) (u : Fin n → Γ(Y, V)) (C : ℝ) (m : ℕ), ∀ y ∈ ptsIn p (RingHom.id ℂ) V, ‖s i y‖ ≤ C * (1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖) ^ m := by
   first | exact @GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper | exact GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper | (intros; apply GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper <;> assumption)

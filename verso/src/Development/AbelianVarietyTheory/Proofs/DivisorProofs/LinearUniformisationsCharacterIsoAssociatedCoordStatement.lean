@@ -11,8 +11,10 @@ open GlobalTheory
 open Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PelUnifUniqCoord.main | exact GlobalTheory.PelUnifUniqCoord.main | (intros; apply GlobalTheory.PelUnifUniqCoord.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PelUnifUniqCoord.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinearUniformisationsCharacterIsoAssociatedCoord.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.linear_uniformisations_character_iso_associated_coords : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (W : Type) [CommRing W] [IsDomain W]
     [IsLocalRing W], GlobalTheory.Mum.Base W → ∀ (t : SAB H (Sp W)) (P P' : PELUnif (maximalIdeal W) t),

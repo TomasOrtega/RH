@@ -9,8 +9,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatPlace.Big₂ | exact GlobalTheory.FlatPlace.Big₂ | (intros; apply GlobalTheory.FlatPlace.Big₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatPlace.Big₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselFrameOfGridLatticeLargeDepth.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.besselFrameOfGridLattice_largeDepth : Big fun ch => BesP ch := by
   first | exact @GlobalTheory.FlatPlace.Big₂ | exact GlobalTheory.FlatPlace.Big₂ | (intros; apply GlobalTheory.FlatPlace.Big₂ <;> assumption)

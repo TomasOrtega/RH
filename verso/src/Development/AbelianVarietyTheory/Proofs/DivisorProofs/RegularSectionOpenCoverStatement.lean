@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo
 open Formalism.MainNotions.DIV.Cons (intO)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtGenCurve.nefOver_of_localGen | exact GlobalTheory.HtGenCurve.nefOver_of_localGen | (intros; apply GlobalTheory.HtGenCurve.nefOver_of_localGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtGenCurve.nefOver_of_localGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularSectionOpenCover.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.regular_section_open_cover : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (R : L.B.ι → X.functionFieldˣ), IsRatSec L.B R → ∀ (l n : ℕ) (U : X → X.Opens) (s : X → Fin n → X.functionField), (∀ x, x ∈ U x) → (∀ (x : X) (i : L.B.ι) (x₀ : X), x₀ ∈ U x → x₀ ∈ L.B.U i → (l : k) ∈ (p x₀).asIdeal → (∀ J, RegAt x₀ (s x J * R i)) ∧ (∃ J, UnitAt x₀ (s x J * R i)) ∧ ∀ x', x₀ ∈ U x' → ∀ J, ¬ UnitAt x₀ ((s x J - s x' J) * R i)) → NefOver L l := by
   first | exact @GlobalTheory.HtGenCurve.nefOver_of_localGen | exact GlobalTheory.HtGenCurve.nefOver_of_localGen | (intros; apply GlobalTheory.HtGenCurve.nefOver_of_localGen <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeedSec.o_eq_aDp_wA | exact GlobalTheory.SeedSec.o_eq_aDp_wA | (intros; apply GlobalTheory.SeedSec.o_eq_aDp_wA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeedSec.o_eq_aDp_wA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLocalPeriodRingsSectionEqAinfToBdRPlus.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.localPeriodRings_section_eq_ainfToBdRPlus : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (C : Core l) (w : Wq l a) (x : Om l), ((Per.θ l (wA l a w) : OC l) : ℂ_[l]) = (x : ℂ_[l]) → C.o x = aDp l (wA l a w) := by
   first | exact @GlobalTheory.SeedSec.o_eq_aDp_wA | exact GlobalTheory.SeedSec.o_eq_aDp_wA | (intros; apply GlobalTheory.SeedSec.o_eq_aDp_wA <;> assumption)

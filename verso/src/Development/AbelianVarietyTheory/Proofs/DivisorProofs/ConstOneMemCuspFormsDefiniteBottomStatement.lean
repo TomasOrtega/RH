@@ -20,8 +20,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (sZero)
 open GlobalTheory.Mem.Th (CptF)
 open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BottomCusp.one_mem_A0_of_isBottomTri | exact GlobalTheory.BottomCusp.one_mem_A0_of_isBottomTri | (intros; apply GlobalTheory.BottomCusp.one_mem_A0_of_isBottomTri <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BottomCusp.one_mem_A0_of_isBottomTri` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConstOneMemCuspFormsDefiniteBottom.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.const_one_mem_cuspForms_definiteBottom : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∀ cA : CptF (GlobalTheory.Grid.neg A), HidaSetting W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s A'.rank cA → (fun _ => (1 : ℂ)) ∈ A0 W.θ (GlobalTheory.Grid.neg A) cA := by

@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SumRhoE
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core GlobalTheory.CompanionTheory.SW.ThW
 open scoped ENNReal NNReal MatrixGroups Kronecker
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param | exact GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param | (intros; apply GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FLatticeCosetParametrization.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.lattice_coset_parametrization : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] [DecidableEq (InfinitePlace F)] (ρ : InfinitePlace F → (F →+* ℝ)) (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) (a : ι → F) (N : ℕ), 0 < N → ∃ e : (ι × InfinitePlace F → ℤ) → ι → F, Function.Injective e ∧ (∀ x : ι → F, toA x - toA a ∈ latN F ι N ↔ x ∈ Set.range e) ∧ ∀ n, emb ρ (e n) = emb ρ a + gM ρ (fun v => b v) N *ᵥ fun p => (n p : ℝ) := by
   first | exact @GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param | exact GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param | (intros; apply GlobalTheory.CompanionTheory.SW.ThW.rational_coset_param <;> assumption)

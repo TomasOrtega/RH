@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Cval
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.EvenTheta
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionHeight.height_one | exact GlobalTheory.TorsionHeight.height_one | (intros; apply GlobalTheory.TorsionHeight.height_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionHeight.height_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTorsionPointLocalHeightEqOne.lean&line=227#L227)
 -/
 theorem _root_.GlobalTheory.T.torsionPoint_localHeight_eq_one : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p), GL3Theta.At D cc δ g → ∀ v : ℂ, InRationalLattice g.abelian₂ v → v ∉ g.abelian₂ → ‖GlobalTheory.ThetaTransl.cval g v‖ ^ 2 * max 1 ‖xAt g v‖ = 1 := by
   first | exact @GlobalTheory.TorsionHeight.height_one | exact GlobalTheory.TorsionHeight.height_one | (intros; apply GlobalTheory.TorsionHeight.height_one <;> assumption)

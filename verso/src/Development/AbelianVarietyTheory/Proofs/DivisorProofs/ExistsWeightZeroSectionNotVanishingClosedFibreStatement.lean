@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_secB_zero_mem_basicOpen | exact GlobalTheory.Mum.exists_secB_zero_mem_basicOpen | (intros; apply GlobalTheory.Mum.exists_secB_zero_mem_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_secB_zero_mem_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeightZeroSectionNotVanishingClosedFibre.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.exists_weightZero_section_not_vanishing_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)) (k : ℕ), 2 ≤ k → ∀ x : D.toPre.P.A.left,

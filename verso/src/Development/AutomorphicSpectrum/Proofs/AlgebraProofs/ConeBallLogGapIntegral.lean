@@ -6,8 +6,10 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @ModelDimension.integral_coneBall_log_gap_eq | exact ModelDimension.integral_coneBall_log_gap_eq`.
+/- English proof (citation)
+Apply `ModelDimension.integral_coneBall_log_gap_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FCommonZeroEvaluation%2FConeBallLogGapIntegral.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.cone_ball_log_gap_integral : ∀ (n e : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u : Fin n → ℂ),

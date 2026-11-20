@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.integral_chernF_mul_grF | exact GlobalTheory.ChernCalc.integral_chernF_mul_grF | (intros; apply GlobalTheory.ChernCalc.integral_chernF_mul_grF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.integral_chernF_mul_grF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralChernFormsEqEsymmGradedFormsFlag.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.integral_chernForms_eq_esymm_gradedForms_flag : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ) (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ (R : MvPolynomial (ι × ℕ) ℝ) (Q : MvPolynomial (Root m) ℝ), (atlas X σ).integral (evalF (atlas X σ) (chernF E H) R * evalF (atlas X σ) (grF E H) Q) = (atlas X σ).integral (evalF (atlas X σ) (grF E H) (chernRoots m R * Q)) := by
   first | exact @GlobalTheory.ChernCalc.integral_chernF_mul_grF | exact GlobalTheory.ChernCalc.integral_chernF_mul_grF | (intros; apply GlobalTheory.ChernCalc.integral_chernF_mul_grF <;> assumption)

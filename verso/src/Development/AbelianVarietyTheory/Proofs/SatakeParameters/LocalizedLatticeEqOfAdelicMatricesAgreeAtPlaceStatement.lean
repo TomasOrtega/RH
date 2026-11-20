@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV
 open Formalism.UG (bc prV)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatAway.decoAt_eq | exact GlobalTheory.LatAway.decoAt_eq | (intros; apply GlobalTheory.LatAway.decoAt_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatAway.decoAt_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLocalizedLatticeEqOfAdelicMatricesAgreeAtPlace.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.localizedLattice_eq_of_adelic_matrices_agree_at_place : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}

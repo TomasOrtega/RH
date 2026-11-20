@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchimedeanL2.lintegral_arch_eq | exact GlobalTheory.ArchimedeanL2.lintegral_arch_eq | (intros; apply GlobalTheory.ArchimedeanL2.lintegral_arch_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchimedeanL2.lintegral_arch_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilOperatorUnitaryAdelicL2.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.weil_operator_unitary_adelic_L2 : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (L : SInf F κ →ₗ[ℂ] SInf F κ) (Ω : Module.End ℂ ((κ → AF F) → ℂ)),

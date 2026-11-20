@@ -17,8 +17,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.dl_pairSer_eq_height | exact GlobalTheory.ChF.dl_pairSer_eq_height | (intros; apply GlobalTheory.ChF.dl_pairSer_eq_height <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.dl_pairSer_eq_height` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FLinearPartPairingSeriesEqHeight.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.linear_part_pairing_series_eq_height : ∀ (R₀ : Type) [CommRing R₀] (B : BX R₀) (p : ℕ) (Tw : ATowerL R₀ p) (Dt : DualTower Tw) (g : ℕ) (Y : ∀ R : LAlg R₀, LHom Tw.O R → (Fin g → (R : Type)) → B.G R) (gb : Module.Basis (Fin g) R₀ B.gg) (S : Matrix (Fin g) (Fin g) (Tw.O : Type)), TanMat B Tw.O Y gb S → ∀ (τ : ℕ → B.G Tw.O) (u : PS (Tw.O : Type) 1 g), MvPowerSeries.constantCoeff u = 1 → PairSer B Tw.O Y p τ u → ∀ ht : B.gg →ₗ[R₀] (Tw.O : Type), (∀ n, B.IsHeight (Dt.Dp n) (p ^ (n + 1)) (B.map (Tw.q n) (τ n)) ((Tw.q n).1.toLinearMap ∘ₗ ht)) → Sᵀ *ᵥ dl u = fun l => ht (gb l) := by
   first | exact @GlobalTheory.ChF.dl_pairSer_eq_height | exact GlobalTheory.ChF.dl_pairSer_eq_height | (intros; apply GlobalTheory.ChF.dl_pairSer_eq_height <;> assumption)

@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.LiftRows (Given)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainTwNorm.normX | exact GlobalTheory.ChainTwNorm.normX | (intros; apply GlobalTheory.ChainTwNorm.normX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainTwNorm.normX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRealLastStageNormalizedOfScalarHypotheses.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.realLastStageNormalized_of_scalarHypotheses : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ h : RangeX R, NormX R h := by
   first | exact @GlobalTheory.ChainTwNorm.normX | exact GlobalTheory.ChainTwNorm.normX | (intros; apply GlobalTheory.ChainTwNorm.normX <;> assumption)

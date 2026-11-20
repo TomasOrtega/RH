@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralFramedPoi
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntFrBaseChange.exists_intFr_baseChange | exact GlobalTheory.IntFrBaseChange.exists_intFr_baseChange | (intros; apply GlobalTheory.IntFrBaseChange.exists_intFr_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntFrBaseChange.exists_intFr_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FIntegralFramedPointBaseChangeStable.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.integralFramedPoint_baseChange_stable : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), PullbackSections.IntFrBCSt Xo c := by
   first | exact @GlobalTheory.IntFrBaseChange.exists_intFr_baseChange | exact GlobalTheory.IntFrBaseChange.exists_intFr_baseChange | (intros; apply GlobalTheory.IntFrBaseChange.exists_intFr_baseChange <;> assumption)

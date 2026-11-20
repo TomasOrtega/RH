@@ -18,8 +18,10 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros | exact GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros | (intros; apply GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FThetaZeroDivisorJetBound.lean&line=285#L285)
 -/
 theorem _root_.GlobalTheory.T.theta_zero_divisor_jet_bound : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (θ : (Fin g → ℂ) → ℂ)
     (L : (Fin g ⊕ Fin g → ℝ) ≃ₗ[ℝ] (Fin g → ℂ)) (i₀ : Fin g ⊕ Fin g) (c₀ : ℝ),

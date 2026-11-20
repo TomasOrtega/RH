@@ -14,8 +14,10 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar.tup_coord_haar | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar.tup_coord_haar | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar.tup_coord_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar.tup_coord_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTupleArchimedeanComplexCoordinates.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.tuple_archimedean_complex_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (e : Ainf F ≃+* (InfinitePlace F → ℝ)) (τ : InfinitePlace F → (E →+* ℂ))

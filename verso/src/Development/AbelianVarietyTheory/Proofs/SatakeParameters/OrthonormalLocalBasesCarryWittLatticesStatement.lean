@@ -11,8 +11,10 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwV.frameLatMapLt_of_ties | exact GlobalTheory.TwV.frameLatMapLt_of_ties | (intros; apply GlobalTheory.TwV.frameLatMapLt_of_ties <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwV.frameLatMapLt_of_ties` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FOrthonormalLocalBasesCarryWittLattices.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.orthonormal_local_bases_carry_witt_lattices : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) (fd : FData X D) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), (∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → (∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 → TaylorLogMetric.admitted D _ _ (fd.kerN j La) (fd.kerN (j + 1) La') ∧ ∀ v, locSp (X.G.P.W v) (ρ v) (fd.kerN j La) = (X.latAt v j La.2).map (((fd.frM j La v).mulVecLin).restrictScalars (X.G.P.W v)) ∧ locSp (X.G.P.W v) (ρ v) (fd.kerN (j + 1) La') = (X.latAt v (j + 1) La'.2).map (((fd.frM (j + 1) La' v).mulVecLin).restrictScalars (X.G.P.W v))) → Lt.FrameLatMapLt X fd.frM hfin D (fun j La _ => fd.kerN j La) (fun j _ La' => fd.kerN (j + 1) La') ρ := by
   first | exact @GlobalTheory.TwV.frameLatMapLt_of_ties | exact GlobalTheory.TwV.frameLatMapLt_of_ties | (intros; apply GlobalTheory.TwV.frameLatMapLt_of_ties <;> assumption)

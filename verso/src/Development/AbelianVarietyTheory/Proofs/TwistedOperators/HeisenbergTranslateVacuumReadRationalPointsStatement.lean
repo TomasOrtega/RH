@@ -14,8 +14,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisRatRead.heis_translate_read | exact GlobalTheory.HeisRatRead.heis_translate_read | (intros; apply GlobalTheory.HeisRatRead.heis_translate_read <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisRatRead.heis_translate_read` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergTranslateVacuumReadRationalPoints.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.heisenbergTranslate_vacuum_read_rationalPoints : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),

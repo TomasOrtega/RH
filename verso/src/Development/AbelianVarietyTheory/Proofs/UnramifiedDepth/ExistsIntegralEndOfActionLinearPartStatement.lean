@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntSOfMulEqOne
 open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw GlobalTheory.RowVal ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ActionEnd.exists_isEnd_act | exact GlobalTheory.ActionEnd.exists_isEnd_act | (intros; apply GlobalTheory.ActionEnd.exists_isEnd_act <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ActionEnd.exists_isEnd_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FExistsIntegralEndOfActionLinearPart.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_integralEnd_of_action_linearPart : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I) (a : O), ∃ M M' : Matrix (Fin dd) (Fin dd) C, (∀ v, M.mulVec v = linAct (Y.B.A.act a) v) ∧ (∀ v, M'.mulVec v = linAct (Y.B.A.act (star a)) v) ∧ IsEnd (Y.raw p) V M M' ∧ un1 (Y.B.hL C Y.h a) = hEnd (Y.raw p) 1 M := by
   first | exact @GlobalTheory.ActionEnd.exists_isEnd_act | exact GlobalTheory.ActionEnd.exists_isEnd_act | (intros; apply GlobalTheory.ActionEnd.exists_isEnd_act <;> assumption)

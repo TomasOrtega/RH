@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open ValuativeRel Formalism.L2.Host
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GivenField.tensor_givenStage_mem | exact GlobalTheory.GivenField.tensor_givenStage_mem | (intros; apply GlobalTheory.GivenField.tensor_givenStage_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GivenField.tensor_givenStage_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridGivenPathTensorMemSubfield.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.gridGivenPathTensor_mem_subfield : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Subfield ℂ) (B : Frames G) (t : T) (Φ : G.Datum) (w : Pl D.host.E), (∀ j x, ((L.C.mu0 j).loc w x : ℂ) ∈ F) → (∀ x, ((L.xiH t).loc w x : ℂ) ∈ F) → ∀ z : (locGrid G t w).Args, (givenStage t w B Φ).tensor z ∈ F := by
   first | exact @GlobalTheory.GivenField.tensor_givenStage_mem | exact GlobalTheory.GivenField.tensor_givenStage_mem | (intros; apply GlobalTheory.GivenField.tensor_givenStage_mem <;> assumption)

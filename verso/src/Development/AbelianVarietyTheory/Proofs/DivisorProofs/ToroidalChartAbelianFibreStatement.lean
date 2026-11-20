@@ -20,8 +20,10 @@ open GlobalTheory.LieVB (omega unitSec dUnit)
 open GlobalTheory.QCoh (pullbackSections)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitDiffSpan.span_crd_dUnit_model | exact GlobalTheory.UnitDiffSpan.span_crd_dUnit_model | (intros; apply GlobalTheory.UnitDiffSpan.span_crd_dUnit_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitDiffSpan.span_crd_dUnit_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalChartAbelianFibre.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.toroidal_chart_abelian_fibre : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {T : Scheme.{0}} (j : T ⟶ Z.X) {q : T ⟶ Sp Oz} {g : ℕ} (ρ : Oz →+* ℂ) (y : CxPts q ρ) (ch : Chart ((Scheme.Modules.pullback j).obj (omega Z.t.G)) g), y ∈ ptsIn q ρ ch.U → ∃ (U : Z.X.Opens) (W : Z.t.G.left.Opens) (hU : U ≤ unitSec Z.t.G ⁻¹ᵁ W), y ∈ ptsIn q ρ (j ⁻¹ᵁ U) ∧ Submodule.span ℂ (Set.range fun f : Γ(Z.t.G.left, W) => ch.crd q ρ (pullbackSections j _ (le_refl (j ⁻¹ᵁ U)) (dUnit Z.t.G hU f)) y) = ⊤ := by
   first | exact @GlobalTheory.UnitDiffSpan.span_crd_dUnit_model | exact GlobalTheory.UnitDiffSpan.span_crd_dUnit_model | (intros; apply GlobalTheory.UnitDiffSpan.span_crd_dUnit_model <;> assumption)

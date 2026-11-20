@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyFam.exists_keyIn_near_two | exact GlobalTheory.KeyFam.exists_keyIn_near_two | (intros; apply GlobalTheory.KeyFam.exists_keyIn_near_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyFam.exists_keyIn_near_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsKeyDataNearTwoPrimes.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_keyData_near_two_primes : Out.Laws → Out.Laws2 → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Q : Out.PolAV (Sp R)) (p q : PrimeSpectrum R), 1 ≤ Q.g → ∃ r : R, r ∉ p.asIdeal ∧ r ∉ q.asIdeal ∧ ∃ (y : KeyIn (Localization.Away r)) (φ : y.P.A.left ⟶ Q.A.left), PolPB y.P Q (spMap (algebraMap R (Localization.Away r))) φ := by
   first | exact @GlobalTheory.KeyFam.exists_keyIn_near_two | exact GlobalTheory.KeyFam.exists_keyIn_near_two | (intros; apply GlobalTheory.KeyFam.exists_keyIn_near_two <;> assumption)

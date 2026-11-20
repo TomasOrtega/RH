@@ -13,8 +13,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | exact GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FComponentOpenStalksDomain.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.component_open_stalks_domain : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → ∃ U' : (Xo.XF c).Opens, (U' : Set (Xo.XF c)) = U ∧ ∀ p : Xo.XF c, p ∈ U → IsDomain ((Xo.XF c).presheaf.stalk p) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | exact GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain <;> assumption)

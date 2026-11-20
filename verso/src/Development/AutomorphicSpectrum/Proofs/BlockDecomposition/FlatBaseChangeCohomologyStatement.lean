@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover | exact GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover | (intros; apply GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFlatBaseChangeCohomology.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.flat_base_change_cohomology : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     (G : C' ⥤ C) {ι : Type} [Fintype ι] [DecidableEq ι] (N : ι → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]

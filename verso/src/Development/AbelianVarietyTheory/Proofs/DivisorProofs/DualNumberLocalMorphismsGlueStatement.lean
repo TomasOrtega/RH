@@ -7,8 +7,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlueTanAway.glue_away_dual | exact GlobalTheory.GlueTanAway.glue_away_dual | (intros; apply GlobalTheory.GlueTanAway.glue_away_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlueTanAway.glue_away_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualNumberLocalMorphismsGlue.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.dual_number_local_morphisms_glue : ∀ {L : Type} [CommRing L] {s : Set L}, Ideal.span s = ⊤ → ∀ {Y : Scheme.{0}} (w : ∀ a : s, Sp (DualNumber (Localization.Away (a : L))) ⟶ Y), (∀ a b : s, spMap (Formalism.L2.Pj.dualMap (IsLocalization.Away.awayToAwayRight (S := Localization.Away (a : L)) (P := Localization.Away ((a : L) * b)) (a : L) (b : L))) ≫ w a = spMap (Formalism.L2.Pj.dualMap (IsLocalization.Away.awayToAwayLeft (S := Localization.Away (b : L)) (P := Localization.Away ((a : L) * b)) (b : L) (a : L))) ≫ w b) → ∃ w₀ : Sp (DualNumber L) ⟶ Y, ∀ a : s, spMap (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (a : L)))) ≫ w₀ = w a := by
   first | exact @GlobalTheory.GlueTanAway.glue_away_dual | exact GlobalTheory.GlueTanAway.glue_away_dual | (intros; apply GlobalTheory.GlueTanAway.glue_away_dual <;> assumption)

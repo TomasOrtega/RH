@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibl
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.ThetaConj
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaConj.ProdLin.cjF_prod | exact GlobalTheory.ThetaConj.ProdLin.cjF_prod | (intros; apply GlobalTheory.ThetaConj.ProdLin.cjF_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaConj.ProdLin.cjF_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FConjProdCompLinearFormsOfCoeffConj.lean&line=154#L154)
 -/
 theorem _root_.GlobalTheory.T.conj_prod_comp_linearForms_of_coeff_conj : ∀ (D : D7) (N N' r : ℕ) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (g g' : Fin r → ℂ → ℂ) (l l' : Fin r → VC D N N'), (∀ j, Differentiable ℂ (g j)) → (∀ j, Differentiable ℂ (g' j)) → (∀ j n, coef1 (g j) n ∈ M ∧ coef1 (g' j) n = cj M ρ (coef1 (g j) n)) → (∀ j τ a c, l j τ a c ∈ M ∧ l' j τ a c = cj M ρ (l j τ a c)) → CjF D M ρ (fun z : VC D N N' => ∏ j, g j (∑ τ, ∑ a, ∑ c, z τ a c * l j τ a c)) (fun z : VC D N N' => ∏ j, g' j (∑ τ, ∑ a, ∑ c, z τ a c * l' j τ a c)) := by
   first | exact @GlobalTheory.ThetaConj.ProdLin.cjF_prod | exact GlobalTheory.ThetaConj.ProdLin.cjF_prod | (intros; apply GlobalTheory.ThetaConj.ProdLin.cjF_prod <;> assumption)

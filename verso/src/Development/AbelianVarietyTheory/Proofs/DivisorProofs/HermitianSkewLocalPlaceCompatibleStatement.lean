@@ -20,8 +20,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoOrthLocB.isoB_orth_at | exact GlobalTheory.IsoOrthLocB.isoB_orth_at | (intros; apply GlobalTheory.IsoOrthLocB.isoB_orth_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoOrthLocB.isoB_orth_at` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianSkewLocalPlaceCompatible.lean&line=201#L201)
 -/
 theorem _root_.GlobalTheory.T.hermitian_skew_local_place_compatible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (W : Spc F E d) (W₁ : Spc F E d₁)

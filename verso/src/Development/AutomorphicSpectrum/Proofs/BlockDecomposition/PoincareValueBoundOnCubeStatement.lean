@@ -8,8 +8,10 @@ open PositivityTheory.RgTw (Mat G)
 open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.SobGL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SobCube.sobolev_cube | exact GlobalTheory.CompanionTheory.SobCube.sobolev_cube | (intros; apply GlobalTheory.CompanionTheory.SobCube.sobolev_cube <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SobCube.sobolev_cube` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPoincareValueBoundOnCube.lean&line=227#L227)
 -/
 theorem _root_.GlobalTheory.T.poincare_value_bound_on_cube : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (ε : ℝ), 0 < ε →
     ∃ (T : Finset (List ι)) (C : ℝ), 0 ≤ C ∧ ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]

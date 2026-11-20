@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres | exact GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHeightBoundFullIntersectionSystem.lean&line=154#L154)
 -/
 theorem _root_.GlobalTheory.T.posU_of_full_intersection_system : PB.Inputs → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (w : ((Σ k, J k) → ℂ) → ℝ) (S' : BoundedRegularisationSetting M D.Xo Hd.aMu w), IsFullIntersectionSystem II → S'.IsTied → (∀ B : ℕ, 4 * D.f + 2 ≤ B → NefOnFibres (mCoordIdeal D.y) (muTwDeg Hd B)) → PosU S' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres | exact GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.posU_of_nefOnFibres <;> assumption)

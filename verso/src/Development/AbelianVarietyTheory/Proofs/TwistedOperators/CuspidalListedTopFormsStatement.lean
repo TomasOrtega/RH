@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EndCusp.formTop_isCuspListed | exact GlobalTheory.EndCusp.formTop_isCuspListed | (intros; apply GlobalTheory.EndCusp.formTop_isCuspListed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EndCusp.formTop_isCuspListed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCuspidalListedTopForms.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.cuspidal_listed_top_forms : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
   first | exact @GlobalTheory.EndCusp.formTop_isCuspListed | exact GlobalTheory.EndCusp.formTop_isCuspListed | (intros; apply GlobalTheory.EndCusp.formTop_isCuspListed <;> assumption)

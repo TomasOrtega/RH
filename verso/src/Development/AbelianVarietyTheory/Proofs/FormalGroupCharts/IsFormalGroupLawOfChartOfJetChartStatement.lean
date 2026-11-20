@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartJLaw.isLawOf_of_isChartJ | exact GlobalTheory.ChartJLaw.isLawOf_of_isChartJ | (intros; apply GlobalTheory.ChartJLaw.isLawOf_of_isChartJ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartJLaw.isLawOf_of_isChartJ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FIsFormalGroupLawOfChartOfJetChart.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.isFormalGroupLawOfChart_of_jetChart : ∀ (T : Type) [CommRing T] (G : Over (Sp T)) [GrpObj G] [IsCommMonObj G] (d : ℕ) (F : FGLaw T d) (x : ∀ m : ℕ, algOver T (JetR T (Fin 1 × Fin d) m) ⟶ G), IsChartJ G F x → ∀ x0 : GlobalTheory.JetSer.Fam G (Fin d), Chart.IsUnivChart G d x0 → (∃ ρ : ∀ m, JetR T (Fin 1 × Fin d) m →ₐ[T] Chart.JetR T (Fin d) m, (∀ m j, ρ m (zR m ((0 : Fin 1), j)) = Chart.zR m j) ∧ ∀ m, (x0 m).left = spMap (ρ m : JetR T (Fin 1 × Fin d) m →+* Chart.JetR T (Fin d) m) ≫ (x m).left) → GlobalTheory.JetSer.IsLawOf x0 F.F := by
   first | exact @GlobalTheory.ChartJLaw.isLawOf_of_isChartJ | exact GlobalTheory.ChartJLaw.isLawOf_of_isChartJ | (intros; apply GlobalTheory.ChartJLaw.isLawOf_of_isChartJ <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemDegLE
 open scoped TensorProduct
 open Formalism.BasicNotions.TH GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFixIrr.evenStep_tens | exact GlobalTheory.KFixIrr.evenStep_tens | (intros; apply GlobalTheory.KFixIrr.evenStep_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFixIrr.evenStep_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKFixedDegreeFiltrationStepUp.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.k_fixed_degree_filtration_step_up : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (c : ι → ℚ) (m : ℕ)
     (T₀ T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S), T₀ ≠ 0 →

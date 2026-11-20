@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PerfectPairingDualSymplectic
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic | exact GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic | (intros; apply GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AnnIso.pairing_vanishes_of_annihilator_isotropic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPerfectPairingDualSymplectic.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.perfect_pairing_dual_symplectic : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     (N : Type 1) [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N) (g : ℕ),

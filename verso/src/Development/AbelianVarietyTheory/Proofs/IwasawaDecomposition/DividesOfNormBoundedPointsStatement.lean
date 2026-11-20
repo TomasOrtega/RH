@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLine.Dvd.dvd_of_forall_pt | exact GlobalTheory.HTLine.Dvd.dvd_of_forall_pt | (intros; apply GlobalTheory.HTLine.Dvd.dvd_of_forall_pt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLine.Dvd.dvd_of_forall_pt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDividesOfNormBoundedPoints.lean&line=230#L230)
 -/
 theorem _root_.GlobalTheory.T.divides_of_norm_bounded_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : Mdl Y i₀) (U : Z.X.Opens), IsAffineOpen U → ∀ a b : Γ(Z.X, U), (p : Γ(Z.X, U)) ∈ (Ideal.span {b}).radical → (∀ y : Z.Pt, ⊤ ≤ y.z ⁻¹ᵁ U → ‖valF y.gen U a‖ ≤ ‖valF y.gen U b‖) → b ∣ a := by
   first | exact @GlobalTheory.HTLine.Dvd.dvd_of_forall_pt | exact GlobalTheory.HTLine.Dvd.dvd_of_forall_pt | (intros; apply GlobalTheory.HTLine.Dvd.dvd_of_forall_pt <;> assumption)

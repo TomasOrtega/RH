@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPoin
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.localComponents | exact GlobalTheory.FinPl.localComponents | (intros; apply GlobalTheory.FinPl.localComponents <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.localComponents` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FAdelicPointComponentsAtPlacesLatticesVacua.lean&line=528#L528)
 -/
 theorem _root_.GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua : ∀ (D : D7) (P : Pl D → Prop), (∃ ε : AE D, ε * ε = ε ∧ cA D ε = ε ∧ ε ∈ intAt D P ∧ (∀ a, a ∈ idAt D P ↔ ε * a = a) ∧ (∀ a, a ∈ idOff D P ↔ ε * a = 0)) ∧ ∀ S : HSp D, (∀ h : GA D S, ∃ x ∈ grpAt S P, ∃ y ∈ grpOff S P, h = x * y) ∧ (∀ x ∈ grpAt S P, ∀ y ∈ grpOff S P, x * y = y * x) ∧ grpAt S P ⊓ grpOff S P = ⊥ ∧ (∀ (L : Lat S) (y : Fin S.rank → AE D), (Submodule.IsLattice D.host.E L) → (y ∈ latV S L P ↔ (∀ i, y i ∈ idAt D P) ∧ ∀ v, P v → ∀ e ∈ intAt D (· = v), e • y ∈ latV S L (· = v))) := by
   first | exact @GlobalTheory.FinPl.localComponents | exact GlobalTheory.FinPl.localComponents | (intros; apply GlobalTheory.FinPl.localComponents <;> assumption)

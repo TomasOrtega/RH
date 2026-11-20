@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.units_lift_of_thickening | exact GlobalTheory.DualOpen.units_lift_of_thickening | (intros; apply GlobalTheory.DualOpen.units_lift_of_thickening <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualOpen.units_lift_of_thickening` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeUnitsLiftAlongThickening.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_units_lift_along_thickening : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (T₂ T₀ : Over S) (k : T₀ ⟶ T₂), IsAffine T₂.left → IsClosedImmersion k.left → Surjective k.left → Function.Surjective (Units.map (A ◁ k).left.appTop.hom.toMonoidHom) := by
   first | exact @GlobalTheory.DualOpen.units_lift_of_thickening | exact GlobalTheory.DualOpen.units_lift_of_thickening | (intros; apply GlobalTheory.DualOpen.units_lift_of_thickening <;> assumption)

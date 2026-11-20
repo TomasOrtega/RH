@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifTan.isD_iff_isDiff | exact GlobalTheory.UnifTan.isD_iff_isDiff | (intros; apply GlobalTheory.UnifTan.isD_iff_isDiff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnifTan.isD_iff_isDiff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicUniformizationComplexBaseChange.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_uniformization_complex_base_change : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D : DegPre R) (N : NumD ℂ)
     (ν : NumOf D ℂ N) (g : ℕ) (d : AB N.toNumB g) (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g) (φ : x.P.A.left ⟶ D.P.A.left),

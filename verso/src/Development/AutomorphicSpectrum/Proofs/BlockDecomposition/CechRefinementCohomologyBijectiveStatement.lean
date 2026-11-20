@@ -6,8 +6,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NlZar.zariski_descent | exact GlobalTheory.CompanionTheory.NlZar.zariski_descent | (intros; apply GlobalTheory.CompanionTheory.NlZar.zariski_descent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.NlZar.zariski_descent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCechRefinementCohomologyBijective.lean&line=425#L425)
 -/
 theorem _root_.GlobalTheory.T.cech_refinement_cohomology_bijective : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀)

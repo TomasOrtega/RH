@@ -16,8 +16,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NestedStab.redFn_conj_of_stab_le | exact GlobalTheory.NestedStab.redFn_conj_of_stab_le | (intros; apply GlobalTheory.NestedStab.redFn_conj_of_stab_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NestedStab.redFn_conj_of_stab_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPlaceReductionsConjOfNestedFrameStabilisers.lean&line=229#L229)
 -/
 theorem _root_.GlobalTheory.T.splitPlaceReductions_conj_of_nestedFrameStabilisers : ∀ (D : D7) (V : HSp D) (β₁ β₂ : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), Formalism.IndefR.Lev.IsBaseFrame V β₁ Λ N → ∀ (e : Formalism.L2.Theta.AE D) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e PP → (∀ κ ∈ GfC V, Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₁ → Formalism.IndefR.Lev.finE V κ ∈ Formalism.L2.DIV.St β₂) → ∃ m : GL (Fin V.rank) (Formalism.L2.DIV.kP PP), ∀ y, y ∈ Formalism.L2.DIV.St β₁ → y ∈ Formalism.L2.DIV.St β₂ → Formalism.L2.DIV.redFn β₂ PP y = m * Formalism.L2.DIV.redFn β₁ PP y * m⁻¹ := by
   first | exact @GlobalTheory.NestedStab.redFn_conj_of_stab_le | exact GlobalTheory.NestedStab.redFn_conj_of_stab_le | (intros; apply GlobalTheory.NestedStab.redFn_conj_of_stab_le <;> assumption)

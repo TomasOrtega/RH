@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HighWtEmb.exists_weightForm | exact GlobalTheory.HighWtEmb.exists_weightForm | (intros; apply GlobalTheory.HighWtEmb.exists_weightForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HighWtEmb.exists_weightForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeightFormOnSimpleSubquotient.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_weightForm_on_simple_subquotient : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], SubQ O N lam ϖ Gm → ∀ (w : ι → Fin N → ℕ) (z₀ : Gm), z₀ ≠ 0 → (∀ τ (a : alg O N lam), IsProj O N lam τ (w τ) a → a • z₀ = z₀) → ∃ φ : Gm →+ O ⧸ Ideal.span {ϖ}, φ z₀ ≠ 0 ∧ (∀ (c : O) (z : Gm), φ (algebraMap O (alg O N lam) c • z) = Ideal.Quotient.mk (Ideal.span {ϖ}) c * φ z) ∧ ∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → v ≠ w τ → ∀ z, φ (a • z) = 0 := by
   first | exact @GlobalTheory.HighWtEmb.exists_weightForm | exact GlobalTheory.HighWtEmb.exists_weightForm | (intros; apply GlobalTheory.HighWtEmb.exists_weightForm <;> assumption)

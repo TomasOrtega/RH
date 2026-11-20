@@ -18,8 +18,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSApp.ampleAt_regular | exact GlobalTheory.HSApp.ampleAt_regular | (intros; apply GlobalTheory.HSApp.ampleAt_regular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSApp.ampleAt_regular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAmpleLineBundleWeightGap.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.ample_line_bundle_weight_gap : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ la : AllWt.Weight Dw, GapGe 1 la → ∀ y ∈ U₀ TF.X Z, ∃ mu : AllWt.Weight Dw, GapGe 0 mu ∧ ∃ m : ℕ, 0 < m ∧ AmpleAt (L₀ TF.X Z (m • la - mu)) y := by
   first | exact @GlobalTheory.HSApp.ampleAt_regular | exact GlobalTheory.HSApp.ampleAt_regular | (intros; apply GlobalTheory.HSApp.ampleAt_regular <;> assumption)

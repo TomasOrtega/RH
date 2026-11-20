@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.Geomet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.AbB.exists_triple | exact GlobalTheory.CompanionTheory.Ar.AbB.exists_triple | (intros; apply GlobalTheory.CompanionTheory.Ar.AbB.exists_triple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.AbB.exists_triple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTorusExtensionAbelianQuotient.lean&line=542#L542)
 -/
 theorem _root_.GlobalTheory.T.torus_extension_abelian_quotient : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [CharZero L] (tK : SAB H (Sp L)) (τ : TorusExtension tK.G), ∃ (tB : SAB H (Sp L)) (e : τ.B ≅ tB.G), (letI := τ.grpB; IsMonHom e.hom) ∧ (∀ a, tK.act.act a ≫ τ.q ≫ e.hom = τ.q ≫ e.hom ≫ tB.act.act a) ∧ LBIso tK.PP.L (tB.PP.L.pull (τ.q ≫ e.hom).left) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.AbB.exists_triple | exact GlobalTheory.CompanionTheory.Ar.AbB.exists_triple | (intros; apply GlobalTheory.CompanionTheory.Ar.AbB.exists_triple <;> assumption)

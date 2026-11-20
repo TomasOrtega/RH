@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec | exact GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec | (intros; apply GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsSumHyperbolicPlanesOrthogonalWittDecomposi.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_sum_hyperbolicPlanes_orthogonal_wittDecomposition : ∀ (D : D7) (W : HSp D) (t : ℕ), HSpace.SigOK W → ∃ (H B : HSp D) (_ : OrthDec B W H) (_ : HypDec B W t), HSpace.SigOK H ∧ HSpace.SigOK B ∧ H.rank = 2 * t ∧ (∀ τ, H.sig τ = (t, t)) ∧ ∃ sH : RealMat H, ∀ τ, IsCartanInv (gramAt D H τ) (sH τ) := by
   first | exact @GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec | exact GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec | (intros; apply GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec <;> assumption)

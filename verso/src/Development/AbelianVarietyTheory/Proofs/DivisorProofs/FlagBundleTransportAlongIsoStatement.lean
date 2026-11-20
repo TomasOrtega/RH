@@ -12,8 +12,10 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso | exact GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso | (intros; apply GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundleTransportAlongIso.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_transport_along_iso : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (E E' : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (e : ∀ a, E a ≅ E' a), IsFlagBundle π E r fl → IsFlagBundle π E' r (fun a => (fl a).ofIso ((Scheme.Modules.pullback π).mapIso (e a))) := by
   first | exact @GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso | exact GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso | (intros; apply GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso <;> assumption)

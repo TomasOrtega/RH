@@ -8,8 +8,10 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankChart.Extend.exists_sb_extension | exact GlobalTheory.RankChart.Extend.exists_sb_extension | (intros; apply GlobalTheory.RankChart.Extend.exists_sb_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankChart.Extend.exists_sb_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFullRankBoxIndicatorRepresentation.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.full_rank_box_indicator_representation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ρ d : ℕ) (T : Type) [Fintype T] [DecidableEq T] (b : kˣ), ∀ θ ∈ fullRk k ρ d,

@@ -13,8 +13,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CorankPair.exists_corankOne_pair | exact GlobalTheory.CorankPair.exists_corankOne_pair | (intros; apply GlobalTheory.CorankPair.exists_corankOne_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CorankPair.exists_corankOne_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericIsomorphismSubbundleLift.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.generic_isomorphism_subbundle_lift : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (r : ℕ) (E E' : B.X.Modules) (φ : B.GenIso E E'), GlobalTheory.VB.IsVB E (r + 1) → GlobalTheory.VB.IsVB E' (r + 1) → ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (K K' : B'.X.Modules) (i : K ⟶ (Scheme.Modules.pullback f.f).obj E) (i' : K' ⟶ (Scheme.Modules.pullback f.f).obj E') (ψ : B'.GenIso K K'), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ GlobalTheory.VB.IsSubbundle i ∧ GlobalTheory.VB.IsSubbundle i' ∧ GlobalTheory.VB.IsVB K r ∧ GlobalTheory.VB.IsVB K' r ∧ ψ.hom ≫ B'.genRes.map i' = B'.genRes.map i ≫ (φ.pull f.comp_str).hom := by
   first | exact @GlobalTheory.CorankPair.exists_corankOne_pair | exact GlobalTheory.CorankPair.exists_corankOne_pair | (intros; apply GlobalTheory.CorankPair.exists_corankOne_pair <;> assumption)

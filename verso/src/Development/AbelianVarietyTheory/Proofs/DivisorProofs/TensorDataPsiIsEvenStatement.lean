@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensEven.main | exact GlobalTheory.TensEven.main | (intros; apply GlobalTheory.TensEven.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensEven.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorDataPsiIsEven.lean&line=258#L258)
 -/
 theorem _root_.GlobalTheory.T.tensorData_psi_isEven : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), Tens D.toPre D' W → D'.PsiEven := by
   first | exact @GlobalTheory.TensEven.main | exact GlobalTheory.TensEven.main | (intros; apply GlobalTheory.TensEven.main <;> assumption)

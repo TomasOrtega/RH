@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunObj.CosFlip.exists_cos_cosetSet_eq | exact GlobalTheory.FunObj.CosFlip.exists_cos_cosetSet_eq | (intros; apply GlobalTheory.FunObj.CosFlip.exists_cos_cosetSet_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunObj.CosFlip.exists_cos_cosetSet_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsCosetSameLocalCosetSetsOtherBaseLattice.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.exists_coset_same_localCosetSets_other_baseLattice : ∀ {D : D7} {T T' : Type} {L : LevCh D T} {L' : LevCh D T'} {sc : Consts} (G : GridData L sc) (G' : GridData L' sc)
     (B : GlobalTheory.FunObj.Frames G) (B' : GlobalTheory.FunObj.Frames G'),

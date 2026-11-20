@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTau0.exists_psi_rLaws | exact GlobalTheory.UTau0.exists_psi_rLaws | (intros; apply GlobalTheory.UTau0.exists_psi_rLaws <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTau0.exists_psi_rLaws` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPsiGeneratorsDegenerationLawsSymmetricBala.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.exists_psi_generators_degenerationLaws_symmetricBalanced : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D₀ : DegPre R) (O : Type) [CommRing O] [StarRing O]
     [Module O D₀.X] (onB : D₀.P.OAct O), (∀ (a : O) (y : D₀.X), D₀.c (a • y) = D₀.c y ≫ onB.act a) →

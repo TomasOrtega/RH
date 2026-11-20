@@ -13,8 +13,10 @@ open NumberField IsDedekindDomain
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweGlobal.TensorMap.exists_tensL | exact GlobalTheory.HoweGlobal.TensorMap.exists_tensL | (intros; apply GlobalTheory.HoweGlobal.TensorMap.exists_tensL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweGlobal.TensorMap.exists_tensL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsLinearTensorPolyVacuumPureTensors.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y W)

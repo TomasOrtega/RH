@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.holUnitAt_ratVal | exact GlobalTheory.ChernCalc.holUnitAt_ratVal | (intros; apply GlobalTheory.ChernCalc.holUnitAt_ratVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.holUnitAt_ratVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsHolomorphicUnitMatrixAtRationalMatrixValues.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.isHolomorphicUnitMatrixAt_rational_matrix_values : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (s : ℕ) (T : Matrix (Fin s) (Fin s) X.Fn) (y : CxPts X.str σ), (∀ i j, RegAt (under y) (T i j)) → T.det ≠ 0 → RegAt (under y) (T.det)⁻¹ → HolUnitAt (atlas X σ) (fun z => T.map (ratVal · z)) y := by
   first | exact @GlobalTheory.ChernCalc.holUnitAt_ratVal | exact GlobalTheory.ChernCalc.holUnitAt_ratVal | (intros; apply GlobalTheory.ChernCalc.holUnitAt_ratVal <;> assumption)

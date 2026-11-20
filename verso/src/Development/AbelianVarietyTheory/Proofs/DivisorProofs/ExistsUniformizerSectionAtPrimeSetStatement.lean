@@ -11,8 +11,10 @@ open Classical
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QResChar.char_eq_prod | exact GlobalTheory.QResChar.char_eq_prod | (intros; apply GlobalTheory.QResChar.char_eq_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QResChar.char_eq_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniformizerSectionAtPrimeSet.lean&line=292#L292)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformizer_section_at_prime_set : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∃ ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, (∀ PP ∈ Q, (ψP PP).IsPrimitive) ∧ ∀ t y : WO (Vc D i) (Wc D i), IsHalf (cA D eQ) t → t ∈ lattice₂ R i → IsHalf eQ y → dil i (ϖ : D.host.E) y ∈ lattice₂ R i → R.ψ (symplO (Vc D i) (Wc D i) t y) = ∏ PP ∈ Q, ψP PP (Matrix.trace (redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) y)) * redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) (t)))) := by
   first | exact @GlobalTheory.QResChar.char_eq_prod | exact GlobalTheory.QResChar.char_eq_prod | (intros; apply GlobalTheory.QResChar.char_eq_prod <;> assumption)

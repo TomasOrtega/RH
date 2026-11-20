@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent)
 open GlobalTheory.SqZeroPt GlobalTheory.PDivGroup GlobalTheory.DeRham
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConormalFrame.exists_isFrame_omega | exact GlobalTheory.ConormalFrame.exists_isFrame_omega | (intros; apply GlobalTheory.ConormalFrame.exists_isFrame_omega <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConormalFrame.exists_isFrame_omega` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCotangentFrameSmoothGroupScheme.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.exists_cotangent_frame_smooth_groupScheme : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A] [Smooth A.hom] (x : Sp O), ∃ (U : (Sp O).Opens) (n : ℕ) (s : Fin n → Γ(GlobalTheory.LieVB.omega A, U)), x ∈ U ∧ GlobalTheory.VB.IsFrame s := by
   first | exact @GlobalTheory.ConormalFrame.exists_isFrame_omega | exact GlobalTheory.ConormalFrame.exists_isFrame_omega | (intros; apply GlobalTheory.ConormalFrame.exists_isFrame_omega <;> assumption)

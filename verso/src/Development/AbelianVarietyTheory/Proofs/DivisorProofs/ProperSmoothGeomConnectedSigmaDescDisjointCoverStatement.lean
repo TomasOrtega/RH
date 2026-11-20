@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover | exact GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover | (intros; apply GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProperSmoothGeomConnectedSigmaDescDisjointCover.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.properSmoothGeomConnected_sigmaDesc_disjoint_cover : ∀ {X : Scheme.{0}} {κ : Type} [Finite κ] (V : κ → X.Opens), (⨆ i, V i = ⊤) → (Pairwise fun i i' => Disjoint (V i) (V i')) → ∀ {B : κ → Scheme.{0}} (f : ∀ i, B i ⟶ (V i).toScheme) (g : ℕ), (∀ i, Good g (f i)) → Good g (Sigma.desc fun i => f i ≫ (V i).ι) := by
   first | exact @GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover | exact GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover | (intros; apply GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover <;> assumption)

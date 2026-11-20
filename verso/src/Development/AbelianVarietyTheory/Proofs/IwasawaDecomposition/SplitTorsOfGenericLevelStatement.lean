@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLine.splitTors_of_moduli | exact GlobalTheory.HTLine.splitTors_of_moduli | (intros; apply GlobalTheory.HTLine.splitTors_of_moduli <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLine.splitTors_of_moduli` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSplitTorsOfGenericLevel.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.splitTors_of_generic_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (R : Type) [CommRing R] [IsDomain R] (x : Sp R ⟶ Y.X) (y : Sp (FractionRing R) ⟶ Xo.XF c), spMap (algebraMap R (FractionRing R)) ≫ x = y ≫ Y.j → ∀ N : ℕ, N ∣ l.A → GlobalTheory.LineNorm.SplitTors Y.t x N := by
   first | exact @GlobalTheory.HTLine.splitTors_of_moduli | exact GlobalTheory.HTLine.splitTors_of_moduli | (intros; apply GlobalTheory.HTLine.splitTors_of_moduli <;> assumption)

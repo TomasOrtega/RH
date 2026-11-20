@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 open GlobalTheory.PRep GlobalTheory.SmGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_intertwining_bijOn_eigen_of_central_step | exact GlobalTheory.exists_intertwining_bijOn_eigen_of_central_step | (intros; apply GlobalTheory.exists_intertwining_bijOn_eigen_of_central_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_intertwining_bijOn_eigen_of_central_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiltrationCentralCharacterIsolate.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.filtration_central_character_isolate : ∀ {G V X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G X) (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ),

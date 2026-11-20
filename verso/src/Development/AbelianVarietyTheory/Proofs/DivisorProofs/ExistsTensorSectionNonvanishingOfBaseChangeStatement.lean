@@ -23,8 +23,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange | exact GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange | (intros; apply GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTensorSectionNonvanishingOfBaseChange.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.exists_tensor_section_nonvanishing_of_baseChange : ∀ (k E : Type) [Field k] [Field E] [Algebra k E] (Y X : Scheme.{0}) (p : Y ⟶ Sp k) (q : X ⟶ Sp E) (π : X ⟶ Y), IsPullback π q p (spMap (algebraMap k E)) → IsProjOver p → ∀ (L M : LB Y), L.IsLB → M.IsLB → ∀ x : X, (∃ s : (tens (L.pull π) (M.pull π)).Sec, x ∈ nonzeroLocus s) → ∃ s : (tens L M).Sec, π x ∈ nonzeroLocus s := by
   first | exact @GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange | exact GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange | (intros; apply GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange <;> assumption)

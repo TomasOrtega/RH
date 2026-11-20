@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovHt.HTLatB.latBound | exact GlobalTheory.CovHt.HTLatB.latBound | (intros; apply GlobalTheory.CovHt.HTLatB.latBound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovHt.HTLatB.latBound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeBoundOfHeightPublished.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.lattice_bound_of_height : Hypotheses2 → GlobalTheory.CovHt.HTDiag.LatBound := by
   first | exact @GlobalTheory.CovHt.HTLatB.latBound | exact GlobalTheory.CovHt.HTLatB.latBound | (intros; apply GlobalTheory.CovHt.HTLatB.latBound <;> assumption)

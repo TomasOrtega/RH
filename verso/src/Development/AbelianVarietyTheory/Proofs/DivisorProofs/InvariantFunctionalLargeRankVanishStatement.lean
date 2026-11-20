@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetEqv.vanish_of_vanish_off_rowZero | exact GlobalTheory.DetEqv.vanish_of_vanish_off_rowZero | (intros; apply GlobalTheory.DetEqv.vanish_of_vanish_off_rowZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetEqv.vanish_of_vanish_off_rowZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantFunctionalLargeRankVanish.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.invariant_functional_large_rank_vanish : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), GlobalTheory.DetEqv.VanishAt k n → ∀ (Y : Type) [TopologicalSpace Y] (m : ℕ), n + 1 < m →
     ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) → ∀ L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin m) k) →ₗ[ℂ] ℂ,

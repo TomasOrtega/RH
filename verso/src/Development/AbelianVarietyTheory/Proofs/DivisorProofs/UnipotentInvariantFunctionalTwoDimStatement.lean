@@ -11,8 +11,10 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.JacReduce.jac_reduce | exact GlobalTheory.FullRankCoinv.JacReduce.jac_reduce | (intros; apply GlobalTheory.FullRankCoinv.JacReduce.jac_reduce <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullRankCoinv.JacReduce.jac_reduce` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentInvariantFunctionalTwoDim.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.unipotent_invariant_functional_two_dim : (GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ν : kˣ →* ℂˣ), 1 ≤ n → 2 * n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →
   ∀ ℓ : (GL (Fin d) k → ℂ) →ₗ[ℂ] ℂ,

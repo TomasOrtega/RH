@@ -13,8 +13,10 @@ open IsDedekindDomain Formalism.L2.NTheta
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeLocMatrix.exists_local_matrix | exact GlobalTheory.HeckeLocMatrix.exists_local_matrix | (intros; apply GlobalTheory.HeckeLocMatrix.exists_local_matrix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeLocMatrix.exists_local_matrix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsLocalHeckeMatrixIntermediateLattice.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.exists_localHeckeMatrix_intermediateLattice : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k n : ℕ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (π : GlobalTheory.SplitPlace.RF D →+* Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v)

@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorCompact.torus_compact_finiteVol | exact GlobalTheory.TorCompact.torus_compact_finiteVol | (intros; apply GlobalTheory.TorCompact.torus_compact_finiteVol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorCompact.torus_compact_finiteVol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryTorusCompactQuotientFiniteVolume.lean&line=250#L250)
 -/
 theorem _root_.GlobalTheory.T.unitaryTorus_compact_quotient_finite_volume : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r : ℕ) (P : PPol σ r), (∃ C : Set (Tor P (AF F)), IsCompact C ∧ ∀ t : Tor P (AF F), ∃ γ ∈ ratPts (star' P) (one₁ P), γ * t ∈ C) ∧ ∀ dt : Measure (Tor P (AF F)), dt.IsHaarMeasure → torVol P dt ≠ ⊤ := by
   first | exact @GlobalTheory.TorCompact.torus_compact_finiteVol | exact GlobalTheory.TorCompact.torus_compact_finiteVol | (intros; apply GlobalTheory.TorCompact.torus_compact_finiteVol <;> assumption)

@@ -9,8 +9,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.FewEq
 open GlobalTheory.AbLaw (rs)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FewEq.exists_correction | exact GlobalTheory.CompanionTheory.FewEq.exists_correction | (intros; apply GlobalTheory.CompanionTheory.FewEq.exists_correction <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FewEq.exists_correction` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitCocycleLiftMinimalGenerators.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.unit_cocycle_lift_minimal_generators : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (I : Ideal R) (r : ℕ) (t : Fin r → R),
     Ideal.span (Set.range t) = I → I ≤ IsLocalRing.maximalIdeal R →

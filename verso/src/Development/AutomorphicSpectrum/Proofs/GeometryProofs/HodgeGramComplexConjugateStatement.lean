@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj | exact GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHodgeGramComplexConjugate.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.hodge_gram_complex_conjugate : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (x x' : Spec (CommRingCat.of ℂ) ⟶ S) (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (v' : Fin n → (epsAt x' ⟶ G)) (Γ : Matrix (Fin n) (Fin n) ℂ), x' = spMap (starRingEnd ℂ) ≫ x → (∀ i, (v' i).left = spMap (dualMap (starRingEnd ℂ)) ≫ (v i).left) → Fl.IsHodgeGram G L x v Γ → Fl.IsHodgeGram G L x' v' (Γ.map (starRingEnd ℂ)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj | exact GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.GramConj.isHodgeGram_conj <;> assumption)

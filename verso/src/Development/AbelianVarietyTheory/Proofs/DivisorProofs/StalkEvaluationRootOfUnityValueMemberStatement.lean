@@ -14,8 +14,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep.BaseTerms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.MemberZeta.algebraMap_ev_eq_yK | exact GlobalTheory.Poinc.Sep.MemberZeta.algebraMap_ev_eq_yK | (intros; apply GlobalTheory.Poinc.Sep.MemberZeta.algebraMap_ev_eq_yK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.MemberZeta.algebraMap_ev_eq_yK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStalkEvaluationRootOfUnityValueMember.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.stalk_evaluation_root_of_unity_value_member : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     (X : Setup F W i) (z : X.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V]

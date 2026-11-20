@@ -8,8 +8,10 @@ open scoped ComplexOrder
 open GlobalTheory.HodgeLocGeo
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.Pointwise.pointwise | exact GlobalTheory.HodgeLocGeo.Pointwise.pointwise | (intros; apply GlobalTheory.HodgeLocGeo.Pointwise.pointwise <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeLocGeo.Pointwise.pointwise` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBlockGramDeterminantBounds.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.weighted_sum_log_rootNorm_eq_neg_log_pairWeightNormSq : ∀ {T : Type} [Fintype T] {ι : Type} [Fintype ι] {N j : ℕ} (hpq : j + (N - j) = N)
     (Zm : T → (ι → ℂ) → Matrix (Fin j) (Fin (N - j)) ℂ) (GW : T → (ι → ℂ) → Matrix (Fin j) (Fin j) ℂ)

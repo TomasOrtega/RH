@@ -8,8 +8,10 @@ open GlobalTheory.FlagMod (ev tanPull initSpan)
 open GlobalTheory.FlagEmb (plN plk lform LeftInv)
 open GlobalTheory.ProjSpace (pt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GrCl.gvec_frame | exact GlobalTheory.GrCl.gvec_frame | (intros; apply GlobalTheory.GrCl.gvec_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GrCl.gvec_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGrassmannCellSpanPreserved.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.grassmann_cell_span_preserved : ∀ (S : Type) [CommRing S] (m a k b : ℕ) (Q : Type) [AddCommGroup Q] [Module S Q] (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S), a ≤ k → k ≤ b → (LinearIndependent S c → LinearIndependent S (gvec c w x)) ∧ Submodule.span S (Set.range (gvec c w x)) = Submodule.span S (Set.range c) ∧ ∀ e : ℕ, e ≤ a ∨ b ≤ e → initSpan S (gvec c w x) e = initSpan S c e := by
   first | exact @GlobalTheory.GrCl.gvec_frame | exact GlobalTheory.GrCl.gvec_frame | (intros; apply GlobalTheory.GrCl.gvec_frame <;> assumption)

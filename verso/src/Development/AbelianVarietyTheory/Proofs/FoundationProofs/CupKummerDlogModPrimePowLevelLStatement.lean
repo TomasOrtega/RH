@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.LevelDown.cup_kummer_dlog_mod | exact GlobalTheory.K5.LevelDown.cup_kummer_dlog_mod | (intros; apply GlobalTheory.K5.LevelDown.cup_kummer_dlog_mod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.LevelDown.cup_kummer_dlog_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCupKummerDlogModPrimePowLevelL.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.cup_kummer_dlog_mod_primePow_levelL : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (L n : ℕ), n ≤ L → 1 ≤ n → ∀ ι : On p L →ₐ[O0 p] Ω, IsEmb T L ι →
   ∀ (u v : (On p L)ˣ) (α β α' β' : On p L), IsDlog p L (u : On p L) α β → IsDlog p L (v : On p L) α' β' →

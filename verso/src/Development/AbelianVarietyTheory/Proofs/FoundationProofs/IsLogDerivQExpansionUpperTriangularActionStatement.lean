@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DlUp.isDl_sl_upper | exact GlobalTheory.DlUp.isDl_sl_upper | (intros; apply GlobalTheory.DlUp.isDl_sl_upper <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DlUp.isDl_sl_upper` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FIsLogDerivQExpansionUpperTriangularAction.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.isLogDerivQExpansion_upperTriangular_action : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n : ℕ) (g : GQ), ent g 1 0 = 0 → 0 < ent g 0 0 → 0 < ent g 1 1 → algebraMap ℚ Ω (ent g 0 0 / ent g 1 1) ∈ A →
   ∀ (f : X.K) (φ : HahnSeries ℚ Ω), IsDl X A l n 1 f φ →

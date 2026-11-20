@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchUniq.exists_admissible_finite_factor | exact GlobalTheory.ArchUniq.exists_admissible_finite_factor | (intros; apply GlobalTheory.ArchUniq.exists_admissible_finite_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchUniq.exists_admissible_finite_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsAdmissibleFiniteFactorArchimedeanSchwartz.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.exists_admissible_finiteFactor_archimedeanSchwartz : ∀ {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ r₀ : (κ → AF F) → ℂ,
     (∀ f : SInf F κ, Rest (evI F) (⇑f) r₀) ∧

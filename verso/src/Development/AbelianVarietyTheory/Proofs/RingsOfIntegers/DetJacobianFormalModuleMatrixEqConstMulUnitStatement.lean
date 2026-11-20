@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceInt.MatJac.det_jacobian_matV | exact GlobalTheory.PlaceInt.MatJac.det_jacobian_matV | (intros; apply GlobalTheory.PlaceInt.MatJac.det_jacobian_matV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceInt.MatJac.det_jacobian_matV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FDetJacobianFormalModuleMatrixEqConstMulUnit.lean&line=334#L334)
 -/
 theorem _root_.GlobalTheory.T.det_jacobian_formal_module_matrix_eq_const_mul_unit : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O) (n : ℕ) (p : Matrix (Fin n) (Fin n) O), ∃ U : (PS V n d)ˣ, Matrix.det (Matrix.of fun i j : Fin n × Fin d => MvPowerSeries.pderiv V j (matV B p (fun j => pt V (n := n) d j) i.1 i.2)) = MvPowerSeries.C (jacM B p) * (U : PS V n d) := by
   first | exact @GlobalTheory.PlaceInt.MatJac.det_jacobian_matV | exact GlobalTheory.PlaceInt.MatJac.det_jacobian_matV | (intros; apply GlobalTheory.PlaceInt.MatJac.det_jacobian_matV <;> assumption)

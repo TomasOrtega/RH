@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacBridge.rho_acts_locCo | exact GlobalTheory.VacBridge.rho_acts_locCo | (intros; apply GlobalTheory.VacBridge.rho_acts_locCo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacBridge.rho_acts_locCo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicHeisenbergActsByLocalSchrodinger.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.adelicHeisenberg_acts_by_local_schrodinger : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)

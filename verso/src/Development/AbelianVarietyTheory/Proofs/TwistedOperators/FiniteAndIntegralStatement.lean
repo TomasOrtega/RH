@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.HkIntegral
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompleteValExt.finite_and_integral | exact GlobalTheory.CompleteValExt.finite_and_integral | (intros; apply GlobalTheory.CompleteValExt.finite_and_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompleteValExt.finite_and_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteAndIntegral.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.ringHom_finite_and_isIntegral_of_valuation_scaled : ∀ (T T' : CDVR) (i : T.Fr →+* T'.Fr) (r : ℕ), 0 < r → (∀ a : T.Fr, vV T'.V (i a) = (r : ℤ) * vV T.V a) → T'.FinRes → i.Finite ∧ ∀ b : T'.V, (i.comp (algebraMap T.V T.Fr)).IsIntegralElem (algebraMap T'.V T'.Fr b) := by
   first | exact @GlobalTheory.CompleteValExt.finite_and_integral | exact GlobalTheory.CompleteValExt.finite_and_integral | (intros; apply GlobalTheory.CompleteValExt.finite_and_integral <;> assumption)

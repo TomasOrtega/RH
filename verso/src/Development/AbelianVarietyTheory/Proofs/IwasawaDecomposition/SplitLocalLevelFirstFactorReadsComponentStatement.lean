@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt | exact GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt | (intros; apply GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSplitLocalLevelFirstFactorReadsComponent.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.splitLocalLevel_firstFactor_reads_component : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {Q : Finset (Pl E)} {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ) (P : Q), conjPrime₂ P.1 ≠ P.1 → ∀ (a : AfE F E) (e : E), adAt F P.1 a = algebraMap E _ e → qPi q P a = q.phi P e := by
   first | exact @GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt | exact GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt | (intros; apply GlobalTheory.Mem.Col2.AdFirst.qPi_eq_phi_of_adAt <;> assumption)

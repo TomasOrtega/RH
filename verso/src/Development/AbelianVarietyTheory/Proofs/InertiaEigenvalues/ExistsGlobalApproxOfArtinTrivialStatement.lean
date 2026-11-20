@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ch
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArtinApprox.exists_global_approx | exact GlobalTheory.ArtinApprox.exists_global_approx | (intros; apply GlobalTheory.ArtinApprox.exists_global_approx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArtinApprox.exists_global_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsGlobalApproxOfArtinTrivial.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.exists_global_approx_of_artin_trivial : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (art : Neutral.B1.Ideles E →* GlobalTheory.HeckeGal.Gab E Ω), GlobalTheory.HeckeGal.IsGlobalArtin art →

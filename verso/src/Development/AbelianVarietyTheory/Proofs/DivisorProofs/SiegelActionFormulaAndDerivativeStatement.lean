@@ -12,8 +12,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelAffine.exists_affine | exact GlobalTheory.SiegelAffine.exists_affine | (intros; apply GlobalTheory.SiegelAffine.exists_affine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelAffine.exists_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelActionFormulaAndDerivative.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.siegel_action_formula_and_derivative : ∀ (g : ℕ) (A X : Matrix (Fin g) (Fin g) ℝ), IsUnit A → X.IsSymm → ∃ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, ∀ s v : symMat g, actB γ s = symPart (A.map (fun t : ℝ => (t : ℂ)) * tauU s * (A.map (fun t : ℝ => (t : ℂ)))ᵀ + X.map (fun t : ℝ => (t : ℂ))) ∧ fderiv ℂ (actB γ) s v = symPart (A.map (fun t : ℝ => (t : ℂ)) * tauU v * (A.map (fun t : ℝ => (t : ℂ)))ᵀ) := by
   first | exact @GlobalTheory.SiegelAffine.exists_affine | exact GlobalTheory.SiegelAffine.exists_affine | (intros; apply GlobalTheory.SiegelAffine.exists_affine <;> assumption)

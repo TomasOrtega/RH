@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipComm.char_trivial_unip | exact GlobalTheory.UnipComm.char_trivial_unip | (intros; apply GlobalTheory.UnipComm.char_trivial_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipComm.char_trivial_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharacterMultiplicativeStabilizer.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.character_multiplicative_stabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ) (W : Spc F E d)
     (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' r₁ s₁ : ℕ), B.IsGood σ → W.IsSkew σ B r' s' → W₁.IsSkew σ B r₁ s₁ →

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DecFrobPow.exists_field_cong_pow | exact GlobalTheory.DecFrobPow.exists_field_cong_pow | (intros; apply GlobalTheory.DecFrobPow.exists_field_cong_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DecFrobPow.exists_field_cong_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDecompositionGroupActsResiduesFrobeniusPower.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.decompositionGroup_acts_residues_frobeniusPower : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (_h : IsPlaceOver A w),

@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback | exact GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback | (intros; apply GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfCompEqOfConnectedSpacePullback.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.eq_of_comp_eq_of_connectedSpace_pullback' : ∀ (P Q : Scheme.{0}) (b : P ⟶ Q), LocallyQuasiFinite b → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ν : Sp Ω ⟶ Q) (ξ₁ ξ₂ : Sp Ω ⟶ P), ξ₁ ≫ b = ν → ξ₂ ≫ b = ν → ConnectedSpace (pullback b ν : Scheme.{0}) → ξ₁ = ξ₂ := by
   first | exact @GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback | exact GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback | (intros; apply GlobalTheory.Mum.eq_of_comp_eq_of_connectedSpace_pullback <;> assumption)

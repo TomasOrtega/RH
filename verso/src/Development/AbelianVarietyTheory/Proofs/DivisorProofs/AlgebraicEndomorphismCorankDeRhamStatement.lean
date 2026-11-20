@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescRank.desc_of_baseChange | exact GlobalTheory.DescRank.desc_of_baseChange | (intros; apply GlobalTheory.DescRank.desc_of_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescRank.desc_of_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraicEndomorphismCorankDeRham.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.algebraic_endomorphism_corank_de_rham : GlobalTheory.Published.AbelianDeRham →
     ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X₀ : Obj F 𝔠 (Sp Qb)) (X : Obj F 𝔠 (Sp ℂ))

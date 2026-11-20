@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TranslateLevel.exists_level_translate | exact GlobalTheory.Mum.TranslateLevel.exists_level_translate | (intros; apply GlobalTheory.Mum.TranslateLevel.exists_level_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TranslateLevel.exists_level_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTranslatedCubicalBundleClosedFibreUniformisation.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.T.translatedCubicalBundle_closedFibre_uniformisation : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal R) D A G) (a : 𝟙_ (Over (Sp R)) ⟶ G), a ^ 2 = 1 →
     ∀ P : GlobalTheory.UU.CP G, P.L.L = U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left →

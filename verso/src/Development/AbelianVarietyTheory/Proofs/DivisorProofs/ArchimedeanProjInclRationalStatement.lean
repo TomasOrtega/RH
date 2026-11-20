@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatTorusAct.exists_unif_act_orderC | exact GlobalTheory.LatTorusAct.exists_unif_act_orderC | (intros; apply GlobalTheory.LatTorusAct.exists_unif_act_orderC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatTorusAct.exists_unif_act_orderC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanProjInclRational.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.cm_order_uniformization_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (d : ℕ) (φ : I → E →+* ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →

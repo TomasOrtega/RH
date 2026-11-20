@@ -11,8 +11,10 @@ open GlobalTheory.RouteSeesaw GlobalTheory.ChainFr
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareTripleForm.isTriple_of_standing | exact GlobalTheory.SquareTripleForm.isTriple_of_standing | (intros; apply GlobalTheory.SquareTripleForm.isTriple_of_standing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareTripleForm.isTriple_of_standing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsSeesawHermitianTripleGridSquareOfStanding.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.isSeesawHermitianTriple_gridSquare_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m),
     SquareStanding G t → ∀ M : Vol G, M.Is t →

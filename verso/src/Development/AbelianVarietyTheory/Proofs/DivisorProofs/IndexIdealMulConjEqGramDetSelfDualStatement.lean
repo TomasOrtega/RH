@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelfDualIndex.idx_mul_map_bar_eq | exact GlobalTheory.SelfDualIndex.idx_mul_map_bar_eq | (intros; apply GlobalTheory.SelfDualIndex.idx_mul_map_bar_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelfDualIndex.idx_mul_map_bar_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIndexIdealMulConjEqGramDetSelfDual.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.index_ideal_mul_conj_eq_gram_det_selfDual : ∀ (E : Type) [Field E] [NumberField E] (bar : 𝓞 E →+* 𝓞 E) (barE : E →+* E),
     (∀ x : 𝓞 E, barE x = ((bar x : 𝓞 E) : E)) → ∀ (p : ℕ) (G : Matrix (Fin p) (Fin p) (𝓞 E))

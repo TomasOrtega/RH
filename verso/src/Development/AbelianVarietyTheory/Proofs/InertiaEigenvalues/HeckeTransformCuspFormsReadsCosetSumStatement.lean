@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeSupReal.readsCusp_realSide | exact GlobalTheory.HeckeSupReal.readsCusp_realSide | (intros; apply GlobalTheory.HeckeSupReal.readsCusp_realSide <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeSupReal.readsCusp_realSide` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHeckeTransformCuspFormsReadsCosetSum.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.heckeTransform_cuspForms_reads_cosetSum : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.HeckeSupSt.HeckeReadTie → ∀ (D : D7) (X : GlobalTheory.TwInputs.RealSide D) (i : Fin D.R.m) (hV : X.core.V ((i : ℕ) + 1) (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) = Wc D i), GlobalTheory.HeckeSup.ReadsCusp X.core X.R.toRealDat X.geo.κ i (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) hV := by
   first | exact @GlobalTheory.HeckeSupReal.readsCusp_realSide | exact GlobalTheory.HeckeSupReal.readsCusp_realSide | (intros; apply GlobalTheory.HeckeSupReal.readsCusp_realSide <;> assumption)

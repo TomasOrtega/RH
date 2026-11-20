@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogKS.isField_glue | exact GlobalTheory.LogKS.isField_glue | (intros; apply GlobalTheory.LogKS.isField_glue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogKS.isField_glue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsVectorFieldGluedOpenCover.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.exists_vectorField_glued_openCover : ∀ (Z : Scheme.{0}) (J : Type) (V : J → Z.Opens) (e : J → ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)), (∀ i, IsField (V i) (e i)) → (∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) → ∃ d : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O), IsField (⨆ i, V i) d ∧ ∀ i (O : Z.Opens), O ≤ V i → ∀ f, d O f = e i O f := by
   first | exact @GlobalTheory.LogKS.isField_glue | exact GlobalTheory.LogKS.isField_glue | (intros; apply GlobalTheory.LogKS.isField_glue <;> assumption)

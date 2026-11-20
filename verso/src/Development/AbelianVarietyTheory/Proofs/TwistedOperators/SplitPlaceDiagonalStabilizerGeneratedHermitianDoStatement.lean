@@ -9,8 +9,10 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblVac.gen_diag_anti_split_herm | exact GlobalTheory.DblVac.gen_diag_anti_split_herm | (intros; apply GlobalTheory.DblVac.gen_diag_anti_split_herm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblVac.gen_diag_anti_split_herm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitPlaceDiagonalStabilizerGeneratedHermitianDo.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.split_place_diagonal_stabilizer_generated_hermitian_doubling : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (V : Spc F E d) (r s : ℕ), B.IsGood σ → V.IsHerm σ B r s →

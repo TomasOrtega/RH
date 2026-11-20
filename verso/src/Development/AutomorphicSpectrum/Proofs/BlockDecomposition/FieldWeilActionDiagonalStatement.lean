@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PieDiag.piE_diag | exact GlobalTheory.CompanionTheory.PieDiag.piE_diag | (intros; apply GlobalTheory.CompanionTheory.PieDiag.piE_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PieDiag.piE_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFieldWeilActionDiagonal.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.field_weil_action_diagonal : GL2LocalData.ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (c : Eˣ →* ℂˣ), ∀ Φ ∈ GL2LocalData.SBc F E c, ∀ (t : Eˣ) (a : Fˣ),
   (a : F) = Algebra.norm F (t : E) → ∀ (g : GL (Fin 2) F) (x : E),

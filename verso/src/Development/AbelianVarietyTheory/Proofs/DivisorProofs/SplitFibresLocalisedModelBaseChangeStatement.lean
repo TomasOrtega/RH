@@ -9,8 +9,10 @@ open GlobalTheory.LocM (KeyAt)
 open GlobalTheory.FlagMod (GChart ev tau tau_le le_preimage_comp)
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres | exact GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres | (intros; apply GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitFibresLocalisedModelBaseChange.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.splitFibres_localisedModel_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (b : O →+* O') (hb : β'.comp b = β) [IsPreimmersion (spMap b)] [Flat (spMap b)], Y.SplitFibres → (locModel Y b hb).SplitFibres := by
   first | exact @GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres | exact GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres | (intros; apply GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres <;> assumption)

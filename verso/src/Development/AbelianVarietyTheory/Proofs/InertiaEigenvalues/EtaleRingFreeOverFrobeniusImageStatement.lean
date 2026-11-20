@@ -6,8 +6,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NL.FreeEE.ee_free | exact GlobalTheory.NL.FreeEE.ee_free | (intros; apply GlobalTheory.NL.FreeEE.ee_free <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NL.FreeEE.ee_free` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEtaleRingFreeOverFrobeniusImage.lean&line=223#L223)
 -/
 theorem _root_.GlobalTheory.T.etaleRing_free_over_frobenius_image : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ x : W.EE, ∃! c : Fin l → W.EE, x = ∑ j : Fin l, algebraMap (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) W.EE ((1 : (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)))) + (letπ : (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))))) ^ (j : ℕ) * W.φE (c j) := by
   first | exact @GlobalTheory.NL.FreeEE.ee_free | exact GlobalTheory.NL.FreeEE.ee_free | (intros; apply GlobalTheory.NL.FreeEE.ee_free <;> assumption)

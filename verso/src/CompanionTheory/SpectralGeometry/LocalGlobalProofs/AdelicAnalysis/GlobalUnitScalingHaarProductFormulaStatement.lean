@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar | exact GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar | (intros; apply GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FGlobalUnitScalingHaarProductFormula.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.global_unit_scaling_haar_product_formula : ∀ (F : Type) [Field F] [NumberField F] (a : F), a ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ : Measure (Ainf F), μ.IsAddHaarMeasure → μ.map (fun x => algebraMap F (Ainf F) a * x) = cinf • μ) ∧ ∀ v : HeightOneSpectrum (𝓞 F), ∀ μ : Measure (Fv F v), μ.IsAddHaarMeasure → μ.map (fun x => algebraMap F (Fv F v) a * x) = c v • μ := by
   first | exact @GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar | exact GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar | (intros; apply GlobalTheory.CompanionTheory.SW.ProdFormula.unitProd_scalar <;> assumption)

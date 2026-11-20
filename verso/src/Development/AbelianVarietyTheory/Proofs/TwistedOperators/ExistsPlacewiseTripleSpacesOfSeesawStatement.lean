@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceSpaces.spaces_of_triple | exact GlobalTheory.PlaceSpaces.spaces_of_triple | (intros; apply GlobalTheory.PlaceSpaces.spaces_of_triple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceSpaces.spaces_of_triple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPlacewiseTripleSpacesOfSeesaw.lean&line=273#L273)
 -/
 theorem _root_.GlobalTheory.T.exists_placewise_triple_spaces_of_seesaw : ∀ (D : D7) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ p q : ℕ, (∀ τ, Formalism.UG.HasSignature (gramAt D W τ) (W.rank - p) p ∧ Formalism.UG.HasSignature (gramAt D W₁ τ) (W₁.rank - q) q ∧

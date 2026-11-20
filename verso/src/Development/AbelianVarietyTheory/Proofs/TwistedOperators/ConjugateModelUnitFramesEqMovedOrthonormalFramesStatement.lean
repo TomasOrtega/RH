@@ -11,8 +11,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved | exact GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved | (intros; apply GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjugateModelUnitFramesEqMovedOrthonormalFrames.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.conjugateModel_unitFrames_eq_movedOrthonormalFrames : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → (∀ a, GlobalTheory.HolRead.IsUnitFr C.X (C.xB (C.mvB a B))) ∧ (∀ y, GlobalTheory.HolRead.IsUnitFr C.X y → ∃ a ∈ GinfC T, C.xB (C.mvB a B) = y) ∧ (∀ a ∈ GinfC T, ∀ a' ∈ GinfC T, C.xB (C.mvB a B) = C.xB (C.mvB a' B) → a = a') := by
   first | exact @GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved | exact GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved | (intros; apply GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved <;> assumption)

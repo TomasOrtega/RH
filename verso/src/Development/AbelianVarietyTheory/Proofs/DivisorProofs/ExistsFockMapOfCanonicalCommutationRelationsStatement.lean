@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CCRFock.fock_map_of_ccr | exact GlobalTheory.CCRFock.fock_map_of_ccr | (intros; apply GlobalTheory.CCRFock.fock_map_of_ccr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CCRFock.fock_map_of_ccr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFockMapOfCanonicalCommutationRelations.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.exists_fockMap_of_canonicalCommutationRelations : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),

@@ -15,8 +15,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRapidInf
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.UnitaryBC GroundTheory.Global GroundTheory.Global.IdeleGroup
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR | exact GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR | (intros; apply GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCuspFormSmoothSpanNormLeShortRationalVector.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.cuspFormSmoothSpan_norm_le_shortRationalVector : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (π : CuspSub E a), π.IsUnitary → ∀ φ : Sm E a, (φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspanR π) → ∀ l : List (Lie E a),

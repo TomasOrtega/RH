@@ -14,8 +14,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | exact GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | (intros; apply GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralFundamentalDomainEqVolMulClassSum.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.integral_fundamentalDomain_eq_vol_mul_classSum : ∀ {D : D7} (A : HSp D), A.gram = 1 → ∀ (m : Measure (Formalism.L2.Theta.GA D A)) (fd : Set (Formalism.L2.Theta.GA D A)),
     m.IsHaarMeasure → IsFundamentalDomain (GQ A) fd m →

@@ -6,8 +6,10 @@ open UpperHalfPlane Filter GlobalTheory.OddFrame
 open ModularForm (E₄ E₆)
 open scoped MatrixGroups ModularForm Manifold Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OddFrame.descent | exact GlobalTheory.OddFrame.descent | (intros; apply GlobalTheory.OddFrame.descent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OddFrame.descent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsOddFrameNotReducesToSmallerOddWeight.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.exists_oddFrame_not_reducesToSmallerOddWeight : ∀ (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ), Γ.FiniteIndex → (∀ j, Odd (w j) ∧ IsMF Γ (w j) (F j)) → (∃ τ, (evM s w F τ).det ≠ 0) → ∃ (w' : Fin r → ℤ) (F' : Fin r → ℍ → ℂ), (∀ j, Odd (w' j) ∧ IsMF Γ (w' j) (F' j)) ∧ (∃ τ, (evM s w' F' τ).det ≠ 0) ∧ ¬ Reduces Γ w' F' := by
   first | exact @GlobalTheory.OddFrame.descent | exact GlobalTheory.OddFrame.descent | (intros; apply GlobalTheory.OddFrame.descent <;> assumption)

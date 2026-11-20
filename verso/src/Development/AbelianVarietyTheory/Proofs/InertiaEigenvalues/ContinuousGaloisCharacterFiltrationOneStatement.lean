@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OrbitCont
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LTChar.char_cont | exact GlobalTheory.LTChar.char_cont | (intros; apply GlobalTheory.LTChar.char_cont <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LTChar.char_cont` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FContinuousGaloisCharacterFiltrationOne.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.continuous_galois_character_filtration_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (x : P.R.B), P.ιB x ∈ Fil P 1 → P.ιB x ∉ Fil P 2 → ∀ (c : ↥(GK K) → ↥(MaximalUnramifiedExtension l)), (∀ g : ↥(GK K), P.actQ (g : GQ l) x = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (c g) * x) → Continuous fun g => ((c g : ↥(MaximalUnramifiedExtension l)) : Om l) := by
   first | exact @GlobalTheory.LTChar.char_cont | exact GlobalTheory.LTChar.char_cont | (intros; apply GlobalTheory.LTChar.char_cont <;> assumption)

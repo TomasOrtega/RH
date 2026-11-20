@@ -17,8 +17,10 @@ import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.ZEul.uInt_cell_eval`. Consider the case `exact GlobalTheory.ZEul.uInt_cell_eval`. Consider the case `(intros; apply GlobalTheory.ZEul.uInt_cell_eval <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZEul.uInt_cell_eval` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FShintaniUnfoldedIntegrandEvalTorusCell.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.shintani_unfoldedIntegrand_eval_torusCell : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))),

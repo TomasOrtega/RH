@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StdRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdRead.Move.om_cosetVec | exact GlobalTheory.StdRead.Move.om_cosetVec | (intros; apply GlobalTheory.StdRead.Move.om_cosetVec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdRead.Move.om_cosetVec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilActionIntegralPointCosetVectorEq.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.weilAction_integralPoint_cosetVector_eq : ∀ {D : D7}, GlobalTheory.NormSum.Inp D → ∀ {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)}, 𝔪 ≠ ⊥ →
   ∀ (o : ℕ) (k : Formalism.MainNotions.StandardLatticesGL3.GA D P.a), k ∈ intG D P.a → ∀ c : ℂ, P.W.Om k 1 P.e0 = c • P.e0 →

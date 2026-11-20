@@ -17,8 +17,10 @@ import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellDec.TlComm.tl_commute_of_one_off | exact GlobalTheory.CellDec.TlComm.tl_commute_of_one_off | (intros; apply GlobalTheory.CellDec.TlComm.tl_commute_of_one_off <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellDec.TlComm.tl_commute_of_one_off` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAdelicDiagonalUniformizerCommuteOfOneOff.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.adelicDiagonalUniformizer_commute_of_one_off : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) (l : GlobalTheory.CellDec.abelian₂ E n S) (p : GA E n),

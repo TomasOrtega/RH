@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SplitDiag.piS_diag | exact GlobalTheory.CompanionTheory.SplitDiag.piS_diag | (intros; apply GlobalTheory.CompanionTheory.SplitDiag.piS_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SplitDiag.piS_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSplitWeilActionDiagonal.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.split_weil_action_diagonal : GL2LocalData.ForES fun F _ _ _ _ _ _ _ χ => ∀ (c₁ : Fˣ →* ℂˣ) (Φ : F × F → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ →
   ∀ (a : Fˣ) (g : GL (Fin 2) F) (x : F × F),

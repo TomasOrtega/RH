@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsGaloisCover
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential GlobalTheory.W1
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Cb.lefschetz_fixedPoint_finite_etale_correspondence | exact UpperTheory.Cb.lefschetz_fixedPoint_finite_etale_correspondence`.
+/- English proof (citation)
+Apply `UpperTheory.Cb.lefschetz_fixedPoint_finite_etale_correspondence` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FLefschetzFixedPointFiniteEtaleCorrespondence.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.lefschetz_fixedPoint_finite_etale_correspondence : ∀ (Z : Scheme.{0}) (s : Z ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d s], IsProjOver s →
   ∀ (Y : Scheme.{0}) (s' : Y ⟶ Sp ℂ) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1], IsFinite c2 → Etale c2 →

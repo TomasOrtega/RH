@@ -21,8 +21,10 @@ open scoped nonZeroDivisors
 open GlobalTheory.CosetOrth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosetOrth.valued_finMat_le_one_of_mem_openOff | exact GlobalTheory.CosetOrth.valued_finMat_le_one_of_mem_openOff | (intros; apply GlobalTheory.CosetOrth.valued_finMat_le_one_of_mem_openOff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosetOrth.valued_finMat_le_one_of_mem_openOff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FValuedFiniteUnitaryLeOneOffOpenSubset.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.valued_finiteUnitary_le_one_off_openSubset : ∀ {D : D7} (V : HSp D) (g : GA D V) (y : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) (Sf : Finset (FinPl D)), V.gram = 1 →
   GlobalTheory.BotFormula.IsFinPt V g y → g ∈ openOff V (stdLat V) Sf →

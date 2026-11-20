@@ -11,8 +11,10 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixDens.exists_refMeasure | exact GlobalTheory.MixDens.exists_refMeasure | (intros; apply GlobalTheory.MixDens.exists_refMeasure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixDens.exists_refMeasure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticVarietyPartitionDensity.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_variety_partition_density : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)], Nonempty (AnRead p σ D) → ∃ (ν : Measure (CxPts p σ)) (w : AlgChart p σ D → CxPts p σ → ℝ), IsFiniteMeasure ν ∧ ν = part w ∧ IsDens w ∧ (∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, 0 < w c y) ∧ (∀ ρ : AlgChart p σ D → CxPts p σ → ℝ, IsDens ρ → ∃ g : CxPts p σ → ℝ, Continuous g ∧ ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y = g y * w c y) ∧ ∀ (ρ : AlgChart p σ D → CxPts p σ → ℝ) (g : CxPts p σ → ℝ), Continuous g → (∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y = g y * w c y) → part ρ = ν.withDensity (fun y => ENNReal.ofReal (g y)) ∧ total ρ = ∫ y, g y ∂ν := by
   first | exact @GlobalTheory.MixDens.exists_refMeasure | exact GlobalTheory.MixDens.exists_refMeasure | (intros; apply GlobalTheory.MixDens.exists_refMeasure <;> assumption)

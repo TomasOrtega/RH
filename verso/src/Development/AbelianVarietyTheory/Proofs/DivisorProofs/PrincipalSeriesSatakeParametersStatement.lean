@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuous
 open NumberField IsDedekindDomain
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrinSat.hasSatGL_prod₂_detRep | exact GlobalTheory.PrinSat.hasSatGL_prod₂_detRep | (intros; apply GlobalTheory.PrinSat.hasSatGL_prod₂_detRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrinSat.hasSatGL_prod₂_detRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrincipalSeriesSatakeParameters.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.principal_series_satake_parameters : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (μ₁ μ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram μ₁ → GlobalTheory.SplitWeil.IsUnram μ₂ →

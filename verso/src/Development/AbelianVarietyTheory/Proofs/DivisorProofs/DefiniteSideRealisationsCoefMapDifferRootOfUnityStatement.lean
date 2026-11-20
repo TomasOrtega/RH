@@ -18,8 +18,10 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefRoot.coef_root | exact GlobalTheory.CoefRoot.coef_root | (intros; apply GlobalTheory.CoefRoot.coef_root <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefRoot.coef_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDefiniteSideRealisationsCoefMapDifferRootOfUnity.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     {A : FamIn D.what₂.LL G Pl0 T m} {cR : Bridge.CoefDat D D.sp.X'} {cL : ∀ i : Fin m, Bridge.CoefDat D (D.sp.V ((i : ℕ) + 1))}

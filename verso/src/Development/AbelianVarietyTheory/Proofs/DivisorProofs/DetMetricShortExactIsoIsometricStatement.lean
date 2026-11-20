@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.HermFrame GlobalTheory.CurveDens GlobalTheory.Cartier
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso | exact GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso | (intros; apply GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetMetricShortExactIsoIsometric.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.det_metric_shortExact_iso_isometric : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (S S' : ShortComplex X.Modules) (r s : ℕ) (h : VMetric p S.X₂ (r + s)) (h' : VMetric p S'.X₂ (r + s)) (H : h.IsCInf) (H' : h'.IsCInf) (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ S'.X₂), e₁.hom ≫ S'.f = S.f ≫ e₂.hom → h.IsIsometry h' e₂ → (VMetric.det (H.quot hS h₁ h₃)).Isometric (VMetric.det (H'.quot hS' h₁' h₃')) ∧ h.bcInt hS h₁ h₃ = h'.bcInt hS' h₁' h₃' := by
   first | exact @GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso | exact GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso | (intros; apply GlobalTheory.isometric_detQuot_and_bcInt_eq_of_iso <;> assumption)

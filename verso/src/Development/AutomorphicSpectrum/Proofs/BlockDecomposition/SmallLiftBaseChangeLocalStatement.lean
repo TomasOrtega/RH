@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmallLiftBaseCh
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LiftSemiTmul
 open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.PerfVB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift | exact GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift | (intros; apply GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSmallLiftBaseChangeLocal.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.small_lift_base_change_local : ∀ (R P₀ P₁ P₂ A : Type) [CommRing R] [AddCommGroup P₀] [AddCommGroup P₁] [AddCommGroup P₂] [Module R P₀] [Module R P₁] [Module R P₂] [CommRing A] [IsLocalRing A] [Algebra R A] (a₀ : P₀ →ₗ[R] P₁) (a₁ : P₁ →ₗ[R] P₂), a₁ ∘ₗ a₀ = 0 → SmallLift a₀ a₁ → Lift (a₁.baseChange A) := by
   first | exact @GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift | exact GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift | (intros; apply GlobalTheory.CompanionTheory.PerfVB.lift_of_smallLift <;> assumption)

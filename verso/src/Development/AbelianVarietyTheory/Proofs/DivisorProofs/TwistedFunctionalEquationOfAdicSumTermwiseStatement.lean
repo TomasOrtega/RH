@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.TwFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwFam.SumFE.tfe_of_isSum | exact GlobalTheory.TwFam.SumFE.tfe_of_isSum | (intros; apply GlobalTheory.TwFam.SumFE.tfe_of_isSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwFam.SumFE.tfe_of_isSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedFunctionalEquationOfAdicSumTermwise.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.twistedFunctionalEquation_of_adicSum_termwise : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ (n j : ℤ) (Ix : Type) (w : Ix → D.toPre.X) (s : ∀ i, SecT D.toPre a n j (w i)) (F : ∀ β, SecT D.toPre a n j β) (σ : D.toPre.X → Ix ≃ Ix), Small (maximalIdeal R) s → IsSum (maximalIdeal R) s F → (∀ mu i, w (σ mu i) = w i + shift h h' n j mu) → (∀ mu i, TRel h mu (s i) (s (σ mu i))) → TFE h h' F := by
   first | exact @GlobalTheory.TwFam.SumFE.tfe_of_isSum | exact GlobalTheory.TwFam.SumFE.tfe_of_isSum | (intros; apply GlobalTheory.TwFam.SumFE.tfe_of_isSum <;> assumption)

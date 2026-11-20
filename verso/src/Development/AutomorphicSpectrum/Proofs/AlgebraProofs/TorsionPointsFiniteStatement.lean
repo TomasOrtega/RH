@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite | exact GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FTorsionPointsFinite.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.torsion_points_finite : ∀ (R : Type) [CommRing R] [IsDomain R] (p : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (T : TorsRep G p) (N : Type) [AddCommGroup N] (pt : N → (sp (R₀ := R) R ⟶ G)), IsTorsPts G p pt → Finite N := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite | exact GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.tors_pts_finite <;> assumption)

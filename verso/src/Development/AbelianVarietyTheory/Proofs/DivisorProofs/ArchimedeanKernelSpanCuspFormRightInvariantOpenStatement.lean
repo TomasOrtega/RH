@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.MirSemi.locSpan_openInv | exact GlobalTheory.JSW.MirSemi.locSpan_openInv | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_openInv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.MirSemi.locSpan_openInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanKernelSpanCuspFormRightInvariantOpen.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.archimedeanKernelSpan_cuspForm_right_invariant_open : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E a) (φ : Sm E a), φ ∈ π.V → ∀ F ∈ GlobalTheory.JSW.MirSemi.locSpan S φ.1, ∃ U : Subgroup (GL (Fin a) (Af E)), IsOpen (U : Set (GL (Fin a) (Af E))) ∧ ∀ u ∈ U, ∀ g, F (g * finGL E a u) = F g := by
   first | exact @GlobalTheory.JSW.MirSemi.locSpan_openInv | exact GlobalTheory.JSW.MirSemi.locSpan_openInv | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_openInv <;> assumption)

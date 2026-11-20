@@ -17,8 +17,10 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 open GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernTop GlobalTheory.Points
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernConjForm.swap_c1F_conj | exact GlobalTheory.ChernConjForm.swap_c1F_conj | (intros; apply GlobalTheory.ChernConjForm.swap_c1F_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernConjForm.swap_c1F_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernFormConjSwap.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.chern_form_conj_swap : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (L : HermLB p) (σ σ' : k →+* ℂ) (x : (h.atlas σ).Pt) (x' : (h.atlas σ').Pt), x'.pt.1 = spMap (starRingEnd ℂ) ≫ x.pt.1 → (∀ z ∈ x.ch.source, ∀ z' ∈ x'.ch.source, z'.1 = spMap (starRingEnd ℂ) ≫ z.1 → ∀ a, x'.ch z' a = conj (x.ch z a)) → swap (fld _ (c1F h σ' L) x') = (-1 : ℂ) ^ 1 • fld _ (c1F h σ L) x := by
   first | exact @GlobalTheory.ChernConjForm.swap_c1F_conj | exact GlobalTheory.ChernConjForm.swap_c1F_conj | (intros; apply GlobalTheory.ChernConjForm.swap_c1F_conj <;> assumption)

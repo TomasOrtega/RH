@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualKer.leftKer_eq_one | exact GlobalTheory.DualKer.leftKer_eq_one | (intros; apply GlobalTheory.DualKer.leftKer_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualKer.leftKer_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualPoincareLeftKernelTrivialAlgClosed.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.dualPoincare_left_kernel_trivial_algClosed : ∀ (K : Type) [Field K] [IsAlgClosed K] (A B : Over (Sp K)) [GrpObj A] [GrpObj B] (g : ℕ) (P : LB (A ⊗ B).left), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → IsDual A B P → ∀ (T : Over (Sp K)) (x : T ⟶ A), Triv (ev P (fst T B ≫ x) (snd T B)) → x = 1 := by
   first | exact @GlobalTheory.DualKer.leftKer_eq_one | exact GlobalTheory.DualKer.leftKer_eq_one | (intros; apply GlobalTheory.DualKer.leftKer_eq_one <;> assumption)

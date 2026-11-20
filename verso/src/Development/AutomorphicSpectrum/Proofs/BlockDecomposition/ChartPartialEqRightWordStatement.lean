@@ -8,8 +8,10 @@ open PositivityTheory.RgTw (Mat G)
 open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.SobGL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SobGL.Chart.chart_main | exact GlobalTheory.CompanionTheory.SobGL.Chart.chart_main | (intros; apply GlobalTheory.CompanionTheory.SobGL.Chart.chart_main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SobGL.Chart.chart_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FChartPartialEqRightWord.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.chart_partial_eq_right_word : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V),
     ContDiffOn ℝ ∞ f (GLs n) → ContDiffOn ℝ ∞ (fun t : Idx n → ℝ => f (1 + cm t)) {t | 1 + cm t ∈ GLs n} ∧

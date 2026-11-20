@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatD
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameDescent.exists_frame_flag | exact GlobalTheory.FrameDescent.exists_frame_flag | (intros; apply GlobalTheory.FrameDescent.exists_frame_flag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameDescent.exists_frame_flag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFrameDescendsSubfield.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.frame_descends_subfield : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {c : Coeff l}
     {X : Scheme.{0}} (t : SAB H X) (ty : (E →+* ℂ) → Finset ℕ) {K' : Type} [Field K'] (L₀ : Subfield K')

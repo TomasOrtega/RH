@@ -10,8 +10,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowBase.exists_isBase | exact GlobalTheory.RowBase.exists_isBase | (intros; apply GlobalTheory.RowBase.exists_isBase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowBase.exists_isBase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsVacuumBasePointFamilyEveryTuple.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_vacuumBasePointFamily_every_tuple : Big fun ch => ∀ t, ∃ b, IsBase t ch.S.B b := by
   first | exact @GlobalTheory.RowBase.exists_isBase | exact GlobalTheory.RowBase.exists_isBase | (intros; apply GlobalTheory.RowBase.exists_isBase <;> assumption)

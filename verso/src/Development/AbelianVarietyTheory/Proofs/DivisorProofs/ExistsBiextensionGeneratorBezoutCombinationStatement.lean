@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.LamComb.exists_gen_lam_comb | exact GlobalTheory.Mum.LamComb.exists_gen_lam_comb | (intros; apply GlobalTheory.Mum.LamComb.exists_gen_lam_comb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.LamComb.exists_gen_lam_comb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBiextensionGeneratorBezoutCombination.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.exists_biextension_generator_bezout_combination : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ {r : ℕ}
     (e c : Fin r → ℤ), ∑ j, e j * c j = 1 →

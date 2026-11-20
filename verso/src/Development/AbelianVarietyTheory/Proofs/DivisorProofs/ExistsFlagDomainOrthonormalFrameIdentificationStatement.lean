@@ -8,8 +8,10 @@ open scoped ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.VolUp.exists_ident_frame | exact GlobalTheory.CovTop.VolUp.exists_ident_frame | (intros; apply GlobalTheory.CovTop.VolUp.exists_ident_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.VolUp.exists_ident_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFlagDomainOrthonormalFrameIdentification.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.exists_flagDomain_orthonormalFrame_identification : ∀ (D : D7) (V : HSp D) (P Q : ℕ), V.SigOK → (∀ τ, V.sig τ = (P, Q)) → ∀ A : Frames V, IsFrames V A → ∃ (X₀ : Data D.host.E V.rank) (σ : D.what₂.Tau ≃ X₀.Ψ) (x : Frame X₀.Ψ V.rank) (e : ∀ ρ : D.what₂.Tau, Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2 ≃ Fin V.rank), X₀.Gm = -(V.gram)ᵀ ∧ (∀ ρ, (σ ρ).1 = tauE D ρ) ∧ IsOrth X₀ x ∧ IsIdent (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) X₀.Ψ X₀.Gm x σ A e := by
   first | exact @GlobalTheory.CovTop.VolUp.exists_ident_frame | exact GlobalTheory.CovTop.VolUp.exists_ident_frame | (intros; apply GlobalTheory.CovTop.VolUp.exists_ident_frame <;> assumption)

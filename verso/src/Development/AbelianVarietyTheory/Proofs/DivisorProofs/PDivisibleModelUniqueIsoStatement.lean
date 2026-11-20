@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso | exact GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso | (intros; apply GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivisibleModelUniqueIso.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.p_divisible_model_unique_iso : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (G₀ : Over (Sp K)) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (spMap (algebraMap R K)) F → ∀ (GG : PDivGroup p R) (θ : TorsionMap G GG), IsModel K θ → ∀ (GG₀ : PDivGroup p K) (θ₀ : TorsionMap G₀ GG₀), (∀ (n : ℕ) (B : Type) [CommRing B] [Algebra K B], Function.Bijective (θ₀.pt n B)) → ∃ e : GG₀ ≅ GG.baseChange K, GenCompat F θ θ₀ e := by
   first | exact @GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso | exact GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso | (intros; apply GlobalTheory.GroupBplus.Aff.GenIso.model_generic_iso <;> assumption)

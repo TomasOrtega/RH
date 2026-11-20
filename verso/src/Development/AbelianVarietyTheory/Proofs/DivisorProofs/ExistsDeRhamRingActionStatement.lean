@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbDatum.exists_isDRAct | exact GlobalTheory.AbDatum.exists_isDRAct | (intros; apply GlobalTheory.AbDatum.exists_isDRAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbDatum.exists_isDRAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDeRhamRingAction.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.exists_de_rham_ring_action : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A], IsAbelianScheme A → ∀ (i : OAct O A) (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV)), IsDRIso A H e →

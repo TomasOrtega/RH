@@ -27,8 +27,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotClassDict.classes_and_stabilisers | exact GlobalTheory.BotClassDict.classes_and_stabilisers | (intros; apply GlobalTheory.BotClassDict.classes_and_stabilisers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotClassDict.classes_and_stabilisers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardLatticeDoubleCosetClassesStabilisers.lean&line=283#L283)
 -/
 theorem _root_.GlobalTheory.T.standardLattice_doubleCosetClasses_stabilisers : ∀ {D : D7} (A' : HSp D) (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig A'), r.Is → r.IsStd → ∀ {n : ℕ}, n = A'.rank →
     ∀ gx : GlobalTheory.NormSum.Cls D n (GlobalTheory.NormSum.intG D n) → GA D A', (∀ x, GlobalTheory.BotFormula.IsFinPt A' (gx x) x.out) →

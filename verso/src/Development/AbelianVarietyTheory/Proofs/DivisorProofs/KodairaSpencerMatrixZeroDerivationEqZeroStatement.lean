@@ -11,8 +11,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KSZeroDer.main | exact GlobalTheory.KSZeroDer.main | (intros; apply GlobalTheory.KSZeroDer.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KSZeroDer.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKodairaSpencerMatrixZeroDerivationEqZero.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.kodairaSpencer_matrix_zero_derivation_eq_zero : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV (Sp K)) (n : ℕ) (v : Module.Basis (Fin n) K (TanM (𝟙 (Sp K)) P₀.A)) (dd : Fin n → Fld P₀.A.left), (∀ a, IsInv P₀.A (v a) (dd a)) → ∀ M : Matrix (Fin n) (Fin n) K, KSRel P₀.A (𝟙 P₀.A.left) P₀.L dd (fun _ => 0) M → M = 0 := by
   first | exact @GlobalTheory.KSZeroDer.main | exact GlobalTheory.KSZeroDer.main | (intros; apply GlobalTheory.KSZeroDer.main <;> assumption)

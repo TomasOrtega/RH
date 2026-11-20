@@ -14,8 +14,10 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensGe
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchGramFibre.exists_fibreFamily | exact GlobalTheory.ArchGramFibre.exists_fibreFamily | (intros; apply GlobalTheory.ArchGramFibre.exists_fibreFamily <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchGramFibre.exists_fibreFamily` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsFibreMeasuresArchimedeanGramMap.lean&line=189#L189)
 -/
 theorem _root_.GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M a : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

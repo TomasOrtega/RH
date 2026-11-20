@@ -8,8 +8,10 @@ open GlobalTheory.LBDescent GlobalTheory.DescNorm
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescNorm.defect_normalised | exact GlobalTheory.DescNorm.defect_normalised | (intros; apply GlobalTheory.DescNorm.defect_normalised <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescNorm.defect_normalised` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDescentCocycleDefectNormalisedEqOne.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.descentCocycleDefect_normalised_eq_one : ∀ (K : Type) [Field K] (A A' B : Over (Sp K)) [GrpObj A] [GrpObj B] (q : A ⟶ A') (P : LB (A ⊗ B).left) (τ : LB.Gen (ev P (𝟙 A) (1 : A ⟶ B))), P.IsLB → ∀ (φ : ∀ i j, Γ(pullback (q ▷ B).left (q ▷ B).left, chart (q ▷ B).left P i j)ˣ) (D : Γ(Triple (q ▷ B).left, ⊤)ˣ), NormAlong q P τ φ → Defect (q ▷ B).left P φ D → ∀ w : Triple (q ▷ B).left, gm (rhoW q) w ⊤ D = 1 := by
   first | exact @GlobalTheory.DescNorm.defect_normalised | exact GlobalTheory.DescNorm.defect_normalised | (intros; apply GlobalTheory.DescNorm.defect_normalised <;> assumption)

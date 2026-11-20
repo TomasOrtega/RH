@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosedDvd.main | exact GlobalTheory.ClosedDvd.main | (intros; apply GlobalTheory.ClosedDvd.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosedDvd.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExpansionScaledSectionCoordinates.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.expansion_scaled_section_coordinates : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]

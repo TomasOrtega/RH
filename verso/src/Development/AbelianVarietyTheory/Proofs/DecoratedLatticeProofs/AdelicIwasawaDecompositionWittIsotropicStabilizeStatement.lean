@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IwAd.hasIw_Kmax | exact GlobalTheory.Core.Rk.IwAd.hasIw_Kmax | (intros; apply GlobalTheory.Core.Rk.IwAd.hasIw_Kmax <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IwAd.hasIw_Kmax` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FAdelicIwasawaDecompositionWittIsotropicStabilize.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.adelic_iwasawa_decomposition_wittIsotropicStabilizer : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (b : GL (Fin T.rank) (AE D)), (∀ v : FinPl D, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) → IsMaj T b → HasIw d (Kmax T b) := by
   first | exact @GlobalTheory.Core.Rk.IwAd.hasIw_Kmax | exact GlobalTheory.Core.Rk.IwAd.hasIw_Kmax | (intros; apply GlobalTheory.Core.Rk.IwAd.hasIw_Kmax <;> assumption)

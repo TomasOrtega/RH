@@ -15,8 +15,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsAbLift
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point | exact GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point | (intros; apply GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsDvrThroughDiscPoint.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.exists_dvr_through_disc_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a) (z : Fin n → ℂ), z ∈ Metric.ball (0 : Fin n → ℂ) 1 → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (f : C.R →+* V) (r : V →+* ℂ) (tV : SAB H (Sp V)) (_ : SABMap tV C.t (spMap f)), GlobalTheory.LN.CDvr V ∧ Function.Surjective r ∧ RingHom.ker r = IsLocalRing.maximalIdeal V ∧ r.comp f = C.ψ z ∧ GlobalTheory.LN.PolAt tV (Out.jK V) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point | exact GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point | (intros; apply GlobalTheory.CompanionTheory.Ar.QuotLoc.exists_curve_through_point <;> assumption)

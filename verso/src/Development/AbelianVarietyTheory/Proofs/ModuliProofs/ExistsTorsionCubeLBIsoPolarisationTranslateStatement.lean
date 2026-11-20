@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_torsion_lbIso_cubeLB | exact GlobalTheory.exists_torsion_lbIso_cubeLB | (intros; apply GlobalTheory.exists_torsion_lbIso_cubeLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_torsion_lbIso_cubeLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsTorsionCubeLBIsoPolarisationTranslate.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.exists_torsion_cubeLB_iso_polarisation_translate : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (k : ℕ) (x : 𝟙_ (Over (Sp K)) ⟶ P.A), M.IsLB → (k : K) ≠ 0 → x ^ k = 1 → ∃ y : 𝟙_ (Over (Sp K)) ⟶ P.A, y ^ k = 1 ∧ LBIso (cubeLB P.A ![toUnit P.A ≫ x, 𝟙 P.A] M) (cubeLB P.A ![toUnit P.A ≫ y, 𝟙 P.A] P.L) := by
   first | exact @GlobalTheory.exists_torsion_lbIso_cubeLB | exact GlobalTheory.exists_torsion_lbIso_cubeLB | (intros; apply GlobalTheory.exists_torsion_lbIso_cubeLB <;> assumption)

@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HRatFrame.hRat_frame | exact GlobalTheory.HRatFrame.hRat_frame | (intros; apply GlobalTheory.HRatFrame.hRat_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HRatFrame.hRat_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalHomHermitianTraceFormSelfEqFrameNormSum.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.rationalHomHermitianTraceForm_self_eq_frame_normSum : ∀ {D : D7} (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → ∀ v : Matrix (Fin T.rank) (Fin S.rank) D.host.E, GlobalTheory.LatVac.hRat S T v v = ∑ a, ∑ b, star (((frT⁻¹ : GL (Fin T.rank) D.host.E).1 * v * frS.1) a b) * ((frT⁻¹ : GL (Fin T.rank) D.host.E).1 * v * frS.1) a b := by
   first | exact @GlobalTheory.HRatFrame.hRat_frame | exact GlobalTheory.HRatFrame.hRat_frame | (intros; apply GlobalTheory.HRatFrame.hRat_frame <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsLifted
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CechLogFormsFrobeniusLift
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory.DI GlobalTheory.LogDR GlobalTheory.LogPair GlobalTheory.Cartier ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DI.decomp_of_isLifted | exact _root_.GlobalTheory.DI.decomp_of_isLifted | (intros; apply _root_.GlobalTheory.DI.decomp_of_isLifted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DI.decomp_of_isLifted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNadelVanishingPairs%2FNadelVanishingLemmas%2FCechLogFormsFrobeniusLift.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.cech_log_forms_frobenius_lift : ∀ (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} [IsIntegral X] [CharP X.functionField p] (Z : Set X) {ι : Type} [LinearOrder ι] (U : ι → X.Opens) {n : ℕ} (x : ι → Fin n → X.functionFieldˣ) (W : Finset ι → X.Opens) (G H : CartierDiv X), n < p → (∀ i, genericPoint X ∈ U i) → (∀ i, IsCoord (x i)) → (∀ s : Finset ι, s.Nonempty → ∀ y, y ∈ W s ↔ ∀ i ∈ s, y ∈ U i) → IsLifted p Z U x → (H - p • G).Eff → (∀ q (s : Finset ι) η, η ∈ logSec Z H q (W s) → extD _ η ∈ logSec Z H (q + 1) (W s)) → (∀ (s : Finset ι), ∀ j ∈ s, ∀ γ, IsCartierMap p (x j) γ → CartierAt (extD _) γ (fun a => logSec Z G a (W s)) (fun a => logSec Z H a (W s))) → ∀ a b, HypZero (extD _) (fun q s => logSec Z H q (W s)) (a + b) → CechZero (fun s => logSec Z G a (W s)) b := by
   first | exact @_root_.GlobalTheory.DI.decomp_of_isLifted | exact _root_.GlobalTheory.DI.decomp_of_isLifted | (intros; apply _root_.GlobalTheory.DI.decomp_of_isLifted <;> assumption)

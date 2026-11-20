@@ -11,8 +11,10 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinIrr.kMod_irred | exact GlobalTheory.KFinIrr.kMod_irred | (intros; apply GlobalTheory.KFinIrr.kMod_irred <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinIrr.kMod_irred` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKFiniteModuleIrreducibleOfIrreducibleUnitaryRep.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.kFiniteModule_irreducible_of_irreducible_unitaryRep : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D), CompleteSpace H → IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → IsKMod ε σ D E → ∀ N : Submodule ℂ D, (∀ a b, ∀ x ∈ N, E a b x ∈ N) → N = ⊥ ∨ N = ⊤ := by
   first | exact @GlobalTheory.KFinIrr.kMod_irred | exact GlobalTheory.KFinIrr.kMod_irred | (intros; apply GlobalTheory.KFinIrr.kMod_irred <;> assumption)

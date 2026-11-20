@@ -12,8 +12,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZeroPassage.zero_not_passage | exact GlobalTheory.ZeroPassage.zero_not_passage | (intros; apply GlobalTheory.ZeroPassage.zero_not_passage <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZeroPassage.zero_not_passage` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FZeroEigensystemNotPassageOfFiniteType.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.zero_eigensystem_not_passage_of_finiteType : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → ∀ j (p : A3.fam3.base3.Ix), ¬ cxSys D.what₂.embLL ((A3.liftI j A3.A.μ0).HasRes3 (A3.fam3.tr3 j p.1)) 0 := by
   first | exact @GlobalTheory.ZeroPassage.zero_not_passage | exact GlobalTheory.ZeroPassage.zero_not_passage | (intros; apply GlobalTheory.ZeroPassage.zero_not_passage <;> assumption)

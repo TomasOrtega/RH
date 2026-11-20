@@ -13,8 +13,10 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open GlobalTheory.CovInt IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovIntNum.intZ_log_le | exact GlobalTheory.CovIntNum.intZ_log_le | (intros; apply GlobalTheory.CovIntNum.intZ_log_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovIntNum.intZ_log_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLogShortThetaSeriesDenominatorBoundLe.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.log_shortThetaSeriesDenominatorBound_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o Lb : ℝ)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.CovGmin.Hyp D T j Y e o Lb a n →

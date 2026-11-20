@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral | exact GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral | (intros; apply GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerBoundQuadraticExtension.lean&line=171#L171)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_bound_quadratic_extension : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → ∀ (κ : F) (ξ : E) (M : AddSubgroup E), IsCompact (M : Set E) → IsOpen (M : Set E) → (∀ r ∈ M, ∀ u, Φ (u + r) = Φ u) → (∀ r ∈ M, χ (κ * Algebra.norm F r) = 1) → gaussI χ μ Φ κ ξ = ∫ u in {u : E | ∀ r ∈ M, χ (Algebra.trace F E ((algebraMap F E κ * σ u - ξ) * r)) = 1}, (χ (κ * Algebra.norm F u - Algebra.trace F E (ξ * u)) : ℂ) * Φ u ∂μ := by
   first | exact @GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral | exact GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral | (intros; apply GlobalTheory.CompanionTheory.GaussAvg.gaussI_eq_setIntegral <;> assumption)

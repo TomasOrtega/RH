@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompBC.comp_bc_genVal | exact GlobalTheory.CompBC.comp_bc_genVal | (intros; apply GlobalTheory.CompBC.comp_bc_genVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompBC.comp_bc_genVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactificationChangePreservesAlgebraicValues.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.compactification_change_preserves_algebraic_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c c' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (hle : c.F ≤ c'.F), FnAlgClosed Xo c → ∃ eC : Comp Xo c ≃ Comp Xo c', ∀ (Z : Comp Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, (GlobalTheory.CompHt.genVal (eC Z) (GlobalTheory.FieldBC.rulBC hle f) = 0 ↔ GlobalTheory.CompHt.genVal Z f = 0) := by
   first | exact @GlobalTheory.CompBC.comp_bc_genVal | exact GlobalTheory.CompBC.comp_bc_genVal | (intros; apply GlobalTheory.CompBC.comp_bc_genVal <;> assumption)

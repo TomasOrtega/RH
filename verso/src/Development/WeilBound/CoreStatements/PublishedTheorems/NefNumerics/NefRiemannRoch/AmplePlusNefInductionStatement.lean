@@ -13,8 +13,10 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.NefNumerics.NefRie
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ | exact _root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ | (intros; apply _root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isAmpleLB_tens_of_isNef_succ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNefNumerics%2FNefRiemannRoch%2FAmplePlusNefInduction.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.ample_plus_nef_induction : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) → (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d + 1 : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) := by
   first | exact @_root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ | exact _root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ | (intros; apply _root_.GlobalTheory.isAmpleLB_tens_of_isNef_succ <;> assumption)

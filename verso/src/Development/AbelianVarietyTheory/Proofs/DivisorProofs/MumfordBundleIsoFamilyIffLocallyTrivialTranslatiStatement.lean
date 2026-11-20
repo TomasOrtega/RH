@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistFlat.same_lam_iff_locally_triv | exact GlobalTheory.TwistFlat.same_lam_iff_locally_triv | (intros; apply GlobalTheory.TwistFlat.same_lam_iff_locally_triv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistFlat.same_lam_iff_locally_triv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMumfordBundleIsoFamilyIffLocallyTrivialTranslati.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.mumfordBundle_iso_family_iff_locally_trivial_translationDiff : ∀ {S : Scheme.{0}} (A T : Over S) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → ∀ (N : LB (A ⊗ T).left), Fam A N → ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ T), Same A (abelian₂ A L) N a t ↔ ∀ p : Y.left, ∃ U : Y.left.Opens, p ∈ U ∧ Triv ((LB.div (translDiff A L a) (ev N (snd Y A) (fst Y A ≫ t))).pull ((fst Y A).left ⁻¹ᵁ U).ι) := by
   first | exact @GlobalTheory.TwistFlat.same_lam_iff_locally_triv | exact GlobalTheory.TwistFlat.same_lam_iff_locally_triv | (intros; apply GlobalTheory.TwistFlat.same_lam_iff_locally_triv <;> assumption)

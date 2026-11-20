@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlCastRfl
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.nonempty_cell_midIncl_equiv | exact GlobalTheory.IndLineGL.nonempty_cell_midIncl_equiv | (intros; apply GlobalTheory.IndLineGL.nonempty_cell_midIncl_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.nonempty_cell_midIncl_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellFunctorDeterminantPairEquiv.lean&line=237#L237)
 -/
 theorem _root_.GlobalTheory.T.cell_functor_determinant_pair_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

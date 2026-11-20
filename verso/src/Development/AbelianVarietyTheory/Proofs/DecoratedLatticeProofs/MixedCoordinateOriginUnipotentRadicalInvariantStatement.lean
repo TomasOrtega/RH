@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipZero.mixS_zero_unip | exact GlobalTheory.UnipZero.mixS_zero_unip | (intros; apply GlobalTheory.UnipZero.mixS_zero_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipZero.mixS_zero_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMixedCoordinateOriginUnipotentRadicalInvariant.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.mixedCoordinate_origin_unipotentRadical_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → (∀ b, d.mixS T ψ μ 𝓕 (om (d.nB b, 1) f) 0 = d.mixS T ψ μ 𝓕 (f) 0) ∧ ∀ c, d.mixS T ψ μ 𝓕 (om (d.nC c, 1) f) 0 = d.mixS T ψ μ 𝓕 (f) 0 := by
   first | exact @GlobalTheory.UnipZero.mixS_zero_unip | exact GlobalTheory.UnipZero.mixS_zero_unip | (intros; apply GlobalTheory.UnipZero.mixS_zero_unip <;> assumption)

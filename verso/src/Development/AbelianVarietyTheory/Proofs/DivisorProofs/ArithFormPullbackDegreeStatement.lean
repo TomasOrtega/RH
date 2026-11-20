@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertForm.PullForm.arForm_pull | exact GlobalTheory.VertForm.PullForm.arForm_pull | (intros; apply GlobalTheory.VertForm.PullForm.arForm_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertForm.PullForm.arForm_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithFormPullbackDegree.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.arith_form_pullback_degree : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (p : X ⟶ Sp k) (q : X' ⟶ Sp k) (D : ℕ), IsArithVar p D → IsArithVar q D → ∀ (π : X' ⟶ X) (hπ : π ≫ p = q), π (genericPoint X') = genericPoint X → π.residueDegree (genericPoint X') ≠ 0 → ∀ (num : Form (Cl p) D) (num' : Form (Cl q) D), IsArForm D num → IsArForm D num' → (∀ v : Fin (D + 1) → Cl p, num' (fun j => pullCl π hπ (v j)) = (π.residueDegree (genericPoint X') : ℝ) * num v) ∧ pullCl π hπ (cl (oneB p)) - cl (oneB q) ∈ rad num' := by
   first | exact @GlobalTheory.VertForm.PullForm.arForm_pull | exact GlobalTheory.VertForm.PullForm.arForm_pull | (intros; apply GlobalTheory.VertForm.PullForm.arForm_pull <;> assumption)

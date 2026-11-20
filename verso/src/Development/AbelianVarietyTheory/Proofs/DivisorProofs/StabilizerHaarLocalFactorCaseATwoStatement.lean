@@ -12,8 +12,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSliceMeas.slice_deriv_aestronglyMeasurable | exact GlobalTheory.ConeSliceMeas.slice_deriv_aestronglyMeasurable | (intros; apply GlobalTheory.ConeSliceMeas.slice_deriv_aestronglyMeasurable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeSliceMeas.slice_deriv_aestronglyMeasurable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStabilizerHaarLocalFactorCaseATwo.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.stabilizer_haar_local_factor_case_a_two : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvFieldBasis.existsUnique_coeff | exact GlobalTheory.InvFieldBasis.existsUnique_coeff | (intros; apply GlobalTheory.InvFieldBasis.existsUnique_coeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvFieldBasis.existsUnique_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FInvariantVectorFieldsBasisVerticalDerivations.lean&line=253#L253)
 -/
 theorem _root_.GlobalTheory.T.invariantVectorFields_basis_verticalDerivations : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : ℕ) (v : Fin g → (epsR K ⟶ A₀)) (dd : Fin g → ∀ O : A₀.left.Opens, Γ(A₀.left, O) → Γ(A₀.left, O)), Smooth A₀.hom → IsLieBasis v → (∀ a, IsInvDer (v a) (dd a)) → ∀ (R : Type) [CommRing R] (x₀ : R →+* K) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : A₀.left ⟶ X), IsPullback m A₀.hom p (spMap x₀) → ∀ (T : Scheme.{0}) (y : T ⟶ A₀.left) (W₀ : X.Opens) (d : ∀ W : X.Opens, Γ(X, W) → Γ(T, (y ≫ m) ⁻¹ᵁ W)), LocDerK (y ≫ A₀.hom) p (y ≫ m) (fun _ => 0) W₀ d → ∃! c : Fin g → Γ(T, (y ≫ m) ⁻¹ᵁ W₀), ∀ W, W ≤ W₀ → ∀ f, d W f = ∑ a, rsT (c a) _ * pbT y (dd a (m ⁻¹ᵁ W) ((m.app W).hom f)) _ := by
   first | exact @GlobalTheory.InvFieldBasis.existsUnique_coeff | exact GlobalTheory.InvFieldBasis.existsUnique_coeff | (intros; apply GlobalTheory.InvFieldBasis.existsUnique_coeff <;> assumption)

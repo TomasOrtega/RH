@@ -13,8 +13,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.exists_ptExt_of_unif | exact GlobalTheory.ChF.exists_ptExt_of_unif | (intros; apply GlobalTheory.ChF.exists_ptExt_of_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.exists_ptExt_of_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FExistsTorusExtensionPointsOfUniformisation.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.exists_torus_extension_points_of_uniformisation : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G), ∃ E : PtExt I G D.toPre.P.A D.toPre.X, ∀ (OE : Type) [CommRing OE] [StarRing OE] [Module OE D.toPre.X] (io : Out.RingAct G OE) (oD : D.OAct OE) (oA : A.OAct OE), U.OLinear OE oD oA io → ∀ (a : OE) (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S), (∀ z, E.q S h (z ≫ io.act a) = E.q S h z ≫ oD.onB.act a) ∧ ∀ χ χ', (∀ x, χ' (Multiplicative.ofAdd x) = χ (Multiplicative.ofAdd (star a • x))) → E.i S h χ ≫ io.act a = E.i S h χ' := by
   first | exact @GlobalTheory.ChF.exists_ptExt_of_unif | exact GlobalTheory.ChF.exists_ptExt_of_unif | (intros; apply GlobalTheory.ChF.exists_ptExt_of_unif <;> assumption)

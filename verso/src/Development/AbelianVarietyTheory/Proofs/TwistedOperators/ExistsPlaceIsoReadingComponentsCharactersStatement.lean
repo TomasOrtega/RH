@@ -14,8 +14,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.FlipMatch
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlipMatch.exists_placeIso_chars | exact GlobalTheory.FlipMatch.exists_placeIso_chars | (intros; apply GlobalTheory.FlipMatch.exists_placeIso_chars <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlipMatch.exists_placeIso_chars` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPlaceIsoReadingComponentsCharacters.lean&line=158#L158)
 -/
 theorem _root_.GlobalTheory.T.exists_placeIso_reading_components_characters : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (t : T) (i j : Fin D.R.m) (X : Chars D.host.F D.host.E), X.α = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j → X.β = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j →
     ∀ {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : Pl D.host.E), splitPrime τ = w →

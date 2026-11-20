@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly | exact GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly | (intros; apply GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIntegralElementCharPolyNonsplit.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_element_char_poly_nonsplit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by
   first | exact @GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly | exact GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly | (intros; apply GlobalTheory.ExInertUnit.exists_integral_unitary_charpoly <;> assumption)

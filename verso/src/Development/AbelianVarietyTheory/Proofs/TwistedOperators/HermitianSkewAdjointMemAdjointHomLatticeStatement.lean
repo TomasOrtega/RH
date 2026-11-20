@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO | exact GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO | (intros; apply GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHermitianSkewAdjointMemAdjointHomLattice.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.hermitianSkewAdjoint_mem_adjoint_homLattice : ∀ (D : D7) (S T : HSp D) (LS LS' : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (P : GlobalTheory.FinPl.Pl D → Prop), (∀ a ∈ D.host.AA, ∀ s ∈ LS, star a • s ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ LS', y = a' • s'}) → ∀ x ∈ latO S T (LS : Set _) (LT : Set _) P, incA D D.host.xi0⁻¹ • GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj S T x ∈ latO T S (LT : Set _) (LS' : Set _) P := by
   first | exact @GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO | exact GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO | (intros; apply GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO <;> assumption)

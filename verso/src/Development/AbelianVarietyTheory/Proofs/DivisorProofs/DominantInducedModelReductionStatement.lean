@@ -11,8 +11,10 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefDeRhamCover.exists_cover_degree_eq | exact GlobalTheory.NefDeRhamCover.exists_cover_degree_eq | (intros; apply GlobalTheory.NefDeRhamCover.exists_cover_degree_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefDeRhamCover.exists_cover_degree_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDominantInducedModelReduction.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.dominant_induced_model_reduction : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) →

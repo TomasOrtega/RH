@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuaternionRegul
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.RegClosure.reg_closure | exact GlobalTheory.CompanionTheory.PlaneSA.RegClosure.reg_closure | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.RegClosure.reg_closure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PlaneSA.RegClosure.reg_closure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSupportClosureRegularTrace.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.support_closure_regular_trace : ∀ {F : Type} [Field F] [NumberField F] (d β : F), d ≠ 0 → β ≠ 0 → ∀ w : Pl F, ∀ a ∈ SuppAt d β {w},
   a ∈ closure {a' | a' ∈ SuppAt d β {w} ∧ (qmap (proj w) a').re ^ 2 ≠ 1} := by

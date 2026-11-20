@@ -16,8 +16,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Spl
 open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff | exact GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff | (intros; apply GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemSpanSingletonMulIdealCompletionIff.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.mem_spanSingleton_mul_idealCompletion_iff : ∀ (D : D7) (v : Pl D) (𝔞 : FI D) (x : D.host.E), x ≠ 0 → ∀ s, s ∈ idV (FractionalIdeal.spanSingleton _ x * 𝔞) v ↔ incA D x⁻¹ * s ∈ idV 𝔞 v ∧ s ∈ idAt D (· = v) := by
   first | exact @GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff | exact GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff | (intros; apply GlobalTheory.SeeSaw.idV_spanSingleton_mul_iff <;> assumption)

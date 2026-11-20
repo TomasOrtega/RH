@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoreOnto.StageProof.stageOK | exact GlobalTheory.CoreOnto.StageProof.stageOK | (intros; apply GlobalTheory.CoreOnto.StageProof.stageOK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoreOnto.StageProof.stageOK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTestGridStageLatticesPropertiesProof.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.testGridStageLatticesProperties_proof : StageOK := by
   first | exact @GlobalTheory.CoreOnto.StageProof.stageOK | exact GlobalTheory.CoreOnto.StageProof.stageOK | (intros; apply GlobalTheory.CoreOnto.StageProof.stageOK <;> assumption)

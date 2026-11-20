@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblStabSkew.isCompact_of_isStab_dbl | exact GlobalTheory.DblStabSkew.isCompact_of_isStab_dbl | (intros; apply GlobalTheory.DblStabSkew.isCompact_of_isStab_dbl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblStabSkew.isCompact_of_isStab_dbl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoublingStabilizerCompact.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.doubling_stabilizer_compact : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s →

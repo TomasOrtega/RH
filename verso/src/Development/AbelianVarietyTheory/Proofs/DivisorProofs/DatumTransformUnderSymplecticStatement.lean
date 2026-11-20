@@ -22,8 +22,10 @@ open scoped ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaPull.isDatum_pull | exact GlobalTheory.ThetaPull.isDatum_pull | (intros; apply GlobalTheory.ThetaPull.isDatum_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaPull.isDatum_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDatumTransformUnderSymplectic.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.datum_transform_under_symplectic : ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g) (L : Submodule ℤ (Fl g)), IsLat L → L ≤ stdLat g → ∀ (j : Fl g → Pt (symMat g) g → ℂ) (m : Pt (symMat g) g → ℝ), IsDatum (siegel g) tauU (stdLat g) j m → IsDatum (siegel g) (fun s => moeb γ (tauU s)) L (fun l P => j l (actB γ P.1, P.2)) (fun P => m (actB γ P.1, P.2)) := by
   first | exact @GlobalTheory.ThetaPull.isDatum_pull | exact GlobalTheory.ThetaPull.isDatum_pull | (intros; apply GlobalTheory.ThetaPull.isDatum_pull <;> assumption)

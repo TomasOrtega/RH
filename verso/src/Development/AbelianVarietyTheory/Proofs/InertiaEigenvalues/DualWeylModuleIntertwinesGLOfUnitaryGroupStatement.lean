@@ -14,8 +14,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanU
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary | exact GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary | (intros; apply GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDualWeylModuleIntertwinesGLOfUnitaryGroup.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.dualWeylModule_intertwines_GL_of_unitaryGroup : ∀ (n : ℕ) (lam : DomWeight n) (ι : Type) [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), GlobalTheory.AlgWtHW.IsPolyRep Φ → ∀ M : nablaSq ℂ n lam →ₗ[ℂ] (ι → ℂ), (∀ (u : Matrix.unitaryGroup (Fin n) ℂ) (v : nablaSq ℂ n lam), M (GlobalTheory.Branching.sqRep ℂ n lam (GlobalTheory.Branching.unitaryIncl n u) v) = Matrix.mulVec (Φ (GlobalTheory.Branching.unitaryIncl n u)) (M v)) → ∀ (B : GL (Fin n) ℂ) (v : nablaSq ℂ n lam), M (GlobalTheory.Branching.sqRep ℂ n lam B v) = Matrix.mulVec (Φ B) (M v) := by
   first | exact @GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary | exact GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary | (intros; apply GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary <;> assumption)

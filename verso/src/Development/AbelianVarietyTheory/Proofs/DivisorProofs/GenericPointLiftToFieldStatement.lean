@@ -18,8 +18,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericFactor.exists_factor_generic | exact GlobalTheory.GenericFactor.exists_factor_generic | (intros; apply GlobalTheory.GenericFactor.exists_factor_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericFactor.exists_factor_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericPointLiftToField.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.generic_point_lift_to_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ),

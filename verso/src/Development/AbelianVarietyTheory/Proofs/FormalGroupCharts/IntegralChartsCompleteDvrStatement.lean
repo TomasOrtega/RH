@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.intChart | exact GlobalTheory.intChart | (intros; apply GlobalTheory.intChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.intChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FIntegralChartsCompleteDvr.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.integral_charts_complete_dvr : IntChartStatement := by
   first | exact @GlobalTheory.intChart | exact GlobalTheory.intChart | (intros; apply GlobalTheory.intChart <;> assumption)

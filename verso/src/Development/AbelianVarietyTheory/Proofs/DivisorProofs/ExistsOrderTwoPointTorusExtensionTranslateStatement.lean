@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumCmp.Point.exists_point | exact GlobalTheory.MumCmp.Point.exists_point | (intros; apply GlobalTheory.MumCmp.Point.exists_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumCmp.Point.exists_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOrderTwoPointTorusExtensionTranslate.lean&line=277#L277)
 -/
 theorem _root_.GlobalTheory.T.exists_order_two_point_torus_extension_translate : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D₀ D : DegData R (maximalIdeal R))
   (β : D₀.toPre.P.A ≅ D.toPre.P.A) (xe : D₀.toPre.X ≃+ D.toPre.X), IsMonHom β.hom →

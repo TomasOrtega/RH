@@ -17,8 +17,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RefPull.refines_pull | exact GlobalTheory.RefPull.refines_pull | (intros; apply GlobalTheory.RefPull.refines_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RefPull.refines_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRefinesPolarisedPullbackInjective.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.refinesPolarised_pullback_injective : ∀ {V V₀ V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₀] [IsDomain V₀] [CommRing V₁] [IsDomain V₁] (Q : Data V) (ρ₀ : V →+* V₀) (D₀ : DegPre V₀) (e₀ : D₀.X ≃+ Q.X), Function.Injective ρ₀ → Refines Q ρ₀ D₀ e₀ → ∀ (ρ : V₀ →+* V₁) (D₁ : DegPre V₁) (hD : IsPullDeg ρ D₀ D₁), Function.Injective ρ → Refines Q (ρ.comp ρ₀) D₁ (hD.xe.trans e₀) := by
   first | exact @GlobalTheory.RefPull.refines_pull | exact GlobalTheory.RefPull.refines_pull | (intros; apply GlobalTheory.RefPull.refines_pull <;> assumption)

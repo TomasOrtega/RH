@@ -11,8 +11,10 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeesawSumTarget.seesaw_sum | exact GlobalTheory.SeesawSumTarget.seesaw_sum | (intros; apply GlobalTheory.SeesawSumTarget.seesaw_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeesawSumTarget.seesaw_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeesawOneSourceOrthogonalSumTargets.lean&line=117#L117)
 -/
 theorem _root_.GlobalTheory.T.seesaw_oneSource_orthogonalSumTargets : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B : HSp D) (χ₁ χ₁' χ₂ χ₂' : (AE D)ˣ →* Circle)
     (ω₁ : GA D S × GA D A →* Module.End ℂ (WO S A → ℂ)) (ω₂ : GA D S × GA D B →* Module.End ℂ (WO S B → ℂ)),

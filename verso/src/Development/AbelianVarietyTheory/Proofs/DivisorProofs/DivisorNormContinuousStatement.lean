@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.IsDivNorm.continuous | exact GlobalTheory.ShFam.IsDivNorm.continuous | (intros; apply GlobalTheory.ShFam.IsDivNorm.continuous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.IsDivNorm.continuous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDivisorNormContinuous.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.divisor_norm_continuous : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} (R : AnRead p σ d) (C : Closeds Y) (n : CxPts p σ → ℝ), IsDivNorm R C n → Continuous n := by
   first | exact @GlobalTheory.ShFam.IsDivNorm.continuous | exact GlobalTheory.ShFam.IsDivNorm.continuous | (intros; apply GlobalTheory.ShFam.IsDivNorm.continuous <;> assumption)

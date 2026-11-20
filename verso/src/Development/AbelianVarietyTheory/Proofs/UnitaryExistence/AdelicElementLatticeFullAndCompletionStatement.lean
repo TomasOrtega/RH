@@ -12,8 +12,10 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Member.latG_lattice_and_completion | exact GlobalTheory.Member.latG_lattice_and_completion | (intros; apply GlobalTheory.Member.latG_lattice_and_completion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Member.latG_lattice_and_completion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FAdelicElementLatticeFullAndCompletion.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.adelicElementLattice_full_and_completion : ∀ (D : D7) (V : HSp D), ∀ g : GA D V, (latG V g).FG ∧ Submodule.span D.host.E (latG V g : Set (Fin V.rank → D.host.E)) = ⊤ ∧ (latG V g : Set (Fin V.rank → D.host.E)) = GlobalTheory.AdLat.latOf D.host.F (finHom V g).1 (latG V 1 : Set (Fin V.rank → D.host.E)) ∧ (latGHat V g : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) = (finHom V g).1.mulVec '' (GlobalTheory.AdLat.hat D.host.F (latG V 1 : Set (Fin V.rank → D.host.E))) ∧ latGHat V g = GlobalTheory.AdLat.hat D.host.F (latG V g : Set (Fin V.rank → D.host.E)) ∧ latG V 1 = Submodule.span (𝓞 D.host.E) {w | ∃ a ∈ D.host.AA, ∃ x ∈ latC V, w = a • x} := by
   first | exact @GlobalTheory.Member.latG_lattice_and_completion | exact GlobalTheory.Member.latG_lattice_and_completion | (intros; apply GlobalTheory.Member.latG_lattice_and_completion <;> assumption)

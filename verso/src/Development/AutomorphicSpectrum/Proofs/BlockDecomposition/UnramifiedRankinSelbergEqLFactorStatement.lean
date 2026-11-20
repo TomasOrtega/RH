@@ -11,8 +11,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum | exact GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnramifiedRankinSelbergEqLFactor.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.unramified_rankin_selberg_eq_L_factor : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (W : GL (Fin 3) F → ℂ) (W' : GL (Fin 2) F → ℂ) (S S' : ℤ → ℤ → ℂ) (s R : ℂ), (∀ a b : ℤ, W (dg (unifUnit F ^ a) (unifUnit F ^ b) 1) = if b ≤ a ∧ 0 ≤ b then (residueCard F : ℂ) ^ (-a) * S a b else 0) → (∀ a b : ℤ, W' (d2 (unifUnit F ^ a) (unifUnit F ^ b)) = if b ≤ a then Spherical.sqrtQ F ^ (-(a - b)) * S' a b else 0) → HasSum (fun p : ℕ × ℕ => S ((p.1 + p.2 : ℕ) : ℤ) (p.2 : ℤ) * S' ((p.1 + p.2 : ℕ) : ℤ) (p.2 : ℤ) * ((residueCard F : ℂ) ^ (-s)) ^ (p.1 + 2 * p.2)) R → zU W W' s = R := by
   first | exact @GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum | exact GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.ZUSum.zU_eq_of_hasSum <;> assumption)

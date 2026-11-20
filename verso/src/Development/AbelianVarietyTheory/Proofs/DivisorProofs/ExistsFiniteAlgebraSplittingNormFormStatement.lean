@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIdeal
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormSheaf.exists_finite_split_normForm | exact GlobalTheory.NormSheaf.exists_finite_split_normForm | (intros; apply GlobalTheory.NormSheaf.exists_finite_split_normForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormSheaf.exists_finite_split_normForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteAlgebraSplittingNormForm.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_algebra_splitting_normForm : ∀ (A B K L : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CommRing B] [IsDomain B]
     [Field K] [Field L] [CharZero K] [Algebra A K] [Algebra B L] [Algebra K L] [FiniteDimensional K L]

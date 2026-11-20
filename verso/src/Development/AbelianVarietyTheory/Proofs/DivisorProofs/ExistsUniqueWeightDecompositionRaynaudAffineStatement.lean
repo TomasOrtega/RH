@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Heat.WtDec.existsUnique_weights | exact GlobalTheory.Heat.WtDec.existsUnique_weights | (intros; apply GlobalTheory.Heat.WtDec.existsUnique_weights <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Heat.WtDec.existsUnique_weights` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueWeightDecompositionRaynaudAffine.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_weightDecomposition_raynaud_affine : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (W : Q.P.A.left.Opens), IsAffineOpen W → ∀ f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ W), ∃! F : Q.X →₀ Γ(Y.H.left, Y.q.left ⁻¹ᵁ W), (∀ χ, IsWt Y χ _ (F χ)) ∧ f = F.sum (fun _ t => t) := by
   first | exact @GlobalTheory.Heat.WtDec.existsUnique_weights | exact GlobalTheory.Heat.WtDec.existsUnique_weights | (intros; apply GlobalTheory.Heat.WtDec.existsUnique_weights <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThKCtFin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKCtFin.ctFinDim | exact GlobalTheory.ThKCtFin.ctFinDim | (intros; apply GlobalTheory.ThKCtFin.ctFinDim <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKCtFin.ctFinDim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneTwistConstantTerm.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_twist_constant_term : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ (hσ : ∀ x, σ (σ x) = x) (c : E) (hc : c ≠ 0), σ c = -c → ∀ f : UA σ G.W.J → ℂ, (∃ K, IsMaxCpt σ (c • G.W.J.map σ) K ∧ IsAut σ (c • G.W.J.map σ) K (fun x => f ((toGAd hσ G.W.J hc).symm x))) → ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ h : UA σ G.W.J, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun s : (AE F E)ˣ => fun t => ctLevi σ G.W W₁ H' μ 𝓕 f h (t * s))) := by
   first | exact @GlobalTheory.ThKCtFin.ctFinDim | exact GlobalTheory.ThKCtFin.ctFinDim | (intros; apply GlobalTheory.ThKCtFin.ctFinDim <;> assumption)

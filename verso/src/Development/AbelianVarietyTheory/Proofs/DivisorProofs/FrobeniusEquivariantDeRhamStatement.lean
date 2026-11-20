@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbDatum.linFrob_isEquivariant | exact GlobalTheory.AbDatum.linFrob_isEquivariant | (intros; apply GlobalTheory.AbDatum.linFrob_isEquivariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbDatum.linFrob_isEquivariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusEquivariantDeRham.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.frobenius_equivariant_de_rham : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] (i : OAct O A) (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))

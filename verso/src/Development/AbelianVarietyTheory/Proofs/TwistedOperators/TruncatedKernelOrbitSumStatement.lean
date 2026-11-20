@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish | exact GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish | (intros; apply GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTruncatedKernelOrbitSum.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.truncated_kernel_orbit_sum : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (K : Subgroup (GA D V)) (f : GA D V → ℂ), (∀ 𝔉 : IsoFlag V, 𝔉.Proper → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.UnipIntegralsVanish 𝔉 f) → ∀ 𝔬 : Set (GF V), (∀ δ ∈ 𝔬, ∀ g, g * δ * g⁻¹ ∈ 𝔬) → ∀ Tr x, kT Φ K 𝔬 f Tr x = ∑' δ : 𝔬, f (x⁻¹ * rat V δ * x) := by
   first | exact @GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish | exact GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish | (intros; apply GlobalTheory.TruncKer.kT_eq_of_unipIntegralsVanish <;> assumption)

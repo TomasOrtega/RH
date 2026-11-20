@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Overlattice.exists_unimodular_overlattice | exact GlobalTheory.Overlattice.exists_unimodular_overlattice | (intros; apply GlobalTheory.Overlattice.exists_unimodular_overlattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Overlattice.exists_unimodular_overlattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnimodularOverlatticeRiemannForm.lean&line=179#L179)
 -/
 theorem _root_.GlobalTheory.T.exists_unimodular_overlattice_riemannForm : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),
     DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian →

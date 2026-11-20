@@ -14,8 +14,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLine.twPart_le_map_lowPart | exact GlobalTheory.IndLine.twPart_le_map_lowPart | (intros; apply GlobalTheory.IndLine.twPart_le_map_lowPart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLine.twPart_le_map_lowPart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigAThetaLiftRecursion.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.config_a_theta_lift_recursion : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

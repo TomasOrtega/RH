@@ -17,8 +17,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixPull.mix_pull_eq | exact GlobalTheory.MixPull.mix_pull_eq | (intros; apply GlobalTheory.MixPull.mix_pull_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixPull.mix_pull_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticSelfIntersectionTwistPow.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_self_intersection_twist_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')

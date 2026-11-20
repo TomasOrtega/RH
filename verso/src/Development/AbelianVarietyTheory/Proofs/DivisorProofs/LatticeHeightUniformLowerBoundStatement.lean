@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisMidHt.ht_adVec_lower_bound | exact GlobalTheory.EisMidHt.ht_adVec_lower_bound | (intros; apply GlobalTheory.EisMidHt.ht_adVec_lower_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisMidHt.ht_adVec_lower_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeHeightUniformLowerBound.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.lattice_height_uniform_lower_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)), IsCMExt F E σ → Submodule.IsLattice E L →

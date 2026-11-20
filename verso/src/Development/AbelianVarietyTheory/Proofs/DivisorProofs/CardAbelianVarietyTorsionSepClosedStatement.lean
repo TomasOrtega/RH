@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SepClosedTorsion.card_torsion_sepClosed | exact GlobalTheory.SepClosedTorsion.card_torsion_sepClosed | (intros; apply GlobalTheory.SepClosedTorsion.card_torsion_sepClosed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SepClosedTorsion.card_torsion_sepClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCardAbelianVarietyTorsionSepClosed.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.card_abelianVariety_torsion_sepClosed : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosed Ω] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ g : ℕ, SmoothOfRelativeDimension g A.hom → ∀ m : ℕ, (m : K) ≠ 0 → Nat.card {x : ptOver K Ω ⟶ A // x ^ m = 1} = m ^ (2 * g) := by
   first | exact @GlobalTheory.SepClosedTorsion.card_torsion_sepClosed | exact GlobalTheory.SepClosedTorsion.card_torsion_sepClosed | (intros; apply GlobalTheory.SepClosedTorsion.card_torsion_sepClosed <;> assumption)

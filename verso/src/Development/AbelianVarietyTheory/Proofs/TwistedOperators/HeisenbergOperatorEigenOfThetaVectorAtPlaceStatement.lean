@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt | exact GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt | (intros; apply GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergOperatorEigenOfThetaVectorAtPlace.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOperator_eigen_of_thetaVector_at_place : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddSubgroup (WO S T)) (f₀ Φ f : WO S T → ℂ) (w : WO S T) (c : ℂ), IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Φ f → (∀ x : WO S T, IsHalf e x → symplO S T w x = 0) → (∀ y : WO S T, IsHalf (cA D e) y → symplO S T w y = 0) → heisO ψ S T w f₀ = c • f₀ → ∃ c' : ℂ, heisO ψ S T w f = c' • f := by
   first | exact @GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt | exact GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt | (intros; apply GlobalTheory.ThetaEigen.heisO_eigen_of_isThetaAt <;> assumption)

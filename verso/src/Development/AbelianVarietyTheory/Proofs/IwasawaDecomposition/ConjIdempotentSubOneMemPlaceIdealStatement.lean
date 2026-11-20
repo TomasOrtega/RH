@@ -8,8 +8,10 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt | exact GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt | (intros; apply GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FConjIdempotentSubOneMemPlaceIdeal.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.conj_idempotent_sub_one_mem_placeIdeal : ∀ (D : D7) (X : HidaSetting D), X.B.I = Formalism.L2.SG.InstExistsPf.instOf D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (kv : Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ¬ GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2) → sigA X.B.I X.ew - 1 ∈ GlobalTheory.Mem.SymChar.wInt X (D.naut.plGw kv.1 kv.2) := by
   first | exact @GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt | exact GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt | (intros; apply GlobalTheory.Mem.SymChar.sigA_ew_sub_one_mem_wInt <;> assumption)

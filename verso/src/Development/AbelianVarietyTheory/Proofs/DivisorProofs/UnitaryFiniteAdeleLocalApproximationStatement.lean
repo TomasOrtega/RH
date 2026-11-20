@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicLocalPoint.localComponents | exact GlobalTheory.AdelicLocalPoint.localComponents | (intros; apply GlobalTheory.AdelicLocalPoint.localComponents <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdelicLocalPoint.localComponents` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryFiniteAdeleLocalApproximation.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.unitary_finite_adele_local_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (d : ℕ) (W : Spc F E d) (hf : UA σ W.J), ∃ h : Pl F → UA σ W.J, ∀ v, h v ∈ UAt σ W (evFin F v) ∧

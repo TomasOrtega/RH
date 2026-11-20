@@ -14,8 +14,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling | exact GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling | (intros; apply GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericRootTransitionFactors.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.generic_root_transition_factors : ∀ {X Y₀ : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y₀) {M : Y₀.Modules} {N : ℕ} (fl : Vert.Flag M N) (i : Fin N)
     (r : ((fl.root i).pull j).ι → X.functionFieldˣ),

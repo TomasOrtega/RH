@@ -8,8 +8,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.reframe_weil | exact GlobalTheory.AdSpan.reframe_weil | (intros; apply GlobalTheory.AdSpan.reframe_weil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.reframe_weil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFrameChangeWeakWeilRepresentation.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.exists_frameChange_weakWeilRepresentation : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), ∃ e : GA D (reS S b) ≃* GA D S, (∀ h, e h ∈ GinfC S ↔ h ∈ GinfC (reS S b)) ∧ ∀ (ψ : AddChar (AF D.host.F) ℂ) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak ψ S T om → ContT ψ om → ∃ om' : GA D (reS S b) × GA D T →* Module.End ℂ (WO (reS S b) T → ℂ), IsWeak ψ (reS S b) T om' ∧ ContT ψ om' ∧ ∀ h g f, om' (h, g) (reF S T b f) = reF S T b (om (e h, g) f) := by
   first | exact @GlobalTheory.AdSpan.reframe_weil | exact GlobalTheory.AdSpan.reframe_weil | (intros; apply GlobalTheory.AdSpan.reframe_weil <;> assumption)

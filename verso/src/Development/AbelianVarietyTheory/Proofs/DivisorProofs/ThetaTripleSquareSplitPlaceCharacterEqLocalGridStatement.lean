@@ -17,8 +17,10 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PureMatch.chrW_triple_split_nu | exact GlobalTheory.PureMatch.chrW_triple_split_nu | (intros; apply GlobalTheory.PureMatch.chrW_triple_split_nu <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PureMatch.chrW_triple_split_nu` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaTripleSquareSplitPlaceCharacterEqLocalGrid.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.thetaTripleSquare_splitPlace_character_eq_localGrid : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil)
     (M : Vol G) (t : T) (i j : Fin D.R.m) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j)

@@ -15,8 +15,10 @@ open Ad3.R (G2 Jd md KA lc)
 open scoped NumberField.AdeleRing ValuativeRel
 open GlobalTheory.CompanionTheory.GL2Factorization
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa | exact GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FEmbeddingIwasawaRealOrthogonal.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.embedding_iwasawa_real_orthogonal : ∀ (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 → GL2LocalData.emR (dg2 (a * b) b * k) = dg (a * b) b 1 * GL2LocalData.emR k ∧ GL2LocalData.emR k ∈ O3 := by
   first | exact @GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa | exact GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.EmC.emR_iwasawa <;> assumption)

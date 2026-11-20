@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.kapSign_eq_one_of_integral | exact GlobalTheory.BCT.kapSign_eq_one_of_integral | (intros; apply GlobalTheory.BCT.kapSign_eq_one_of_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.kapSign_eq_one_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryLocalSignEqOneOfIntegralSeparableReductio.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.unitaryLocalSign_eq_one_of_integral_separable_reduction : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
     (∀ x, cj w (cj w x) = x) → (∀ x, Valued.v (cj w x) = Valued.v x) →

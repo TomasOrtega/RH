@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.fibre_theta_consts_in_subfield | exact GlobalTheory.Poinc.Sep.fibre_theta_consts_in_subfield | (intros; apply GlobalTheory.Poinc.Sep.fibre_theta_consts_in_subfield <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.fibre_theta_consts_in_subfield` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSharpRefinementCoefficientFamily.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.sharp_refinement_coefficient_family : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ) (J : Type) (l : ℕ), l.Prime → Odd l → ∀ j : ℕ, 1 ≤ j →
   ∀ (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → IsUnit (l : V₁) →

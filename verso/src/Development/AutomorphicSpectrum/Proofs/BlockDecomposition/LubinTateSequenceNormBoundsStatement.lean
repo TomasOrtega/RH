@@ -12,8 +12,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 open GlobalTheory.CompanionTheory.LTPer.Tilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.Tilt.Normz.norm_z_bounds | exact GlobalTheory.CompanionTheory.LTPer.Tilt.Normz.norm_z_bounds | (intros; apply GlobalTheory.CompanionTheory.LTPer.Tilt.Normz.norm_z_bounds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.Tilt.Normz.norm_z_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLubinTateSequenceNormBounds.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_sequence_norm_bounds : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l),
     LTData K χ π z → 2 ≤ qOf π → ‖oc K π‖ < 1 →

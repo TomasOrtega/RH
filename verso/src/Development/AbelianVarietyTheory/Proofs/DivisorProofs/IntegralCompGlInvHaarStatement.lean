@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelCov.integral_mulVec_inv | exact GlobalTheory.SiegelCov.integral_mulVec_inv | (intros; apply GlobalTheory.SiegelCov.integral_mulVec_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelCov.integral_mulVec_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralCompGlInvHaar.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.integral_comp_gl_inv_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (μ : @Measure (Fin n → AE F E) (borel _)), GlobalTheory.SiegelAvg.IsHaarB μ →

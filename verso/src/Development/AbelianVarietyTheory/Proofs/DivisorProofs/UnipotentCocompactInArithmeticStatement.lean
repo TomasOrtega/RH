@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipCocompact.cocompact_unip | exact GlobalTheory.UnipCocompact.cocompact_unip | (intros; apply GlobalTheory.UnipCocompact.cocompact_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipCocompact.cocompact_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentCocompactInArithmetic.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.unipotent_cocompact_in_arithmetic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → GlobalTheory.Cusp.Cocompact (ratU σ G.W.J) (unip σ G.W H') := by
   first | exact @GlobalTheory.UnipCocompact.cocompact_unip | exact GlobalTheory.UnipCocompact.cocompact_unip | (intros; apply GlobalTheory.UnipCocompact.cocompact_unip <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsClos
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniMatBlockTriangular
 open Module TopologicalSpace GlobalTheory.FlagPts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card | exact GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card | (intros; apply GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTopologicalKrullDimAffinePoints.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.topologicalKrullDim_affine_points : ∀ (k : Type) [Field k] [IsAlgClosed k] (J : Type) [Fintype J], topologicalKrullDim (AffPts k J) = (Fintype.card J : ℕ) := by
   first | exact @GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card | exact GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card | (intros; apply GlobalTheory.FlagPts.topologicalKrullDim_affPts_eq_card <;> assumption)

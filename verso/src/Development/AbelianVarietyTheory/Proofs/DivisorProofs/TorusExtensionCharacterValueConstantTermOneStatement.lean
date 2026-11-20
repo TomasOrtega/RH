@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.Cl.fst_vE_eq_one | exact GlobalTheory.MBLow.Cl.fst_vE_eq_one | (intros; apply GlobalTheory.MBLow.Cl.fst_vE_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.Cl.fst_vE_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusExtensionCharacterValueConstantTermOne.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.torusExtension_characterValue_constantTerm_one : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
     (ν : NumOf D ℂ N) (gm : GtPt D (TE R ℂ)), (∃ o : GtPtF D ℂ, o.IsZero ∧ GtPt.IsPullF ℂ (redE ℂ) gm o) → ∀ (χ : D.X),

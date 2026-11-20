@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteAdelicU
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.AdelicUnitaryHaarMeasure
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele | exact GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele | (intros; apply GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FFiniteAdelicUnitaryGroupStabilizersUnimodular.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.finiteAdelicUnitaryGroup_stabilizers_unimodular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → UnimodularOver (Af F) σ J := by
   first | exact @GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele | exact GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele | (intros; apply GlobalTheory.FiniteAdelicUnimod.unimodularOver_finiteAdele <;> assumption)

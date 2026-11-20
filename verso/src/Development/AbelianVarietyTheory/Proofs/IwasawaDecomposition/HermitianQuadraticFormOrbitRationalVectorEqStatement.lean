@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumbe
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit | exact GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit | (intros; apply GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHermitianQuadraticFormOrbitRationalVectorEq.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.hermitian_quadratic_form_orbit_rational_vector_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (a : F), hE σ J (x 0) (x 0) = algebraMap F E a → ∀ g : HA R σ J, qR R σ J ((g • ratTup (F := F) R x) 0) = algebraMap F R a := by
   first | exact @GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit | exact GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit | (intros; apply GlobalTheory.GaugeEx.OrbitQuadric.qR_orbit <;> assumption)

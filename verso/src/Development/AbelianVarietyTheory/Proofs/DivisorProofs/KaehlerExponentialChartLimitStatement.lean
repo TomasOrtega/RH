@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open AlgebraicGeometry MeasureTheory GlobalTheory.ChernReg GlobalTheory.ShFam GlobalTheory.CxPts Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegLim.rho_tendsto | exact GlobalTheory.RegLim.rho_tendsto | (intros; apply GlobalTheory.RegLim.rho_tendsto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegLim.rho_tendsto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKaehlerExponentialChartLimit.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.kaehler_exponential_chart_limit : GlobalTheory.HeightParts.KernelSt → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k) (σ : k →+* ℂ) (d : ℕ)
     [SmoothOfRelativeDimension d p] (a : ChartForm p σ d) (E : ChartMap p σ d), IsKaehlerForm (GlobalTheory.AnRead.all p σ d) a →

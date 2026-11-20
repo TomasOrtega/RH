@@ -14,8 +14,10 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitTorusZero.hyperZero | exact GlobalTheory.SplitTorusZero.hyperZero | (intros; apply GlobalTheory.SplitTorusZero.hyperZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitTorusZero.hyperZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHyperbolicTermsVanish.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.hyperbolic_terms_vanish : GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → HyperZero := by
   first | exact @GlobalTheory.SplitTorusZero.hyperZero | exact GlobalTheory.SplitTorusZero.hyperZero | (intros; apply GlobalTheory.SplitTorusZero.hyperZero <;> assumption)

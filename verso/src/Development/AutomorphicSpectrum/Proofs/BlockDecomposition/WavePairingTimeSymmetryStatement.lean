@@ -9,8 +9,10 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.WaveMult
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WaveMult.wave_symm | exact GlobalTheory.CompanionTheory.WaveMult.wave_symm | (intros; apply GlobalTheory.CompanionTheory.WaveMult.wave_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WaveMult.wave_symm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWavePairingTimeSymmetry.lean&line=409#L409)
 -/
 theorem _root_.GlobalTheory.T.wave_pairing_time_symmetry : LgFacts → RCalc → WaveSpeed → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (u v : ℝ → Mat n → E.V), IsWave E u → IsWave E v → Cpt (u 0) → Cpt (v 0) → ∀ t, ∫ y : G n, ⟪u t y.val, v 0 y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪u 0 y.val, v t y.val⟫_ℂ ∂μ := by
   first | exact @GlobalTheory.CompanionTheory.WaveMult.wave_symm | exact GlobalTheory.CompanionTheory.WaveMult.wave_symm | (intros; apply GlobalTheory.CompanionTheory.WaveMult.wave_symm <;> assumption)

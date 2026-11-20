@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.exists_chart_of_residue | exact GlobalTheory.GroupBplus.Aff.exists_chart_of_residue | (intros; apply GlobalTheory.GroupBplus.Aff.exists_chart_of_residue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.exists_chart_of_residue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrechartLiftLocalPoints.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.prechart_lift_local_points : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B] (x : Tors G N B), Set.range (torsMap (IsScalarTower.toAlgHom R B (IsLocalRing.ResidueField B)) x).1.left ⊆ c.W → ∃ ψ : c.C →ₐ[R] B, torsMap ψ c.j = x := by
   first | exact @GlobalTheory.GroupBplus.Aff.exists_chart_of_residue | exact GlobalTheory.GroupBplus.Aff.exists_chart_of_residue | (intros; apply GlobalTheory.GroupBplus.Aff.exists_chart_of_residue <;> assumption)

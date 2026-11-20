@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped CategoryTheory.MonObj
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.KerPart.exists_kerPow_not_dvd | exact GlobalTheory.AV.KerPart.exists_kerPow_not_dvd | (intros; apply GlobalTheory.AV.KerPart.exists_kerPow_not_dvd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.KerPart.exists_kerPow_not_dvd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsKernelPartOrderPrimeToP.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.exists_kernelPart_order_prime_to_p : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k) (f : A ⟶ B) (m : ℕ), 0 < m → ¬ p ∣ m → ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X), KerPow f m H i ∧ ¬ p ∣ Module.finrank k H := by
   first | exact @GlobalTheory.AV.KerPart.exists_kerPow_not_dvd | exact GlobalTheory.AV.KerPart.exists_kerPow_not_dvd | (intros; apply GlobalTheory.AV.KerPart.exists_kerPow_not_dvd <;> assumption)

@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.PushSec.exists_isSec | exact GlobalTheory.PtExt.PushSec.exists_isSec | (intros; apply GlobalTheory.PtExt.PushSec.exists_isSec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.PushSec.exists_isSec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPushoutTorsorSectionEveryPoint.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.exists_pushoutTorsorSection_every_point : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ), HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), ∃ s : RootFn A D, IsSec n b x s := by
   first | exact @GlobalTheory.PtExt.PushSec.exists_isSec | exact GlobalTheory.PtExt.PushSec.exists_isSec | (intros; apply GlobalTheory.PtExt.PushSec.exists_isSec <;> assumption)

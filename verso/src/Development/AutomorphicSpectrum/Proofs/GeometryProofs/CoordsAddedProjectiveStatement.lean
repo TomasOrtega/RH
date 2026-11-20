@@ -10,8 +10,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AddJFintype
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagStep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks | exact GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCoordsAddedProjective.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.coords_added_projective : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X)

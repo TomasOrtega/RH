@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLoca
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.BKReal GlobalTheory.Prism Formalism.BasicNotions.Examples₂.LB GlobalTheory.MemLoc GlobalTheory.AinfK GlobalTheory.AcrisK GlobalTheory.DiscEval GroundTheory.LocalField.FormalGroup
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AcrisNZD.main | exact GlobalTheory.AcrisNZD.main | (intros; apply GlobalTheory.AcrisNZD.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AcrisNZD.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPeriodRingNoZeroDivisors.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.period_ring_no_zero_divisors : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (x : AK K), x ≠ 0 → ∀ y : GlobalTheory.AcrisK.BK K,
     toB K (ofA K x) * y = 0 → y = 0 := by

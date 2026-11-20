@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 open GlobalTheory.FunObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KernelAlg.kk_isAlgebraic | exact GlobalTheory.KernelAlg.kk_isAlgebraic | (intros; apply GlobalTheory.KernelAlg.kk_isAlgebraic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KernelAlg.kk_isAlgebraic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FNormalisedDefiniteKernelEntriesIsAlgebraic.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.normalisedDefiniteKernel_entries_isAlgebraic : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → GlobalTheory.NormSum.Inp D → GlobalTheory.SumSize.DictAt ch → ∀ (t : T) (p : GlobalTheory.ChiGrid.Pair T), DefPair D.R.m p → WtOK ch.G p → ∀ (k : ℕ) (d : FinDatum ch.G t p), 0 < k → IsCosetDatum k d → d.z = 1 → d.P = locPl ch.G t → ch.S.Z.HasVec d → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (a : VVIdx (wt ch.G p.big)) (b : VVIdx (wt ch.G p.small)), IsAlgebraic ℚ (ch.S.Z.kk d x y a b) := by
   first | exact @GlobalTheory.KernelAlg.kk_isAlgebraic | exact GlobalTheory.KernelAlg.kk_isAlgebraic | (intros; apply GlobalTheory.KernelAlg.kk_isAlgebraic <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.ProdStruct.product_structure | exact GlobalTheory.HL.ProdStruct.product_structure | (intros; apply GlobalTheory.HL.ProdStruct.product_structure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.ProdStruct.product_structure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHermitianAmplitudeMassProductStructure.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.hermitian_amplitude_mass_product_structure : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → ∀ d : G.Dat, (∃ Λ₀, G.IsTerm d Λ₀) → ∀ P : ∀ p, Submodule (A.L p).O (G.S p).V → Prop, (∀ p, ∀ h ∈ (G.S p).St, ∀ Λ, (G.S p).IsTerm (d p) Λ → P p Λ → P p (h • Λ)) → {p | ∃ Λ, (G.S p).IsTerm (d p) Λ ∧ ¬ P p Λ}.Finite → G.amp d (fun Λ => ∀ p, P p (A.lat p Λ)) = ∏ᶠ p, (G.S p).amp (d p) (P p) ∧ G.mass d (fun Λ => ∀ p, P p (A.lat p Λ)) = ∏ᶠ p, (G.S p).mass (d p) (P p) ∧ {p | (G.S p).amp (d p) (P p) ≠ 1 ∨ (G.S p).mass (d p) (P p) ≠ 1}.Finite ∧ {o : Quot G.LRel | G.IsTerm d o.out}.Finite := by
   first | exact @GlobalTheory.HL.ProdStruct.product_structure | exact GlobalTheory.HL.ProdStruct.product_structure | (intros; apply GlobalTheory.HL.ProdStruct.product_structure <;> assumption)

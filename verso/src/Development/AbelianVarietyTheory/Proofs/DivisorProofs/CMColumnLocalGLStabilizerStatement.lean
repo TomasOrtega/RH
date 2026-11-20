@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockFrame.mulVec_sub_mem_span_frame | exact GlobalTheory.LeviBlockFrame.mulVec_sub_mem_span_frame | (intros; apply GlobalTheory.LeviBlockFrame.mulVec_sub_mem_span_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviBlockFrame.mulVec_sub_mem_span_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCMColumnLocalGLStabilizer.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.CM_column_local_GL_stabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X : Matrix (Fin n) (Fin r) E), r ≤ n →

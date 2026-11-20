@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.GoodConj.main | exact GlobalTheory.BCT.GoodConj.main | (intros; apply GlobalTheory.BCT.GoodConj.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.GoodConj.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEventuallyIntegralConjugateMemCentralizerMulInte.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.eventually_integralConjugate_mem_centralizer_mul_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ γ : UE E n, γ.1.val.charpoly.Separable → ∀ᶠ w in cofinite, ∀ g : UL n w, g⁻¹ * locPt w γ * g ∈ KL n w → ∃ t ∈ twCent (MonoidHom.id (UL n w)) (locPt w γ), t⁻¹ * g ∈ KL n w := by
   first | exact @GlobalTheory.BCT.GoodConj.main | exact GlobalTheory.BCT.GoodConj.main | (intros; apply GlobalTheory.BCT.GoodConj.main <;> assumption)

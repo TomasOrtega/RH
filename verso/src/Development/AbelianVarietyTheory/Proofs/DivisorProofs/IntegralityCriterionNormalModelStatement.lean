@@ -7,8 +7,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.IntCritPf.intCrit | exact GlobalTheory.ArLieBase.IntCritPf.intCrit | (intros; apply GlobalTheory.ArLieBase.IntCritPf.intCrit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArLieBase.IntCritPf.intCrit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralityCriterionNormalModel.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.integrality_criterion_normal_model : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) (q : X ⟶ Sp (𝓞 F)) (s : W ⟶ Sp F) (jB : W ⟶ X) (d : ℕ), IsArithVar q d → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) → IntCrit s jB := by
   first | exact @GlobalTheory.ArLieBase.IntCritPf.intCrit | exact GlobalTheory.ArLieBase.IntCritPf.intCrit | (intros; apply GlobalTheory.ArLieBase.IntCritPf.intCrit <;> assumption)

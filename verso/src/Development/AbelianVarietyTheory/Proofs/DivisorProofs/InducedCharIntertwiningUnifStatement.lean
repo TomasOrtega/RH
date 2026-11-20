@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullRankSB
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThK.MidJac GlobalTheory.CuspBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetIndScal.factor_through_detInd | exact GlobalTheory.DetIndScal.factor_through_detInd | (intros; apply GlobalTheory.DetIndScal.factor_through_detInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetIndScal.factor_through_detInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedCharIntertwiningUnif.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.induced_char_intertwining_unif : GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a a' : ℕ)

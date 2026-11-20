@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.JSW GroundTheory.Global.IdeleGroup Formalism.L2.Host
 open scoped ENNReal nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.RSCell.lintegral_unfolded_eq`. Consider the case `exact GlobalTheory.RSCell.lintegral_unfolded_eq`. Consider the case `(intros; apply GlobalTheory.RSCell.lintegral_unfolded_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RSCell.lintegral_unfolded_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUnfoldedWhittakerIntegralEqEulerProductSchurSums.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.unfoldedWhittakerIntegral_eq_eulerProduct_schurSums : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a), 1 ≤ a → π.IsUnitary →
     ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T π →

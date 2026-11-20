@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyTrivi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAttachedHodge
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial Formalism.L2.Host GlobalTheory.Pst GlobalTheory.GalOfCusp GlobalTheory.TripleLocal GlobalTheory.TypeLeaf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodRowMono.mono0_all | exact GlobalTheory.GoodRowMono.mono0_all | (intros; apply GlobalTheory.GoodRowMono.mono0_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodRowMono.mono0_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMonodromyTrivialEverywhere.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.monodromy_trivial_everywhere : ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), FrobDense D → GalHodge D T → ∀ (σ : D.what₂.FT) (π : D.naut.CG D.R.r), D.nd.goodRow σ → D.naut.csd π → D.naut.ralg π → (∀ w, (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → D.naut.unr (D.naut.locG π w)) → (∀ k v, D.nd.lab k σ v = D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG π (D.naut.plGw k v))) → ∀ w, D.naut.mono0 (D.naut.locG π w) := by
   first | exact @GlobalTheory.GoodRowMono.mono0_all | exact GlobalTheory.GoodRowMono.mono0_all | (intros; apply GlobalTheory.GoodRowMono.mono0_all <;> assumption)

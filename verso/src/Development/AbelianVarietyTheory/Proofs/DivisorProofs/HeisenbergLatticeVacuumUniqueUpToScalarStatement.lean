@@ -19,8 +19,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatVacUniq.vacuum_unique | exact GlobalTheory.LatVacUniq.vacuum_unique | (intros; apply GlobalTheory.LatVacUniq.vacuum_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatVacUniq.vacuum_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergLatticeVacuumUniqueUpToScalar.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.heisenbergLatticeVacuum_unique_up_to_scalar : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F) (L₁ : Submodule (𝓞 D.host.E) (Fin a' → D.host.E))

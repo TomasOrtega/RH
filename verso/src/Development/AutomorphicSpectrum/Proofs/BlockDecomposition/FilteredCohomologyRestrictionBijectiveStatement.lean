@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective | exact GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective | (intros; apply GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFilteredCohomologyRestrictionBijective.lean&line=262#L262)
 -/
 theorem _root_.GlobalTheory.T.filtered_cohomology_restriction_bijective : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ 0 X q κ))) (l s : ℕ)

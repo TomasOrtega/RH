@@ -27,8 +27,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists | exact GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FRootOriginGenericFrame.lean&line=363#L363)
 -/
 theorem _root_.GlobalTheory.T.root_origin_generic_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx), Nonempty (Small.GenFrame Or) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists | exact GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists <;> assumption)

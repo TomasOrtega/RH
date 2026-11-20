@@ -22,8 +22,10 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
   GlobalTheory.DiagForm.measAf GlobalTheory.DiagForm.borelAf
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PartialFourierFin.exists_partialFourier_diag | exact GlobalTheory.PartialFourierFin.exists_partialFourier_diag | (intros; apply GlobalTheory.PartialFourierFin.exists_partialFourier_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PartialFourierFin.exists_partialFourier_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFinitePartialFourierBijective.lean&line=253#L253)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_partial_fourier_bijective : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ],
     ∃ B : ((κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ),

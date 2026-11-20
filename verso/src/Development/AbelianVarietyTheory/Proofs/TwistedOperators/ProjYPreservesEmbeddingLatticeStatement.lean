@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.projY_mem_lat | exact GlobalTheory.AscFin.projY_mem_lat | (intros; apply GlobalTheory.AscFin.projY_mem_lat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.projY_mem_lat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FProjYPreservesEmbeddingLattice.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.proj_Y_preserves_embedding_lattice : ∀ {D : D7} {A B B₀ : HSp D} {c ρ : ℕ} (a : HermitianOrthogonalExtensionData A B c (-1)) (d : HypDec B B₀ ρ), IsAuxiliaryVectorWittDec a d → ∀ (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (v : Fin B.rank → D.host.E), v ∈ a.lat Λ 𝔟 → (d.e' * d.qY) *ᵥ v ∈ a.lat Λ 𝔟 := by
   first | exact @GlobalTheory.AscFin.projY_mem_lat | exact GlobalTheory.AscFin.projY_mem_lat | (intros; apply GlobalTheory.AscFin.projY_mem_lat <;> assumption)

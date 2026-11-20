@@ -15,8 +15,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClearDenom.exists_smul_eq_genRes_map | exact GlobalTheory.ClearDenom.exists_smul_eq_genRes_map | (intros; apply GlobalTheory.ClearDenom.exists_smul_eq_genRes_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClearDenom.exists_smul_eq_genRes_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericMapExtendsAfterScaling.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.generic_map_extends_after_scaling : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O)
     (E E' : Z.X.Modules) (n m : ℕ), GlobalTheory.VB.IsVB E n → GlobalTheory.VB.IsVB E' m → ∀ (a : Z.genRes.obj E ⟶ Z.genRes.obj E'),

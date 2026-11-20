@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastSeesawLinear
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumEqZeroOfMultilin
 open GlobalTheory.RowClaim GlobalTheory.ConnectionLinear
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LastPositionLin.lastLin_zero | exact GlobalTheory.LastPositionLin.lastLin_zero | (intros; apply GlobalTheory.LastPositionLin.lastLin_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LastPositionLin.lastLin_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLastSeesawLinearLeftLargeDepth.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.lastSeesaw_linear_left_largeDepth : Big fun ch => GlobalTheory.ConnectionLinear.LastLin ch 0 := by
   first | exact @GlobalTheory.LastPositionLin.lastLin_zero | exact GlobalTheory.LastPositionLin.lastLin_zero | (intros; apply GlobalTheory.LastPositionLin.lastLin_zero <;> assumption)

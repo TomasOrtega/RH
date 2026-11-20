@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHolomorphicAdaptedFrameOnBall.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_adapted_frame_on_ball : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (A₀ : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), C.IsAdapted (F.R 0) A₀ → ∃ (Z : (Fin n → ℂ) → Fin n → ℂ) (G : (Fin n → ℂ) → ℂ), DifferentiableOn ℂ Z (ballDom F.q) ∧ DifferentiableOn ℂ G (ballDom F.q) ∧ (∀ t ∈ ballDom F.q, ∀ A, C.IsAdapted (F.R t) A → Z t = moebBall F.q (fun τ => C.cinv (A₀ τ) τ * A τ) 0) ∧ ∀ t ∈ ballDom F.q, ballPot F.q (Z t) = ballPot F.q t + (G t).re := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.chart_exists <;> assumption)

@@ -14,8 +14,10 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G Globa
 open scoped NNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult | exact GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult | (intros; apply GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPdivPointValuationProperty.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.pdiv_point_valuation_property : GlobalTheory.CovTop.Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]

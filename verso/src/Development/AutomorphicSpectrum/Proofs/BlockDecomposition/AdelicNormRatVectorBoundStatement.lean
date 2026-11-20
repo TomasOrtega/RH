@@ -7,8 +7,10 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm Ad3 Ad3.GA
 open scoped NumberField.AdeleRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le | exact GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le | (intros; apply GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAdelicNormRatVectorBound.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.adelic_norm_rat_vector_bound : ∀ M : ℕ, 0 < M → ∀ z : Fin 3 → ℚ, (∀ i, ∃ k : ℤ, (M : ℚ) * z i = k) → Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[ℚ]) ≤ M * ∑ i, |((z i : ℚ) : ℝ)| := by
   first | exact @GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le | exact GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le | (intros; apply GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le <;> assumption)

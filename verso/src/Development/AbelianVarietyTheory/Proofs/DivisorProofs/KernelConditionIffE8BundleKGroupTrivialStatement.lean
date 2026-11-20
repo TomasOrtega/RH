@@ -20,8 +20,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 open GlobalTheory.PrincSubring
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrincSubring.kerAlong_iff_trivAlong | exact GlobalTheory.PrincSubring.kerAlong_iff_trivAlong | (intros; apply GlobalTheory.PrincSubring.kerAlong_iff_trivAlong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrincSubring.kerAlong_iff_trivAlong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelConditionIffE8BundleKGroupTrivial.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.kernel_condition_iff_e8Bundle_kGroup_trivial : ∀ {S : Scheme.{0}} (h : ℕ) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (A ⊗ A).left), IsSymmetricPair h A P → Out.RelAmple A (diagPull A P) → ∀ {S' : Scheme.{0}} (g : S' ⟶ S), KerAlong A P g ↔ GlobalTheory.KTrivSpread.TrivAlong (Out.powObj A 8) (powLB A P) g := by
   first | exact @GlobalTheory.PrincSubring.kerAlong_iff_trivAlong | exact GlobalTheory.PrincSubring.kerAlong_iff_trivAlong | (intros; apply GlobalTheory.PrincSubring.kerAlong_iff_trivAlong <;> assumption)

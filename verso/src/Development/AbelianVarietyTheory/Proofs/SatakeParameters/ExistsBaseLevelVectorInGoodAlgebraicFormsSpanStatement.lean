@@ -19,8 +19,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.exists_part_level_vector | exact GlobalTheory.Hk3.exists_part_level_vector | (intros; apply GlobalTheory.Hk3.exists_part_level_vector <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.exists_part_level_vector` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsBaseLevelVectorInGoodAlgebraicFormsSpan.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_baseLevel_vector_in_goodAlgebraicForms_span : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → ∀ j c, R.Wc' j c ≠ ⊥ → ∃ w ∈ R.Wc' j c, w ≠ 0 ∧ w ∈ R.toRealDat.WS F.lv2 false j (sg0 D A3.A) := by
   first | exact @GlobalTheory.Hk3.exists_part_level_vector | exact GlobalTheory.Hk3.exists_part_level_vector | (intros; apply GlobalTheory.Hk3.exists_part_level_vector <;> assumption)

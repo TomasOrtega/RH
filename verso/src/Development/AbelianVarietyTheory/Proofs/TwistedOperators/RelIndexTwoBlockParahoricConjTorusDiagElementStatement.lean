@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexTwoBlock
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor | exact GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor | (intros; apply GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRelIndexTwoBlockParahoricConjTorusDiagElement.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.relIndex_twoBlockParahoric_conj_torusDiagElement : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k →

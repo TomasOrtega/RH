@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac | exact GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCoordChartsMatchRegular.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.coord_charts_match_regular : ∀ (o F : Type) [CommRing o] [IsDomain o] [Field F] [Algebra o F] [IsFractionRing o F] (Ω : Type) [Field Ω] [Algebra o Ω] [Algebra F Ω] [IsScalarTower o F Ω] (X W : Scheme.{0}) (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω ⟶ W) (κ : Type) (t : κ → Ω), CoordTie o ξ t → CoordTie F ξ' t → (∀ p' : Cpt ξ', ∃ p : Cpt ξ, regAt ξ p = regAt ξ' p') ∧ ∀ p : Cpt ξ, (∀ d : o, d ≠ 0 → unitAt ξ p (algebraMap o Ω d)) → ∃ p' : Cpt ξ', regAt ξ p = regAt ξ' p' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac | exact GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.FracPts.regAt_frac <;> assumption)

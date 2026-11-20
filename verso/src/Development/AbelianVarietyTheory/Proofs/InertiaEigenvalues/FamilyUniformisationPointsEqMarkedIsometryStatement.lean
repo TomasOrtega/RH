@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.MarkedIsometryHalf
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PermUnif.isometry_of_point_eq_perm | exact GlobalTheory.PermUnif.isometry_of_point_eq_perm | (intros; apply GlobalTheory.PermUnif.isometry_of_point_eq_perm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PermUnif.isometry_of_point_eq_perm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFamilyUniformisationPointsEqMarkedIsometry.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.familyUniformisation_points_eq_marked_isometry : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g g' : ℕ}

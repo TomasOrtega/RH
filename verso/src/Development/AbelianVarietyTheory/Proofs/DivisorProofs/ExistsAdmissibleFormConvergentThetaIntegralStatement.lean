@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral | exact GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral | (intros; apply GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdmissibleFormConvergentThetaIntegral.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} (M : Model σ X Y)
     (ψ : AddChar (AF F) ℂ) (χX χY : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : Rep σ X Y), M.IsWeil ψ χX χY om →

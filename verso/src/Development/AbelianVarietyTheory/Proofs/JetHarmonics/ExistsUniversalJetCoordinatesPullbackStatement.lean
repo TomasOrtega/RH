@@ -10,8 +10,10 @@ open GlobalTheory.CharDepth TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnivJetBaseChange.exists_univ_pullback | exact GlobalTheory.UnivJetBaseChange.exists_univ_pullback | (intros; apply GlobalTheory.UnivJetBaseChange.exists_univ_pullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnivJetBaseChange.exists_univ_pullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsUniversalJetCoordinatesPullback.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.exists_universalJetCoordinates_pullback : ∀ (V V' : Type) [CommRing V] [IsLocalRing V] [CommRing V'] (φ : V →+* V') (G : Over (Sp V)) [GrpObj G] (G' : Over (Sp V')) [GrpObj G'] (F : G'.left ⟶ G.left), IsGrpPullback G' G (spMap φ) F → ∀ (κ : Type) (z : GlobalTheory.PowGerm.JetPts G κ), GlobalTheory.PowGerm.IsUnivJ G κ z → ∃ z' : GlobalTheory.PowGerm.JetPts G' κ, GlobalTheory.PowGerm.IsUnivJ G' κ z' ∧ ∀ m, (z' m).left ≫ F = spMap (jetCoef φ κ m) ≫ (z m).left := by
   first | exact @GlobalTheory.UnivJetBaseChange.exists_univ_pullback | exact GlobalTheory.UnivJetBaseChange.exists_univ_pullback | (intros; apply GlobalTheory.UnivJetBaseChange.exists_univ_pullback <;> assumption)

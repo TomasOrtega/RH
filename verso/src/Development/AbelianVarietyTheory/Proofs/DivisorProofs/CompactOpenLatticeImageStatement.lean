@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisUniqLoc.eigen_unique | exact GlobalTheory.HeisUniqLoc.eigen_unique | (intros; apply GlobalTheory.HeisUniqLoc.eigen_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisUniqLoc.eigen_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactOpenLatticeImage.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.compact_open_lattice_image : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) {κ G : Type} [Fintype κ] [AddCommGroup G]
     (ψ₀ : AddChar (Fv F v) ℂ), Continuous ψ₀ → ψ₀ ≠ 1 →

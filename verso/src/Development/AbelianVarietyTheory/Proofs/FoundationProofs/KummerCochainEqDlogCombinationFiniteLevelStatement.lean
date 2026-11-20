@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainEqD
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KumDlog.kummer_eq_dlog | exact GlobalTheory.KumDlog.kummer_eq_dlog | (intros; apply GlobalTheory.KumDlog.kummer_eq_dlog <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KumDlog.kummer_eq_dlog` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FKummerCochainEqDlogCombinationFiniteLevel.lean&line=238#L238)
 -/
 theorem _root_.GlobalTheory.T.kummerCochain_eq_dlog_combination_finiteLevel : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ ι : On p n →ₐ[O0 p] Ω, IsEmb T n ι →

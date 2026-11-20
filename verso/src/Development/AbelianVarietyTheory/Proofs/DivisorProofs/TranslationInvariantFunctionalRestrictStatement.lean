@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrPApply
 open GlobalTheory.ArchSch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchwartzHadamard.eq_of_eqOn | exact GlobalTheory.SchwartzHadamard.eq_of_eqOn | (intros; apply GlobalTheory.SchwartzHadamard.eq_of_eqOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchwartzHadamard.eq_of_eqOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTranslationInvariantFunctionalRestrict.lean&line=282#L282)
 -/
 theorem _root_.GlobalTheory.T.translation_invariant_functional_restrict : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] (P : Submodule ℝ Y)
     (ℓ : SchwartzMap Y ℂ →L[ℂ] ℂ),

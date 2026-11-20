@@ -7,8 +7,10 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FormalF
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.RelSerreSections
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE TensorProduct Opposite
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift | exact GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift | (intros; apply GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAffineRestrictionFunctionsNaturality.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.affine_restriction_functions_naturality : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X Z : Scheme.{0}} [X.Over (Spec (.of A))] [Z.Over (Spec (.of A))] (φ : Z ⟶ X) (V : X.Opens) (hV : IsAffineOpen V) [IsNoetherianRing Γ(X, V)], letI : (φ ⁻¹ᵁ V).toScheme.Over (Spec (.of Γ(X, V))) := ⟨φ ∣_ V ≫ hV.isoSpec.hom⟩; (∀ (W : (φ ⁻¹ᵁ V).toScheme.Opens) (a : A), ((φ ⁻¹ᵁ V).ι.appIso W).hom (toFunctions (A := A) ((φ ⁻¹ᵁ V).ι ''ᵁ W) a) = toFunctions (A := Γ(X, V)) W (toFunctions (A := A) V a)) → ∀ (G : Z.Modules) [G.IsQuasicoherent] (m : ℕ), ∃ g : (idealPow I G m).restrict (φ ⁻¹ᵁ V).ι ⟶ idealPow (Ideal.map (toFunctions (A := A) V) I) (G.restrict (φ ⁻¹ᵁ V).ι) m, g ≫ idealPowι (Ideal.map (toFunctions (A := A) V) I) (G.restrict (φ ⁻¹ᵁ V).ι) m = (Scheme.Modules.restrictFunctor (φ ⁻¹ᵁ V).ι).map (idealPowι I G m) := by
   first | exact @GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift | exact GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift | (intros; apply GlobalTheory.CompanionTheory.GE.FormalShift.restrict_idealPow_lift <;> assumption)

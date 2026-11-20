@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.PlaneEv.Clo.exists_dH_stable_ei_mem | exact GlobalTheory.ThK.PlaneEv.Clo.exists_dH_stable_ei_mem | (intros; apply GlobalTheory.ThK.PlaneEv.Clo.exists_dH_stable_ei_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.PlaneEv.Clo.exists_dH_stable_ei_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPlaneEvaluationClosureDerivatives.lean&line=265#L265)
 -/
 theorem _root_.GlobalTheory.T.plane_evaluation_closure_derivatives : ∀ (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2) (P₁ : Submodule ℂ (SInf F (Fin n × Fin d₁)))
     (G : Set (SInf F (Fin n × Fin d))), HasDH F (Fin n × Fin d) →

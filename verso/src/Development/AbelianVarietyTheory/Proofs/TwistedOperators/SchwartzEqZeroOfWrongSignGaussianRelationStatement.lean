@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzEqZeroOfWrongSignGaussianRelation
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WrongSignGauss.vanish | exact GlobalTheory.WrongSignGauss.vanish | (intros; apply GlobalTheory.WrongSignGauss.vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WrongSignGauss.vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSchwartzEqZeroOfWrongSignGaussianRelation.lean&line=147#L147)
 -/
 theorem _root_.GlobalTheory.T.schwartz_eq_zero_of_wrong_sign_gaussian_relation : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (f : SchwartzMap V ℂ) (a₁ a₂ : V) (ℓ₁ ℓ₂ : V →ₗ[ℝ] ℝ),

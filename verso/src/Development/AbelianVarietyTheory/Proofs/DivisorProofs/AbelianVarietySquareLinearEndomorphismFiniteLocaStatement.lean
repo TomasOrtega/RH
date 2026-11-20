@@ -7,8 +7,10 @@ open CategoryTheory MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicG
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AmpleGen
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleGen.psiMap_finite_locallyFree | exact GlobalTheory.AmpleGen.psiMap_finite_locallyFree | (intros; apply GlobalTheory.AmpleGen.psiMap_finite_locallyFree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleGen.psiMap_finite_locallyFree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianVarietySquareLinearEndomorphismFiniteLoca.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.abelianVarietySquareLinearEndomorphism_finiteLocallyFree : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ a₁ b₁ a₂ b₂ : ℤ, ((a₁ * b₂ - b₁ * a₂ : ℤ) : K) ≠ 0 → IsFinite (psiMap A a₁ b₁ a₂ b₂).left ∧ Flat (psiMap A a₁ b₁ a₂ b₂).left ∧ LocallyOfFinitePresentation (psiMap A a₁ b₁ a₂ b₂).left ∧ ∃ r : ℕ, (∀ y, (psiMap A a₁ b₁ a₂ b₂).left.finrank y = r) ∧ (r : K) ≠ 0 := by
   first | exact @GlobalTheory.AmpleGen.psiMap_finite_locallyFree | exact GlobalTheory.AmpleGen.psiMap_finite_locallyFree | (intros; apply GlobalTheory.AmpleGen.psiMap_finite_locallyFree <;> assumption)

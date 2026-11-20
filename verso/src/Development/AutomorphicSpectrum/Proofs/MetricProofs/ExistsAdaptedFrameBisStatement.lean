@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsAdaptedFrameBis.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.exists_adapted_frame_bis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ), R.form = F.form → R.HasSig F.σ j j' → ∃ A, C.IsAdapted R A := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted.exists_isAdapted <;> assumption)

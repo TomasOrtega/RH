@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobe
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq | exact GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FBetaEquivariantFrobenius.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.beta_equivariant_frobenius : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (a : O) (y : (Fin d → R) × (Fin d → R)), beta B p (rhoH B a y) = ((rho B (star a)).transpose.map (· ^ p)).mulVec (beta B p y) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq | exact GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq <;> assumption)

@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped Matrix Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTransform.hasDerivAt_heisV_line | exact GlobalTheory.ThetaTransform.hasDerivAt_heisV_line | (intros; apply GlobalTheory.ThetaTransform.hasDerivAt_heisV_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTransform.hasDerivAt_heisV_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasDerivAtHeisenbergOperatorThetaTransformRealLi.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.hasDerivAt_heisenbergOperator_thetaTransform_realLine : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ), IsTotallyReal F → IsCharAF F ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), ∀ M : ℝ →+ VA F N, IsRealLine M → ∃ Φ' ∈ GlobalTheory.WeilM.schA F (Fin N), ∀ w, HasDerivAt (fun t : ℝ => heisV ψ (M t) (thV ψ Φ) w) (thV ψ Φ' w) 0 := by
   first | exact @GlobalTheory.ThetaTransform.hasDerivAt_heisV_line | exact GlobalTheory.ThetaTransform.hasDerivAt_heisV_line | (intros; apply GlobalTheory.ThetaTransform.hasDerivAt_heisV_line <;> assumption)

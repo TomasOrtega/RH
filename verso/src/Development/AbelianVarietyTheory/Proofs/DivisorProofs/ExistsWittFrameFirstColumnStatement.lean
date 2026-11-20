@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.EisRes
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaneWitt.exists_isWittFrame_col0 | exact GlobalTheory.PlaneWitt.exists_isWittFrame_col0 | (intros; apply GlobalTheory.PlaneWitt.exists_isWittFrame_col0 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaneWitt.exists_isWittFrame_col0` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWittFrameFirstColumn.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_witt_frame_first_column : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n n₁ : ℕ) (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (V₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n₁)

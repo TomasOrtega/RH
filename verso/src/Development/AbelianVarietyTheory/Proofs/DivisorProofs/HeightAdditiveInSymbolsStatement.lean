@@ -14,8 +14,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtAdd.ht_adlOf_sum | exact GlobalTheory.HtAdd.ht_adlOf_sum | (intros; apply GlobalTheory.HtAdd.ht_adlOf_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtAdd.ht_adlOf_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightAdditiveInSymbols.lean&line=188#L188)
 -/
 theorem _root_.GlobalTheory.T.height_additive_in_symbols : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
     ∀ (c : O.s.Comp) (x : (O.var c).X) {ι : Type} (s : Finset ι) (a : ι → Sym D.host.E) (n : ι → ℤ),

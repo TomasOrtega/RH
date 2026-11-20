@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Rule.eq_of_eq_extScalars | exact GlobalTheory.RealMult.Rule.eq_of_eq_extScalars | (intros; apply GlobalTheory.RealMult.Rule.eq_of_eq_extScalars <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.Rule.eq_of_eq_extScalars` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantGeneratorRuleBaseChange.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.determinant_generator_rule_base_change : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k) (A : Type) [CommRing A] (Y : Obj F 𝔠 (Sp A)), Nonempty Y.DetGen →

@@ -5,8 +5,10 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ScalTrans.scalar_pair_trans | exact GlobalTheory.ScalTrans.scalar_pair_trans | (intros; apply GlobalTheory.ScalTrans.scalar_pair_trans <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ScalTrans.scalar_pair_trans` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FScalarCorankOnePairsTrans.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.scalarCorankOnePairs_trans : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' t'' : TauC Y u u', t.G ≠ 0 → t'.G ≠ 0 → t''.G ≠ 0 → (Y.tO u u').s0 t t' = 1 → (Y.tO u u').scal t t' → (Y.tO u u').s0 t' t'' = 1 → (Y.tO u u').scal t' t'' → (Y.tO u u').s0 t t'' = 1 ∧ (Y.tO u u').scal t t'' := by
   first | exact @GlobalTheory.ScalTrans.scalar_pair_trans | exact GlobalTheory.ScalTrans.scalar_pair_trans | (intros; apply GlobalTheory.ScalTrans.scalar_pair_trans <;> assumption)

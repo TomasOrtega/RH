@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate Matrix
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrEll.RealClasses.real_classes | exact GlobalTheory.TrEll.RealClasses.real_classes | (intros; apply GlobalTheory.TrEll.RealClasses.real_classes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrEll.RealClasses.real_classes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPlaceCompactTorusClassesCompactWeylCosets.lean&line=551#L551)
 -/
 theorem _root_.GlobalTheory.T.real_place_compact_torus_classes_compactWeyl_cosets : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau), CompactSpace (Tor P (placeOf D ρ).Completion) → ∀ WK : Subgroup (Equiv.Perm (Fin V.rank)), (∀ w, w ∈ WK ↔ w ∈ GlobalTheory.HCChar.compactWeyl (M.ε ρ)) → ∃ (T : Finset (Equiv.Perm (Fin V.rank))) (b : XSet P (placeOf D ρ).Completion V.gram ≃ T), Function.Bijective (fun p : WK × T => ((p.2 : Equiv.Perm (Fin V.rank)))⁻¹ * (p.1 : Equiv.Perm (Fin V.rank))) ∧ ∀ (q : XSet P (placeOf D ρ).Completion V.gram) (γ : GArch D.sp.cm.sig V.gram (placeOf D ρ)), HasCls P (placeOf D ρ).Completion V.gram γ q.1 → ∃ g, frameMat M ρ (g * γ * g⁻¹) = Matrix.diagonal fun i => cxRoots (embOverOf D ρ).1 P ((b q : Equiv.Perm (Fin V.rank))⁻¹ i) := by
   first | exact @GlobalTheory.TrEll.RealClasses.real_classes | exact GlobalTheory.TrEll.RealClasses.real_classes | (intros; apply GlobalTheory.TrEll.RealClasses.real_classes <;> assumption)

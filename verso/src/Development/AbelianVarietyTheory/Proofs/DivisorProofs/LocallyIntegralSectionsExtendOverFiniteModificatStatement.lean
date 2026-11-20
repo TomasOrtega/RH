@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.extend_locInt | exact GlobalTheory.Mum.extend_locInt | (intros; apply GlobalTheory.Mum.extend_locInt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.extend_locInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocallyIntegralSectionsExtendOverFiniteModificat.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.locallyIntegralSections_extend_over_finiteModification : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)) (hpb : IsPullback α t G.hom M.gp) (I : Type) [Finite I] (k : I → ℕ) (s : ∀ i, SecK L α (k i)), (∀ i, LocInt M G L α t hpb.w (s i)) → ∃ (M' : Modif R) (h : M'.S ⟶ M.S), IsFinite h ∧ M'.gp ≫ h = M.gp ∧ h ≫ M.π = M'.π ∧ ∀ i, ∃ σ : SecK L (pullback.fst G.hom h) (k i), Agree L σ (s i) := by
   first | exact @GlobalTheory.Mum.extend_locInt | exact GlobalTheory.Mum.extend_locInt | (intros; apply GlobalTheory.Mum.extend_locInt <;> assumption)

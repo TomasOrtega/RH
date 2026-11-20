@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenberg
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisDerivFormula.heisLine_deriv_eq | exact GlobalTheory.HeisDerivFormula.heisLine_deriv_eq | (intros; apply GlobalTheory.HeisDerivFormula.heisLine_deriv_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisDerivFormula.heisLine_deriv_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergLineDerivativeEqDirectionalAddPhase.lean&line=117#L117)
 -/
 theorem _root_.GlobalTheory.T.heisenbergLineDerivative_eq_directional_add_phase : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ), IsStd ψ →

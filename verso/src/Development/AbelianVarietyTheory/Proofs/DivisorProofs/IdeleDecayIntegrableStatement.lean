@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleTate.integrable_decay_mul_absE | exact GlobalTheory.IdeleTate.integrable_decay_mul_absE | (intros; apply GlobalTheory.IdeleTate.integrable_decay_mul_absE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleTate.integrable_decay_mul_absE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleDecayIntegrable.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.idele_decay_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (s m : ℕ), 2 ≤ s → 0 < m →
     ∃ N : ℕ, ∀ μ : Measure (AE F E)ˣ, μ.IsHaarMeasure →

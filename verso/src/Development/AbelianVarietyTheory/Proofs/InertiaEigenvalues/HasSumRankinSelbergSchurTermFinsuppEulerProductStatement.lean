@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchurDir
 open MeasureTheory
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZEul.hasSum_rsTerm_finsupp | exact GlobalTheory.ZEul.hasSum_rsTerm_finsupp | (intros; apply GlobalTheory.ZEul.hasSum_rsTerm_finsupp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZEul.hasSum_rsTerm_finsupp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHasSumRankinSelbergSchurTermFinsuppEulerProduct.lean&line=147#L147)
 -/
 theorem _root_.GlobalTheory.T.hasSum_rankinSelbergSchurTerm_finsupp_eulerProduct : ∀ {I : Type} (q : I → ℕ) {n : ℕ} (α β : I → Fin n → ℂˣ) (x : ℝ), 1 < x → (∀ i, 2 ≤ q i) →
     GlobalTheory.RSPole.eulD q (fun i j => (α i j : ℂ)) x ≠ ⊤ → GlobalTheory.RSPole.eulD q (fun i j => (β i j : ℂ)) x ≠ ⊤ →

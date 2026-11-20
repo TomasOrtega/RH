@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRt
 open NumberField IsDedekindDomain Formalism.L2.Host
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CapHC.qdet_blocks_congr | exact GlobalTheory.CapHC.qdet_blocks_congr | (intros; apply GlobalTheory.CapHC.qdet_blocks_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CapHC.qdet_blocks_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCapelliDetBlockLeviCongrModUpperBlockIdeal.lean&line=339#L339)
 -/
 theorem _root_.GlobalTheory.T.capelliDet_block_levi_congr_mod_upperBlockIdeal : ∀ (A : Type) [Ring A] [Algebra ℂ A] {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (X : Fin N → Fin N → A), Formalism.REAL.GlRel X → ∀ u : ℂ, Formalism.REAL.qdet X (u + ((N : ℂ) - 1) / 2) - (List.ofFn fun i : Fin c => Formalism.REAL.qdet (fun p q : Fin (n i) => X (stdBlocks n h ⟨i, p⟩) (stdBlocks n h ⟨i, q⟩)) (u + ((n i : ℂ) - 1) / 2 - (modExp (fun i => Fin (n i)) i : ℂ) / 2)).prod ∈ Submodule.span ℂ {y : A | ∃ (p q : Fin N) (w : A), blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = X p q * w} := by
   first | exact @GlobalTheory.CapHC.qdet_blocks_congr | exact GlobalTheory.CapHC.qdet_blocks_congr | (intros; apply GlobalTheory.CapHC.qdet_blocks_congr <;> assumption)

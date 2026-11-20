@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PoinBase.poincare_curvBound | exact GlobalTheory.PoinBase.poincare_curvBound | (intros; apply GlobalTheory.PoinBase.poincare_curvBound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PoinBase.poincare_curvBound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundarySettingNormBound.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.boundary_setting_curvature_bound : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)], ∃ (α : LocPot (CxPts (genStr s.T.Z) σ)) (Λ : Fin x.m → LocPot (CxPts (genStr s.T.Z) σ)) (sg : Fin x.m → CxPts (genStr s.T.Z) σ → CxPts (genStr s.T.Z) σ → ℂ) (t C : ℝ), IsBoundarySetting (manifold s.T.Z σ).finAtlas α Λ sg t ∧ (∀ i y, normSec (Λ i) (sg i) y = x.nrm σ i y) ∧ (∀ i, Continuous (x.nrm σ i)) ∧ boundary sg = {y | ¬ Inner y} ∧ CurvBound x σ (poincarePot α Λ sg t) C := by
   first | exact @GlobalTheory.PoinBase.poincare_curvBound | exact GlobalTheory.PoinBase.poincare_curvBound | (intros; apply GlobalTheory.PoinBase.poincare_curvBound <;> assumption)

@@ -17,8 +17,10 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurveSecDeg.topSelf_pos_of_sec | exact GlobalTheory.CurveSecDeg.topSelf_pos_of_sec | (intros; apply GlobalTheory.CurveSecDeg.topSelf_pos_of_sec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurveSecDeg.topSelf_pos_of_sec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionDegreePositiveOnCurve.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.section_degree_positive_on_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (e : ℕ), IsArithVar p e →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type) [Field κ] [Finite κ]

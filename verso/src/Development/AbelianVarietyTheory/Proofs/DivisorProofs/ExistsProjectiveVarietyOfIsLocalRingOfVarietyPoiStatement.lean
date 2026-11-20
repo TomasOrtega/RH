@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocModelProj.exists_projective_of_isLocModel | exact GlobalTheory.LocModelProj.exists_projective_of_isLocModel | (intros; apply GlobalTheory.LocModelProj.exists_projective_of_isLocModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocModelProj.exists_projective_of_isLocModel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsProjectiveVarietyOfIsLocalRingOfVarietyPoi.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.exists_projectiveVariety_of_isLocalRingOfVarietyPoint : ∀ (L : Type) [Field L] (c : ℂ →+* L) (R : Subring L) (n : ℕ) (x : Fin n → L), IsLocModel c R → TrBasis c x →
   ∃ (Y : AlgebraicGeometry.Scheme.{0}) (_ : AlgebraicGeometry.IsIntegral Y) (p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) (e : Y.functionField ≃+* L) (y : Y),

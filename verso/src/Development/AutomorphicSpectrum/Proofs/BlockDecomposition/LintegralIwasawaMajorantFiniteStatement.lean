@@ -10,8 +10,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZetaIntegralBound.outer_finite | exact GlobalTheory.CompanionTheory.ZetaIntegralBound.outer_finite | (intros; apply GlobalTheory.CompanionTheory.ZetaIntegralBound.outer_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZetaIntegralBound.outer_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLintegralIwasawaMajorantFinite.lean&line=183#L183)
 -/
 theorem _root_.GlobalTheory.T.lintegral_iwasawa_majorant_finite : ForS fun F _ _ _ _ _ _ ψ => ∀ R B σ ε : ℝ, 0 < ε → 2 * ε < σ → ε < 1 / 2 →
   ∫⁻ g, ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (σ + 1 / 2)) *

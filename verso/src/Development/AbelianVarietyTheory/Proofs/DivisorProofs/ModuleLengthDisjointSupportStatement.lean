@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFinite
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 open GlobalTheory GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.length_sectionsOn_top_eq_sum_of_separating | exact GlobalTheory.length_sectionsOn_top_eq_sum_of_separating | (intros; apply GlobalTheory.length_sectionsOn_top_eq_sum_of_separating <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.length_sectionsOn_top_eq_sum_of_separating` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModuleLengthDisjointSupport.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.module_length_disjoint_support : ∀ {X : Scheme.{0}} (F : X.Modules) [IsFiniteQC F] (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] {ι : Type} [Fintype ι] (W : ι → X.Opens), support F ⊆ ⋃ i, (W i : Set X) → (∀ i j, i ≠ j → ∀ x ∈ support F, x ∈ W i → x ∉ W j) → Module.length R (sectionsOn F ⊤) = ∑ i, Module.length R (sectionsOn F (W i)) := by
   first | exact @GlobalTheory.length_sectionsOn_top_eq_sum_of_separating | exact GlobalTheory.length_sectionsOn_top_eq_sum_of_separating | (intros; apply GlobalTheory.length_sectionsOn_top_eq_sum_of_separating <;> assumption)

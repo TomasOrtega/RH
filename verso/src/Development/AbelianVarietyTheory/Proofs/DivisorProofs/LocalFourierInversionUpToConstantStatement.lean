@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FourierLocInv.fourier_inversion | exact GlobalTheory.FourierLocInv.fourier_inversion | (intros; apply GlobalTheory.FourierLocInv.fourier_inversion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FourierLocInv.fourier_inversion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalFourierInversionUpToConstant.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.local_fourier_inversion_up_to_constant : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (χ : AddChar (Fv F v) ℂ), Continuous χ → (∀ t, ‖χ t‖ = 1) →
     χ ≠ 1 → ∀ (κ : Type) [Fintype κ] [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)]

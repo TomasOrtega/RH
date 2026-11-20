@@ -13,8 +13,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchKXPr.locOpInf_unif_bound | exact GlobalTheory.ArchKXPr.locOpInf_unif_bound | (intros; apply GlobalTheory.ArchKXPr.locOpInf_unif_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchKXPr.locOpInf_unif_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTripleSchwartzSeminormBound.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.triple_schwartz_seminorm_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

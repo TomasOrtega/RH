@@ -8,8 +8,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Published GlobalTheory.Published.AutFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa | exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasa …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FMinimalParabolicUnipotentLeviDecomp.lean&line=181#L181)
 -/
 theorem _root_.GlobalTheory.T.archimedean_iwasawa_minimal_parabolic : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ g ∈ GinfC V, ∃ p ∈ PositivityTheory.ThKR.minPar D.sp.cm.sig V.gram X, ∃ κ : (∀ τ, Formalism.REAL.KG (ε τ)), g = p * GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf.kInf θ V ε fr κ := by
   first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa | exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa.exists_archIwasawa <;> assumption)

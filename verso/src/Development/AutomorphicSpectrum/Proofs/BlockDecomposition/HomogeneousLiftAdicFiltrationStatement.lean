@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VanIdealHomog
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out MvPolynomial GlobalTheory.CompanionTheory.GE
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GE.Tower.exists_limit_ideal | exact GlobalTheory.CompanionTheory.GE.Tower.exists_limit_ideal | (intros; apply GlobalTheory.CompanionTheory.GE.Tower.exists_limit_ideal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GE.Tower.exists_limit_ideal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHomogeneousLiftAdicFiltration.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.homogeneous_lift_adic_filtration : ∀ (R : Type) [CommRing R] (I : Ideal R), IsAdicComplete I R → ∀ (N : ℕ)
     (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)),

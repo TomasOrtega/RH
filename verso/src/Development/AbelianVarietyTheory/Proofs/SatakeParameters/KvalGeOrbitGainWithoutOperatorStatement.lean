@@ -9,8 +9,10 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.L2.Th1.D (F1 F2 OwOK TrDual addC thetaInZ sumE)
 open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerGaussA.kvalGe_gainA | exact GlobalTheory.KerGaussA.kvalGe_gainA | (intros; apply GlobalTheory.KerGaussA.kvalGe_gainA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerGaussA.kvalGe_gainA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FKvalGeOrbitGainWithoutOperator.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.kvalGe_orbitGainWithoutOperator : ∀ (Lc : product_zeroth_first_parts.Loc) (ep : ℂ_[Lc.l]) (be : MvPowerSeries (ZMod Lc.d) ℂ_[Lc.l]), ‖ep‖ = 1 → BeStd Lc.l Lc.d be → OrbitPlaces.OrbitThetaExpansion Lc ep (-1) be → product_zeroth_first_parts.KvalGe Lc.N0 Lc.N1 Lc.l Lc.nu Lc.Th (gainA Lc) := by
   first | exact @GlobalTheory.KerGaussA.kvalGe_gainA | exact GlobalTheory.KerGaussA.kvalGe_gainA | (intros; apply GlobalTheory.KerGaussA.kvalGe_gainA <;> assumption)

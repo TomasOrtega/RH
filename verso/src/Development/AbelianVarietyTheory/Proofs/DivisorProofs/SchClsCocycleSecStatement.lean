@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtC.sch_cls_cocycle_sec | exact GlobalTheory.EtC.sch_cls_cocycle_sec | (intros; apply GlobalTheory.EtC.sch_cls_cocycle_sec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtC.sch_cls_cocycle_sec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchClsCocycleSec.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (I : Cx R) (m n k : ℤ), m + 1 = n → n + 1 = k → (∀ z : Sec (I.X n) X, Sec.map (I.d n k) z = 0 → ∃ α : Cocycle ((chains R).obj (sch.obj X)) I n, (∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 n (by simp) U x = Sec.res x z) ∧ ∀ (p : ℕ) s h U x, ev α.1 (p + 1) s h U x = 0) ∧ ∀ α : Cocycle ((chains R).obj (sch.obj X)) I n, Sec.map (I.d n k) (ev α.1 0 n (by simp) X (𝟙 X)) = 0 ∧ (CohomologyClass.mk α = 0 ↔ ∃ y : Sec (I.X m) X, Sec.map (I.d m n) y = ev α.1 0 n (by simp) X (𝟙 X)) := by
   first | exact @GlobalTheory.EtC.sch_cls_cocycle_sec | exact GlobalTheory.EtC.sch_cls_cocycle_sec | (intros; apply GlobalTheory.EtC.sch_cls_cocycle_sec <;> assumption)

@@ -6,8 +6,10 @@ open Set Matrix MeasureTheory
 open GlobalTheory.HermFrame
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernFrame.chern_frame_closed | exact GlobalTheory.ChernFrame.chern_frame_closed | (intros; apply GlobalTheory.ChernFrame.chern_frame_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernFrame.chern_frame_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernFormsFrameIndependentClosed.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.chernForms_frame_independent_closed : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) {ι : Type} [Fintype ι] [DecidableEq ι] {κ : Type} (U : κ → Set M),
     (∀ a, IsOpen (U a)) → (∀ y, ∃ a, y ∈ U a) → ∀ (g : κ → κ → M → Matrix ι ι ℂ),

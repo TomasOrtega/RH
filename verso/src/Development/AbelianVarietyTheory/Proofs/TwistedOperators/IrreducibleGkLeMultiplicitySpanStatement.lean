@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGKId.le_multSpan | exact GlobalTheory.CuspGKId.le_multSpan | (intros; apply GlobalTheory.CuspGKId.le_multSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspGKId.le_multSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIrreducibleGkLeMultiplicitySpan.lean&line=571#L571)
 -/
 theorem _root_.GlobalTheory.T.irreducible_gk_le_multiplicity_span : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

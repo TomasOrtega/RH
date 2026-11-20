@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoreComp.core_mem_latCore | exact GlobalTheory.CoreComp.core_mem_latCore | (intros; apply GlobalTheory.CoreComp.core_mem_latCore <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoreComp.core_mem_latCore` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FJacobiStepCoreComponentMemCoreDepthLattice.lean&line=161#L161)
 -/
 theorem _root_.GlobalTheory.T.jacobi_step_core_component_mem_core_depth_lattice : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ u ∈ (pcFB W F σ h h').Γ₀, ((F.oB σ h').resT _ u).1 ∈ latCore G (2 * σ + 2) := by
   first | exact @GlobalTheory.CoreComp.core_mem_latCore | exact GlobalTheory.CoreComp.core_mem_latCore | (intros; apply GlobalTheory.CoreComp.core_mem_latCore <;> assumption)

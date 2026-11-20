@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameCoord
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatDetDeg.lineDeg_det_line | exact GlobalTheory.LatDetDeg.lineDeg_det_line | (intros; apply GlobalTheory.LatDetDeg.lineDeg_det_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatDetDeg.lineDeg_det_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegreeDeterminantLineTwoHermitianLattices.lean&line=266#L266)
 -/
 theorem _root_.GlobalTheory.T.degree_determinant_line_two_hermitianLattices : ∀ (K : Type) [Field K] [NumberField K] {n : ℕ} (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (L L' : Submodule (𝓞 K) (Fin n → K)), L.FG → L'.FG → ∀ {m m' : ℕ} (u : Fin m → Fin n → K) (u' : Fin m' → Fin n → K), LinearIndependent K u → Submodule.span K (Set.range u) = Submodule.span K (L : Set (Fin n → K)) → LinearIndependent K u' → Submodule.span K (Set.range u') = Submodule.span K (L' : Set (Fin n → K)) → ∀ a : K, a ≠ 0 → ∀ ρK : HeightOneSpectrum (𝓞 K) → ℝ, (∀ (𝔓 : HeightOneSpectrum (𝓞 K)) (b : Fin m → Fin n → K) (M : Matrix (Fin m) (Fin m) K) (b' : Fin m' → Fin n → K) (M' : Matrix (Fin m') (Fin m') K), GlobalTheory.PtDeg.LocBasis 𝔓 L b → (∀ i, u i = ∑ j, M i j • b j) → GlobalTheory.PtDeg.LocBasis 𝔓 L' b' → (∀ i, u' i = ∑ j, M' i j • b' j) → ρK 𝔓 = (vAdd 𝔓 a : ℝ) + (vAdd 𝔓 M.det : ℝ) - (vAdd 𝔓 M'.det : ℝ)) → (Function.support ρK).Finite ∧ lineDeg (fun σ : K →+* ℂ => ‖σ a‖ * Real.sqrt (h.gram σ u).det.re / Real.sqrt (h.gram σ u').det.re) ρK = ReciprocityTheory.GeometryOfNumbersTheory.deg h L - ReciprocityTheory.GeometryOfNumbersTheory.deg h L' := by
   first | exact @GlobalTheory.LatDetDeg.lineDeg_det_line | exact GlobalTheory.LatDetDeg.lineDeg_det_line | (intros; apply GlobalTheory.LatDetDeg.lineDeg_det_line <;> assumption)

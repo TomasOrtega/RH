@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviScale.exists_levi_scale | exact GlobalTheory.LeviScale.exists_levi_scale | (intros; apply GlobalTheory.LeviScale.exists_levi_scale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviScale.exists_levi_scale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRationalLeviScalingIsotropicFrame.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.exists_rationalLevi_scaling_isotropicFrame : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → adj D C' * V.gram * C' = 0 → adj D C' * V.gram * B = 0 → ∃ a : GA D V, a ∈ GQ V ∧ HMul.hMul (matHom V a).1 (C.map (incA D)) = (2 : AE D) • C.map (incA D) ∧ HMul.hMul (matHom V a).1 (B.map (incA D)) = B.map (incA D) ∧ (2 : AE D) • HMul.hMul (matHom V a).1 (C'.map (incA D)) = C'.map (incA D) := by
   first | exact @GlobalTheory.LeviScale.exists_levi_scale | exact GlobalTheory.LeviScale.exists_levi_scale | (intros; apply GlobalTheory.LeviScale.exists_levi_scale <;> assumption)

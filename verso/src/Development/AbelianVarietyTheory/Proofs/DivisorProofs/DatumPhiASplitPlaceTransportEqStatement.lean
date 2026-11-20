@@ -17,8 +17,10 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PureMatch.phiA_transport_split_place | exact GlobalTheory.PureMatch.phiA_transport_split_place | (intros; apply GlobalTheory.PureMatch.phiA_transport_split_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PureMatch.phiA_transport_split_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDatumPhiASplitPlaceTransportEq.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.datumPhiA_splitPlace_transport_eq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (e : Num G i j) (w : Pl D.host.E) (hw : w ∈ locPl G t) (v : Pl D.host.F) (hv : w.under (𝓞 D.host.F) = v)

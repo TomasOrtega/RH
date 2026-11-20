@@ -8,8 +8,10 @@ open CategoryTheory MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicG
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AmpleGen
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowPull.pull_zpow | exact GlobalTheory.PowPull.pull_zpow | (intros; apply GlobalTheory.PowPull.pull_zpow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowPull.pull_zpow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechPicardPullbackZpowEqMumfordFormula.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.cechPicardPullback_zpow_eq_mumford_formula : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB) (T : Over (Sp K)) (z : T ⟶ A) (n : ℤ), GlobalTheory.CechPic.pull (z ^ n).left (GlobalTheory.CechPic.cls L hL) = tri n • GlobalTheory.CechPic.pull z.left (GlobalTheory.CechPic.cls L hL) + tri (-n) • GlobalTheory.CechPic.pull (z⁻¹).left (GlobalTheory.CechPic.cls L hL) := by
   first | exact @GlobalTheory.PowPull.pull_zpow | exact GlobalTheory.PowPull.pull_zpow | (intros; apply GlobalTheory.PowPull.pull_zpow <;> assumption)

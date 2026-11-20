@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff
 open scoped MatrixGroups
 open GlobalTheory.KZ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KZ.LevelOne.const_of_invariant_bounded | exact GlobalTheory.KZ.LevelOne.const_of_invariant_bounded | (intros; apply GlobalTheory.KZ.LevelOne.const_of_invariant_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KZ.LevelOne.const_of_invariant_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FConstOfSlTwoIntInvariantBoundedUpperHalfPlane.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.const_of_slTwoInt_invariant_bounded_upperHalfPlane : ∀ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs → (∀ γ : SL(2, ℤ), ∀ z ∈ Hs, φ (mob (ofSL γ) z) = φ z) → (∃ M t : ℝ, ∀ z ∈ Hs, t < z.im → ‖φ z‖ ≤ M) → ∃ c : ℂ, ∀ z ∈ Hs, φ z = c := by
   first | exact @GlobalTheory.KZ.LevelOne.const_of_invariant_bounded | exact GlobalTheory.KZ.LevelOne.const_of_invariant_bounded | (intros; apply GlobalTheory.KZ.LevelOne.const_of_invariant_bounded <;> assumption)

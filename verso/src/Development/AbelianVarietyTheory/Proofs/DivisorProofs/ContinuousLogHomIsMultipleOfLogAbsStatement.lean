@@ -12,8 +12,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThKCtFin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE | exact GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE | (intros; apply GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContinuousLogHomIsMultipleOfLogAbs.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.continuous_log_hom_is_multiple_of_log_abs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (φ : (AE F E)ˣ → ℂ), Continuous φ → (∀ s t, φ (s * t) = φ s + φ t) → (∀ γ : Eˣ, φ (Units.map (inclR (F := F) (AF F)).toMonoidHom γ) = 0) → ∃ A : ℂ, ∀ t, φ t = A * ((Real.log (absE F E t : ℝ) : ℝ) : ℂ) := by
   first | exact @GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE | exact GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE | (intros; apply GlobalTheory.IdeleLogHom.exists_eq_mul_log_absE <;> assumption)

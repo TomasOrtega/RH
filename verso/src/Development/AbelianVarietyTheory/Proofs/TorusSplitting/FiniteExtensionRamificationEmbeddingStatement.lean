@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaVal.finite_extension_ramification_embedding | exact GlobalTheory.EtaVal.finite_extension_ramification_embedding | (intros; apply GlobalTheory.EtaVal.finite_extension_ramification_embedding <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaVal.finite_extension_ramification_embedding` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusSplitting%2FFiniteExtensionRamificationEmbedding.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.exists_injective_intO_embedding_of_norm_lt_one : ∀ (T T' : CDVR) (φ : T.V →+* T'.V), Function.Injective φ → φ.Finite → ∃ (i : T.Fr →+* T'.Fr) (ρ : ℕ), 0 < ρ ∧ (∀ a, i (algebraMap T.V T.Fr a) = algebraMap T'.V T'.Fr (φ a)) ∧ (∀ x, vV T'.V (i x) = (ρ : ℤ) * vV T.V x) ∧ ∀ (p : ℕ) (C : SCF p) (eF : T.Fr →+* ↥C.S), (∀ a : T.V, ‖eF (algebraMap T.V T.Fr a)‖ ≤ 1) → (∀ a ∈ maximalIdeal T.V, ‖eF (algebraMap T.V T.Fr a)‖ < 1) → ∃ f : T'.V →+* intO ↥C.S, Function.Injective f ∧ (∀ a, ((f (φ a) : intO ↥C.S) : ↥C.S) = eF (algebraMap T.V T.Fr a)) ∧ ∀ a ∈ maximalIdeal T'.V, ‖((f a : intO ↥C.S) : ↥C.S)‖ < 1 := by
   first | exact @GlobalTheory.EtaVal.finite_extension_ramification_embedding | exact GlobalTheory.EtaVal.finite_extension_ramification_embedding | (intros; apply GlobalTheory.EtaVal.finite_extension_ramification_embedding <;> assumption)

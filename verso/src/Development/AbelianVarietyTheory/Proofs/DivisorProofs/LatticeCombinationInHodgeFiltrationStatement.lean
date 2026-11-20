@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsDiffSumSmulOfIsL
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeUnif.sum_smul_mem_fil_iff | exact GlobalTheory.HodgeUnif.sum_smul_mem_fil_iff | (intros; apply GlobalTheory.HodgeUnif.sum_smul_mem_fil_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeUnif.sum_smul_mem_fil_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeCombinationInHodgeFiltration.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.lattice_combination_in_hodge_filtration : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g : ℕ) (u : HolUnif A L g)
     (P : u.Λ →+ HdR A), LieExact A → (∀ x : u.Λ, ∃ v, IsLieImage (P x) v ∧ u.IsDiff x v) →

@@ -18,8 +18,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLocWeil.weil_kappa | exact GlobalTheory.HTLocWeil.weil_kappa | (intros; apply GlobalTheory.HTLocWeil.weil_kappa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLocWeil.weil_kappa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrallyClosedGenericExtension.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.integrally_closed_generic_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ)

@@ -12,8 +12,10 @@ open scoped Classical
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrUnifDen.schr_fix_pure_uniform | exact GlobalTheory.SchrUnifDen.schr_fix_pure_uniform | (intros; apply GlobalTheory.SchrUnifDen.schr_fix_pure_uniform <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrUnifDen.schr_fix_pure_uniform` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzBruhatCongruenceLevel.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.schwartz_bruhat_congruence_level : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)),

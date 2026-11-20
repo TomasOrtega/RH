@@ -7,8 +7,10 @@ open GlobalTheory.LN GlobalTheory.TorRef GlobalTheory.IntegralCombination
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntegralLift.main | exact GlobalTheory.IntegralLift.main | (intros; apply GlobalTheory.IntegralLift.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntegralLift.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FUniformizationSectionExpansion.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.uniformization_section_expansion : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]

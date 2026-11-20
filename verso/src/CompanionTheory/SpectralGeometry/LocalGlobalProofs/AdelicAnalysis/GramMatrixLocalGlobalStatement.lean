@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.GramLocal.gram_local | exact GlobalTheory.CompanionTheory.SW.GramLocal.gram_local | (intros; apply GlobalTheory.CompanionTheory.SW.GramLocal.gram_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.GramLocal.gram_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FGramMatrixLocalGlobal.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.gram_matrix_local_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (X : (Fin n → Fin M → AF F ⊗[F] E)) (T : Matrix (Fin n) (Fin n) E), (gramR (AF F) σ J X = T.map (inclR (AF F)) ↔ gramR (Ainf F) σ J (projInf X) = T.map (inclR (Ainf F)) ∧ ∀ v, gramR (Fv F v) σ J (projV v (projFin X)) = T.map (inclR (Fv F v))) ∧ ∀ Y : Fin n → Fin M → E, gramR (AF F) σ J (ratTup (AF F) Y) = (gramE σ J Y).map (inclR (AF F)) := by
   first | exact @GlobalTheory.CompanionTheory.SW.GramLocal.gram_local | exact GlobalTheory.CompanionTheory.SW.GramLocal.gram_local | (intros; apply GlobalTheory.CompanionTheory.SW.GramLocal.gram_local <;> assumption)

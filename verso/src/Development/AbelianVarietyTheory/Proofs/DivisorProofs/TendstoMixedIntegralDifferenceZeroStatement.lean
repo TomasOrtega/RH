@@ -9,8 +9,10 @@ open scoped ENNReal Classical
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagPoly GlobalTheory.FlagAr Filter Topology
 open GlobalTheory.ArDegIndep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArDegIndep.MixLimit.mixed_limit | exact GlobalTheory.ArDegIndep.MixLimit.mixed_limit | (intros; apply GlobalTheory.ArDegIndep.MixLimit.mixed_limit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArDegIndep.MixLimit.mixed_limit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTendstoMixedIntegralDifferenceZero.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.tendsto_mixed_integral_difference_zero : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ B : ℝ, 2 ≤ B → ∀ u : Wt O.Y, (∀ τ, StrictAnti (u τ)) → ∀ (c : O.Y.Comp) (i : ℕ), i ≤ dimY O.Y → Tendsto (fun R : ℝ => (T.M c).int (fun k : Fin (dimY O.Y) => (T.K B c).c1 (if (k : ℕ) < i then T.L B c u + (T.K B c).ar ((T.F c).phR R u) else T.L B c u + (T.K B c).ar (psiOf h x' R u c))) ((T.F c).phR R u - psiOf h x' R u c)) atTop (𝓝 0) := by
   first | exact @GlobalTheory.ArDegIndep.MixLimit.mixed_limit | exact GlobalTheory.ArDegIndep.MixLimit.mixed_limit | (intros; apply GlobalTheory.ArDegIndep.MixLimit.mixed_limit <;> assumption)

@@ -10,8 +10,10 @@ open scoped TensorProduct Matrix
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowReal.om_ptGrid_movedVec | exact GlobalTheory.RowReal.om_ptGrid_movedVec | (intros; apply GlobalTheory.RowReal.om_ptGrid_movedVec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowReal.om_ptGrid_movedVec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCompactChainChiPairMovedVectorColumnCharacter.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.compactChain_chiPair_movedVector_columnCharacter : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ0 : T}, L.Is μ0 →
     ∀ (W : G.Weil) {U : Set T} (S : GridChoice W U) (g : Gc D.what₂.Tau (GlobalTheory.RowReal.rowSizes D)) (t : T) (i : Fin D.R.m)

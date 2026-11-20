@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionTransfer.torsion_transfer | exact GlobalTheory.TorsionTransfer.torsion_transfer | (intros; apply GlobalTheory.TorsionTransfer.torsion_transfer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionTransfer.torsion_transfer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionFibrePointTransferFixedModel.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.torsion_fibre_point_transfer_fixed_model : ∀ (V₁ : Type) [CommRing V₁] (X : Over (Sp V₁)) [GrpObj X] (K : Type) [Field K] (ev : V₁ →+* K)
   (Z : Over (Sp K)) [GrpObj Z] (ψ : ((Over.pullback (spMap ev)).obj X).left ⟶ Z.left),

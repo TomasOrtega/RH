@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescGraded.gradedFam_and_ne_zero | exact GlobalTheory.DescGraded.gradedFam_and_ne_zero | (intros; apply GlobalTheory.DescGraded.gradedFam_and_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescGraded.gradedFam_and_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeDescentGradedFamilyNonzero.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.abelianSchemeDescent_gradedFamily_nonzero : ∀ σ : Setup, GradedFam σ.c₀ σ.N ∧ ∃ k, 1 ≤ k ∧ ∃ b ∈ σ.N k, b ≠ 0 := by
   first | exact @GlobalTheory.DescGraded.gradedFam_and_ne_zero | exact GlobalTheory.DescGraded.gradedFam_and_ne_zero | (intros; apply GlobalTheory.DescGraded.gradedFam_and_ne_zero <;> assumption)

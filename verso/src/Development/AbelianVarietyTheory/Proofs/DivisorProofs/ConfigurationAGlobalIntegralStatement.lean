@@ -17,8 +17,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.FockBridge
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockBridge.KerStable.fock_keeps_ker | exact GlobalTheory.FockBridge.KerStable.fock_keeps_ker | (intros; apply GlobalTheory.FockBridge.KerStable.fock_keeps_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockBridge.KerStable.fock_keeps_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigurationAGlobalIntegral.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.configuration_a_global_integral : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

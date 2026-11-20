@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_sec_nonzero_on_finite_of_generated | exact GlobalTheory.exists_sec_nonzero_on_finite_of_generated | (intros; apply GlobalTheory.exists_sec_nonzero_on_finite_of_generated <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_sec_nonzero_on_finite_of_generated` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSecNonzeroOnFiniteOfGenerated.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_sec_nonzero_on_finite_of_generated' : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X] (p : X ⟶ Sp k) (L : LB X), L.IsLB → ∀ (n : ℕ) (u : Fin n → L.Sec), ⨆ i, nonzeroLocus (u i) = ⊤ → ∀ S : Set X, S.Finite → ∃ s : L.Sec, ∀ x ∈ S, x ∈ nonzeroLocus s := by
   first | exact @GlobalTheory.exists_sec_nonzero_on_finite_of_generated | exact GlobalTheory.exists_sec_nonzero_on_finite_of_generated | (intros; apply GlobalTheory.exists_sec_nonzero_on_finite_of_generated <;> assumption)

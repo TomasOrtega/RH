@@ -6,8 +6,10 @@ open UpperHalfPlane Filter GlobalTheory.OddFrame
 open ModularForm (E₄ E₆)
 open scoped MatrixGroups ModularForm Manifold Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OddFrame.reps_index | exact GlobalTheory.OddFrame.reps_index | (intros; apply GlobalTheory.OddFrame.reps_index <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OddFrame.reps_index` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsPlusMinusCosetRepresentativesTwoMulCard.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.exists_plusMinusCosetRepresentatives_two_mul_card : ∀ (Γ : Subgroup SL(2, ℤ)), Γ.FiniteIndex → (-1 : SL(2, ℤ)) ∉ Γ → ∃ (r : ℕ) (s : Fin r → SL(2, ℤ)), IsReps Γ s ∧ 2 * r = Γ.index := by
   first | exact @GlobalTheory.OddFrame.reps_index | exact GlobalTheory.OddFrame.reps_index | (intros; apply GlobalTheory.OddFrame.reps_index <;> assumption)

@@ -21,8 +21,10 @@ open scoped Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ValArith.val_sq_div_ge | exact GlobalTheory.ValArith.val_sq_div_ge | (intros; apply GlobalTheory.ValArith.val_sq_div_ge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ValArith.val_sq_div_ge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FValuationLowerBoundProduct.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.valuation_lower_bound_product : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ),
     (l : R) ∈ IsLocalRing.maximalIdeal R → (l : R) ≠ 0 →

@@ -14,8 +14,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.twistConeVanishing_of_cut | exact GlobalTheory.twistConeVanishing_of_cut | (intros; apply GlobalTheory.twistConeVanishing_of_cut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.twistConeVanishing_of_cut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTwistedPowerVanishingInductionBySectionSqTensor.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.twistedPowerVanishing_induction_by_section_sq_tensor : ∀ {Y : Scheme.{0}} (A N : LB Y), A.IsLB → N.IsLB → ∀ (r : ℕ), 1 ≤ r → ∀ (hM : (lbPow (tens (lbPow N 2) A) r).IsLB) (s : (lbPow (tens (lbPow N 2) A) r).Sec) (G : Y.Modules), (∃ j₁ : ℕ, ∀ j m : ℕ, j₁ ≤ j → m < 2 * r → ∀ p, 0 < p → Subsingleton (coh (twist G (tens (lbPow A j) (lbPow N m))) p)) → TwistConeVanishing A N (kernel (cutHom G hM s)) → TwistConeVanishing A N (cokernel (cutHom G hM s)) → TwistConeVanishing A N G := by
   first | exact @GlobalTheory.twistConeVanishing_of_cut | exact GlobalTheory.twistConeVanishing_of_cut | (intros; apply GlobalTheory.twistConeVanishing_of_cut <;> assumption)

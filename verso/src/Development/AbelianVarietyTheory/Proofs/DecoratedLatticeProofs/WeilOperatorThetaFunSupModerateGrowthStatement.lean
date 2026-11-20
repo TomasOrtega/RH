@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 open scoped ComplexOrder ENNReal NNReal ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SupThetaGrowth.om_sup_growth | exact GlobalTheory.SupThetaGrowth.om_sup_growth | (intros; apply GlobalTheory.SupThetaGrowth.om_sup_growth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SupThetaGrowth.om_sup_growth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilOperatorThetaFunSupModerateGrowth.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.weilOperator_thetaFun_sup_moderate_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ g h w, ‖om (g, h) f w‖ ≤ C * (height S g * height T h) ^ A := by
   first | exact @GlobalTheory.SupThetaGrowth.om_sup_growth | exact GlobalTheory.SupThetaGrowth.om_sup_growth | (intros; apply GlobalTheory.SupThetaGrowth.om_sup_growth <;> assumption)

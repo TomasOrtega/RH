@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line | exact GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line | (intros; apply GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHasDerivAtThetaSumHeisenbergLine.lean&line=300#L300)
 -/
 theorem _root_.GlobalTheory.T.hasDerivAt_thetaSum_heisenbergLine : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F}
     {κ : Type} [Fintype κ] (d : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →

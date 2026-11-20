@@ -10,8 +10,10 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualInd.dualFn_values | exact GlobalTheory.DualInd.dualFn_values | (intros; apply GlobalTheory.DualInd.dualFn_values <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualInd.dualFn_values` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInducedKFiniteRestriction.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.induced_k_finite_restriction : ∀ (n : ℕ) (ε : Fin n → Bool) (I : Datum ε) (φ : UJ ε → I.V), φ ∈ I.fns → IsKFinFun φ → (∃ f' ∈ I.dualFns, IsKFinFun f' ∧ ∀ k ∈ KG ε, f' k = φ k) ∧ IsKFinIn I.M I.σ (φ 1) ∧ (φ ≠ 0 → ∃ k ∈ KG ε, φ k ≠ 0) := by
   first | exact @GlobalTheory.DualInd.dualFn_values | exact GlobalTheory.DualInd.dualFn_values | (intros; apply GlobalTheory.DualInd.dualFn_values <;> assumption)

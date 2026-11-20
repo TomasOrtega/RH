@@ -10,8 +10,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoLat.isoHom_of_lieMet | exact GlobalTheory.TwoLat.isoHom_of_lieMet | (intros; apply GlobalTheory.TwoLat.isoHom_of_lieMet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoLat.isoHom_of_lieMet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelChangeOfFieldPointsC.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.model_change_of_field_points_c : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

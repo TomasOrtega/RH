@@ -12,8 +12,10 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i | exact GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FUniformizationThickeningCompat.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.uniformization_thickening_compat : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e : ℕ), thickMap R I e (splitTorus (Spec (CommRingCat.of R)) D.toPre.X) ≫ (GlobalTheory.Diag.baseChangeIso (thick R I (e + 1)) D.toPre.X).hom.left ≫ (U.gt (e + 1)).i.left = (GlobalTheory.Diag.baseChangeIso (thick R I e) D.toPre.X).hom.left ≫ (U.gt e).i.left ≫ thickMap R I e G := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i | exact GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i <;> assumption)

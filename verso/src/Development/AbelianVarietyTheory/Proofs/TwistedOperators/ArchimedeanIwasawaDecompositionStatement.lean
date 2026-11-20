@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwArchMin.iwasawa_minPar | exact GlobalTheory.IwArchMin.iwasawa_minPar | (intros; apply GlobalTheory.IwArchMin.iwasawa_minPar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwArchMin.iwasawa_minPar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FArchimedeanIwasawaDecomposition.lean&line=216#L216)
 -/
 theorem _root_.GlobalTheory.T.archimedean_iwasawa_decomposition : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ w (g : GArch D.sp.cm.sig V.gram w), ∃ p ∈ PArch Φ.flag0 w, ∃ k ∈ stabArch D.sp.cm.sig V.gram w (Formalism.UG.bc (compInf D.host.F D.host.E w) a), g = p * k := by
   first | exact @GlobalTheory.IwArchMin.iwasawa_minPar | exact GlobalTheory.IwArchMin.iwasawa_minPar | (intros; apply GlobalTheory.IwArchMin.iwasawa_minPar <;> assumption)

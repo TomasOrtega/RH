@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineToGAdDerivative
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineDerSum.exists_lines_hasDerivAt | exact GlobalTheory.LineDerSum.exists_lines_hasDerivAt | (intros; apply GlobalTheory.LineDerSum.exists_lines_hasDerivAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineDerSum.exists_lines_hasDerivAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineToGAdDerivative.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.line_to_GAd_derivative : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x), IsCMExt F E σ → ∀ (d : ℕ) (W : Spc F E d) (c : E) (hc : c ≠ 0),

@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.LinkGram.link_gram | exact GlobalTheory.Unf.LinkGram.link_gram | (intros; apply GlobalTheory.Unf.LinkGram.link_gram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.LinkGram.link_gram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselLineLinkGramSimilitudeBijective.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.besselLineLink_gram_similitude_bijective : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E), IsLineVec L' ζ' → ∀ l : Link B L' ζ', l.τᴴ ⬝ (B.L.gram ⬝ l.τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram ∧ ∀ S : HSp D, Function.Bijective (l.κ S) ∧ ∀ w, l.κ S w ∈ ratMx D S.rank B.L.rank → w ∈ ratMx D L'.rank S.rank := by
   first | exact @GlobalTheory.Unf.LinkGram.link_gram | exact GlobalTheory.Unf.LinkGram.link_gram | (intros; apply GlobalTheory.Unf.LinkGram.link_gram <;> assumption)

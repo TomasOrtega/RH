@@ -15,8 +15,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.RatLatO.rat_mul_mem_latO | exact GlobalTheory.Twist.RatLatO.rat_mul_mem_latO | (intros; apply GlobalTheory.Twist.RatLatO.rat_mul_mem_latO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.RatLatO.rat_mul_mem_latO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRationalMatrixSandwichMemCompletedHomLatticeSelf.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.rationalMatrix_sandwich_mem_completed_homLattice_selfDual : ∀ {D : D7} {S S' T T' : HSp D} {LS : Lat S} {LS' : Lat S'} {LT : Lat T} {LT' : Lat T'}, IsSelfDualC S LS → IsSelfDualC S' LS' → IsSelfDualC T' LT' → ∀ (j : Matrix (Fin S.rank) (Fin S'.rank) D.host.E) (q : Matrix (Fin T'.rank) (Fin T.rank) D.host.E), (∀ y ∈ LS', j *ᵥ y ∈ LS) → (∀ t ∈ LT, q *ᵥ t ∈ LT') → ∀ x : WO S T, x ∈ latO S T (LS : Set _) (LT : Set _) (fun _ => True) → (rat q * x * rat j : WO S' T') ∈ latO S' T' (LS' : Set _) (LT' : Set _) (fun _ => True) := by
   first | exact @GlobalTheory.Twist.RatLatO.rat_mul_mem_latO | exact GlobalTheory.Twist.RatLatO.rat_mul_mem_latO | (intros; apply GlobalTheory.Twist.RatLatO.rat_mul_mem_latO <;> assumption)

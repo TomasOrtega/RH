@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DeRhamExt.exists_canonical_family | exact GlobalTheory.DeRhamExt.exists_canonical_family | (intros; apply GlobalTheory.DeRhamExt.exists_canonical_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DeRhamExt.exists_canonical_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCanonicalDeRhamRigidExtensionFamily.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_canonical_deRham_rigidExtension_family : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime], ∃ e : GlobalTheory.Published.DeRhamVectorExtension.Family p, e.Natural ∧ e.Filtered ∧ e.Tangent ∧ ∀ ⦃R : Type⦄ [CommRing R] (hR : IsNilpotent (p : R)) ⦃A : Over (Sp R)⦄ [GrpObj A] (hA : IsAbelianScheme A) ⦃G : PDivGroup p R⦄ (t : G.TorsionTower A) (c : primDR A), IsCan t c (e hR hA t c) := by
   first | exact @GlobalTheory.DeRhamExt.exists_canonical_family | exact GlobalTheory.DeRhamExt.exists_canonical_family | (intros; apply GlobalTheory.DeRhamExt.exists_canonical_family <;> assumption)

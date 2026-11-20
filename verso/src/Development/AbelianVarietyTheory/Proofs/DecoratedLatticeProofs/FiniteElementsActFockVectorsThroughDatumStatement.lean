@@ -7,8 +7,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.KJI
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockFin.pt_finite | exact GlobalTheory.FockFin.pt_finite | (intros; apply GlobalTheory.FockFin.pt_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockFin.pt_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFiniteElementsActFockVectorsThroughDatum.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.finiteElements_act_fockVectors_through_datum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T) (k : KerDat S T), x.Is → y.Is → k.Is ψ θ x y → ∀ P, IsThetaFunO ψ S T (k.pt ψ θ x y P) ∧ ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ p : ℂ, k.om (g, h) (comb ψ S T k.c k.vac) = p • comb ψ S T k.c k.vac → k.om (g, h) (k.pt ψ θ x y P) = p • k.pt ψ θ x y P := by
   first | exact @GlobalTheory.FockFin.pt_finite | exact GlobalTheory.FockFin.pt_finite | (intros; apply GlobalTheory.FockFin.pt_finite <;> assumption)

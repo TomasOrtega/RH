@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Integral
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodSS.Heart.hL_separable_good | exact GlobalTheory.GoodSS.Heart.hL_separable_good | (intros; apply GlobalTheory.GoodSS.Heart.hL_separable_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodSS.Heart.hL_separable_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHeckeCommutationRealExpansion.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.hecke_commutation_real_expansion : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]

@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvAlg.Levels.levels_equiv | exact GlobalTheory.InvAlg.Levels.levels_equiv | (intros; apply GlobalTheory.InvAlg.Levels.levels_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvAlg.Levels.levels_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdicCompletionEquivariantEquivOfLevelIsos.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.adicCompletion_equivariant_equiv_of_level_isos : ∀ (R : Type) [CommRing R] (m : Ideal R) (R' : Type) [CommRing R'] [Algebra R R'] (C' : Type) [CommRing C']
     [Algebra R C'] [Algebra R' C'] [IsScalarTower R R' C'] (act : GlobalTheory.Mum.Gal (algebraMap R R') →* (C' ≃ₐ[R] C')),

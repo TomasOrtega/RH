@@ -17,8 +17,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.MaxLie.maxLie | exact GlobalTheory.SquareAgree.MaxLie.maxLie | (intros; apply GlobalTheory.SquareAgree.MaxLie.maxLie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.MaxLie.maxLie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawUnfoldingPositive.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.seesaw_unfolding_positive : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

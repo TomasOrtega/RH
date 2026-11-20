@@ -9,8 +9,10 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.U
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 open GlobalTheory.CompanionTheory.RgCOBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RgCOBlock.co_hyp | exact GlobalTheory.CompanionTheory.RgCOBlock.co_hyp | (intros; apply GlobalTheory.CompanionTheory.RgCOBlock.co_hyp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RgCOBlock.co_hyp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCenterActionCommutesLeviDifference.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.center_action_commutes_levi_difference : ∀ (n M : ℕ) (lev : Fin n → ℕ) (d : Fin M → ℕ) (h : ∑ i, d i = n) (Y : ℂ), Monotone lev →
     (∀ (i : Fin M) (p : Fin (d i)), lev (stdBlocks d h ⟨i, p⟩) = (i : ℕ)) →

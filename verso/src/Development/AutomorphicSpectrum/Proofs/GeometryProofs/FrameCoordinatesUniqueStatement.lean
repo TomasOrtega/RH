@@ -27,8 +27,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique | exact GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFrameCoordinatesUnique.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.frame_coordinates_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ), (∀ v, IsTangent v → ∃! w, a.u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ a.u.IsDiff w v) → ∀ x : D.B.carrier, ∃! c, D.IsVec a x c := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique | exact GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique <;> assumption)

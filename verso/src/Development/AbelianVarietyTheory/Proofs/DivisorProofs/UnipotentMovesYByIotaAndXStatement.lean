@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoMove.unip_mulVec_y | exact GlobalTheory.IsoMove.unip_mulVec_y | (intros; apply GlobalTheory.IsoMove.unip_mulVec_y <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoMove.unip_mulVec_y` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentMovesYByIotaAndX.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.unipotent_moves_y_by_iota_and_x : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' : ℕ), IsCMExt F E σ → W.IsSkew σ B r' s' →
     H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ u ∈ unip σ W H', ∃ (z : Fin d₁ → AE F E) (β : AE F E),

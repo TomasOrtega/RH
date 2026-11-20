@@ -15,8 +15,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FormalModel.isGrpPullback_of_carries | exact GlobalTheory.FormalModel.isGrpPullback_of_carries | (intros; apply GlobalTheory.FormalModel.isGrpPullback_of_carries <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FormalModel.isGrpPullback_of_carries` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsGrpPullbackThickeningOfCarriesTorusCoordinates.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.isGrpPullback_thickening_of_carries_torusCoordinates : ∀ {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {ρ : R →+* R'} {D : DegPre R} {I : Ideal R'} {E : DegData R' I} (hE : IsPullDeg ρ D E.toPre) {A' : PolAV (Sp (FractionRing R'))} {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] (U : UnifPre I E A' G') (Y : Ext D) {e : ℕ} {φ : (thickObj R' I e G').left ⟶ Y.H.left}, GlobalTheory.FormalModel.Carries hE (U.gt e) (Y.Φ Y.H (𝟙 Y.H)) φ → IsGrpPullback (thickObj R' I e G') Y.H (thick R' I e ≫ spMap ρ) φ := by
   first | exact @GlobalTheory.FormalModel.isGrpPullback_of_carries | exact GlobalTheory.FormalModel.isGrpPullback_of_carries | (intros; apply GlobalTheory.FormalModel.isGrpPullback_of_carries <;> assumption)

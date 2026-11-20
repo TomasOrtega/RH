@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoC
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.UnipDom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip | exact GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip | (intros; apply GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentCoordinateAdditive.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.unipotent_coordinate_additive : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ u ∈ unip σ W H', ∀ v ∈ unip σ W H', coA σ W.J H' (u * v) = coA σ W.J H' u + coA σ W.J H' v := by
   first | exact @GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip | exact GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip | (intros; apply GlobalTheory.ThK.UnipDom.coA_mul_of_mem_unip <;> assumption)

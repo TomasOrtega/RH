@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.ConeEuler
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.ConeEulerFac.integrand_fac | exact GlobalTheory.ThK.ConeEulerFac.integrand_fac | (intros; apply GlobalTheory.ThK.ConeEulerFac.integrand_fac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.ConeEulerFac.integrand_fac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigALocalFactorDecomposition.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.config_a_local_factor_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ → ∀ (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

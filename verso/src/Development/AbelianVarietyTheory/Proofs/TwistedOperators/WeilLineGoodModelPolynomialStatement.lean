@@ -22,8 +22,10 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Filter Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLinePair.exists_curve_lineY | exact GlobalTheory.ArchLinePair.exists_curve_lineY | (intros; apply GlobalTheory.ArchLinePair.exists_curve_lineY <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLinePair.exists_curve_lineY` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilLineGoodModelPolynomial.lean&line=427#L427)
 -/
 theorem _root_.GlobalTheory.T.weil_line_good_model_polynomial : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

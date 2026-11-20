@@ -12,8 +12,10 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerPhase.exists_adForm_eq_phase_smul | exact GlobalTheory.KerPhase.exists_adForm_eq_phase_smul | (intros; apply GlobalTheory.KerPhase.exists_adForm_eq_phase_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerPhase.exists_adForm_eq_phase_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdelicFormEqRationalPhaseKernelSeries.lean&line=216#L216)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicForm_eq_rationalPhase_kernelSeries : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
   ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m)

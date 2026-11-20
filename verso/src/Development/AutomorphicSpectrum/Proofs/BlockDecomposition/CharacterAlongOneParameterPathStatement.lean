@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs | exact GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs | (intros; apply GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCharacterAlongOneParameterPath.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.character_along_one_parameter_path : ∀ (D : D7) (ψ ψ₀ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ₀ (-1) → ∀ α : D.host.F, (∀ x, ψ x = ψ₀ (algebraMap D.host.F (AF D.host.F) α * x)) → ∀ (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (t : AE D) (s : ℝ), ψ (halfTr (rs σ s * t)) = Complex.exp (2 * Real.pi * Complex.I * ((s * lam θ α t : ℝ) : ℂ)) := by
   first | exact @GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs | exact GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs | (intros; apply GlobalTheory.CompanionTheory.WSum.psi_halfTr_rs <;> assumption)

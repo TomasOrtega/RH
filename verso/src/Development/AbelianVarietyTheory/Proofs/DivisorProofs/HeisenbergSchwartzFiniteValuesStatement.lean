@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisFinFin.finS_image_finite | exact GlobalTheory.HeisFinFin.finS_image_finite | (intros; apply GlobalTheory.HeisFinFin.finS_image_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisFinFin.finS_image_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergSchwartzFiniteValues.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.heisenberg_schwartz_finite_values : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ g ∈ SB (κ → Af F), ∀ Ω : Set ((κ → Af F) × (κ → Af F) × Af F), IsCompact Ω →

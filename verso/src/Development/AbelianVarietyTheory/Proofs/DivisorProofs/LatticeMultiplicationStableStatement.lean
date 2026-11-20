@@ -16,8 +16,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusRM.exists_obj_of_polarised_torus | exact GlobalTheory.TorusRM.exists_obj_of_polarised_torus | (intros; apply GlobalTheory.TorusRM.exists_obj_of_polarised_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusRM.exists_obj_of_polarised_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeMultiplicationStable.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.lattice_multiplication_stable : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ))
     (𝔠 : FracId F) (r : Fin (Module.finrank ℚ F) → ℝ) (Λ : Submodule ℤ (Fin (Module.finrank ℚ F) → ℂ)),

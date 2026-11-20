@@ -10,8 +10,10 @@ open GlobalTheory.QCoh (freeModule)
 open GlobalTheory.Twist (resM)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Univ.isFrame_cellCol | exact GlobalTheory.FlagZ.Univ.isFrame_cellCol | (intros; apply GlobalTheory.FlagZ.Univ.isFrame_cellCol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Univ.isFrame_cellCol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellColumnsFrame.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.cell_columns_frame : ∀ (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (τ : ι), VB.IsFrame (cellCol ι N w τ) := by
   first | exact @GlobalTheory.FlagZ.Univ.isFrame_cellCol | exact GlobalTheory.FlagZ.Univ.isFrame_cellCol | (intros; apply GlobalTheory.FlagZ.Univ.isFrame_cellCol <;> assumption)

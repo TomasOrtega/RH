@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatExchPf.latExch | exact GlobalTheory.LatExchPf.latExch | (intros; apply GlobalTheory.LatExchPf.latExch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatExchPf.latExch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCoreChainAdjointLatticeExchange.lean&line=337#L337)
 -/
 theorem _root_.GlobalTheory.T.coreChain_adjoint_latticeExchange : LatExch := by
   first | exact @GlobalTheory.LatExchPf.latExch | exact GlobalTheory.LatExchPf.latExch | (intros; apply GlobalTheory.LatExchPf.latExch <;> assumption)

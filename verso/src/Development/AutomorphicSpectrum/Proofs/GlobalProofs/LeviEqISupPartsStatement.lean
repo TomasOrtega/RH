@@ -7,8 +7,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Published GlobalTheory.Published.AutFin GlobalTheory.StdPar GlobalTheory.ThK.SmoothLev GlobalTheory.CompanionTheory.Hypotheses₂.ConstFin GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart
 open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute | exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FLeviEqISupParts.lean&line=258#L258)
 -/
 theorem _root_.GlobalTheory.T.levi_parts_commute : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ T : Finset (Fin r), Pairwise fun i j : Option {k // k ∈ T} => ∀ x y : GAd σ J, x ∈ part σ J X Y T i → y ∈ part σ J X Y T j → Commute x y := by
   first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute | exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Comm.part_commute <;> assumption)

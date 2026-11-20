@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MumFam GlobalTheory.MumProd GlobalTheory.ProdUnif
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProdIndep.boxFam₂_linearIndependent | exact GlobalTheory.ProdIndep.boxFam₂_linearIndependent | (intros; apply GlobalTheory.ProdIndep.boxFam₂_linearIndependent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProdIndep.boxFam₂_linearIndependent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoxFamilyLinearIndependentProductDegeneration.lean&line=147#L147)
 -/
 theorem _root_.GlobalTheory.T.boxFamily_linearIndependent_productDegeneration : ∀ (R : Type) [CommRing R] [IsDomain R] (D D₁ D₂ : DegPre R) (p₁ : D.P.A ⟶ D₁.P.A) (p₂ : D.P.A ⟶ D₂.P.A) (q₁ : D.X →+ D₁.X) (q₂ : D.X →+ D₂.X), IsSumDeg D D₁ D₂ p₁ p₂ q₁ q₂ → ∀ (w : LB.Iso D.P.L (extLB D₁.P.L D₂.P.L p₁.left p₂.left)) (F : Type) [Field F] [Algebra (FractionRing R) F] (k m n : ℕ) (b₁ : Fin m → Fam D₁ F k) (b₂ : Fin n → Fam D₂ F k) (b : Fin m × Fin n → Fam D F k), LinearIndependent F b₁ → LinearIndependent F b₂ → (∀ a, IsBoxFam₂ p₁ p₂ q₁ q₂ w F k (b a) (b₁ a.1) (b₂ a.2)) → LinearIndependent F b := by
   first | exact @GlobalTheory.ProdIndep.boxFam₂_linearIndependent | exact GlobalTheory.ProdIndep.boxFam₂_linearIndependent | (intros; apply GlobalTheory.ProdIndep.boxFam₂_linearIndependent <;> assumption)

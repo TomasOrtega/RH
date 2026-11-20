@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Serre
 open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorFinite.isFinite_mapLeft | exact GlobalTheory.TensorFinite.isFinite_mapLeft | (intros; apply GlobalTheory.TensorFinite.isFinite_mapLeft <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorFinite.isFinite_mapLeft` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FTensorMapFiniteOfSplit.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.tensor_map_finite_of_split : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) [IsCommMonObj P.A] (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Module.Finite O M] [Module.Projective O M] (A : Over S) [GrpObj A] [IsCommMonObj A] (a : OAct O P.A) (b : OAct O A) (t : IsTensor A b P.A a M) (n k : ℕ) (l : M →ₗ[O] (Fin k → O)) (r : (Fin k → O) →ₗ[O] M), 0 < n → (∀ m, r (l m) = n • m) → IsFinite (t.mapLeft (IsTensor.pow (Out.powIsPowGrp P.A k) a) l).left := by
   first | exact @GlobalTheory.TensorFinite.isFinite_mapLeft | exact GlobalTheory.TensorFinite.isFinite_mapLeft | (intros; apply GlobalTheory.TensorFinite.isFinite_mapLeft <;> assumption)

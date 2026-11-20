@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.CurveRootGeome
 open GlobalTheory.Cris (dp0)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilAdjoint.map_comp_weilHom | exact GlobalTheory.WeilAdjoint.map_comp_weilHom | (intros; apply GlobalTheory.WeilAdjoint.map_comp_weilHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilAdjoint.map_comp_weilHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilPairingAdjointEndomorphism.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.weil_pairing_adjoint_endomorphism : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P → ∀ (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A) (w : 𝒜 ⟶ 𝒜.dual), IsWeilHom t t P w → ∀ (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f'], LBIso (ev P (fst A A ≫ f) (snd A A)) (ev P (fst A A) (snd A A ≫ f')) → t.map t f ≫ w = w ≫ dualHom _ _ (t.map t f') := by
   first | exact @GlobalTheory.WeilAdjoint.map_comp_weilHom | exact GlobalTheory.WeilAdjoint.map_comp_weilHom | (intros; apply GlobalTheory.WeilAdjoint.map_comp_weilHom <;> assumption)

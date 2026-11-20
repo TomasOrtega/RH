@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.KS (rsT IsCoc IsCob)
 open GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.CechCmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary | exact GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary | (intros; apply GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechToPosetPosetToCechSubCoboundary.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_d0_eq_toPos_toCech_sub_of_mem_Z1 : ∀ (I : Type) [Finite I] (X : Scheme.{0}) (R : Type) [CommRing R] (s : X ⟶ Sp R) (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)), ∀ f : GlobalTheory.CatCoh.C1 (capF s U hU hinf), f ∈ Z1 (capF s U hU hinf) → ∃ g, d0 (capF s U hU hinf) g = toPos s U hU hinf (toCech s U hU hinf f) - f := by
   first | exact @GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary | exact GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary | (intros; apply GlobalTheory.CechCmp.cechToPoset_posetToCech_sub_coboundary <;> assumption)

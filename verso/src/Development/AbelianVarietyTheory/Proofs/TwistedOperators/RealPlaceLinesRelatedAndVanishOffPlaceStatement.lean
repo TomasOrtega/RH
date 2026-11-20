@@ -20,8 +20,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceLines.lines_at_place | exact GlobalTheory.PlaceLines.lines_at_place | (intros; apply GlobalTheory.PlaceLines.lines_at_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceLines.lines_at_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPlaceLinesRelatedAndVanishOffPlace.lean&line=194#L194)
 -/
 theorem _root_.GlobalTheory.T.realPlaceLines_related_and_vanish_off_place : ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

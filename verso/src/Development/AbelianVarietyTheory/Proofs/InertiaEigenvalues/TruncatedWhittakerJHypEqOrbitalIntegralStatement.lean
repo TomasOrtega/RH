@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedWhitt
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.whittaker_jHyp_eq_orbK | exact GlobalTheory.whittaker_jHyp_eq_orbK | (intros; apply GlobalTheory.whittaker_jHyp_eq_orbK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.whittaker_jHyp_eq_orbK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTruncatedWhittakerJHypEqOrbitalIntegral.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.truncatedWhittaker_jHyp_eq_orbitalIntegral : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), SelfDual μK (A.kerK ψ) → ∀ φ', IsTest φ' → ∀ a : A.K, IsUnit a → ∀ᶠ c in 𝓝[≠] (0 : F), A.abelian₂ μK ψ a (A.jHyp μK ψ φ') c = A.orbK μK φ' a := by
   first | exact @GlobalTheory.whittaker_jHyp_eq_orbK | exact GlobalTheory.whittaker_jHyp_eq_orbK | (intros; apply GlobalTheory.whittaker_jHyp_eq_orbK <;> assumption)

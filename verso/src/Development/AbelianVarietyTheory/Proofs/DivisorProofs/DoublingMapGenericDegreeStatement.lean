@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | exact GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | (intros; apply GlobalTheory.DblDegree.dbl_genericPoint_residueDegree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblDegree.dbl_genericPoint_residueDegree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoublingMapGenericDegree.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.doubling_map_generic_degree : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (L : LB P.A.left), IsTheta P L → ∀ [IsIntegral P.A.left], dbl P (genericPoint P.A.left) = genericPoint P.A.left ∧ (dbl P).residueDegree (genericPoint P.A.left) = 4 ^ P.g := by
   first | exact @GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | exact GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | (intros; apply GlobalTheory.DblDegree.dbl_genericPoint_residueDegree <;> assumption)

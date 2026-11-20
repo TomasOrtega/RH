@@ -12,8 +12,10 @@ open scoped Classical
 open GlobalTheory.ArchDecay
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchDecay.wordR_L2_le | exact GlobalTheory.ArchDecay.wordR_L2_le | (intros; apply GlobalTheory.ArchDecay.wordR_L2_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchDecay.wordR_L2_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWordOperatorL2BoundPolynomial.lean&line=224#L224)
 -/
 theorem _root_.GlobalTheory.T.word_operator_L2_bound_polynomial : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ((κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ)) (c : ℂ), ∀ Φ ∈ schA F κ, ∀ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ P : ℕ, ∃ C : ℝ, ∀ ρ : ℝ, 1 ≤ ρ → ∀ zs : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)), zs.length ≤ P → (∀ ζ ∈ zs, ‖ζ‖ ≤ ρ) → ∫⁻ x, ‖wordR F T c zs Φ x‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal (C * ρ ^ (2 * P)) := by
   first | exact @GlobalTheory.ArchDecay.wordR_L2_le | exact GlobalTheory.ArchDecay.wordR_L2_le | (intros; apply GlobalTheory.ArchDecay.wordR_L2_le <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocFlat.contr_support_finite_cells | exact GlobalTheory.LocFlat.contr_support_finite_cells | (intros; apply GlobalTheory.LocFlat.contr_support_finite_cells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocFlat.contr_support_finite_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLocalFlatMapContractionSupportFinitelyManyCells.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.localFlatMapContraction_support_finitelyManyCells : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (ν : Measure k),

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoeffRingsH
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.GlobalDatumRegularityOfTypesCompatibility
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.L2 NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module Polynomial GlobalTheory.Pass GlobalTheory.PendOf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParOfPoint.main | exact GlobalTheory.ParOfPoint.main | (intros; apply GlobalTheory.ParOfPoint.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParOfPoint.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPointParameterIsTypeParameterOfTame.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.pointParameterIsTypeParameter_of_tame : ∀ D : D7, (∀ S : Formalism.L2.ParC D, ∃ σ' : D.ntypes.Par, ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut S.1 w) → SumRepresentations.tie0 D → SumRepresentations.adm5 D → (∀ (k : Fin 2) (v : D.nd.PlG k), IsSplitPl D.host (D.naut.plGw k v)) → LabDepth D → DepthZ D → ParSurj D := by
   first | exact @GlobalTheory.ParOfPoint.main | exact GlobalTheory.ParOfPoint.main | (intros; apply GlobalTheory.ParOfPoint.main <;> assumption)

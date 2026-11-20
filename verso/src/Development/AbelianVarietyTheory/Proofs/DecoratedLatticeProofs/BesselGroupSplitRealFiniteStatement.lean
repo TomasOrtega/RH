@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BesSplit.besGrp_split | exact GlobalTheory.BesSplit.besGrp_split | (intros; apply GlobalTheory.BesSplit.besGrp_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BesSplit.besGrp_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselGroupSplitRealFinite.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.besselGroup_split_real_finite : ∀ (D : D7) (V V₀ A L : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (o : OrthDec V₀ A L), ∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b ∈ besGrp d o → a ∈ besGrp d o ∧ b ∈ besGrp d o := by
   first | exact @GlobalTheory.BesSplit.besGrp_split | exact GlobalTheory.BesSplit.besGrp_split | (intros; apply GlobalTheory.BesSplit.besGrp_split <;> assumption)

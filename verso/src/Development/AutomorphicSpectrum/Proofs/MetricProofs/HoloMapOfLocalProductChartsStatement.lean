@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord | exact GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHoloMapOfLocalProductCharts.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.holoMap_of_local_product_charts : ∀ (e n : ℕ) (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas e X) (B : FinHolAtlas n Y) (pr : X → Y), (∀ x, ∃ (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (kb : Fin B.n) (σ : Fin n → Fin e), IsCompatChart A ψ ∧ x ∈ ψ.source ∧ ∀ x' ∈ ψ.source, pr x' ∈ (B.chart kb).source ∧ ∀ i, B.chart kb (pr x') i = ψ x' (σ i)) → HoloMap A B pr := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord | exact GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord <;> assumption)

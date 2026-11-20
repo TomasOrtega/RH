@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SplitTorus.piS_torus | exact GlobalTheory.CompanionTheory.SplitTorus.piS_torus | (intros; apply GlobalTheory.CompanionTheory.SplitTorus.piS_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SplitTorus.piS_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSplitWeilActionTorusEquivariant.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.split_weil_action_torus_equivariant : GL2LocalData.ForES fun F _ _ _ _ _ _ _ χ => ∀ (c₁ : Fˣ →* ℂˣ) (g : GL (Fin 2) F) (Φ : F × F → ℂ) (τ : Fˣ) (x : F × F),
   GL2LocalData.piS χ c₁ g (fun y => Φ (y * ((τ : F), ((τ⁻¹ : Fˣ) : F)))) x = GL2LocalData.piS χ c₁ g Φ (x * ((τ : F), ((τ⁻¹ : Fˣ) : F))) := by

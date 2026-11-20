@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GradedLine.curv_lineGram | exact GlobalTheory.GradedLine.curv_lineGram | (intros; apply GlobalTheory.GradedLine.curv_lineGram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GradedLine.curv_lineGram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineGramCurvatureFormula.lean&line=417#L417)
 -/
 theorem _root_.GlobalTheory.T.line_gram_curvature_formula : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

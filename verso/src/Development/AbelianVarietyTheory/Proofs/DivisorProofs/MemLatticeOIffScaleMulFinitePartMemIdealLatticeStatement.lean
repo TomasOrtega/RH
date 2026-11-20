@@ -18,8 +18,10 @@ open GlobalTheory.BotClassDict (finQ)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitLatDict.mem_latO_iff_ihE | exact GlobalTheory.SplitLatDict.mem_latO_iff_ihE | (intros; apply GlobalTheory.SplitLatDict.mem_latO_iff_ihE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitLatDict.mem_latO_iff_ihE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemLatticeOIffScaleMulFinitePartMemIdealLattice.lean&line=337#L337)
 -/
 theorem _root_.GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice : ∀ (D : D7) (S T : HSp D), S.gram = 1 → ∀ (cc : Ideal (𝓞 D.host.K)) (r : D.host.E), cc ≠ ⊥ → IsScale D cc r →
   ∀ u : WO S T, u.map (infPart D) = 0 →

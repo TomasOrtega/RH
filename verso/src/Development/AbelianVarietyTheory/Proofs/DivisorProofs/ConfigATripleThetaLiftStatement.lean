@@ -13,8 +13,10 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvZeroCoords.coords_evZero | exact GlobalTheory.EvZeroCoords.coords_evZero | (intros; apply GlobalTheory.EvZeroCoords.coords_evZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvZeroCoords.coords_evZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigATripleThetaLift.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.config_A_triple_theta_lift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

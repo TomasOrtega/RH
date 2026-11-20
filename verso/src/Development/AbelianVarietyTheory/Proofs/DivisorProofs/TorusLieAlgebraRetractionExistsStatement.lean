@@ -16,8 +16,10 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieAdd LieCongr IsLieLinear lieCoord)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusLieRetraction.main | exact GlobalTheory.TorusLieRetraction.main | (intros; apply GlobalTheory.TorusLieRetraction.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusLieRetraction.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusLieAlgebraRetractionExists.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.torus_lie_algebra_retraction_exists : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G], Smooth G.hom → ∀ (r : ℕ) (u : torus R r ⟶ G) [IsMonHom u], IsClosedImmersion ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R (IsLocalRing.ResidueField R)).map u).left → ∃ ρ : LieG G → LieG (torus R r), IsLieLinear ρ ∧ ∀ x, ρ (lieMap u x) = x := by
   first | exact @GlobalTheory.TorusLieRetraction.main | exact GlobalTheory.TorusLieRetraction.main | (intros; apply GlobalTheory.TorusLieRetraction.main <;> assumption)

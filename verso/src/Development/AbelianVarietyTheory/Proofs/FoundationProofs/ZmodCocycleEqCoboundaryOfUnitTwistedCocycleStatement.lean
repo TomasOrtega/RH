@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerExponentOf
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Hilbert90LocallyConstantCocycleStatement
 open GlobalTheory.NeedB Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hilbert90CupCoboundary.zmod_cocycle_eq_coboundary_of_unit_twisted_cocycle | exact GlobalTheory.Hilbert90CupCoboundary.zmod_cocycle_eq_coboundary_of_unit_twisted_cocycle | (intros; apply GlobalTheory.Hilbert90CupCoboundary.zmod_cocycle_eq_coboundary_of_ …`.
+/- English proof (citation)
+Apply `GlobalTheory.Hilbert90CupCoboundary.zmod_cocycle_eq_coboundary_of_unit_twisted_cocycle` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FZmodCocycleEqCoboundaryOfUnitTwistedCocycle.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_locallyConstant_zmod_coboundary_of_mu_cocycle : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) →

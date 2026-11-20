@@ -18,8 +18,10 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaInterchange.hasDerivAt_thO | exact GlobalTheory.ThetaInterchange.hasDerivAt_thO | (intros; apply GlobalTheory.ThetaInterchange.hasDerivAt_thO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaInterchange.hasDerivAt_thO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealDictionaryHypotheses.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.real_dictionary_hypotheses : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) {n k : ℕ} (Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k)
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)

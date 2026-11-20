@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKAnisoSmallReG.nonZero_reG | exact GlobalTheory.ThKAnisoSmallReG.nonZero_reG | (intros; apply GlobalTheory.ThKAnisoSmallReG.nonZero_reG <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKAnisoSmallReG.nonZero_reG` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNonzeroDualThetaLiftRelevant.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.nonzero_dual_theta_lift_relevant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a')), IsTriple B G X om om' →

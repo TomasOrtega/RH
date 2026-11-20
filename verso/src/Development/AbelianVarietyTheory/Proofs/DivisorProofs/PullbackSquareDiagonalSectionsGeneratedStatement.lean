@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hasGen_pull_rig_of_isGrpPullback | exact GlobalTheory.hasGen_pull_rig_of_isGrpPullback | (intros; apply GlobalTheory.hasGen_pull_rig_of_isGrpPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hasGen_pull_rig_of_isGrpPullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackSquareDiagonalSectionsGenerated.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.pullback_square_diagonal_sections_generated : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) (A' : Over S') [GrpObj A'] [IsCommMonObj A']
     (φ : A'.left ⟶ X.A.left), IsGrpPullback A' X.A b φ → ∀ (φ₂ : (G2 A').left ⟶ (G2 X.A).left), IsSquare φ φ₂ →

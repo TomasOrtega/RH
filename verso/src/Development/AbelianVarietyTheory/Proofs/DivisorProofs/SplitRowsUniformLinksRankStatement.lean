@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.FWT
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows | exact GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows | (intros; apply GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitRowsUniformLinksRank.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.split_rows_uniform_links_rank : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), p.Rows → (R2 p).LUnif ∧ BaseLinks (R2 p) (F2 p) ∧ RankRows (S2 p) := by
   first | exact @GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows | exact GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows | (intros; apply GlobalTheory.BigOn.SplitRows.unif_baseLinks_rankRows <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.ProjSpace GlobalTheory.UMin.ThBdl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.ThBdl.locSec_eq_of_genIs | exact GlobalTheory.UMin.ThBdl.locSec_eq_of_genIs | (intros; apply GlobalTheory.UMin.ThBdl.locSec_eq_of_genIs <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.ThBdl.locSec_eq_of_genIs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleLocalSectionEqOfGenericFibre.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.lineBundleLocalSection_eq_of_generic_fibre : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →
     ∀ (L : LB G.left) (K : Type) [Field K] (ξ : Sp K ⟶ S), Set.range ξ = {genericPoint S} →

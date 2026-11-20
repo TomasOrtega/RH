@@ -9,8 +9,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric | exact GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric | (intros; apply GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagVarietyGradedLinesIsometric.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.flag_variety_graded_lines_isometric : ∀ (ι : Type) [Fintype ι] (N : ℕ), ∃ (E : ι → (Sp ℤ).Modules) (h : ∀ a, VMetric (𝟙 (Sp ℤ)) (E a) N) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (E a)) N), IsFlagBundle (GlobalTheory.FlagZ.flStr ι N) E (fun _ => N) fl ∧ ∀ (a : ι) (i : Fin N), (VMetric.grLB (fl a) i ((H a).pull (GlobalTheory.FlagZ.flStr ι N) (Category.comp_id _))).Isometric (GlobalTheory.FlagZ.grLine (a, i)) := by
   first | exact @GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric | exact GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric | (intros; apply GlobalTheory.FlagZ.Taut.isFlagBundle_std_isometric <;> assumption)

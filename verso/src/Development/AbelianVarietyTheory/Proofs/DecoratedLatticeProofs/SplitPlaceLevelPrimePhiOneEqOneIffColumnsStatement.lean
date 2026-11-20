@@ -9,8 +9,10 @@ open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PhiOneVal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PhiOneVal.maps_rd_iff_colCond | exact GlobalTheory.PhiOneVal.maps_rd_iff_colCond | (intros; apply GlobalTheory.PhiOneVal.maps_rd_iff_colCond <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PhiOneVal.maps_rd_iff_colCond` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPlaceLevelPrimePhiOneEqOneIffColumns.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.maps_rd_iff_colCond_toHom : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e P →

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.exists_isPtGen | exact GlobalTheory.PtExt.exists_isPtGen | (intros; apply GlobalTheory.PtExt.exists_isPtGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.exists_isPtGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPointwiseLineBundleGeneratorOfTrivialPullb.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_pointwiseLineBundleGenerator_of_trivial_pullback : ∀ (R : Type) [CommRing R] (X Y : Over (Sp R)) (L : LB X.left), L.IsLB → ∀ q : Y ⟶ X, GlobalTheory.AbLaw.Triv (L.pull q.left) → ∃ t, IsPtGen L q t := by
   first | exact @GlobalTheory.PtExt.exists_isPtGen | exact GlobalTheory.PtExt.exists_isPtGen | (intros; apply GlobalTheory.PtExt.exists_isPtGen <;> assumption)

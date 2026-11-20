@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ValNe.val_ofSec_ne_zero_iff | exact GlobalTheory.ValNe.val_ofSec_ne_zero_iff | (intros; apply GlobalTheory.ValNe.val_ofSec_ne_zero_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ValNe.val_ofSec_ne_zero_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleValueAtPointNeZeroIffMemNonzeroLocus.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.lineBundleValueAtPoint_ne_zero_iff_mem_nonzeroLocus : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (q : Y ⟶ Sp K) (L : LB Y) (σ : L.Sec) (z : Sp K ⟶ Y) (i : L.ι) (hi : ⊤ ≤ z ⁻¹ᵁ L.U i), (H0.val (p := q) z i le_top hi (H0.ofSec q ⊤ σ) ≠ 0 ↔ z (IsLocalRing.closedPoint K) ∈ nonzeroLocus σ) := by
   first | exact @GlobalTheory.ValNe.val_ofSec_ne_zero_iff | exact GlobalTheory.ValNe.val_ofSec_ne_zero_iff | (intros; apply GlobalTheory.ValNe.val_ofSec_ne_zero_iff <;> assumption)

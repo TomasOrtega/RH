@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.IntFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntFam.TermLift.main | exact GlobalTheory.IntFam.TermLift.main | (intros; apply GlobalTheory.IntFam.TermLift.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntFam.TermLift.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGeneratorCorrespondencePullback.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.generator_correspondence_pullback : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (k : ℕ) (α mu : D.X)
     (u₀ : LB.Gen (LB.LinComb D.P.L (deltaφT D (α + k • mu) α (toUnit (𝟙_ _) ≫ D.c mu)) (DegPre.deltaε k))) (a : R),

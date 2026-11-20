@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit segre fibre IsGoodProj IsSheet HermLine IsSmoothHerm sheetDensity maDensity ptsIntegral ptsIntegralAt pot)
 open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProjectionRegularOnNonvanishingChart.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.projection_regular_on_nonvanishing_chart : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D) (N : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog N a →

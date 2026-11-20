@@ -10,8 +10,10 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open GlobalTheory.ArDegIndep
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArDegIndep.CurvOther.curv_other | exact GlobalTheory.ArDegIndep.CurvOther.curv_other | (intros; apply GlobalTheory.ArDegIndep.CurvOther.curv_other <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArDegIndep.CurvOther.curv_other` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPoincarePotentialPshLimit.lean&line=391#L391)
 -/
 theorem _root_.GlobalTheory.T.poincare_potential_psh_limit : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ (c : O.Y.Comp) (u : Wt O.Y), (∀ τ, StrictAnti (u τ)) → ∀ σ : Fin ((T.M c).n + 1), ∃ (b : LocPot ((T.M c).X σ)) (p : (T.M c).X σ → ℝ), IsPoin ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) b p ∧ ∃ t : ℝ, ∀ᶠ R in atTop, PshOff ((T.M c).A σ) ((T.M c).Z σ) ((T.F c).th u σ + LocPot.ofFun (psiOf h x' R u c σ) + (b + LocPot.ofFun p).rsmul t) := by
   first | exact @GlobalTheory.ArDegIndep.CurvOther.curv_other | exact GlobalTheory.ArDegIndep.CurvOther.curv_other | (intros; apply GlobalTheory.ArDegIndep.CurvOther.curv_other <;> assumption)

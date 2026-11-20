@@ -18,8 +18,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.spec_factor_localization_of_field_point | exact GlobalTheory.spec_factor_localization_of_field_point | (intros; apply GlobalTheory.spec_factor_localization_of_field_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.spec_factor_localization_of_field_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftToPrimeLocalization.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.lift_to_prime_localization : ∀ (U X : Scheme.{0}) (j : U ⟶ X) [IsOpenImmersion j] (R : Type) [CommRing R] (ξ : Sp R ⟶ X)
     (K' : Type) [Field K'] (χ : R →+* K') (yy : Sp K' ⟶ U), spMap χ ≫ ξ = yy ≫ j →

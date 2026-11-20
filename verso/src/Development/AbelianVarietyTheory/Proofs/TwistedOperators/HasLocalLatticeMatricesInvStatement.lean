@@ -12,8 +12,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowVal.hasLoc_inv | exact GlobalTheory.RowVal.hasLoc_inv | (intros; apply GlobalTheory.RowVal.hasLoc_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowVal.hasLoc_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHasLocalLatticeMatricesInv.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.hasLocalLatticeMatrices_inv : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (t : T) (B : Frames G) {j : ℕ}
     (hj : j ≤ D.R.m) (x : GA D (G.V (.grid D.R.m j)))

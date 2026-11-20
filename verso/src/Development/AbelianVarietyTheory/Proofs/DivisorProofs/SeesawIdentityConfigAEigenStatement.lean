@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvFactor.evA_eq_smul_comp | exact GlobalTheory.ThK.EvFactor.evA_eq_smul_comp | (intros; apply GlobalTheory.ThK.EvFactor.evA_eq_smul_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.EvFactor.evA_eq_smul_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeesawIdentityConfigAEigen.lean&line=280#L280)
 -/
 theorem _root_.GlobalTheory.T.seesaw_identity_config_a_eigen : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')),

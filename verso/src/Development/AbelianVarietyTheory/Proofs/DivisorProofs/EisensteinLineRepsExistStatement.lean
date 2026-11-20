@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisMidParam.midSet_param | exact GlobalTheory.EisMidParam.midSet_param | (intros; apply GlobalTheory.EisMidParam.midSet_param <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisMidParam.midSet_param` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEisensteinLineRepsExist.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.eisenstein_line_reps_exist : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

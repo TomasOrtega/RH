@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 open GlobalTheory.Discrepancy GlobalTheory.EtaleKlt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial | exact GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial | (intros; apply GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrimeDivisorOverOrdEqSumAdaptedMonomial.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.primeDivisorOver_ord_eq_sum_adaptedMonomial : ∀ {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     [GlobalTheory.IsNormalScheme Y] {q : Y ⟶ Sp k} (E : DivOver q) (y : Y), E.Through y →

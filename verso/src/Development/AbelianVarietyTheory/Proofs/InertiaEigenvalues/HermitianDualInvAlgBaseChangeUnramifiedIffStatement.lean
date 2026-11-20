@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebra
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeOfValNonneg
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.Unr.dual_iff | exact GlobalTheory.UnitLemma.Unr.dual_iff | (intros; apply GlobalTheory.UnitLemma.Unr.dual_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitLemma.Unr.dual_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHermitianDualInvAlgBaseChangeUnramifiedIff.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.hermitianDual_invAlgBaseChangeUnramified_iff : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ (B : InvAlg K) (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e)) (L : Submodule K'.O (overExt φ B ψ hψ hσ).A) (x y : B.A), (∀ z ∈ L, (overExt φ B ψ hψ hσ).herm x y z ∈ (algebraMap K'.O K'.E).range) ↔ (∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) := by
   first | exact @GlobalTheory.UnitLemma.Unr.dual_iff | exact GlobalTheory.UnitLemma.Unr.dual_iff | (intros; apply GlobalTheory.UnitLemma.Unr.dual_iff <;> assumption)

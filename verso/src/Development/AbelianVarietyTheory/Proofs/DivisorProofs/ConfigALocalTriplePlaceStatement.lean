@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.ShiftUnip.shiftUnip | exact GlobalTheory.ThK.ShiftUnip.shiftUnip | (intros; apply GlobalTheory.ThK.ShiftUnip.shiftUnip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.ShiftUnip.shiftUnip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigALocalTriplePlace.lean&line=173#L173)
 -/
 theorem _root_.GlobalTheory.T.config_a_local_triple_place : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

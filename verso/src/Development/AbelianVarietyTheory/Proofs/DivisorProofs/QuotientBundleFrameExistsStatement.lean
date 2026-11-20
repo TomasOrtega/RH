@@ -7,8 +7,10 @@ open GlobalTheory.QCoh (freeModule)
 open GlobalTheory.Twist (resM)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VB.exists_isFrame_cokernel_of_frame | exact GlobalTheory.VB.exists_isFrame_cokernel_of_frame | (intros; apply GlobalTheory.VB.exists_isFrame_cokernel_of_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VB.exists_isFrame_cokernel_of_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuotientBundleFrameExists.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.quotient_bundle_frame_exists : ∀ {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {N : ℕ} (P : VB.Sub F) (c : Fin N → Γ(F, U)), VB.IsFrame c → ∀ (l : ℕ), l ≤ N → (∀ (V : X.Opens) (h : V ≤ U) (a : Fin N → Γ(X, V)), (∑ j, a j • resM F h (c j)) ∈ P.sec V ↔ ∀ j : Fin N, l ≤ (j : ℕ) → a j = 0) → ∃ e : Fin (N - l) → Γ(cokernel P.incl, U), VB.IsFrame e := by
   first | exact @GlobalTheory.VB.exists_isFrame_cokernel_of_frame | exact GlobalTheory.VB.exists_isFrame_cokernel_of_frame | (intros; apply GlobalTheory.VB.exists_isFrame_cokernel_of_frame <;> assumption)

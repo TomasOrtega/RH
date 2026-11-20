@@ -7,8 +7,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsCharExt.exists_extension | exact GlobalTheory.TorsCharExt.exists_extension | (intros; apply GlobalTheory.TorsCharExt.exists_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsCharExt.exists_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTorsionCharExtendsDivisibleLevel.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.torsionChar_extends_divisible_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] (x : Sp ↥(intO C) ⟶ X) (q q' : ℕ), q' ≠ 0 → q ∣ q' → ∀ c : TorsChar t x q, ∃ c' : TorsChar t x q', ∀ (B : Type) [CommRing B] [Algebra ↥(intO C) B] [Module.Finite ↥(intO C) B] (w : Over.mk (spMap (algebraMap ↥(intO C) B) ≫ x) ⟶ t.G), w ^ q = 1 → c'.χ B w = c.χ B w := by
   first | exact @GlobalTheory.TorsCharExt.exists_extension | exact GlobalTheory.TorsCharExt.exists_extension | (intros; apply GlobalTheory.TorsCharExt.exists_extension <;> assumption)

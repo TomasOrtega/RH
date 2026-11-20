@@ -8,8 +8,10 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc GlobalTheory.CompanionTheo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family | exact GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family | (intros; apply GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FClosedDerivativeSystemSmooth.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.closed_derivative_system_smooth : ∀ (n : ℕ) (V P : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (o : P → Mat n → V) (d : (Bool × Fin n × Fin n) → P → P), (∀ v, ∀ z ∈ GLs n, DifferentiableAt ℝ (o v) z) → (∀ v p, ∀ z ∈ GLs n, Rd (bs p) (o v) z = o (d p v) z) → ∀ v, ContDiffOn ℝ ∞ (o v) (GLs n) := by
   first | exact @GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family | exact GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family | (intros; apply GlobalTheory.CompanionTheory.PresSobA.contDiffOn_of_right_family <;> assumption)

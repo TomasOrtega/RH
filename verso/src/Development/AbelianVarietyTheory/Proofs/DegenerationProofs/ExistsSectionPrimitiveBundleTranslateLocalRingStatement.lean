@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrimitiveOverLocalRing.exists_section_translate | exact GlobalTheory.PrimitiveOverLocalRing.exists_section_translate | (intros; apply GlobalTheory.PrimitiveOverLocalRing.exists_section_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrimitiveOverLocalRing.exists_section_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsSectionPrimitiveBundleTranslateLocalRing.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.exists_section_primitiveBundle_translate_localRing : Laws → Laws2 → ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (P : PolAV (Spec (CommRingCat.of A))) (O : LB P.A.left), O.IsLB → (∃ u : LB.Gen (abelian₂ P.A O), u.IsGen) → ∃ x : 𝟙_ _ ⟶ P.A, LBIso O (LB.LinComb P.L (K := Fin 2) ![((toUnit P.A ≫ x) * 𝟙 P.A).left, 𝟙 P.A.left] ![1, -1]) := by
   first | exact @GlobalTheory.PrimitiveOverLocalRing.exists_section_translate | exact GlobalTheory.PrimitiveOverLocalRing.exists_section_translate | (intros; apply GlobalTheory.PrimitiveOverLocalRing.exists_section_translate <;> assumption)

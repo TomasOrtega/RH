@@ -6,8 +6,10 @@ open MeasureTheory Filter NumberField IsDedekindDomain Formalism.MainNotions.Glo
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocTateInt.integrable_indicator_absE_pow | exact GlobalTheory.LocTateInt.integrable_indicator_absE_pow | (intros; apply GlobalTheory.LocTateInt.integrable_indicator_absE_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocTateInt.integrable_indicator_absE_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrablePowerNormCompact.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.integrable_power_norm_compact : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (μ : Measure (idelesAt E (evFin F v))), IsNormE E v μ → ∀ (C : Set (Fv F v ⊗[F] E)), IsCompact C → ∀ z : ℕ, 1 ≤ z →

@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWAniso.exists_rational_dblCoord_right | exact GlobalTheory.SWAniso.exists_rational_dblCoord_right | (intros; apply GlobalTheory.SWAniso.exists_rational_dblCoord_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWAniso.exists_rational_dblCoord_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDarbouxCoordinatesDoubledSpace.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.darboux_coordinates_doubled_space : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n m : ℕ)
     (J : Matrix (Fin m) (Fin m) E) (J' : Matrix (Fin n) (Fin n) E) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E),

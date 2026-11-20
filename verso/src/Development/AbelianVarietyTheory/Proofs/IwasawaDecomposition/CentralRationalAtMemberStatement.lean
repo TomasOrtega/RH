@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CenterEqSum
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CenRatAt.cenRat_at | exact GlobalTheory.CenRatAt.cenRat_at | (intros; apply GlobalTheory.CenRatAt.cenRat_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CenRatAt.cenRat_at` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCentralRationalAtMember.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.central_rational_at_member : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ _ _ _ _ t _ _ _ => GlobalTheory.CenLocAt.CenRat t.r.Y t.r.z.cG := by
   first | exact @GlobalTheory.CenRatAt.cenRat_at | exact GlobalTheory.CenRatAt.cenRat_at | (intros; apply GlobalTheory.CenRatAt.cenRat_at <;> assumption)

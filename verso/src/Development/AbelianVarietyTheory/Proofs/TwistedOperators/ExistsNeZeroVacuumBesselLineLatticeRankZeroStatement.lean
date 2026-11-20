@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero | exact GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero | (intros; apply GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsNeZeroVacuumBesselLineLatticeRankZero.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_vacuum_besselLineLattice_rankZero : OnStd fun {D} _ _ _ {G} W F => ∃ Φ₀, VacG W.ψ _ _ (lineLat F 0) Φ₀ ∧ Φ₀ ≠ 0 := by
   first | exact @GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero | exact GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero | (intros; apply GlobalTheory.AscFin.LineZero.exists_vacG_lineLat_zero <;> assumption)

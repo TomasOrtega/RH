@@ -20,8 +20,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback | exact GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback | (intros; apply GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaRealisationLabelsInjectiveOfGrpPullback.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.thetaRealisation_labels_injective_of_grpPullback : ∀ {o₂ Ω₂ : Type} [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] (S₂ : ThetaSys o₂ Ω₂) (ρ₂ : S₂.Real) {T : Scheme.{0}} (G : Over T) [GrpObj G] (f : Sp S₂.R ⟶ T) (φ : ρ₂.P.A.left ⟶ G.left), IsGrpPullback ρ₂.P.A G f φ → ∀ x y : S₂.Gam, (ρ₂.pt x).left ≫ φ = (ρ₂.pt y).left ≫ φ → x = y := by
   first | exact @GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback | exact GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback | (intros; apply GlobalTheory.Poinc.Sep.realPt_inj_of_grpPullback <;> assumption)

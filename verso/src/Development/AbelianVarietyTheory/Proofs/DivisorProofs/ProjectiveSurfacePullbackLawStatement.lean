@@ -9,8 +9,10 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullCh.pullbackLaw | exact GlobalTheory.PullCh.pullbackLaw | (intros; apply GlobalTheory.PullCh.pullbackLaw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullCh.pullbackLaw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjectiveSurfacePullbackLaw.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.projective_surface_pullback_law : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T → PullbackLaw k T := by
   first | exact @GlobalTheory.PullCh.pullbackLaw | exact GlobalTheory.PullCh.pullbackLaw | (intros; apply GlobalTheory.PullCh.pullbackLaw <;> assumption)

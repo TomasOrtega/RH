@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPair)
 open GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacSecondPf.vac_second | exact GlobalTheory.VacSecondPf.vac_second | (intros; apply GlobalTheory.VacSecondPf.vac_second <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacSecondPf.vac_second` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSecondFlatMapVacuumTranslateIsVacuum.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.secondFlatMap_vacuum_translate_isVacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) (LV : Lat J.W) (LV₀ : Lat J.W₀) (LW : Lat B.V) (LW₀ : Lat B.V₀) (P : Pl D → Prop), (∀ v, P v → AdaptFB ψ J B LV LV₀ LW LW₀ v ∧ UnrAt s v) → ∀ f, Vac ψ J.W B.V LV LW P f → ∀ h₁ ∈ grpOff J.W P, ∀ h₂ ∈ grpOff B.V P, Vac ψ J.W₀ B.V₀ LV₀ LW₀ P (flatFB s (s.om (h₁, h₂) f)) := by
   first | exact @GlobalTheory.VacSecondPf.vac_second | exact GlobalTheory.VacSecondPf.vac_second | (intros; apply GlobalTheory.VacSecondPf.vac_second <;> assumption)

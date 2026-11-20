@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualWeylEqSpanCo
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardWeylLatticesFockDual
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeylDualData.dual_data | exact GlobalTheory.WeylDualData.dual_data | (intros; apply GlobalTheory.WeylDualData.dual_data <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeylDualData.dual_data` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FColumnProductTransitionMatrices.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_dual_bases_columnMinors_weylLattice : ∀ (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N), (∀ f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r),
       ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),

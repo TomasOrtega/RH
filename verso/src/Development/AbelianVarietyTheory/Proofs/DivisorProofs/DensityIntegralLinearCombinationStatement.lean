@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DensLinear.densInt_sum | exact GlobalTheory.DensLinear.densInt_sum | (intros; apply GlobalTheory.DensLinear.densInt_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DensLinear.densInt_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDensityIntegralLinearCombination.lean&line=177#L177)
 -/
 theorem _root_.GlobalTheory.T.density_integral_linear_combination : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) [SecondCountableTopology (CxPts p σ)] (I : Type) [Fintype I] (c : I → ℝ) (ρ : I → AlgChart p σ D → CxPts p σ → ℝ) (f : CxPts p σ → ℝ), (∀ j, IsDens (ρ j)) → (∀ j, IntegrableDens (ρ j) f) → IntegrableDens (fun ch y => ∑ j, c j * ρ j ch y) f ∧ densInt (fun ch y => ∑ j, c j * ρ j ch y) f = ∑ j, c j * densInt (ρ j) f := by
   first | exact @GlobalTheory.DensLinear.densInt_sum | exact GlobalTheory.DensLinear.densInt_sum | (intros; apply GlobalTheory.DensLinear.densInt_sum <;> assumption)

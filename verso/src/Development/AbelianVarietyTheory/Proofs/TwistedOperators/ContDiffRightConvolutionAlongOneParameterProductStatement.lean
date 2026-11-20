@@ -15,8 +15,10 @@ open scoped Topology ContDiff TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP | exact GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP | (intros; apply GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContDiffRightConvolutionAlongOneParameterProduct.lean&line=181#L181)
 -/
 theorem _root_.GlobalTheory.T.contDiff_rightConvolution_along_one_parameter_products : ∀ {D : D7} {V : HSp D} (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ {f : GA D V → ℂ}, f ∈ GlobalTheory.Orb.CcGA V → ∀ (F : GlobalTheory.AutomorphicL2Unitary.DividedPowerChartLift V μ) (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g : GA D V, ContDiff ℝ ∞ fun t : Fin k → ℝ => GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift (GQ V) F) (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) := by
   first | exact @GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP | exact GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP | (intros; apply GlobalTheory.ConvSmooth.contDiff_convR_lift_oneP <;> assumption)

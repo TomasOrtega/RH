@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.WhitAlg.whit_linear_kerInf | exact GlobalTheory.JSW.WhitAlg.whit_linear_kerInf | (intros; apply GlobalTheory.JSW.WhitAlg.whit_linear_kerInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.WhitAlg.whit_linear_kerInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlobalWhittakerCoefficientLinearArchimedeanKerne.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.globalWhittakerCoefficient_linear_archimedeanKernel : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F G : GA E a → ℂ), Continuous F → Continuous G → (∀ K : Set (GA E a), IsCompact K → ∃ (C : ℝ) (N : ℕ), ∀ g ∈ K, ∀ y : GL (Fin a) (Cinf E), ‖F (g * infGL E a y)‖ ≤ C * height y ^ N) → (∀ K : Set (GA E a), IsCompact K → ∃ (C : ℝ) (N : ℕ), ∀ g ∈ K, ∀ y : GL (Fin a) (Cinf E), ‖G (g * infGL E a y)‖ ≤ C * height y ^ N) → (∀ (c : ℂ) (g : GA E a), GlobalTheory.JSW.whit (fun x => F x + c * G x) g = GlobalTheory.JSW.whit F g + c * GlobalTheory.JSW.whit G g) ∧ ∀ (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), GlobalTheory.JSW.IsRapidInf ν k γ → ∀ g, GlobalTheory.JSW.whit (GlobalTheory.JSW.kerInf ν k γ F) g = ∫ x, k x * GlobalTheory.JSW.whit F (g * infGL E a (γ x)) ∂ν := by
   first | exact @GlobalTheory.JSW.WhitAlg.whit_linear_kerInf | exact GlobalTheory.JSW.WhitAlg.whit_linear_kerInf | (intros; apply GlobalTheory.JSW.WhitAlg.whit_linear_kerInf <;> assumption)

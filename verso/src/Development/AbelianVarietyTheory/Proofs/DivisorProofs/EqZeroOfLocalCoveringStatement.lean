@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.tors_point_range_fld | exact GlobalTheory.GroupBplus.Aff.tors_point_range_fld | (intros; apply GlobalTheory.GroupBplus.Aff.tors_point_range_fld <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.tors_point_range_fld` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqZeroOfLocalCovering.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.torsion_point_generic_fibre_range : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (P : PrimeSpectrum B), z.1.left P ∈ Set.range (torsMap (IsScalarTower.toAlgHom R B (FractionRing (B ⧸ P.asIdeal))) z).1.left := by
   first | exact @GlobalTheory.GroupBplus.Aff.tors_point_range_fld | exact GlobalTheory.GroupBplus.Aff.tors_point_range_fld | (intros; apply GlobalTheory.GroupBplus.Aff.tors_point_range_fld <;> assumption)

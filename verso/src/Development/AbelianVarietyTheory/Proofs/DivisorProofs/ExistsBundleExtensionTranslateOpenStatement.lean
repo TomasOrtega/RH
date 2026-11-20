@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_ext_translate | exact GlobalTheory.Mum.exists_ext_translate | (intros; apply GlobalTheory.Mum.exists_ext_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_ext_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBundleExtensionTranslateOpen.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_bundle_extension_translate_open : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : LB ((Over.pullback (jK R)).obj G).left) (PP : LB (G2 G).left), L.IsLB → ExtLam G L PP → ∀ (O : G.left.Opens) (N : LB O.toScheme), N.IsLB → LBIso (N.pull (pullback.fst O.ι (pullback.fst G.hom (jK R)))) (L.pull (pullback.snd O.ι (pullback.fst G.hom (jK R)))) → ∀ a : 𝟙_ (Over (Sp R)) ⟶ G, ∃ N' : LB ((𝟙 G * (toUnit G ≫ a)).left ⁻¹ᵁ O).toScheme, N'.IsLB ∧ LBIso (N'.pull (pullback.fst ((𝟙 G * (toUnit G ≫ a)).left ⁻¹ᵁ O).ι (pullback.fst G.hom (jK R)))) (L.pull (pullback.snd ((𝟙 G * (toUnit G ≫ a)).left ⁻¹ᵁ O).ι (pullback.fst G.hom (jK R)))) := by
   first | exact @GlobalTheory.Mum.exists_ext_translate | exact GlobalTheory.Mum.exists_ext_translate | (intros; apply GlobalTheory.Mum.exists_ext_translate <;> assumption)

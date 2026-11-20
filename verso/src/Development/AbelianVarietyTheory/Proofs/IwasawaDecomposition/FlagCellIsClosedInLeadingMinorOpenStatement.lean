@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad GlobalTheory.ProjSpace GlobalTheory.FlagEmb
 open Formalism.MainNotions.DIV.Cons (intO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagEmb.CellClosed.cell_closed | exact GlobalTheory.FlagEmb.CellClosed.cell_closed | (intros; apply GlobalTheory.FlagEmb.CellClosed.cell_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagEmb.CellClosed.cell_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFlagCellIsClosedInLeadingMinorOpen.lean&line=297#L297)
 -/
 theorem _root_.GlobalTheory.T.flagCell_isClosed_in_leadingMinor_open : ∀ (O K : Type) [CommRing O] [Field K] (β : O →+* K) (X : Scheme.{0}) (s : X ⟶ Sp O) (T : Type) [Finite T] (m : T → ℕ) (M : ℕ) (B : Type) (V : B → X.affineOpens) (α : ∀ b, K →+* Γ(X, (V b).1)) (c D : ∀ b, Let m → Fin (M + 1) → Γ(X, (V b).1)) (P : Scheme.{0}) (p0 : P ⟶ X) (p : ∀ en : En m, P ⟶ PSpace O (plN M en.1)) (h : ∀ b, Pm m → (Sp (CR m (V b)) ⟶ P)), IsCover β s V α c D → IsPlk β s V α c p0 p h → IsNoetherianRing O → IsProjOver s → ∀ b w (W : P.Opens), IsCellOpen p0 p (V b) (D b) w W → ∃ h' : Sp (CR m (V b)) ⟶ W.toScheme, h' ≫ W.ι = h b w ∧ IsClosedImmersion h' := by
   first | exact @GlobalTheory.FlagEmb.CellClosed.cell_closed | exact GlobalTheory.FlagEmb.CellClosed.cell_closed | (intros; apply GlobalTheory.FlagEmb.CellClosed.cell_closed <;> assumption)

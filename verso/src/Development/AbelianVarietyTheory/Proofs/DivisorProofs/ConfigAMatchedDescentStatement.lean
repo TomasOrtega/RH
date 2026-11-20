@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLine.LowGen.paraSpan_eq_top | exact GlobalTheory.IndLine.LowGen.paraSpan_eq_top | (intros; apply GlobalTheory.IndLine.LowGen.paraSpan_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLine.LowGen.paraSpan_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigAMatchedDescent.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.config_a_matched_descent : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

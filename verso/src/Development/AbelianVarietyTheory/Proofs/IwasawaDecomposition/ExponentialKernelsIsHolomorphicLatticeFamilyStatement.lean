@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker | exact GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker | (intros; apply GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExponentialKernelsIsHolomorphicLatticeFamily.lean&line=267#L267)
 -/
 theorem _root_.GlobalTheory.T.exponentialKernels_isHolomorphicLatticeFamily : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (m g : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (ex : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ t.G)), IsOpen B → IsHolTo (B ×ˢ Set.univ) (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (ex q.1 q.2).left) → (∀ b ∈ B, IsExpAt t (y b) (ex b)) → IsLatFam B (fun b => {w | ex b w = 1}) := by
   first | exact @GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker | exact GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker | (intros; apply GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker <;> assumption)

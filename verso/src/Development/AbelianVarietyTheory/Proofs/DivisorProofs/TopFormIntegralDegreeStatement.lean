@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTop.topForm_eq_mul_gdeg | exact GlobalTheory.ThetaTop.topForm_eq_mul_gdeg | (intros; apply GlobalTheory.ThetaTop.topForm_eq_mul_gdeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTop.topForm_eq_mul_gdeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopFormIntegralDegree.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.top_form_integral_degree : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (N : HermLB p) (ρ : ∀ σ : k →+* ℂ, AlgChart p σ 1 → CxPts p σ → ℝ) (I l : ℝ), IsTopForm ρ I → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ c : AlgChart p σ 1, y ∈ c.e.source ∧ ρ σ c y = l * c.chernDens (N.φ σ) y) → I = l * gdeg N 1 := by
   first | exact @GlobalTheory.ThetaTop.topForm_eq_mul_gdeg | exact GlobalTheory.ThetaTop.topForm_eq_mul_gdeg | (intros; apply GlobalTheory.ThetaTop.topForm_eq_mul_gdeg <;> assumption)

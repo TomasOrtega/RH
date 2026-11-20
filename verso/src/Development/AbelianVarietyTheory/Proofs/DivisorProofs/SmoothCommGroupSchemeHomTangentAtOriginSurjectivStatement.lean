@@ -15,8 +15,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieSurjLocal.map_surjective | exact GlobalTheory.LieSurjLocal.map_surjective | (intros; apply GlobalTheory.LieSurjLocal.map_surjective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieSurjLocal.map_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothCommGroupSchemeHomTangentAtOriginSurjectiv.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.smooth_commGroupSchemeHom_tangentAtOrigin_surjective : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G B : Over (Sp R)) [GrpObj G] [GrpObj B] [IsCommMonObj G] [IsCommMonObj B] (q : G ⟶ B) [IsMonHom q], Smooth q.left → ∀ u : TanM (𝟙 (Sp R)) B, ∃ v : TanM (𝟙 (Sp R)) G, tv v ≫ q = tv u := by
   first | exact @GlobalTheory.LieSurjLocal.map_surjective | exact GlobalTheory.LieSurjLocal.map_surjective | (intros; apply GlobalTheory.LieSurjLocal.map_surjective <;> assumption)

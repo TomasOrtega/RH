@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CechSerre.serre_cech | exact GlobalTheory.CompanionTheory.CechSerre.serre_cech | (intros; apply GlobalTheory.CompanionTheory.CechSerre.serre_cech <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CechSerre.serre_cech` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSerreClassOfCechSpectralSequence.lean&line=463#L463)
 -/
 theorem _root_.GlobalTheory.T.serre_class_of_cech_spectral_sequence : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type}
     (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (hc : ∀ T, ∃ α, U α T) (𝒮 : Serre.{1} R) (n : ℕ),

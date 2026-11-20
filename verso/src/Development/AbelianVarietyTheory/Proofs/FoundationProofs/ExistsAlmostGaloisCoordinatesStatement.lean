@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryCon
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
 open GlobalTheory.K5 GlobalTheory.KumDlog
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KumDlog.almostGal_coord | exact GlobalTheory.KumDlog.almostGal_coord | (intros; apply GlobalTheory.KumDlog.almostGal_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KumDlog.almostGal_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsAlmostGaloisCoordinates.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.exists_almostGalois_coordinates : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω) (n : ℕ) (r : Ω), IsInt p r → (∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r) →
   ∃ (ι : Type) (_ : Fintype ι) (u v : ι → Ω), (∀ k, u k ∈ FixI (Hfix T r)) ∧ (∀ k, v k ∈ FixI (Hfix T r)) ∧

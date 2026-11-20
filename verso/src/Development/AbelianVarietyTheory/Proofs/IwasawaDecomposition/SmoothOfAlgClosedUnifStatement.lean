@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagBundle.nonempty_flagTor | exact GlobalTheory.FlagBundle.nonempty_flagTor | (intros; apply GlobalTheory.FlagBundle.nonempty_flagTor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagBundle.nonempty_flagTor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSmoothOfAlgClosedUnif.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.smooth_of_alg_closed_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (∀ k, (U.X k).dom.Nonempty) → FnAlgClosed Xo c → SmoothOfRelativeDimension Dw.dim (genStr Z) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z) → Nonempty (FlagTor Z e U) := by
   first | exact @GlobalTheory.FlagBundle.nonempty_flagTor | exact GlobalTheory.FlagBundle.nonempty_flagTor | (intros; apply GlobalTheory.FlagBundle.nonempty_flagTor <;> assumption)

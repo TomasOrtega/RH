@@ -9,8 +9,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.FewEq
 open GlobalTheory.AbLaw (rs)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv | exact GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv | (intros; apply GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTrivialPullbackGivesUnitCocycle.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.trivial_pullback_gives_unit_cocycle : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Ideal R) (M : LB X), M.IsLB →
     ∀ (A : Type) (V : A → X.Opens) (j : A → M.ι) (hj : ∀ a, V a ≤ M.U (j a)),

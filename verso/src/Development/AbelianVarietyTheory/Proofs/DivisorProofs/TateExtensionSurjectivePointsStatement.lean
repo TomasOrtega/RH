@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tatePt_surjective_of_generic | exact GlobalTheory.tatePt_surjective_of_generic | (intros; apply GlobalTheory.tatePt_surjective_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tatePt_surjective_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTateExtensionSurjectivePoints.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.tate_extension_surjective_points : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (GG : PDivGroup p R) (GG₀ : PDivGroup p K) (e : GG₀ ≅ GG.baseChange K) (L : Type) [AddCommGroup L] (τ₀ : L →+ GG₀.Tate) (τ : L →+ GG.Tate), (∀ x, tateMap _ _ K e.hom (τ₀ x) = bcTate K (τ x)) → (∀ (n : ℕ) (φ : GG₀.A n →ₐ[K] K), ∃ x, tatePt (τ₀ x) n K = φ) → ∀ (n : ℕ) (k : Type) [Field k] [Algebra R k], (p : k) ≠ 0 → ∀ φ : GG.A n →ₐ[R] k, ∃ x, tatePt (τ x) n k = φ := by
   first | exact @GlobalTheory.tatePt_surjective_of_generic | exact GlobalTheory.tatePt_surjective_of_generic | (intros; apply GlobalTheory.tatePt_surjective_of_generic <;> assumption)

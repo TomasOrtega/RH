@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxE
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets | exact GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets | (intros; apply GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsFinsetDefiniteUnitaryDoubleCosets.lean&line=201#L201)
 -/
 theorem _root_.GlobalTheory.T.exists_finset_definiteUnitary_doubleCosets : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), ∀ L : Subgroup (finU E n), IsOpen (L : Set (finU E n)) → ∃ S : Finset (UA E n), ∀ g : UA E n, ∃ γ ∈ ratU E n, ∃ s ∈ S, ∃ k ∈ L, ∃ y ∈ infU E n, g = γ * s * (k : UA E n) * y := by
   first | exact @GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets | exact GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets | (intros; apply GlobalTheory.UnitaryBC.ClassTransport.exists_finset_double_cosets <;> assumption)

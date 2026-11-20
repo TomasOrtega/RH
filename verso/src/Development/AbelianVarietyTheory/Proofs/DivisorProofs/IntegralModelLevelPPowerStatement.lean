@@ -14,8 +14,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_large_minors | exact GlobalTheory.FlatModel.exists_large_minors | (intros; apply GlobalTheory.FlatModel.exists_large_minors <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.exists_large_minors` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralModelLevelPPower.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.integral_model_level_p_power : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt → BoundSt →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (p : ℕ) [Fact p.Prime]

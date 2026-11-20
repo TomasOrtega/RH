@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig | exact GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig | (intros; apply GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSelfDualModulusShiftHalfMemCompletedModulusHom.lean&line=232#L232)
 -/
 theorem _root_.GlobalTheory.T.selfDualModulusShift_half_mem_completedModulusHom : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → OffQ D → ∀ (G : GridData L sc) (i : ℕ), i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ u ∈ latBig G i, e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0))) := by
   first | exact @GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig | exact GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig | (intros; apply GlobalTheory.HalfOut.smul_mem_hatMx_of_mem_latBig <;> assumption)

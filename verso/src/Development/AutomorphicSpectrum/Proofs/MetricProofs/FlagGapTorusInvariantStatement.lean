@@ -6,8 +6,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus | exact GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFlagGapTorusInvariant.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.flag_gap_torus_invariant : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (z : (Σ k, ι k) → ℂ) (c : K → ℂ), (∀ k, c k ≠ 0) → (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → stepGap M BM p (fun q => c q.1 * z q) = stepGap M BM p z := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus | exact GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap_torus <;> assumption)

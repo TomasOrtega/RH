@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_tr …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFlagEqualChangeLowerTriangular.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.flag_equal_change_lower_triangular : ∀ (Ω : Type) [Field Ω] (L : Type) [AddCommGroup L] [Module Ω L] (r : ℕ) (b b₀ : Fin r → L) (Tm : Matrix (Fin r) (Fin r) Ω), LinearIndependent Ω b → (∀ i : ℕ, flagStep Ω b i = flagStep Ω b₀ i) → (∀ i, b i = ∑ j, Tm i j • b₀ j) → LinearIndependent Ω b₀ ∧ ∀ i j, i < j → Tm i j = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.FlagTri.independent_and_triangular <;> assumption)

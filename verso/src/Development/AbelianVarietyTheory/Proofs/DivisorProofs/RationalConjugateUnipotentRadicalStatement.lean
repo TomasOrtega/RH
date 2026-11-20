@@ -12,8 +12,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspConjRad.conj_mem_unipRad | exact GlobalTheory.CuspConjRad.conj_mem_unipRad | (intros; apply GlobalTheory.CuspConjRad.conj_mem_unipRad <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspConjRad.conj_mem_unipRad` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalConjugateUnipotentRadical.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.rational_conjugate_unipotent_radical : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n r : ℕ) (J : Matrix (Fin n) (Fin n) E) (γ : GRat σ J) (C₀ C : Matrix (Fin n) (Fin r) E)

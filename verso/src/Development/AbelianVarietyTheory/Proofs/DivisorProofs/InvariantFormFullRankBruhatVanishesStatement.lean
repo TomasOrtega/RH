@@ -8,8 +8,10 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankStrata.pairing_eq_zero_of_kills_lowRank | exact GlobalTheory.RankStrata.pairing_eq_zero_of_kills_lowRank | (intros; apply GlobalTheory.RankStrata.pairing_eq_zero_of_kills_lowRank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankStrata.pairing_eq_zero_of_kills_lowRank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantFormFullRankBruhatVanishes.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.invariant_form_full_rank_bruhat_vanishes : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n l d : ℕ) (ν : kˣ →* ℂˣ) (ϖ : kˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →

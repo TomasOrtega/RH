@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open GlobalTheory.RealWeil MeasureTheory
 open scoped SchwartzMap Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun | exact GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun | (intros; apply GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsScalarOfCommuteSchrodingerOperators.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_scalar_of_commute_schrodingerOperators : ∀ (l : Type) [Fintype l] (S : Sch l →ₗ[ℂ] Sch l), (∀ f, ∫ x, ‖S f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2) → (∀ w (f f₁ : Sch l), ⇑f₁ = rhoFun w ⇑f → ⇑(S f₁) = rhoFun w ⇑(S f)) → ∃ c : ℂ, ∀ f, S f = c • f := by
   first | exact @GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun | exact GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun | (intros; apply GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun <;> assumption)

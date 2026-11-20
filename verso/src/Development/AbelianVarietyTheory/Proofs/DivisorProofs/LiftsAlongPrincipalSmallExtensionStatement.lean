@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.liftsAlong_span_singleton | exact GlobalTheory.DualOpen.liftsAlong_span_singleton | (intros; apply GlobalTheory.DualOpen.liftsAlong_span_singleton <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualOpen.liftsAlong_span_singleton` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftsAlongPrincipalSmallExtension.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.liftsAlong_principal_small_extension : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (U : Over (Sp R)) (M : LB (A ⊗ U).left), Fam A M → SmallLift A M → ∀ (B : Type) [CommRing B] [IsLocalRing B] (t : B), t ∈ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * Ideal.span {t} = ⊥ → LiftsAlong A M B (Ideal.span {t}) := by
   first | exact @GlobalTheory.DualOpen.liftsAlong_span_singleton | exact GlobalTheory.DualOpen.liftsAlong_span_singleton | (intros; apply GlobalTheory.DualOpen.liftsAlong_span_singleton <;> assumption)

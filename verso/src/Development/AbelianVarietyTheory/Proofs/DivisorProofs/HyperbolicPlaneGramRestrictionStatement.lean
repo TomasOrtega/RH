@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitLiftCoord.exists_lift_coords | exact GlobalTheory.SplitLiftCoord.exists_lift_coords | (intros; apply GlobalTheory.SplitLiftCoord.exists_lift_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitLiftCoord.exists_lift_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHyperbolicPlaneGramRestriction.lean&line=274#L274)
 -/
 theorem _root_.GlobalTheory.T.hyperbolic_plane_gram_restriction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hcm : IsCMExt F E σ) (v : Pl F) (τ : E →ₐ[F] Fv F v)

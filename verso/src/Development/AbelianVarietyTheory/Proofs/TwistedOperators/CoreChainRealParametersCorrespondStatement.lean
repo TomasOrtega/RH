@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoreOntoPar.parOK_core | exact GlobalTheory.CoreOntoPar.parOK_core | (intros; apply GlobalTheory.CoreOntoPar.parOK_core <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoreOntoPar.parOK_core` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCoreChainRealParametersCorrespond.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.coreChain_realParameters_correspond : ParOK := by
   first | exact @GlobalTheory.CoreOntoPar.parOK_core | exact GlobalTheory.CoreOntoPar.parOK_core | (intros; apply GlobalTheory.CoreOntoPar.parOK_core <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodChartOnto.fderiv_surjective | exact GlobalTheory.PeriodChartOnto.fderiv_surjective | (intros; apply GlobalTheory.PeriodChartOnto.fderiv_surjective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodChartOnto.fderiv_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodChartHolomorphicOnCover.lean&line=322#L322)
 -/
 theorem _root_.GlobalTheory.T.periodChart_fderiv_surjective_on_cover : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (A : Over S) [GrpObj A] (D' : ℕ) (h' : IsRegVar (A.hom ≫ p) D') (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → ∀ P ∈ cov c.e.target g, ∀ x : (h'.atlas σ).Pt, x.pt = ex P → Function.Surjective (fderiv ℂ (x.ch ∘ ex) P) := by
   first | exact @GlobalTheory.PeriodChartOnto.fderiv_surjective | exact GlobalTheory.PeriodChartOnto.fderiv_surjective | (intros; apply GlobalTheory.PeriodChartOnto.fderiv_surjective <;> assumption)

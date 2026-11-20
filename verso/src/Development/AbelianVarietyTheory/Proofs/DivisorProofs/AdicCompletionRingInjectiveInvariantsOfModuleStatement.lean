@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvAlg.cmap_transfer | exact GlobalTheory.InvAlg.cmap_transfer | (intros; apply GlobalTheory.InvAlg.cmap_transfer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvAlg.cmap_transfer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdicCompletionRingInjectiveInvariantsOfModule.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.adicCompletion_ring_injective_invariants_of_module : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (J : Ideal A) (Γ : Type) (g : Γ → (B →ₐ[A] B)),
     Function.Injective (AdicCompletion.map J (Algebra.linearMap A B)) →

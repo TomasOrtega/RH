@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiCompactUnitPai
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CxPts
 open GlobalTheory.CxForm (relCot dRel)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurveDer.fderiv_ev_eq_sum | exact GlobalTheory.CurveDer.fderiv_ev_eq_sum | (intros; apply GlobalTheory.CurveDer.fderiv_ev_eq_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurveDer.fderiv_ev_eq_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicTranslationSectionSum.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_translation_section_sum : ∀ {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+* ℂ} (A : Over S) [GrpObj A] (g : ℕ)
     (cv : (Fin g → ℂ) → CxPts (A.hom ≫ p) σ) (hcv : ∀ u, (cv 0).1 ≫ A.hom = (cv u).1 ≫ A.hom),

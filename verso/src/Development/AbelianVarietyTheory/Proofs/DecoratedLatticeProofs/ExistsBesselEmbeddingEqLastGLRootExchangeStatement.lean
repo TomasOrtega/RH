@@ -17,8 +17,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QPl.QStep.gl₂_embX_eq_embA | exact GlobalTheory.QPl.QStep.gl₂_embX_eq_embA | (intros; apply GlobalTheory.QPl.QStep.gl₂_embX_eq_embA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QPl.QStep.gl₂_embX_eq_embA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsBesselEmbeddingEqLastGLRootExchange.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_besselEmbedding_eq_lastGL_rootExchange : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S) (g : GL Q.n₂ Q.k), ∃ a₀ : GA D S.B'.A, GlobalTheory.MixPer.embA S.B'.d S.B'.o a₀ = Q.gl₂ (embX (Q.c + 1) g) ∧ (ofSplit Q.q).IsLoc Q.F.F₂ a₀ g := by
   first | exact @GlobalTheory.QPl.QStep.gl₂_embX_eq_embA | exact GlobalTheory.QPl.QStep.gl₂_embX_eq_embA | (intros; apply GlobalTheory.QPl.QStep.gl₂_embX_eq_embA <;> assumption)

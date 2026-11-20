@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaneSig.hasSig_complement_plane | exact GlobalTheory.PlaneSig.hasSig_complement_plane | (intros; apply GlobalTheory.PlaneSig.hasSig_complement_plane <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaneSig.hasSig_complement_plane` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasHermitianSignatureComplementHyperbolicPlane.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.hasHermitianSignature_complement_hyperbolicPlane : ∀ (n n₁ : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (X Yv : Fin n → ℂ) (ι : Matrix (Fin n) (Fin n₁) ℂ)
     (P : Matrix (Fin n₁) (Fin n) ℂ) (r s : ℕ), n = n₁ + 2 → Mᴴ = M →

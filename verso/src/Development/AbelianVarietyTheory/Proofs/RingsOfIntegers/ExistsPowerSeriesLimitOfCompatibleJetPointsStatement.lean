@@ -9,8 +9,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 open GlobalTheory.TransUnit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransUnit.LimEx.exists_isLimit | exact GlobalTheory.TransUnit.LimEx.exists_isLimit | (intros; apply GlobalTheory.TransUnit.LimEx.exists_isLimit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TransUnit.LimEx.exists_isLimit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FExistsPowerSeriesLimitOfCompatibleJetPoints.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.exists_powerSeries_limit_of_compatible_jetPoints : ∀ (V : Type) [CommRing V] [IsLocalRing V] (G : Over (Sp V)) (d : ℕ) (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G), (∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] Jet V (Fin 1 × Fin d) m) ≫ x (m + 1) = x m) → ∃ X : limO V d 1 ⟶ G, IsLimit x X := by
   first | exact @GlobalTheory.TransUnit.LimEx.exists_isLimit | exact GlobalTheory.TransUnit.LimEx.exists_isLimit | (intros; apply GlobalTheory.TransUnit.LimEx.exists_isLimit <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetLineIntZero.tendsto_int_sub | exact GlobalTheory.DetLineIntZero.tendsto_int_sub | (intros; apply GlobalTheory.DetLineIntZero.tendsto_int_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetLineIntZero.tendsto_int_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTendstoMixedIntegralBoundary.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.tendsto_mixed_integral_boundary : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) c (u : Wt O.Y),
     DomL O.Y.j u → ∀ g : (T.M c).Fun, (T.M c).Smooth g →

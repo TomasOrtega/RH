@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArcUniqueGlobal.eq_of_hasArcData_global | exact GlobalTheory.ArcUniqueGlobal.eq_of_hasArcData_global | (intros; apply GlobalTheory.ArcUniqueGlobal.eq_of_hasArcData_global <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArcUniqueGlobal.eq_of_hasArcData_global` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FArcAdmissibleBase.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.arc_admissible_base : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O']

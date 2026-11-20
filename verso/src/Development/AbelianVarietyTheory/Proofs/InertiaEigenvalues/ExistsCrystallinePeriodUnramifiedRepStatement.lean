@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnrPer.exists_period_unramified | exact GlobalTheory.UnrPer.exists_period_unramified | (intros; apply GlobalTheory.UnrPer.exists_period_unramified <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnrPer.exists_period_unramified` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCrystallinePeriodUnramifiedRep.lean&line=293#L293)
 -/
 theorem _root_.GlobalTheory.T.exists_crystalline_period_unramified_rep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)), IsRat r ρ → (∀ g ∈ IK K, ρ g = 1) → (∀ g i j, ‖(((ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) - (1 : Matrix n n (Om l)) i j‖ < 1) → ∃ Q : GL n P.R.B, ∀ g : ↥(GK K), (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) * (Q : Matrix n n P.R.B).map (P.actQ (g : GQ l)) = Q := by
   first | exact @GlobalTheory.UnrPer.exists_period_unramified | exact GlobalTheory.UnrPer.exists_period_unramified | (intros; apply GlobalTheory.UnrPer.exists_period_unramified <;> assumption)

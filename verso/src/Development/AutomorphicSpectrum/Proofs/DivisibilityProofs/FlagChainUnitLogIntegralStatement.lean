@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsChainFirst
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FFlagChainUnitLogIntegral.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.flag_chain_unit_log_integral : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (K : Type) [Fintype K] [DecidableEq K] (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ k₀ : K, (∀ a : K, a = k₀) → ∀ j : K → FlBlock Ψ N, IsChain j → ptsIntegral (PPart j) (pot fun _ : Fin (N - 1) => unitLine j k₀) (fun _ => 1) = 1 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first <;> assumption)

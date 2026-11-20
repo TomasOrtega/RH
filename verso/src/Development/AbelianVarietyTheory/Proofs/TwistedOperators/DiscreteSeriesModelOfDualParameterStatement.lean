@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjDS.exists_conjModel | exact GlobalTheory.ConjDS.exists_conjModel | (intros; apply GlobalTheory.ConjDS.exists_conjModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjDS.exists_conjModel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDiscreteSeriesModelOfDualParameter.lean&line=427#L427)
 -/
 theorem _root_.GlobalTheory.T.discrete_series_model_of_dual_parameter : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S), ∃ (M' : DSModel V (fun τ => dualPar (S τ))) (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ), ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w) := by
   first | exact @GlobalTheory.ConjDS.exists_conjModel | exact GlobalTheory.ConjDS.exists_conjModel | (intros; apply GlobalTheory.ConjDS.exists_conjModel <;> assumption)

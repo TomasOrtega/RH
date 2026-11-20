@@ -10,8 +10,10 @@ open AlgebraicGeometry CategoryTheory Polynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.NormalDescent
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormalDescent.exists_mem_basicOpen_of_mem_basicOpen_normCoeff | exact GlobalTheory.NormalDescent.exists_mem_basicOpen_of_mem_basicOpen_normCoeff | (intros; apply GlobalTheory.NormalDescent.exists_mem_basicOpen_of_mem_basicOpen_normCoeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormalDescent.exists_mem_basicOpen_of_mem_basicOpen_normCoeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsMemBasicOpenOfMemBasicOpenNormCoeff.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.exists_mem_basicOpen_of_mem_basicOpen_normCoeff' : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] {V : X.Opens} (hV : IsAffineOpen V)
     [IsDomain Γ(X, V)] [IsIntegrallyClosed Γ(X, V)] (τ : Γ(Y, f ⁻¹ᵁ V)) (x : X) (k : ℕ), x ∈ V → 1 ≤ k →

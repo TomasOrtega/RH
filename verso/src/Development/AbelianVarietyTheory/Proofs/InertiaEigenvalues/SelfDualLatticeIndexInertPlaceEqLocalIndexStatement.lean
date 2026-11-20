@@ -14,8 +14,10 @@ open GlobalTheory.LFun (IsSplitChart IsInertChart KGL)
 open GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocKerMod.latIndex_embV_inert | exact GlobalTheory.LocKerMod.latIndex_embV_inert | (intros; apply GlobalTheory.LocKerMod.latIndex_embV_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocKerMod.latIndex_embV_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelfDualLatticeIndexInertPlaceEqLocalIndex.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.selfDualLatticeIndex_inertPlace_eq_localIndex : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → ∀ g : GlobalTheory.FinZeta.Gv T v, latIndex T (GlobalTheory.FinZeta.embV T v g) = GlobalTheory.LocKerMod.idxAt T w h g := by
   first | exact @GlobalTheory.LocKerMod.latIndex_embV_inert | exact GlobalTheory.LocKerMod.latIndex_embV_inert | (intros; apply GlobalTheory.LocKerMod.latIndex_embV_inert <;> assumption)

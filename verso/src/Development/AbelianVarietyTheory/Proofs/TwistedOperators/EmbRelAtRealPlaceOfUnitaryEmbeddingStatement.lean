@@ -12,8 +12,10 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Mi.SepPer (contLeft)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EmbAtPlace.embRel_atTau | exact GlobalTheory.EmbAtPlace.embRel_atTau | (intros; apply GlobalTheory.EmbAtPlace.embRel_atTau <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EmbAtPlace.embRel_atTau` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEmbRelAtRealPlaceOfUnitaryEmbedding.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.embRel_atRealPlace_of_unitaryEmbedding : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (τ : D.what₂.Tau)
     (h : Matrix (Fin A.rank) (Fin A.rank) ℂ) (g : Matrix (Fin B.rank) (Fin B.rank) ℂ), h ∈ Formalism.QuantumDeterminants.UH (gramAt D A τ) →

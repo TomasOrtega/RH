@@ -15,8 +15,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilPower.weilIs_pow_field | exact GlobalTheory.WeilPower.weilIs_pow_field | (intros; apply GlobalTheory.WeilPower.weilIs_pow_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilPower.weilIs_pow_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FWeilPairingPowPolAVEqProdField.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.weilPairing_powPolAV_eq_prod_field : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → ∀ (x x' : TFK (R := R) F ⟶ A'.A) (c : Fin j → Fˣ), (∀ i, WeilIs A.A A.L k (x ≫ pA.pr i) (x' ≫ pA.pr i) (unitOn (c i))) → WeilIs A'.A A'.L k x x' (unitOn (∏ i, c i)) := by
   first | exact @GlobalTheory.WeilPower.weilIs_pow_field | exact GlobalTheory.WeilPower.weilIs_pow_field | (intros; apply GlobalTheory.WeilPower.weilIs_pow_field <;> assumption)

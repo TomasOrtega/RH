@@ -8,8 +8,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatCongImage.finCong_mem_levN | exact GlobalTheory.LatCongImage.finCong_mem_levN | (intros; apply GlobalTheory.LatCongImage.finCong_mem_levN <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatCongImage.finCong_mem_levN` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPrincipalCongruenceLevelContained.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.principal_congruence_level_contained : ∀ (D : D7) (V : HSp D) (n : ℕ) (P : principalLevelFrame.RowPsi V n) (hF : D.host.F = maximalRealSubfield D.host.E), StdFrame hF P → ∀ N : ℕ, 0 < N → ∃ N' : ℕ, 0 < N' ∧ ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V N' k → k ∈ principalLevelFrame.levN P N := by
   first | exact @GlobalTheory.LatCongImage.finCong_mem_levN | exact GlobalTheory.LatCongImage.finCong_mem_levN | (intros; apply GlobalTheory.LatCongImage.finCong_mem_levN <;> assumption)

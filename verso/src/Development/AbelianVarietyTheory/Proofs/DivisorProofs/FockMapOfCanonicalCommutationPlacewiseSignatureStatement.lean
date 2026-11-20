@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHec
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CCRFock.fock_map_of_ccr_dep | exact GlobalTheory.CCRFock.fock_map_of_ccr_dep | (intros; apply GlobalTheory.CCRFock.fock_map_of_ccr_dep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CCRFock.fock_map_of_ccr_dep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockMapOfCanonicalCommutationPlacewiseSignature.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.fockMap_of_canonicalCommutation_placewise_signature : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : W → ℕ}
     (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V),

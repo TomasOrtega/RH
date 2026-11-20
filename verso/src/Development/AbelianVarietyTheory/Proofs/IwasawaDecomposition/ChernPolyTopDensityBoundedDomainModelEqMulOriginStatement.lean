@@ -8,8 +8,10 @@ open GlobalTheory.PointChern Filter Topology
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PointChern.chernTop_model_eq_mul | exact GlobalTheory.PointChern.chernTop_model_eq_mul | (intros; apply GlobalTheory.PointChern.chernTop_model_eq_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PointChern.chernTop_model_eq_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChernPolyTopDensityBoundedDomainModelEqMulOrigin.lean&line=171#L171)
 -/
 theorem _root_.GlobalTheory.T.chernPolyTopDensity_boundedDomainModel_eq_mul_origin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) {n : ℕ} (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (w : ReciprocityTheory.L2DbarEstimates.V n), InDom (coordOf ix w) → ∃ κ : ℝ, ∀ R : MvPolynomial ((E →+* ℂ) × ℕ) ℝ, chernTop R (fun u => modelGram H Dw (coordOf ix u)) w = κ * chernTop R (fun u => modelGram H Dw (coordOf ix u)) 0 := by
   first | exact @GlobalTheory.PointChern.chernTop_model_eq_mul | exact GlobalTheory.PointChern.chernTop_model_eq_mul | (intros; apply GlobalTheory.PointChern.chernTop_model_eq_mul <;> assumption)

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KS.Endo.comm_of_endo | exact GlobalTheory.KS.Endo.comm_of_endo | (intros; apply GlobalTheory.KS.Endo.comm_of_endo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KS.Endo.comm_of_endo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FKodairaSpencerCommutesWithEndomorphism.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.kodairaSpencer_commutes_with_endomorphism : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ D Θ s, KSRel u p m D Θ s → ∀ (f : X ⟶ X) (f₀ : P₀.A ⟶ P₀.A) (F : (Fin P₀.g → ℂ) →ₗ[ℂ] (Fin P₀.g → ℂ)), f ≫ p = p → f₀.left ≫ m = m ≫ f → (∀ z, u.ex (F z) = u.ex z ≫ f₀) → Comm Θ F := by
   first | exact @GlobalTheory.KS.Endo.comm_of_endo | exact GlobalTheory.KS.Endo.comm_of_endo | (intros; apply GlobalTheory.KS.Endo.comm_of_endo <;> assumption)

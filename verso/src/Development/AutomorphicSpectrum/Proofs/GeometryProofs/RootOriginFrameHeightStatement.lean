@@ -8,8 +8,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FRootOriginFrameHeight.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.root_origin_frame_height : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or), ∃ B : Finset RM.Ω, ∀ A : Subring RM.Ω, (↑B : Set RM.Ω) ⊆ A → (∀ n : ℕ, n ≠ 0 → ((n : RM.Ω))⁻¹ ∈ A) → FinRd.GoodRing Fr A := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset <;> assumption)

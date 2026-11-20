@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagScale.isFlagCh2_scale | exact GlobalTheory.FlagScale.isFlagCh2_scale | (intros; apply GlobalTheory.FlagScale.isFlagCh2_scale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagScale.isFlagCh2_scale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagChernScalingDegree.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.flag_chern_scaling_degree : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S], IsRegSurf p → ∀ (E : S.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl : Vert.Flag E r) (a s : ℝ), VMetric.IsFlagCh2 H fl a → VMetric.IsFlagCh2 (H.scale s) fl (a - s / 2 * gdeg (VMetric.det H) 1) := by
   first | exact @GlobalTheory.FlagScale.isFlagCh2_scale | exact GlobalTheory.FlagScale.isFlagCh2_scale | (intros; apply GlobalTheory.FlagScale.isFlagCh2_scale <;> assumption)

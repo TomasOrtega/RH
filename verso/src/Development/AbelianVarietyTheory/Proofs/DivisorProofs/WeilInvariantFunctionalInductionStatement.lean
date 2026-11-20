@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowCut.eq_zero_of_row_vanish | exact GlobalTheory.RowCut.eq_zero_of_row_vanish | (intros; apply GlobalTheory.RowCut.eq_zero_of_row_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowCut.eq_zero_of_row_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilInvariantFunctionalInduction.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.weil_invariant_functional_induction : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (Y : Type) [TopologicalSpace Y] (m : ℕ) (μ : kˣ →* ℂˣ)
     (L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k) →ₗ[ℂ] ℂ),

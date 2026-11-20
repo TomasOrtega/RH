@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TamUnf.finSU_mat_iff_isSA | exact GlobalTheory.TamUnf.finSU_mat_iff_isSA | (intros; apply GlobalTheory.TamUnf.finSU_mat_iff_isSA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TamUnf.finSU_mat_iff_isSA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfAdjointLevelMatrix.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.self_adjoint_level_matrix : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E),
     (∀ k : finSU (IsCMField.complexConj E).toAlgHom Gᵀ,

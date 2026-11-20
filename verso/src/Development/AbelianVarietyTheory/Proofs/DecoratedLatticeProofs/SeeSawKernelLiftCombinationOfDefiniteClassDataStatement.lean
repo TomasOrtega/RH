@@ -6,8 +6,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.KJI
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.kerX_of_clsPinD | exact GlobalTheory.SeeSaw.kerX_of_clsPinD | (intros; apply GlobalTheory.SeeSaw.kerX_of_clsPinD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.kerX_of_clsPinD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSeeSawKernelLiftCombinationOfDefiniteClassData.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.seeSawKernelLiftCombination_of_definiteClassData : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) → ClsPinD t → KerX t := by
   first | exact @GlobalTheory.SeeSaw.kerX_of_clsPinD | exact GlobalTheory.SeeSaw.kerX_of_clsPinD | (intros; apply GlobalTheory.SeeSaw.kerX_of_clsPinD <;> assumption)

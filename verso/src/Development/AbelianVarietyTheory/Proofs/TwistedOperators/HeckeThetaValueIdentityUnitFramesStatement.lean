@@ -10,8 +10,10 @@ open GlobalTheory.FrameNorm (IsUnitFr)
 open scoped Matrix
 open GlobalTheory.HkFam (admitted)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeValueId.hecke_theta_value_identity | exact GlobalTheory.HeckeValueId.hecke_theta_value_identity | (intros; apply GlobalTheory.HeckeValueId.hecke_theta_value_identity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeValueId.hecke_theta_value_identity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeckeThetaValueIdentityUnitFrames.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.hecke_theta_value_identity_unitFrames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U →
   ∀ (P : Ideal (𝓞 E)) (p i : ℕ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ),

@@ -14,8 +14,10 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FComplexCoordinatesExistAtInfinity.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.complex_coordinates_exist_at_infinity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)),

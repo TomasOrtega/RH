@@ -10,8 +10,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTRead.jumps_of_periods | exact GlobalTheory.CompanionTheory.LTRead.jumps_of_periods | (intros; apply GlobalTheory.CompanionTheory.LTRead.jumps_of_periods <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTRead.jumps_of_periods` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDeRhamRankLubinTateLine.lean&line=326#L326)
 -/
 theorem _root_.GlobalTheory.T.de_rham_rank_lubin_tate_line : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied6 l P AI) →
     ∀ (K LL : FinExt l), (∀ (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), μ x ∈ LL.1) →

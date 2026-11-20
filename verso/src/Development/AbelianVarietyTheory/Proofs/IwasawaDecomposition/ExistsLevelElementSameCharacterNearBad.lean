@@ -36,8 +36,10 @@ Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdSupport.adAt_e
 theorem support_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} (z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F)), (∀ v', v' ≠ v → bc (prV (E := E) v') z = 1) → ∀ P : HeightOneSpectrum (𝓞 E), ¬ Formalism.L2.Col.IsOver v P → ∀ r s, adAt F P ((z : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s := by
   first | exact @GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | exact GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over | (intros; apply GlobalTheory.Mem.Col2.AdSupport.adAt_entry_eq_one_of_not_over <;> assumption)
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | exact GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | (intros; apply GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsIsPtOfOfRat.lean&line=91#L91)
 -/
 theorem point_of_rat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (Fin n) (AfE F E)), g ∈ UAd hc n → (∀ P ∈ Q, ∃ γ : GL (Fin n) E, ∀ r s, adAt F P ((g : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) ((γ : Matrix (Fin n) (Fin n) E) r s)) → ∃ p : DecoF E n ST SG Q, IsPtOf hc g p := by
   first | exact @GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | exact GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat | (intros; apply GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat <;> assumption)

@@ -8,8 +8,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.LogDR
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh | exact _root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh | (intros; apply _root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.cechZero_latSec_iff_subsingleton_coh` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechLatticeCohomologyVanish.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.cech_lattice_cohomology_vanish : ∀ (X : Scheme.{0}) [IsIntegral X] [X.IsSeparated] {V : Type} [AddCommGroup V] [Module X.functionField V] (M : X → AddSubgroup V) (F : X.Modules) [F.IsQuasicoherent] {ι : Type} [Fintype ι] [LinearOrder ι] (U : ι → X.Opens), LatModel M F → (∀ i, IsAffineOpen (U i)) → (∀ i, genericPoint X ∈ U i) → ⨆ i, U i = ⊤ → ∀ b : ℕ, 0 < b → (DI.CechZero (fun s => latSec M (inter U s)) b ↔ Subsingleton (coh F b)) := by
   first | exact @_root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh | exact _root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh | (intros; apply _root_.GlobalTheory.cechZero_latSec_iff_subsingleton_coh <;> assumption)

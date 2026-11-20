@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.MainNotions.G Formalism.L2.G Formalism.MainNotions.G.CmpJ Formalism.L2.Forms Formalism.UG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChiRatStd.chiRatAll_twChart | exact GlobalTheory.ChiRatStd.chiRatAll_twChart | (intros; apply GlobalTheory.ChiRatStd.chiRatAll_twChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChiRatStd.chiRatAll_twChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTwistedChainChartLevelCharactersRational.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.twisted_chain_chart_level_characters_rational : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch),

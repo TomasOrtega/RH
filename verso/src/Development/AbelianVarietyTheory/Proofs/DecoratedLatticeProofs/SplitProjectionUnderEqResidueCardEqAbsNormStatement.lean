@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceProjAt.under_resCard | exact GlobalTheory.PlaceProjAt.under_resCard | (intros; apply GlobalTheory.PlaceProjAt.under_resCard <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceProjAt.under_resCard` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitProjectionUnderEqResidueCardEqAbsNorm.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.split_projection_under_eq_residue_card_eq_absNorm : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (PP : Pl D.host.E), IsProjAt φ PP → v = PP.under (𝓞 D.host.F) ∧ GlobalTheory.SplitWeil.resCard (Fv D.host.F v) = Ideal.absNorm PP.asIdeal := by
   first | exact @GlobalTheory.PlaceProjAt.under_resCard | exact GlobalTheory.PlaceProjAt.under_resCard | (intros; apply GlobalTheory.PlaceProjAt.under_resCard <;> assumption)

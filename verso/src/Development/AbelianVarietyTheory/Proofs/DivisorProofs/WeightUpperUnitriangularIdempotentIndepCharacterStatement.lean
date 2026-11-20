@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightUpperUnitrian
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders GlobalTheory.BadCount Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadCount.wtOf_eUk_indep | exact GlobalTheory.BadCount.wtOf_eUk_indep | (intros; apply GlobalTheory.BadCount.wtOf_eUk_indep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadCount.wtOf_eUk_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightUpperUnitriangularIdempotentIndepCharacter.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.weight_upperUnitriangularIdempotent_indep_character : ∀ (D : D7) (k : Fin 2) (ψ ψ' : AddChar (ZMod (D.host.g k)) ℂ), ψ ≠ 1 → ψ' ≠ 1 → ∀ f, wtOf D k (eUk D k ψ) f = wtOf D k (eUk D k ψ') f := by
   first | exact @GlobalTheory.BadCount.wtOf_eUk_indep | exact GlobalTheory.BadCount.wtOf_eUk_indep | (intros; apply GlobalTheory.BadCount.wtOf_eUk_indep <;> assumption)

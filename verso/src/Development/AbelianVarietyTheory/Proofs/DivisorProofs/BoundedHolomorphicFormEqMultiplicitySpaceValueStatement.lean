@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BackForm.exists_multMap | exact GlobalTheory.BackForm.exists_multMap | (intros; apply GlobalTheory.BackForm.exists_multMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BackForm.exists_multMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundedHolomorphicFormEqMultiplicitySpaceValue.lean&line=312#L312)
 -/
 theorem _root_.GlobalTheory.T.boundedHolomorphicForm_eq_multiplicitySpace_value : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (v : M.Vec), IsInfFam θ → HolShape M → WtIs M w → IsExtVec M v → (∃ μ 𝓕, FinPair V μ 𝓕) → ∀ (J : Set (GA D V)) (χ φ : GA D V → ℂ), J ⊆ (GfC V : Set (GA D V)) → HolForm θ M w J χ φ → ZCusp V φ → ∃ T : MMap M, IsMultMap θ M J χ T ∧ T v = φ := by
   first | exact @GlobalTheory.BackForm.exists_multMap | exact GlobalTheory.BackForm.exists_multMap | (intros; apply GlobalTheory.BackForm.exists_multMap <;> assumption)

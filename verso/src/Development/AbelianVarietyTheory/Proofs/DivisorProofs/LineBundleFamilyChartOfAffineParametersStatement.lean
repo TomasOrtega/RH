@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.chartAt_of_affine | exact GlobalTheory.DualCon.chartAt_of_affine | (intros; apply GlobalTheory.DualCon.chartAt_of_affine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.chartAt_of_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleFamilyChartOfAffineParameters.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.lineBundleFamilyChart_of_affine_parameters : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (U : Over S) (M : LB (A ⊗ U).left), Fam A M → Inj A M → (∀ (T : Over S) [IsAffine T.left] (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N) → ∀ (T : Over S) (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N := by
   first | exact @GlobalTheory.DualCon.chartAt_of_affine | exact GlobalTheory.DualCon.chartAt_of_affine | (intros; apply GlobalTheory.DualCon.chartAt_of_affine <;> assumption)

@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LBDescent
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LBDescent.exists_trivial_near_fibre | exact GlobalTheory.LBDescent.exists_trivial_near_fibre | (intros; apply GlobalTheory.LBDescent.exists_trivial_near_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LBDescent.exists_trivial_near_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLineBundleTrivialNearFibreFinite.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.exists_lineBundle_trivial_near_fibre_finite : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (L : LB X), L.IsLB → ∀ y : Y, ∃ V : Y.Opens, y ∈ V ∧
     ∃ t : ∀ i, Γ(X, f ⁻¹ᵁ V ⊓ L.U i)ˣ, ∀ (i j : L.ι) (x : X), f x ∈ V → x ∈ L.U i → x ∈ L.U j →

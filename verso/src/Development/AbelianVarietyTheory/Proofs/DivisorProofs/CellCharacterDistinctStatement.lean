@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.CellCharNe.cellChar_ne_of_ne | exact GlobalTheory.IndLineGL.CellCharNe.cellChar_ne_of_ne | (intros; apply GlobalTheory.IndLineGL.CellCharNe.cellChar_ne_of_ne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.CellCharNe.cellChar_ne_of_ne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellCharacterDistinct.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.cell_character_distinct : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), (∀ x, ‖((α₀ x : ℂˣ) : ℂ)‖ = 1) → (∀ x, ‖((β₀ x : ℂˣ) : ℂ)‖ = 1) → a' < a →

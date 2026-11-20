@@ -15,8 +15,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.PowGerm GlobalTheory.PtTie
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finOrd_ratio_rootOfUnity | exact GlobalTheory.finOrd_ratio_rootOfUnity | (intros; apply GlobalTheory.finOrd_ratio_rootOfUnity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finOrd_ratio_rootOfUnity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FFiniteOrderThetaOperatorsRatioRootOfUnity.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.finiteOrder_thetaOperators_ratio_rootOfUnity : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ (p : QkPt D.toPre F k) (w w' : LB.Gen (LB.LinComb D.toPre.P.L (DegPre.lineφ D.toPre F p.g.b) (DegPre.lineε k))) (ζ ζ' : F), w.IsGen → w'.IsGen → FinOrd D F k p w ζ → FinOrd D F k p w' ζ' → ∃ u : F, (∃ m : ℕ, 0 < m ∧ u ^ m = 1) ∧ ∀ s t₀ t t₀' t' : Fam D.toPre F k, PhiRel D.toPre F k p w s t₀ → Fam.IsSmul D.toPre F ζ t₀ t → PhiRel D.toPre F k p w' s t₀' → Fam.IsSmul D.toPre F ζ' t₀' t' → Fam.IsSmul D.toPre F u t t' := by
   first | exact @GlobalTheory.finOrd_ratio_rootOfUnity | exact GlobalTheory.finOrd_ratio_rootOfUnity | (intros; apply GlobalTheory.finOrd_ratio_rootOfUnity <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq | exact GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq | (intros; apply GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiabelianLocalPointDivisible.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.semiabelian_local_point_divisible : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (q : PrimeSpectrum R) (x : SpAlg R (Localization.AtPrime q.asIdeal) ⟶ G) (m : ℕ), m ≠ 0 → ∃ y, y ^ m = x := by
   first | exact @GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq | exact GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq | (intros; apply GlobalTheory.GroupBplus.Aff.Divis.exists_pow_eq <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NoFixOne.no_fixed_fock_polynomial | exact GlobalTheory.NoFixOne.no_fixed_fock_polynomial | (intros; apply GlobalTheory.NoFixOne.no_fixed_fock_polynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NoFixOne.no_fixed_fock_polynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockActionVanishing.lean&line=251#L251)
 -/
 theorem _root_.GlobalTheory.T.fock_action_vanishing : ∀ (P Q R S : ℕ) (c : ℂ) (f : Formalism.BasicNotions.TH.Pol P Q R S), S < Q → c.re < ((R : ℝ) - S) / 2 →
     (∀ Y : Formalism.BasicNotions.TH.Mat P Q, Formalism.BasicNotions.TH.IsKC Y → Y ∈ Formalism.BasicNotions.TH.upq P Q →

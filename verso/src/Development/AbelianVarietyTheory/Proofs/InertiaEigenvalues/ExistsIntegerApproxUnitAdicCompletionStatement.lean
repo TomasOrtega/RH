@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.De
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 open NumberField IsDedekindDomain Polynomial Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq GlobalTheory.SmGL Formalism.L2.NT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unit_completion_approx_integer | exact GlobalTheory.unit_completion_approx_integer | (intros; apply GlobalTheory.unit_completion_approx_integer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unit_completion_approx_integer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsIntegerApproxUnitAdicCompletion.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_integer_approx_unit_adicCompletion : ∀ {E' : Type} [Field E'] [NumberField E'] (w' : HeightOneSpectrum (𝓞 E'))
     (u : (w'.adicCompletion E')ˣ) (hu : IsUnitAt w' u),

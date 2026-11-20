@@ -8,8 +8,10 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Fam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacComb.foldr_comb_ne_zero | exact GlobalTheory.VacComb.foldr_comb_ne_zero | (intros; apply GlobalTheory.VacComb.foldr_comb_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacComb.foldr_comb_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFoldrSplitPlaceSecondCombinationsVacuumNeZero.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.foldr_splitPlaceSecondCombinations_vacuum_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : GlobalTheory.FinPl.Lat S) (M' : GlobalTheory.FinPl.Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (n : ℕ) (L : Fin n → GlobalTheory.SeeSaw.LocPl ψ S T M M'), (Function.Injective fun i => (L i).q.v) → ∀ F, GlobalTheory.FinPl.Vac ψ S T M M' (fun _ => True) F → F ≠ 0 → (List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) F ≠ 0 := by
   first | exact @GlobalTheory.VacComb.foldr_comb_ne_zero | exact GlobalTheory.VacComb.foldr_comb_ne_zero | (intros; apply GlobalTheory.VacComb.foldr_comb_ne_zero <;> assumption)

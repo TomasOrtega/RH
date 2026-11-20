@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjCMPoint.conjUnif_of_torsTransport | exact GlobalTheory.ConjCMPoint.conjUnif_of_torsTransport | (intros; apply GlobalTheory.ConjCMPoint.conjUnif_of_torsTransport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjCMPoint.conjUnif_of_torsTransport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionTransportCmPeriods.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.torsion_transport_cm_periods : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →

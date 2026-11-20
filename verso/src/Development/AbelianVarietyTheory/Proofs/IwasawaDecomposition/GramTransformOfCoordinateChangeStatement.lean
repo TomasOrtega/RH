@@ -8,8 +8,10 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open scoped ComplexOrder ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FramePairGram.gram_frames_eq | exact GlobalTheory.FramePairGram.gram_frames_eq | (intros; apply GlobalTheory.FramePairGram.gram_frames_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FramePairGram.gram_frames_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGramTransformOfCoordinateChange.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.gram_transform_of_coordinate_change : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (f f' : (s.fd k).dom), s.zOf L k f = s.zOf L k f' → ∀ t, (∀ T, coW (s.fd k) s.j_le f'.1 (s.lab L k t) * T = coW (s.fd k) s.j_le f.1 (s.lab L k t) → x.gramW L k f t = Tᴴ * x.gramW L k f' t * T) ∧ ∀ T, coOm (s.fd k) s.j_le f'.1 (s.lab L k t) * T = coOm (s.fd k) s.j_le f.1 (s.lab L k t) → x.gramOm L k f t = Tᴴ * x.gramOm L k f' t * T := by
   first | exact @GlobalTheory.FramePairGram.gram_frames_eq | exact GlobalTheory.FramePairGram.gram_frames_eq | (intros; apply GlobalTheory.FramePairGram.gram_frames_eq <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory AlgebraicGeometry GlobalTheory.Cartier GlobalTheory.Cartier.CartierDiv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cartier.exists_smul_mem_sections_of_regAt | exact GlobalTheory.Cartier.exists_smul_mem_sections_of_regAt | (intros; apply GlobalTheory.Cartier.exists_smul_mem_sections_of_regAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cartier.exists_smul_mem_sections_of_regAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionsLocallyGeneratedAffine.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.sections_locally_generated_affine : ∀ (X : Scheme.{0}) [IsIntegral X] [IsAffine X] (D : CartierDiv X)
     (x : X) (g : X.functionFieldˣ), D.IsEqn x g → ∀ f : X.functionField, RegAt x (f * g) →

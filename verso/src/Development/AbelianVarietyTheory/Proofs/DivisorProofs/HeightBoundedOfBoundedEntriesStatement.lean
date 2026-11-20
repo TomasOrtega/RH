@@ -6,8 +6,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.QhtUnip
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QhtUnip.HeightBound.heightGL_bdd | exact GlobalTheory.QhtUnip.HeightBound.heightGL_bdd | (intros; apply GlobalTheory.QhtUnip.HeightBound.heightGL_bdd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QhtUnip.HeightBound.heightGL_bdd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightBoundedOfBoundedEntries.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.height_bounded_of_bounded_entries : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (ι : Type) (g : ι → GL (Fin n) (AE F E)),
     (∀ i j, (fun t => (g t : Matrix (Fin n) (Fin n) (AE F E)) i j) ∈ Bdd F E ι) →

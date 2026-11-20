@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finrank_eigK_eq_finrank_eig_complex | exact GlobalTheory.finrank_eigK_eq_finrank_eig_complex | (intros; apply GlobalTheory.finrank_eigK_eq_finrank_eig_complex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finrank_eigK_eq_finrank_eig_complex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOrderActionMatrixEigenvalues.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.order_action_matrix_eigenvalues : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (R : Subring ℂ) (n : ℕ)
     (ρ : orderC c →+* Module.End R (Fin n → R)) (j : FractionRing R →+* ℂ), (∀ x : R, j (algebraMap R (FractionRing R) x) = x) →

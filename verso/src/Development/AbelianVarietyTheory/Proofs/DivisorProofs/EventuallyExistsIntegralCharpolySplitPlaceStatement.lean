@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.exists_int_charpoly_atPl_split | exact GlobalTheory.BCT.exists_int_charpoly_atPl_split | (intros; apply GlobalTheory.BCT.exists_int_charpoly_atPl_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.exists_int_charpoly_atPl_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEventuallyExistsIntegralCharpolySplitPlace.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.eventually_exists_integral_charpoly_split_place : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by
   first | exact @GlobalTheory.BCT.exists_int_charpoly_atPl_split | exact GlobalTheory.BCT.exists_int_charpoly_atPl_split | (intros; apply GlobalTheory.BCT.exists_int_charpoly_atPl_split <;> assumption)

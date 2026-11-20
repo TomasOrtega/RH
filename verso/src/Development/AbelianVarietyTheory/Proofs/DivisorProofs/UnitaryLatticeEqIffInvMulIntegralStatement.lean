@@ -10,8 +10,10 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.UnitLemma GlobalTheory.InertUnitOrb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertUnitLat.unitLat_eq_iff | exact GlobalTheory.InertUnitLat.unitLat_eq_iff | (intros; apply GlobalTheory.InertUnitLat.unitLat_eq_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertUnitLat.unitLat_eq_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryLatticeEqIffInvMulIntegral.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.unitaryLattice_eq_iff_inv_mul_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ q q' : UL n w, unitLat e B ψ q = unitLat e B ψ q' ↔ q⁻¹ * q' ∈ KL n w := by
   first | exact @GlobalTheory.InertUnitLat.unitLat_eq_iff | exact GlobalTheory.InertUnitLat.unitLat_eq_iff | (intros; apply GlobalTheory.InertUnitLat.unitLat_eq_iff <;> assumption)

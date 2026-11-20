@@ -8,8 +8,10 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.CoisBar.img_bar_ne_top | exact GlobalTheory.LowFilt.CoisBar.img_bar_ne_top | (intros; apply GlobalTheory.LowFilt.CoisBar.img_bar_ne_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowFilt.CoisBar.img_bar_ne_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsotropicImageNotOntoModConjIdeal.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.isotropicImage_not_onto_mod_conj_ideal : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]

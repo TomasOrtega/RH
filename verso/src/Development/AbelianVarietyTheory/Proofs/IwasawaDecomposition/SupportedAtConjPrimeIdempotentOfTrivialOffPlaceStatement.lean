@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3.LiftBrg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off | exact GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off | (intros; apply GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSupportedAtConjPrimeIdempotentOfTrivialOffPlace.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.supportedAt_conjPrimeIdempotent_of_trivial_offPlace : ∀ {D : D7} (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D), Formalism.L2.Col.IsOver v Pb → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → ∀ α : GA D V, α ∈ GfC V → (∀ w : HeightOneSpectrum (𝓞 D.host.F), w ≠ v → Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) w) (finE V α) = 1) → SuppAt e V α := by
   first | exact @GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off | exact GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off | (intros; apply GlobalTheory.Mem.SuppOffPlace.suppAt_of_trivial_off <;> assumption)

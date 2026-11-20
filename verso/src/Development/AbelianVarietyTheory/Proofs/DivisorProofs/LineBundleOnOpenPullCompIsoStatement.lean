@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PicGlue.isOn_pull_comp | exact GlobalTheory.PicGlue.isOn_pull_comp | (intros; apply GlobalTheory.PicGlue.isOn_pull_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PicGlue.isOn_pull_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleOnOpenPullCompIso.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.lineBundleOnOpen_pull_comp_iso : ∀ (X Z Z' : Scheme.{0}) (W : X.Opens) (L : LB X) (r : Z ⟶ X) (s : Z' ⟶ Z), IsOn W L → (∀ z, r z ∈ W) → LBIso ((L.pull r).pull s) (L.pull (s ≫ r)) := by
   first | exact @GlobalTheory.PicGlue.isOn_pull_comp | exact GlobalTheory.PicGlue.isOn_pull_comp | (intros; apply GlobalTheory.PicGlue.isOn_pull_comp <;> assumption)

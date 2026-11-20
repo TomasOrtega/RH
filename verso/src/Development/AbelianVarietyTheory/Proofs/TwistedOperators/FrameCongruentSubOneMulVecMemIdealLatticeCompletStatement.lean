@@ -18,8 +18,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.FrameCong.sub_one_mulVec_mem | exact GlobalTheory.FinPl.FrameCong.sub_one_mulVec_mem | (intros; apply GlobalTheory.FinPl.FrameCong.sub_one_mulVec_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.FrameCong.sub_one_mulVec_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFrameCongruentSubOneMulVecMemIdealLatticeComplet.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.frameCongruent_sub_one_mulVec_mem_idealLatticeCompletion : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p S n),

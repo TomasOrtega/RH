@@ -6,8 +6,10 @@ open NumberField Complex
 open scoped nonZeroDivisors
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatExpSum.summable_exp_neg_trace | exact GlobalTheory.LatExpSum.summable_exp_neg_trace | (intros; apply GlobalTheory.LatExpSum.summable_exp_neg_trace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatExpSum.summable_exp_neg_trace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSummableExpNegTraceTotallyPositiveFractionalIdea.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.summable_exp_neg_trace_totallyPositive_fractionalIdeal : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (L : FractionalIdeal (𝓞 F)⁰ F) (δ : ℝ), 0 < δ → Summable (fun x : {x : F // x ∈ L ∧ ∀ τ : Emb F, 0 < τ x} => Real.exp (-δ * ∑ τ : Emb F, τ x.1)) := by
   first | exact @GlobalTheory.LatExpSum.summable_exp_neg_trace | exact GlobalTheory.LatExpSum.summable_exp_neg_trace | (intros; apply GlobalTheory.LatExpSum.summable_exp_neg_trace <;> assumption)

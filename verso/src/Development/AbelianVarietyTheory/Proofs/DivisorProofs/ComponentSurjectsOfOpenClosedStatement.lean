@@ -11,8 +11,10 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_comp_cover_lift | exact GlobalTheory.FlatModel.exists_comp_cover_lift | (intros; apply GlobalTheory.FlatModel.exists_comp_cover_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.exists_comp_cover_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FComponentSurjectsOfOpenClosed.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.component_surjects_of_open_closed : (∀ {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (f : A → B), Continuous f → IsOpenMap f → IsClosedMap f →
     (∀ C ∈ irreducibleComponents A, IsOpen C) → ∀ S : Set B, IsClopen S → IsPreconnected S → ∀ a : A, f a ∈ S →

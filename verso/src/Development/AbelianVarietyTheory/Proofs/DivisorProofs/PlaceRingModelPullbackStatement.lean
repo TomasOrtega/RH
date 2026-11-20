@@ -13,8 +13,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.LatModel
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatModel.EigenForm.exists_periodGen | exact GlobalTheory.LatModel.EigenForm.exists_periodGen | (intros; apply GlobalTheory.LatModel.EigenForm.exists_periodGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatModel.EigenForm.exists_periodGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPlaceRingModelPullback.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.place_ring_model_pullback : GlobalTheory.Published.AbelianDeRham →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

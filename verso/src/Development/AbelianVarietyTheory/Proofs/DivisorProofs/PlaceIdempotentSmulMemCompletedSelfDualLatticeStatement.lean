@@ -22,8 +22,10 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 open GlobalTheory.StdFrame (StdPsi)
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemLat.lamHat_idem | exact GlobalTheory.IdemLat.lamHat_idem | (intros; apply GlobalTheory.IdemLat.lamHat_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemLat.lamHat_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPlaceIdempotentSmulMemCompletedSelfDualLattice.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.placeIdempotent_smul_mem_completedSelfDualLattice : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D), IsPrimeIdem P e f → ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V := by
   first | exact @GlobalTheory.IdemLat.lamHat_idem | exact GlobalTheory.IdemLat.lamHat_idem | (intros; apply GlobalTheory.IdemLat.lamHat_idem <;> assumption)

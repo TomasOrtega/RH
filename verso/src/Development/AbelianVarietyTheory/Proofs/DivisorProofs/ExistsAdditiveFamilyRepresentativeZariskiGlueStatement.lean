@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.ZarGlue.zariski_glue | exact GlobalTheory.DualCon.ZarGlue.zariski_glue | (intros; apply GlobalTheory.DualCon.ZarGlue.zariski_glue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.ZarGlue.zariski_glue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdditiveFamilyRepresentativeZariskiGlue.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.exists_additiveFamily_representative_zariski_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (Ix : Type) (V : Ix → S.Opens) (g : Ix → ℕ), (∀ s : S, ∃ i, s ∈ V i) → (∀ i, HasRep A (g i) (Over.mk (V i).ι)) → ∃ (B : Over S) (P : LB (A ⊗ B).left), Rep A (toUnit B) P ∧ ∀ i, GlobalTheory.DualCon.Good (g i) (pullback.snd B.hom (V i).ι) := by
   first | exact @GlobalTheory.DualCon.ZarGlue.zariski_glue | exact GlobalTheory.DualCon.ZarGlue.zariski_glue | (intros; apply GlobalTheory.DualCon.ZarGlue.zariski_glue <;> assumption)

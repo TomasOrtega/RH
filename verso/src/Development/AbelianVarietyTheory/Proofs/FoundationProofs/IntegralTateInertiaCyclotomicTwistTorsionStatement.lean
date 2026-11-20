@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import ReciprocityTheory.GaloisValuations.Global
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.KZ GlobalTheory.Glue
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntTate.integral_tate_inertia | exact GlobalTheory.IntTate.integral_tate_inertia | (intros; apply GlobalTheory.IntTate.integral_tate_inertia <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntTate.integral_tate_inertia` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FIntegralTateInertiaCyclotomicTwistTorsion.lean&line=555#L555)
 -/
 theorem _root_.GlobalTheory.T.integral_tate_inertia_cyclotomic_twist_torsion : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 →
   ∀ (j : ℕ), 1 ≤ j → ∀ F : Finset Ω, ∃ c : ℕ, ∀ (n : ℕ) (x : Ω), x ∈ A →

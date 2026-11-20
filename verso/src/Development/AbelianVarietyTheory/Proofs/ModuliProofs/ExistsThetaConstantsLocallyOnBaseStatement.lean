@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaLocal.exists_hasTh | exact GlobalTheory.ThetaLocal.exists_hasTh | (intros; apply GlobalTheory.ThetaLocal.exists_hasTh <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaLocal.exists_hasTh` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsThetaConstantsLocallyOnBase.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaConstants_locally_on_base : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s), Odd N' → ∀ p : S, ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ S) (v : Ix g (N' ^ 2) → R), IsOpenImmersion x ∧ p ∈ Set.range x ∧ t.HasTh x v := by
   first | exact @GlobalTheory.ThetaLocal.exists_hasTh | exact GlobalTheory.ThetaLocal.exists_hasTh | (intros; apply GlobalTheory.ThetaLocal.exists_hasTh <;> assumption)

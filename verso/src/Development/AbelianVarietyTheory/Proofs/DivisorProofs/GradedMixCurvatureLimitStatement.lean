@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurvJet.tendsto_curv_mix | exact GlobalTheory.CurvJet.tendsto_curv_mix | (intros; apply GlobalTheory.CurvJet.tendsto_curv_mix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurvJet.tendsto_curv_mix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGradedMixCurvatureLimit.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.graded_mix_curvature_limit : ∀ {n m : ℕ} (H₀ H : V n → Matrix (Fin m) (Fin m) ℂ) (ρ : V n → ℝ) (u : V n),
     (∀ i k, ContDiffAt ℝ 2 (fun v => H₀ v i k) u) → (∀ i k, ContDiffAt ℝ 2 (fun v => H v i k) u) →

@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrEllSum.ellipticPart | exact GlobalTheory.TrEllSum.ellipticPart | (intros; apply GlobalTheory.TrEllSum.ellipticPart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrEllSum.ellipticPart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEllipticPart.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.elliptic_part : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPart := by
   first | exact @GlobalTheory.TrEllSum.ellipticPart | exact GlobalTheory.TrEllSum.ellipticPart | (intros; apply GlobalTheory.TrEllSum.ellipticPart <;> assumption)

@@ -8,8 +8,10 @@ open scoped Pointwise TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.ConstRatio
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.StdSndTheta.exists_theta | exact GlobalTheory.CompanionTheory.StdSndTheta.exists_theta | (intros; apply GlobalTheory.CompanionTheory.StdSndTheta.exists_theta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.StdSndTheta.exists_theta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsThetaFunctionStandardPairSecond.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaFunction_standardPairSecond : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A' WW : HSp D) (rA' : Rig A') (rW : Rig WW) (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Pl D.host.E)) (I : Ideal (𝓞 D.host.E)) (a : ℕ) (vac : WO A' WW → ℂ), rA'.Is → rW.Is → IsHeckeChar D ν → IsIdemSum e S → I ≠ ⊥ → IsVacO ψ θ A' WW rA'.s rW.s rA'.Λ rW.Λ vac → ∃ f, IsThetaAt ψ (symplO A' WW) (heisO ψ A' WW) (cA D e) (latO A' WW rA'.Λ rW.Λ fun _ => True) 1 vac (stdSnd ν e I a A' WW rA'.β rW.β) f ∧ IsThetaFunO ψ A' WW f := by
   first | exact @GlobalTheory.CompanionTheory.StdSndTheta.exists_theta | exact GlobalTheory.CompanionTheory.StdSndTheta.exists_theta | (intros; apply GlobalTheory.CompanionTheory.StdSndTheta.exists_theta <;> assumption)

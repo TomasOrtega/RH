@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensBal.tauBal_tens | exact GlobalTheory.TensBal.tauBal_tens | (intros; apply GlobalTheory.TensBal.tauBal_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensBal.tauBal_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorDegenerationTauBalancedOfAdjointIntMatrice.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.tensorDegeneration_tauBalanced_of_adjointIntMatrices : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (A A' : Matrix (Fin r) (Fin r) ℤ), A.transpose * (W + W.transpose) = (W + W.transpose) * A' → D'.toPre.TauBal (GlobalTheory.TensAct.matAct T A) (GlobalTheory.TensAct.matAct T A') (GlobalTheory.TensAct.latAct T A) (GlobalTheory.TensAct.latAct T A') := by
   first | exact @GlobalTheory.TensBal.tauBal_tens | exact GlobalTheory.TensBal.tauBal_tens | (intros; apply GlobalTheory.TensBal.tauBal_tens <;> assumption)

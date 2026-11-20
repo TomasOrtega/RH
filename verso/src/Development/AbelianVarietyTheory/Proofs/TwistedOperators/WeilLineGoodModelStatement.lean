@@ -20,8 +20,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_lineY | exact GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_lineY | (intros; apply GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_lineY <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_lineY` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilLineGoodModel.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.weil_line_good_model : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

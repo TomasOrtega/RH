@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyCompactD
 import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompactDualExists.nonempty_cdHaar | exact GlobalTheory.CompactDualExists.nonempty_cdHaar | (intros; apply GlobalTheory.CompactDualExists.nonempty_cdHaar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompactDualExists.nonempty_cdHaar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FNonemptyCompactDualHaar.lean&line=235#L235)
 -/
 theorem _root_.GlobalTheory.T.nonempty_compactDualHaar : Nonempty CDHaar := by
   first | exact @GlobalTheory.CompactDualExists.nonempty_cdHaar | exact GlobalTheory.CompactDualExists.nonempty_cdHaar | (intros; apply GlobalTheory.CompactDualExists.nonempty_cdHaar <;> assumption)

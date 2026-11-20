@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull | exact GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull | (intros; apply GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaMultiplierTrivialization.lean&line=272#L272)
 -/
 theorem _root_.GlobalTheory.T.theta_multiplier_trivialization : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

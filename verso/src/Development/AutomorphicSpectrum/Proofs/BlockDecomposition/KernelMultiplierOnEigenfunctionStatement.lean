@@ -9,8 +9,10 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.WaveMult
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult | exact GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult | (intros; apply GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FKernelMultiplierOnEigenfunction.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.kernel_multiplier_on_eigenfunction : LgFacts → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V)) (val : Inf n → ℂ) (T : ℝ), IsMult μ E k val T → ∀ χ, ∀ f ∈ CE E, IsEig χ f → ∀ x ∈ GLs n, act μ E k f x = val χ • f x := by
   first | exact @GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult | exact GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult | (intros; apply GlobalTheory.CompanionTheory.WaveMult.act_eq_val_of_isMult <;> assumption)

@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv)
 open GlobalTheory.FlagMod (ev tau tau_le spMap_ev ev_res ev_spMap le_preimage_inf le_preimage_map le_preimage_mono le_preimage_comp tanPull initSpan mem_initSpan)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.nonempty_subClosure | exact GlobalTheory.nonempty_subClosure | (intros; apply GlobalTheory.nonempty_subClosure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.nonempty_subClosure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNonemptyClosureOfEmbedding.lean&line=510#L510)
 -/
 theorem _root_.GlobalTheory.T.nonempty_closure_of_embedding : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] (Z : Scheme.{0}) (s : Z ⟶ Sp O), IsProjOver s → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → Flat s → ∀ (C : Coc Z) (N : ℕ), Nonempty (C.Emb N) → ∀ (ch : Charts Z) (r : ℕ) (D : C.Sub ch r), Nonempty (D.Closure s) := by
   first | exact @GlobalTheory.nonempty_subClosure | exact GlobalTheory.nonempty_subClosure | (intros; apply GlobalTheory.nonempty_subClosure <;> assumption)

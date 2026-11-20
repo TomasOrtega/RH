@@ -13,8 +13,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map | exact GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map | (intros; apply GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FValuationVectorHomomorphism.lean&line=159#L159)
 -/
 theorem _root_.GlobalTheory.T.valuation_vector_homomorphism : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
   ∀ (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v), AdmM M →

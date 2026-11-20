@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero | exact GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero | (intros; apply GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniquePullbackOfRaynaudTorusWeightZero.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_pullback_of_raynaudTorusWeight_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (V : Q.P.A.left.Opens) (f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)), IsWt Y 0 _ f → ∃! f' : Γ(Q.P.A.left, V), pbT Y.q.left f' (Y.q.left ⁻¹ᵁ V) = f := by
   first | exact @GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero | exact GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero | (intros; apply GlobalTheory.Heat.exists_unique_pbT_of_isWt_zero <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocVal.valR_field_of_le | exact GlobalTheory.LocVal.valR_field_of_le | (intros; apply GlobalTheory.LocVal.valR_field_of_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocVal.valR_field_of_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVectorFieldFollowsDerivationOnSmallerOpenAtField.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.vectorField_follows_derivation_on_smaller_open_at_fieldPoint : ∀ (Z : Scheme.{0}) (U : Z.Opens), IsAffineOpen U → ∀ (F : Type) [Field F] (ξ : Sp F ⟶ Z), ⊤ ≤ ξ ⁻¹ᵁ U → ∀ (d : Fld Z), IsField U d → ∀ (D : F → F), (∀ x y, D (x + y) = D x + D y) → (∀ x y, D (x * y) = x * D y + y * D x) → (∀ f : Γ(Z, U), valR ξ U (d U f) = D (valR ξ U f)) → ∀ O : Z.Opens, O ≤ U → ⊤ ≤ ξ ⁻¹ᵁ O → ∀ h : Γ(Z, O), valR ξ O (d O h) = D (valR ξ O h) := by
   first | exact @GlobalTheory.LocVal.valR_field_of_le | exact GlobalTheory.LocVal.valR_field_of_le | (intros; apply GlobalTheory.LocVal.valR_field_of_le <;> assumption)

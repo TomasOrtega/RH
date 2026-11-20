@@ -7,8 +7,10 @@ open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq | exact GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq | (intros; apply GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFixedConvOfIntegralFlagLattice.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.fixed_conv_of_integral_flag_lattice : ∀ (D : D7) (T : D.host.E) (F : FlagG (VS D) D.R.rS T) (Λ : LV D), XLam Λ (lf D F) = XS D F → (∀ c : D.host.E, c • F.z ∈ Lsub Λ (lf D F) → ∃ o : 𝓞 D.host.E, (o : D.host.E) = c) → IsFixedConv Λ (gS D) (lf D F) := by
   first | exact @GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq | exact GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq | (intros; apply GlobalTheory.FixConvRow.isFixedConv_of_XLam_eq <;> assumption)

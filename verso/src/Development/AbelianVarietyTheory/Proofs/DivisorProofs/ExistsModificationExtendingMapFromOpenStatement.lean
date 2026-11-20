@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHS.exists_modif_map_of_open | exact GlobalTheory.CompHS.exists_modif_map_of_open | (intros; apply GlobalTheory.CompHS.exists_modif_map_of_open <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHS.exists_modif_map_of_open` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsModificationExtendingMapFromOpen.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_modification_extending_map_from_open : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] [CharZero F] (Y T : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp F) (d : ℕ) (t : T ⟶ Sp F) (U : Y.Opens) (r₀ : U.toScheme ⟶ T), SmoothOfRelativeDimension d p → IsProjOver p → IsProjOver t → (U : Set Y).Nonempty → r₀ ≫ t = U.ι ≫ p → ∃ (M : Modif p U d) (r : M.X ⟶ T), IsIntegral M.X ∧ r ≫ t = M.str ∧ M.opn.ι ≫ r = (M.σ ∣_ U) ≫ r₀ := by
   first | exact @GlobalTheory.CompHS.exists_modif_map_of_open | exact GlobalTheory.CompHS.exists_modif_map_of_open | (intros; apply GlobalTheory.CompHS.exists_modif_map_of_open <;> assumption)

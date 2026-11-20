@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.twoForm_eq_wsum | exact GlobalTheory.AbCoh.twoForm_eq_wsum | (intros; apply GlobalTheory.AbCoh.twoForm_eq_wsum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbCoh.twoForm_eq_wsum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlobalTwoFormEqSumWedgeGlobalOneForms.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.globalTwoForm_eq_sumWedgeGlobalOneForms : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), HasFrame F → CohomZeroIsConstants F → ∀ ζ : W0 F 2, (∀ ⦃T T' : C⦄ (φ : T ⟶ T'), ζ T' = pOm F 2 φ (ζ T)) → ∃ (n : ℕ) (u v : Fin n → Glob1 F), ζ = wsum F u v := by
   first | exact @GlobalTheory.AbCoh.twoForm_eq_wsum | exact GlobalTheory.AbCoh.twoForm_eq_wsum | (intros; apply GlobalTheory.AbCoh.twoForm_eq_wsum <;> assumption)

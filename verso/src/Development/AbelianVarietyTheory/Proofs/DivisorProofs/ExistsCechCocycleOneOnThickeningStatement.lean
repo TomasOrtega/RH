@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPic.exists_cocycle_one_on_thickening | exact GlobalTheory.CechPic.exists_cocycle_one_on_thickening | (intros; apply GlobalTheory.CechPic.exists_cocycle_one_on_thickening <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPic.exists_cocycle_one_on_thickening` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCechCocycleOneOnThickening.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_cechCocycle_one_on_thickening : ∀ (X X₀ : Scheme.{0}) (i : X₀ ⟶ X) [IsClosedImmersion i] [Surjective i] (c : Pic X), GlobalTheory.CechPic.pull i c = 0 → ∃ (D : LB X) (hD : D.IsLB), cls D hD = c ∧ ∀ a b, pullU i _ (D.g a b) = 1 := by
   first | exact @GlobalTheory.CechPic.exists_cocycle_one_on_thickening | exact GlobalTheory.CechPic.exists_cocycle_one_on_thickening | (intros; apply GlobalTheory.CechPic.exists_cocycle_one_on_thickening <;> assumption)

@@ -5,8 +5,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.SatLeaves
 open AlgebraicGeometry CategoryTheory MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFaithful.hom_eq_of_tangent_eq | exact GlobalTheory.LieFaithful.hom_eq_of_tangent_eq | (intros; apply GlobalTheory.LieFaithful.hom_eq_of_tangent_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFaithful.hom_eq_of_tangent_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeHomEqOfTangentEq.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_hom_eq_of_tangent_eq : ∀ (k : Type) [Field k] [CharZero k] (A B : Over (Sp k)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B], IsAbelianScheme A → IsAbelianScheme B → ∀ (f f' : A ⟶ B) [IsMonHom f] [IsMonHom f'], (∀ v : overAt (𝟙 (Sp k)) (DualNumber k) ⟶ A, smT (𝟙 (Sp k)) 0 v = 1 → v ≫ f = v ≫ f') → f = f' := by
   first | exact @GlobalTheory.LieFaithful.hom_eq_of_tangent_eq | exact GlobalTheory.LieFaithful.hom_eq_of_tangent_eq | (intros; apply GlobalTheory.LieFaithful.hom_eq_of_tangent_eq <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegLevCalc.sRel_calculus | exact GlobalTheory.SiegLevCalc.sRel_calculus | (intros; apply GlobalTheory.SiegLevCalc.sRel_calculus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegLevCalc.sRel_calculus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelObjectPullbackLevelPowerCalculus.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.siegelObjectPullbackLevelPower_calculus : ∀ (h n n' n'' : ℕ) (B B' B'' : Type) [CommRing B] [CommRing B'] [CommRing B''] (ζ : B) (ζ' : B') (ζ'' : B'') (S S' S'' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (s'' : S'' ⟶ Sp B'') (c : SiegPre h n ζ s) (c' : SiegPre h n' ζ' s') (c'' : SiegPre h n'' ζ'' s'') (f : S' ⟶ S) (f' : S'' ⟶ S') (d d' d'' : ℕ), SRel c' c d' d f → (SRel c'' c' d'' d' f' ↔ SRel c'' c d'' d (f' ≫ f)) ∧ (c.Principal → c'.Principal) ∧ ∀ e, SRel c' c (d' * e) (d * e) f := by
   first | exact @GlobalTheory.SiegLevCalc.sRel_calculus | exact GlobalTheory.SiegLevCalc.sRel_calculus | (intros; apply GlobalTheory.SiegLevCalc.sRel_calculus <;> assumption)

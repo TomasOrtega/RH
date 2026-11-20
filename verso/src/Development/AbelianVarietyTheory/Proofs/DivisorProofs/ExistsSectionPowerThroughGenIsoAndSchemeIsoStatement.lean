@@ -13,8 +13,10 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecThroughIso.exists_sec_of_genIso | exact GlobalTheory.SecThroughIso.exists_sec_of_genIso | (intros; apply GlobalTheory.SecThroughIso.exists_sec_of_genIso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecThroughIso.exists_sec_of_genIso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSectionPowerThroughGenIsoAndSchemeIso.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_section_power_through_genIso_and_schemeIso : ∀ (Y X₁ X₂ : Scheme.{0}) (L₁ : LB X₁) (L₂ : LB X₂) (f₁ : Y ⟶ X₁) (f₂ : Y ⟶ X₂) (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)), w.IsGen → L₁.IsLB → L₂.IsLB → ∀ (π : X₁ ⟶ Y), π ≫ f₁ = 𝟙 X₁ → f₁ ≫ π = 𝟙 Y → ∀ (k : ℕ) (s : LB.Sec (LB.LinComb L₂ (K := Fin 1) (fun _ => f₂) (fun _ => (k : ℤ)))), ∃ σ' : SecM (𝟙 X₁) L₁ k, (∀ (y : Y) (i : L₂.ι) (j : L₁.ι), f₂ y ∈ L₂.U i → f₁ y ∈ L₁.U j → gs (𝟙 Y) y _ (s.f fun _ => i) = (gs (𝟙 Y) y _ (w.s (fun _ => i, fun _ => j)).val) ^ k * gs f₁ y _ (σ'.f fun _ => j)) := by
   first | exact @GlobalTheory.SecThroughIso.exists_sec_of_genIso | exact GlobalTheory.SecThroughIso.exists_sec_of_genIso | (intros; apply GlobalTheory.SecThroughIso.exists_sec_of_genIso <;> assumption)

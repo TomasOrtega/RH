@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback | exact GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback | (intros; apply GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleIsoAbelianSchemeDVROfGenericIso.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.lineBundleIso_abelianSchemeDVR_of_generic_iso : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Scheme.{0}) (a : A ⟶ Sp L) (φ : A ⟶ G.left), IsAbelianScheme G → IsPullback φ a G.hom (spMap (algebraMap W L)) → ∀ M M' : LB G.left, M.IsLB → M'.IsLB → LBIso (M.pull φ) (M'.pull φ) → LBIso M M' := by
   first | exact @GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback | exact GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback | (intros; apply GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback <;> assumption)

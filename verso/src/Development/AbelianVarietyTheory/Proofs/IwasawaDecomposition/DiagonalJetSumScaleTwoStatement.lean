@@ -16,8 +16,10 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpUniqCh0.diag_comp_jet | exact GlobalTheory.ExpUniqCh0.diag_comp_jet | (intros; apply GlobalTheory.ExpUniqCh0.diag_comp_jet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpUniqCh0.diag_comp_jet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDiagonalJetSumScaleTwo.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.diagonal_jet_sum_scale_two : ∀ {S : Type} [CommRing S] {ρ : Type} (m : ℕ),
     (GlobalTheory.ExpUniqCh0.diag m).comp (jetSum (Finset.univ : Finset (Fin 2))) = (jetScale (fun _ => (2 : S)) : Jet S ρ m →ₐ[S] Jet S ρ m) ∧

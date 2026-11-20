@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeCompar
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwistedGramMatricesMatch
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.UnitarySelfGeneration.twisted_gram_matrices_match | exact PositivityTheory.UnitarySelfGeneration.twisted_gram_matrices_match`.
+/- English proof (citation)
+Apply `PositivityTheory.UnitarySelfGeneration.twisted_gram_matrices_match` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHomogeneousNonvanishing%2FTwistedGramMatricesMatch.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.hodge_component_twist_eigen_compat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F)

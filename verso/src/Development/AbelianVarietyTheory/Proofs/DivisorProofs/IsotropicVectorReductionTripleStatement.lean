@@ -16,8 +16,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallMidJB.exists_adapted_plane_of_isotropic | exact GlobalTheory.ConeSmallMidJB.exists_adapted_plane_of_isotropic | (intros; apply GlobalTheory.ConeSmallMidJB.exists_adapted_plane_of_isotropic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeSmallMidJB.exists_adapted_plane_of_isotropic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsotropicVectorReductionTriple.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.isotropic_vector_reduction_triple : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G₁ : Geo σ a b) X om₁ om₁', IsTriple B G₁ X om₁ om₁' →
     (∃ z : Fin (a + b) → E, z ≠ 0 ∧ form σ G₁.W.J z z = 0) →

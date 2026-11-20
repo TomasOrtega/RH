@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepLatZero
 open NumberField GlobalTheory.ShFam.Pad AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagDescent.exists_numberField | exact GlobalTheory.FlagDescent.exists_numberField | (intros; apply GlobalTheory.FlagDescent.exists_numberField <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagDescent.exists_numberField` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagPointNumberFieldModel.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.flag_point_number_field_model : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (y : GlobalTheory.ShFam.Pad.FlagPt Z Qb), ∃ (K : Type) (_ : Field K) (_ : NumberField K) (ι : K →+* Qb) (jF : c.F →+* K) (yK : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ GlobalTheory.Toroidal.gen Z) (uK : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber K) ⟶ Z.t.G.left)), ι.comp jF = y.fK ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ι ≫ yK = y.y ∧ yK ≫ GlobalTheory.Toroidal.genStr Z = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap jF ∧ ∀ τ i, y.u τ i = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ι) ≫ uK τ i := by
   first | exact @GlobalTheory.FlagDescent.exists_numberField | exact GlobalTheory.FlagDescent.exists_numberField | (intros; apply GlobalTheory.FlagDescent.exists_numberField <;> assumption)

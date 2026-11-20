@@ -8,8 +8,10 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.charsum | exact GlobalTheory.CompanionTheory.LFUDom.charsum | (intros; apply GlobalTheory.CompanionTheory.LFUDom.charsum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LFUDom.charsum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDigitCharacterSumValues.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.digit_character_sum_values : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ (j : ℕ) (m : ℤ),
   (0 ≤ m → ∑ c : Fin j → 𝓀[F], ((ψ (-(digitSum F j c) * (GLnLocal.uniformizer F : F) ^ m) : Circle) : ℂ) = (qF F : ℂ) ^ j) ∧

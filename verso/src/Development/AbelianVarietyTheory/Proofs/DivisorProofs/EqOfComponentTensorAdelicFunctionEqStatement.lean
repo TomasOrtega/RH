@@ -22,8 +22,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensUniq.eq_of_tens_eq | exact GlobalTheory.TensUniq.eq_of_tens_eq | (intros; apply GlobalTheory.TensUniq.eq_of_tens_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensUniq.eq_of_tens_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfComponentTensorAdelicFunctionEq.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.eq_of_componentTensorAdelicFunction_eq : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (φ φ₁ φ₂ : (κ → Fv F v) → ℂ), φ ∈ GlobalTheory.WeilM.SB _ →

@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.ChernContr.contr_cohom | exact GlobalTheory.PtExt.ChernContr.contr_cohom | (intros; apply GlobalTheory.PtExt.ChernContr.contr_cohom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.ChernContr.contr_cohom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernCocycleTangentContractionCohomologousTorsor.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.T.chernCocycle_tangentContraction_cohomologous_torsor : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB →
     ∀ v : epsR R ⟶ B, IsTangent v → ∀ (j : ∀ (D : Type) [CommRing D] [Algebra R D], Pt A D → P.ι), IsChoice P j →

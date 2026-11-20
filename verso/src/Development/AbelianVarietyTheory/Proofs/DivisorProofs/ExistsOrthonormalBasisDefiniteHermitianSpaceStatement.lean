@@ -8,8 +8,10 @@ open scoped TensorProduct nonZeroDivisors
 open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.FunObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefiniteFrame.exists_unitary_frame | exact GlobalTheory.DefiniteFrame.exists_unitary_frame | (intros; apply GlobalTheory.DefiniteFrame.exists_unitary_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefiniteFrame.exists_unitary_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOrthonormalBasisDefiniteHermitianSpace.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_orthonormalBasis_definite_hermitianSpace : ∀ (D : D7) (V : HSp D), V.SigOK → (∀ τ, V.sig τ = (V.rank, 0)) →
     ∃ fr : GL (Fin V.rank) D.host.E, Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * V.gram * fr.1 = 1 := by

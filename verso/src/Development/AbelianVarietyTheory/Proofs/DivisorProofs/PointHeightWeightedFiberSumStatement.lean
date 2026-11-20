@@ -25,8 +25,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.WeightHt.main | exact GlobalTheory.Mean4O.WeightHt.main | (intros; apply GlobalTheory.Mean4O.WeightHt.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4O.WeightHt.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointHeightWeightedFiberSum.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.point_height_weighted_fiber_sum : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y)
     (u : ∀ σ : 𝓞 F →+* ℂ, GlobalTheory.CxPts V.p σ → ℝ) (hu : ∀ σ y, GlobalTheory.CxPts.CInfAt (u σ) y)

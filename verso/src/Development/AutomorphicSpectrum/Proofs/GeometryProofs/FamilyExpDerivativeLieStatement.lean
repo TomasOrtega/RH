@@ -10,8 +10,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section | exact GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFamilyExpDerivativeLie.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.family_exp_derivative_lie : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ) (b : Fin n → ℂ), b ∈ B → ∀ u : Fin g → R, IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b (u c)) (spMap (dualMap (ψ b)) ≫ (M.pt u).left) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section | exact GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.FrameDeriv.isDerivAt0_frame_section <;> assumption)

@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.spans_change | exact GlobalTheory.FlagCell.spans_change | (intros; apply GlobalTheory.FlagCell.spans_change <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell.spans_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagFramesTriangularChange.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.flag_frames_triangular_change : ∀ (X : Scheme.{0}) (F : X.Modules) (m : ℕ) (fl : Vert.Flag F m) (V : X.Opens) (v v' : Fin m → Γ(F, V)), Spans fl V v → Spans fl V v' → ∃ M : Matrix (Fin m) (Fin m) Γ(X, V), M.BlockTriangular id ∧ IsUnit M.det ∧ ∀ j, v' j = ∑ k, M k j • v k := by
   first | exact @GlobalTheory.FlagCell.spans_change | exact GlobalTheory.FlagCell.spans_change | (intros; apply GlobalTheory.FlagCell.spans_change <;> assumption)

@@ -28,8 +28,10 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open Formalism.IndefR.FWT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefSplit.split_lift | exact GlobalTheory.DefSplit.split_lift | (intros; apply GlobalTheory.DefSplit.split_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefSplit.split_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHalfLevelSubmodulePermutation.lean&line=320#L320)
 -/
 theorem _root_.GlobalTheory.T.half_level_submodule_permutation : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ (hp : RowsT p) (Hg : Type) [Group Hg] [Finite Hg] (φ : Hg →* p.P.Gp),
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun h => (p.O i).lev2 (φ h)) →

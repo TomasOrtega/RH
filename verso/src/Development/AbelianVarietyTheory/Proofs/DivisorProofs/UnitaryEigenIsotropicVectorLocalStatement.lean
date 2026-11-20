@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaneLeviBlock.levi_block | exact GlobalTheory.PlaneLeviBlock.levi_block | (intros; apply GlobalTheory.PlaneLeviBlock.levi_block <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaneLeviBlock.levi_block` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryEigenIsotropicVectorLocal.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.unitary_eigen_isotropic_vector_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ),

@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceModel.exists_obj_eventually | exact GlobalTheory.PlaceModel.exists_obj_eventually | (intros; apply GlobalTheory.PlaceModel.exists_obj_eventually <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceModel.exists_obj_eventually` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmEndomorphismPlaceIntegral.lean&line=495#L495)
 -/
 theorem _root_.GlobalTheory.T.cm_endomorphism_place_integral : GlobalTheory.Published.AbelianDualCrystal → GlobalTheory.Published.AbelianDeRham →
   ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (O : Type) [CommRing O] (ofO : 𝓞 F → O) (l : ℕ) [Fact l.Prime]

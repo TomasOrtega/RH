@@ -8,8 +8,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArcPts
 open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GermRing.germs_spec | exact GlobalTheory.GermRing.germs_spec | (intros; apply GlobalTheory.GermRing.germs_spec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GermRing.germs_spec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaShiftProofs%2FGermsSpec.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.exists_germs_localRing_convergent_divisible : Nonempty Germs ∧ ∀ (Γ : Germs) (w : ℂ), IsLocalRing (Γ.R w) ∧ (∀ f : Γ.R w, (f : ℂ⸨X⸩) ∈ Conv.convLaurent) ∧ ∀ (f : Γ.R w) (g : ℂ⸨X⸩), Γ.ev w f ≠ 0 → (f : ℂ⸨X⸩) * g ∈ Γ.R w → g ∈ Γ.R w := by
   first | exact @GlobalTheory.GermRing.germs_spec | exact GlobalTheory.GermRing.germs_spec | (intros; apply GlobalTheory.GermRing.germs_spec <;> assumption)

@@ -25,8 +25,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitAdeleTrace.trace_at_split | exact GlobalTheory.SplitAdeleTrace.trace_at_split | (intros; apply GlobalTheory.SplitAdeleTrace.trace_at_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitAdeleTrace.trace_at_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicTraceSupportedAtSplitPlace.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.adelicTrace_supportedAtSplitPlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (τ : E →ₐ[F] Fv F v) (z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z → Algebra.trace (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) z = GlobalTheory.LatVac.liftV v (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ z + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ) z) := by
   first | exact @GlobalTheory.SplitAdeleTrace.trace_at_split | exact GlobalTheory.SplitAdeleTrace.trace_at_split | (intros; apply GlobalTheory.SplitAdeleTrace.trace_at_split <;> assumption)

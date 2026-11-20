@@ -9,8 +9,10 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 open scoped Classical
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLiftCompD.exists_compD | exact GlobalTheory.RealLiftCompD.exists_compD | (intros; apply GlobalTheory.RealLiftCompD.exists_compD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLiftCompD.exists_compD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsContinuousHomUnitaryRealPlacesPlacewiseSig.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_continuous_hom_unitary_realPlaces_placewise_signature : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (β : Type) [Fintype β]
     [DecidableEq β] (R S : InfinitePlace F → ℕ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E)) (b : ℂ)

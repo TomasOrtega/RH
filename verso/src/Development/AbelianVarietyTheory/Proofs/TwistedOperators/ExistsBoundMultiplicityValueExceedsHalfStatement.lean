@@ -20,8 +20,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SupVal.exists_bound_half_lt | exact GlobalTheory.SupVal.exists_bound_half_lt | (intros; apply GlobalTheory.SupVal.exists_bound_half_lt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SupVal.exists_bound_half_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsBoundMultiplicityValueExceedsHalf.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_bound_multiplicity_value_exceeds_half : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)), GlobalTheory.Unf.Vol V → ∀ t ∈ MultT θ M J 1, t ≠ 0 → ∀ w : M.Vec, (∀ τ, (w τ : M.H τ) ≠ 0) → ∃ b : ℝ, ∃ x : GA D V, (∀ h, ‖t (PiTensorProduct.tprod ℂ w) h‖ ≤ b) ∧ b / 2 < ‖t (PiTensorProduct.tprod ℂ w) x‖ := by
   first | exact @GlobalTheory.SupVal.exists_bound_half_lt | exact GlobalTheory.SupVal.exists_bound_half_lt | (intros; apply GlobalTheory.SupVal.exists_bound_half_lt <;> assumption)

@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLoca
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.BKReal GlobalTheory.Prism Formalism.BasicNotions.Examples₂.LB GlobalTheory.MemLoc GlobalTheory.AinfK GlobalTheory.AcrisK GlobalTheory.DiscEval GroundTheory.LocalField.FormalGroup
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrobChainSeries.main | exact GlobalTheory.FrobChainSeries.main | (intros; apply GlobalTheory.FrobChainSeries.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrobChainSeries.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCompatiblePowerSeriesValue.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.exists_compatible_power_series_value : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (ω : ℕ → AK K) (G : PowerSeries ↥(OL K)) (u : ℕ → OC l),
     (∀ n, frobq K (ω (n + 1)) = ω n) → (∀ n, ‖((thetaK K (ω n) : OC l) : ℂ_[l])‖ < 1) →

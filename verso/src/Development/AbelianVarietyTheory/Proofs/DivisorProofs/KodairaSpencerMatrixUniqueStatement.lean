@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagTan.isKS_unique | exact GlobalTheory.FlagTan.isKS_unique | (intros; apply GlobalTheory.FlagTan.isKS_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagTan.isKS_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKodairaSpencerMatrixUnique.lean&line=299#L299)
 -/
 theorem _root_.GlobalTheory.T.kodaira_spencer_matrix_unique : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∀ M M' : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M' → M = M' := by
   first | exact @GlobalTheory.FlagTan.isKS_unique | exact GlobalTheory.FlagTan.isKS_unique | (intros; apply GlobalTheory.FlagTan.isKS_unique <;> assumption)

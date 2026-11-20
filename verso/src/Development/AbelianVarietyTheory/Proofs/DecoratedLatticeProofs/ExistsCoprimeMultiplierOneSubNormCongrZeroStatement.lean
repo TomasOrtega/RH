@@ -15,8 +15,10 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNo
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusCong.one_sub_T_zmod | exact GlobalTheory.TorusCong.one_sub_T_zmod | (intros; apply GlobalTheory.TorusCong.one_sub_T_zmod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusCong.one_sub_T_zmod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsCoprimeMultiplierOneSubNormCongrZero.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_coprime_multiplier_one_sub_norm_congr_zero : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), ∃ M : ℕ, Nat.Coprime M X.B.g ∧ ZMod' X.B.I X.B.g ((M : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (1 - (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))) := by
   first | exact @GlobalTheory.TorusCong.one_sub_T_zmod | exact GlobalTheory.TorusCong.one_sub_T_zmod | (intros; apply GlobalTheory.TorusCong.one_sub_T_zmod <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.surjective_toPushforward_app_top_lbPow | exact GlobalTheory.surjective_toPushforward_app_top_lbPow | (intros; apply GlobalTheory.surjective_toPushforward_app_top_lbPow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.surjective_toPushforward_app_top_lbPow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEventuallySurjectiveToPushforwardAmpleLineBundle.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.eventually_surjective_toPushforward_ampleLineBundle_pow : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsProjOver p → ∀ (L : LB X), IsAmpleLB L → ∀ (T : Scheme.{0}) (i : T ⟶ X) [IsClosedImmersion i], ∀ᶠ N in atTop, Function.Surjective ((GlobalTheory.LB.toPushforward (lbPow L N) i).app ⊤) := by
   first | exact @GlobalTheory.surjective_toPushforward_app_top_lbPow | exact GlobalTheory.surjective_toPushforward_app_top_lbPow | (intros; apply GlobalTheory.surjective_toPushforward_app_top_lbPow <;> assumption)

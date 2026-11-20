@@ -17,8 +17,10 @@ import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellBump.exists_cellPart_unfoldedIntegral_positive_alt | exact GlobalTheory.CellBump.exists_cellPart_unfoldedIntegral_positive_alt | (intros; apply GlobalTheory.CellBump.exists_cellPart_unfoldedIntegral_positive_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellBump.exists_cellPart_unfoldedIntegral_positive_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCellPartUnfoldedIntegralPositive.lean&line=246#L246)
 -/
 theorem _root_.GlobalTheory.T.exists_cellPart_unfoldedIntegral_positive : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (b : GA E (m + 1) → ℂ) (φ : GA E (m + 1) → ℂ)

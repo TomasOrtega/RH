@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullUnifHom.exists_holUnif_pull_hom | exact GlobalTheory.PullUnifHom.exists_holUnif_pull_hom | (intros; apply GlobalTheory.PullUnifHom.exists_holUnif_pull_hom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullUnifHom.exists_holUnif_pull_hom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHolUnifPullAlongGroupHom.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_holUnif_pull_along_groupHom : ∀ (A B : Over (Sp ℂ)) [GrpObj A] [GrpObj B] (φ : A ⟶ B) (L : LB B.left) (g : ℕ) (u' : HolUnif B L g)
     (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A)) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)

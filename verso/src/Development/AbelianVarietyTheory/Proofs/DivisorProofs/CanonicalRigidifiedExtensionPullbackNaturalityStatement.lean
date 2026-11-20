@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExtNat.isCan_pull | exact GlobalTheory.PtExtNat.isCan_pull | (intros; apply GlobalTheory.PtExtNat.isCan_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExtNat.isCan_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCanonicalRigidifiedExtensionPullbackNaturality.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.canonicalRigidifiedExtension_pullback_naturality : ∀ (p : ℕ) (R R' : Type) [CommRing R] [CommRing R'] (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A'] (G : PDivGroup p R) (G' : PDivGroup p R') (t : G.TorsionTower A) (t' : G'.TorsionTower A') (σ : R →+* R') (φ : A'.left ⟶ A.left) (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' σ (spMap σ) φ) (c : primDR A) (x : G.RigExt), IsCan t c x → IsCan t' (m.pull c) ((t'.semiHom t m).rig x) := by
   first | exact @GlobalTheory.PtExtNat.isCan_pull | exact GlobalTheory.PtExtNat.isCan_pull | (intros; apply GlobalTheory.PtExtNat.isCan_pull <;> assumption)

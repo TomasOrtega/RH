@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.LiftRows GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IPFConv.innerProductFormulaC_of_convergent | exact GlobalTheory.IPFConv.innerProductFormulaC_of_convergent | (intros; apply GlobalTheory.IPFConv.innerProductFormulaC_of_convergent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IPFConv.innerProductFormulaC_of_convergent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaInnerProductFormulaDefiniteOfRallisConverge.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.thetaInnerProductFormulaDefinite_of_rallisConvergent : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.Convergent D → (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → InnerProductFormulaC R F := by
   first | exact @GlobalTheory.IPFConv.innerProductFormulaC_of_convergent | exact GlobalTheory.IPFConv.innerProductFormulaC_of_convergent | (intros; apply GlobalTheory.IPFConv.innerProductFormulaC_of_convergent <;> assumption)

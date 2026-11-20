@@ -9,8 +9,10 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.RankForms.basisSt | exact GlobalTheory.OmegaHT.RankForms.basisSt | (intros; apply GlobalTheory.OmegaHT.RankForms.basisSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OmegaHT.RankForms.basisSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOmegaBasisStatement.lean&line=185#L185)
 -/
 theorem _root_.GlobalTheory.T.OmegaBasisStatement : GlobalTheory.OmegaHT.BasisSt := by
   first | exact @GlobalTheory.OmegaHT.RankForms.basisSt | exact GlobalTheory.OmegaHT.RankForms.basisSt | (intros; apply GlobalTheory.OmegaHT.RankForms.basisSt <;> assumption)

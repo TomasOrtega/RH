@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PPAS.RiemannData.snd_valR_tangent | exact GlobalTheory.PPAS.RiemannData.snd_valR_tangent | (intros; apply GlobalTheory.PPAS.RiemannData.snd_valR_tangent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PPAS.RiemannData.snd_valR_tangent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRiemannDerivativeTangentVector.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.riemann_derivative_tangent_vector : ∀ (T : Scheme.{0}) (P : PPAS T) (y₀ : Sp ℂ ⟶ T) (d : P.RiemannData y₀) (X : Scheme.{0}) (θ : P.A.left ⟶ X) (W : X.Opens), ⊤ ≤ (y₀ ≫ LieVB.unitSec P.A) ⁻¹ᵁ (θ ⁻¹ᵁ W) → ∀ (f : Γ(X, W)) (v : epsR ℂ ⟶ d.B) (w : Fin P.g → ℂ), IsTangent v → d.u.IsDiff w v → TrivSqZeroExt.snd (valR (v.left ≫ d.φ ≫ θ) W f) = ∑ a, w a * d.cov (θ ⁻¹ᵁ W) (θ.appLE W (θ ⁻¹ᵁ W) le_rfl f) a := by
   first | exact @GlobalTheory.PPAS.RiemannData.snd_valR_tangent | exact GlobalTheory.PPAS.RiemannData.snd_valR_tangent | (intros; apply GlobalTheory.PPAS.RiemannData.snd_valR_tangent <;> assumption)

@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorRef.exists_isPhiDiv_of_cones | exact GlobalTheory.TorRef.exists_isPhiDiv_of_cones | (intros; apply GlobalTheory.TorRef.exists_isPhiDiv_of_cones <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorRef.exists_isPhiDiv_of_cones` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLinearFormsOnCones.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.linear_forms_on_cones : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c)

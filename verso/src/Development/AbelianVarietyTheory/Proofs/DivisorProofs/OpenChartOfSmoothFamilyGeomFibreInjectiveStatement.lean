@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartCrit.openChart | exact GlobalTheory.ChartCrit.openChart | (intros; apply GlobalTheory.ChartCrit.openChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartCrit.openChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOpenChartOfSmoothFamilyGeomFibreInjective.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.openChart_of_smoothFamily_geomFibreInjective : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), SmoothOfRelativeDimension g U.hom → Fam A M → FibInj A M → IsChart A M := by
   first | exact @GlobalTheory.ChartCrit.openChart | exact GlobalTheory.ChartCrit.openChart | (intros; apply GlobalTheory.ChartCrit.openChart <;> assumption)

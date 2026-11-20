@@ -25,8 +25,10 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 open GlobalTheory.StdFrame (StdPsi)
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatMatch.mulVec_lamHat_bound | exact GlobalTheory.LatMatch.mulVec_lamHat_bound | (intros; apply GlobalTheory.LatMatch.mulVec_lamHat_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatMatch.mulVec_lamHat_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNatSmulMatrixMulVecCompletedSelfDual.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.exists_nat_smul_matrix_mulVec_completedSelfDual : ∀ {D : D7} (V V' : HSp D) (X : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)), ∃ N : ℕ, 0 < N ∧ ∀ y ∈ Formalism.L2.NTheta.LamHat V, ((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • X.mulVec y ∈ Formalism.L2.NTheta.LamHat V' := by
   first | exact @GlobalTheory.LatMatch.mulVec_lamHat_bound | exact GlobalTheory.LatMatch.mulVec_lamHat_bound | (intros; apply GlobalTheory.LatMatch.mulVec_lamHat_bound <;> assumption)

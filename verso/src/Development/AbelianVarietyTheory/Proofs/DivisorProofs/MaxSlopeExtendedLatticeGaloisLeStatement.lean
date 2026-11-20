@@ -5,8 +5,10 @@ import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
 import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
 open NumberField GlobalTheory.AllWt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SlopeGal.slopeMax_sq_span_le | exact GlobalTheory.SlopeGal.slopeMax_sq_span_le | (intros; apply GlobalTheory.SlopeGal.slopeMax_sq_span_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SlopeGal.slopeMax_sq_span_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMaxSlopeExtendedLatticeGaloisLe.lean&line=450#L450)
 -/
 theorem _root_.GlobalTheory.T.maxSlope_extendedLattice_galois_le : ∀ (K K' V V' : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field K'] [NumberField K'] [Algebra K K'] [IsGalois K K'] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K' V'] [Module (𝓞 K') V'] [IsScalarTower (𝓞 K') K' V'] (N : (K →+* ℂ) → V → ℝ) (N' : (K' →+* ℂ) → V' → ℝ) (ι : V →ₛₗ[algebraMap K K'] V') (L : Submodule (𝓞 K) V), HasGram N → HasGram N' → (∀ σ x, N ((starRingEnd ℂ).comp σ) x = N σ x) → (∀ (n : ℕ) (b : Fin n → V), LinearIndependent K b → LinearIndependent K' (fun k => ι (b k))) → L.FG → L ≠ ⊥ → (∀ σ' x, N' σ' (ι x) = N (σ'.comp (algebraMap K K')) x) → slopeMax_sq N' (Submodule.span (𝓞 K') (ι '' (L : Set V))) ≤ slopeMax_sq N L := by
   first | exact @GlobalTheory.SlopeGal.slopeMax_sq_span_le | exact GlobalTheory.SlopeGal.slopeMax_sq_span_le | (intros; apply GlobalTheory.SlopeGal.slopeMax_sq_span_le <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAdmOnOfFiniteDimensional
 open Matrix Topology Filter
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra | exact GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra | (intros; apply GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLieAlgebraOfExpLocal.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.lie_algebra_of_exp_local : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}, GlobalTheory.LinRed.IsLinRed G → ∃ 𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ), (∀ X, X ∈ 𝔤 ↔ ∀ t : ℝ, NormedSpace.exp (t • X) ∈ G) ∧ ∃ V ∈ 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), ∀ X ∈ V, NormedSpace.exp X ∈ G → X ∈ 𝔤 := by
   first | exact @GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra | exact GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra | (intros; apply GlobalTheory.CompanionTheory.LinRedLie.exists_lieAlgebra <;> assumption)

@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.LN GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorRef.linA_of_fractionRing | exact GlobalTheory.TorRef.linA_of_fractionRing | (intros; apply GlobalTheory.TorRef.linA_of_fractionRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorRef.linA_of_fractionRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSectionBasisDomainRelation.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.section_basis_domain_relation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R]
     (t : SAB H (Sp R)) (N n : ℕ) (b : Fin n → LB.Sec (LPow t.G t.PP.L (N : ℤ) (Over.mk (𝟙 (Sp R)))))

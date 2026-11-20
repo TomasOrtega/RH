@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.DerAlg.der_algZp | exact GlobalTheory.K5.DerAlg.der_algZp | (intros; apply GlobalTheory.K5.DerAlg.der_algZp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.DerAlg.der_algZp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FDerivationEqZeroOfIsAlgebraicOverPadicIntegers.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.derivation_eq_zero_of_isAlgebraicOverPadicIntegers : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ E : Derivation ℤ Ω Ω, (∀ r : ℤ_[p], E (algebraMap (O0 p) Ω (algebraMap ℤ_[p] (O0 p) r)) = 0) →

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmal
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormBigNe.normBig_ne | exact GlobalTheory.NormBigNe.normBig_ne | (intros; apply GlobalTheory.NormBigNe.normBig_ne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormBigNe.normBig_ne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomPairNormNeZero.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.bottom_pair_norm_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} _ _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) t (Q : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q),

@@ -26,8 +26,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.DeepGoodAll.deepGood | exact GlobalTheory.CovTop.DeepGoodAll.deepGood | (intros; apply GlobalTheory.CovTop.DeepGoodAll.deepGood <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.DeepGoodAll.deepGood` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeepGoodReductionStatement.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.deep_good_reduction_statement : GlobalTheory.Published.ScholzeWeinsteinB → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood := by
   first | exact @GlobalTheory.CovTop.DeepGoodAll.deepGood | exact GlobalTheory.CovTop.DeepGoodAll.deepGood | (intros; apply GlobalTheory.CovTop.DeepGoodAll.deepGood <;> assumption)

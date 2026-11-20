@@ -16,8 +16,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyHouse.keyRule_of_kaSt | exact GlobalTheory.KeyHouse.keyRule_of_kaSt | (intros; apply GlobalTheory.KeyHouse.keyRule_of_kaSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyHouse.keyRule_of_kaSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FThetaKeyRuleExistsOfAlgebraicInvariants.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.thetaKeyRule_exists_of_algebraic_invariants : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → Key.PhHoloStatement → GlobalTheory.TorusAlgebraic → KaSt → KeyDesc → ∃ N : ℕ → ℕ, (∀ g, 1 ≤ N g) ∧ KeyRule N 1 charHalf := by
   first | exact @GlobalTheory.KeyHouse.keyRule_of_kaSt | exact GlobalTheory.KeyHouse.keyRule_of_kaSt | (intros; apply GlobalTheory.KeyHouse.keyRule_of_kaSt <;> assumption)

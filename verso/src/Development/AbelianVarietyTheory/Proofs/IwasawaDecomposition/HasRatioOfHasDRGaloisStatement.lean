@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLine.Ratio.hasRatio | exact GlobalTheory.HTLine.Ratio.hasRatio | (intros; apply GlobalTheory.HTLine.Ratio.hasRatio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLine.Ratio.hasRatio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHasRatioOfHasDRGalois.lean&line=208#L208)
 -/
 theorem _root_.GlobalTheory.T.hasRatio_of_hasDR_galois : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → IsGalois ℚ E → ∀ (Z : Mdl Y i₀), HasDR Z → p ∣ Z.i.l.A → ∀ st (x : Letter Dw), letterOf Dw st = some x → HasRatio Z st := by
   first | exact @GlobalTheory.HTLine.Ratio.hasRatio | exact GlobalTheory.HTLine.Ratio.hasRatio | (intros; apply GlobalTheory.HTLine.Ratio.hasRatio <;> assumption)

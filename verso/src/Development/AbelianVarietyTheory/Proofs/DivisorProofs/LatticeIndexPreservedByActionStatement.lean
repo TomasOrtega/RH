@@ -22,8 +22,10 @@ open scoped ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ratSp_exists_sublat_same_index | exact GlobalTheory.ratSp_exists_sublat_same_index | (intros; apply GlobalTheory.ratSp_exists_sublat_same_index <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ratSp_exists_sublat_same_index` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeIndexPreservedByAction.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.lattice_index_preserved_by_action : ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g), (∀ i l, ∃ r : ℚ, γ.mat i l = r) → ∃ M : Submodule ℤ (Fl g), IsLat M ∧ M ≤ stdLat g ∧ IsLat (latAct M γ) ∧ latAct M γ ≤ stdLat g ∧ 0 < Nat.card (stdLat g ⧸ M.submoduleOf (stdLat g)) ∧ Nat.card (stdLat g ⧸ M.submoduleOf (stdLat g)) = Nat.card (stdLat g ⧸ (latAct M γ).submoduleOf (stdLat g)) := by
   first | exact @GlobalTheory.ratSp_exists_sublat_same_index | exact GlobalTheory.ratSp_exists_sublat_same_index | (intros; apply GlobalTheory.ratSp_exists_sublat_same_index <;> assumption)

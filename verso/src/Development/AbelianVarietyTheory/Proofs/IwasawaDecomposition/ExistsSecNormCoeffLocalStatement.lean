@@ -10,8 +10,10 @@ open AlgebraicGeometry CategoryTheory Polynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.NormalDescent
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormalDescent.exists_sec_normCoeff_local | exact GlobalTheory.NormalDescent.exists_sec_normCoeff_local | (intros; apply GlobalTheory.NormalDescent.exists_sec_normCoeff_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormalDescent.exists_sec_normCoeff_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsSecNormCoeffLocal.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_sec_normCoeff_local' : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     {M : LB X}, M.IsLB → ∀ t : (M.pull f).Sec, ∃ u : ∀ k, (lbPow M k).Sec, ∀ x : X,

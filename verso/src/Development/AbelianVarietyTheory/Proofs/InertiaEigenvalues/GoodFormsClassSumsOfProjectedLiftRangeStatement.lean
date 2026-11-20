@@ -7,8 +7,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankOnto.sumOnto_of_goodRange | exact GlobalTheory.RankOnto.sumOnto_of_goodRange | (intros; apply GlobalTheory.RankOnto.sumOnto_of_goodRange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankOnto.sumOnto_of_goodRange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGoodFormsClassSumsOfProjectedLiftRange.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.goodForms_classSums_of_projectedLift_range : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), (∀ j t, GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.GoodRangeAt X.R.toRealDat j t) → ∀ i, BaseTup Y i → SumOnto Y.Z.rd i := by
   first | exact @GlobalTheory.RankOnto.sumOnto_of_goodRange | exact GlobalTheory.RankOnto.sumOnto_of_goodRange | (intros; apply GlobalTheory.RankOnto.sumOnto_of_goodRange <;> assumption)

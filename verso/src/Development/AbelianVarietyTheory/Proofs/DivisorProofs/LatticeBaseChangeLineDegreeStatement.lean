@@ -14,8 +14,10 @@ import ReciprocityTheory.GeometryOfNumbers.MatrixArithmetic.WeakMatSt
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineBCTower.lineLat_deg_tower | exact GlobalTheory.LineBCTower.lineLat_deg_tower | (intros; apply GlobalTheory.LineBCTower.lineLat_deg_tower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineBCTower.lineLat_deg_tower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeBaseChangeLineDegree.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.lattice_base_change_line_degree : ∀ (K K' K'' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Field K''] [NumberField K''] [Algebra K K'] [Algebra K' K''] [Algebra K K''] [IsScalarTower K K' K''] (m : ℕ) (h : HermFam K (Fin m → K)) (h' : HermFam K' (Fin m → K')) (h'' : HermFam K'' (Fin m → K'')) (L : Submodule (𝓞 K) (Fin m → K)) (x : Fin m → K'), Full L → IsBC h h' → IsBC h h'' → Full (latBC K'' L) ∧ deg h'' (lineLat (latBC K'' L) (fun i => algebraMap K' K'' (x i))) = deg h' (lineLat (latBC K' L) x) := by
   first | exact @GlobalTheory.LineBCTower.lineLat_deg_tower | exact GlobalTheory.LineBCTower.lineLat_deg_tower | (intros; apply GlobalTheory.LineBCTower.lineLat_deg_tower <;> assumption)

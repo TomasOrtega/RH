@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSi
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermExt.exists_isBC | exact GlobalTheory.HermExt.exists_isBC | (intros; apply GlobalTheory.HermExt.exists_isBC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermExt.exists_isBC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFamilyBaseChangeExists.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.hermitian_family_base_change_exists : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] (m : ℕ) (h : HermFam K (Fin m → K)), ∃ h' : HermFam K' (Fin m → K'), IsBC h h' := by
   first | exact @GlobalTheory.HermExt.exists_isBC | exact GlobalTheory.HermExt.exists_isBC | (intros; apply GlobalTheory.HermExt.exists_isBC <;> assumption)

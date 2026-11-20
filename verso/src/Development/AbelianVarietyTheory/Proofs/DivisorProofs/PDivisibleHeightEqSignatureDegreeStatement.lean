@@ -17,8 +17,10 @@ open GlobalTheory GlobalTheory.GroupBplus GlobalTheory.GroupBplus.Closed
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank | exact GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank | (intros; apply GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivisibleHeightEqSignatureDegree.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.p_divisible_height_eq_signature_degree : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), GG.height = 2 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) := by
   first | exact @GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank | exact GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank | (intros; apply GlobalTheory.GroupBplus.Closed.height_eq_lattice_rank <;> assumption)

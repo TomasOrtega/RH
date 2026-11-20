@@ -22,8 +22,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisSchA.rho_mem_schA | exact GlobalTheory.HeisSchA.rho_mem_schA | (intros; apply GlobalTheory.HeisSchA.rho_mem_schA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisSchA.rho_mem_schA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepresentationPreservesSchwartz.lean&line=179#L179)
 -/
 theorem _root_.GlobalTheory.T.weil_representation_preserves_schwartz : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X Y)

@@ -11,8 +11,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DegVal.exists_phiAt_pos | exact GlobalTheory.DegVal.exists_phiAt_pos | (intros; apply GlobalTheory.DegVal.exists_phiAt_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DegVal.exists_phiAt_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCentredPointPhiPositive.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.centred_point_phi_positive : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∃ φ : ℝ, 0 < φ ∧ PhiAt TF.X Z y ν φ := by
   first | exact @GlobalTheory.DegVal.exists_phiAt_pos | exact GlobalTheory.DegVal.exists_phiAt_pos | (intros; apply GlobalTheory.DegVal.exists_phiAt_pos <;> assumption)

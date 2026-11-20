@@ -10,8 +10,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor | exact GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor | (intros; apply GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FUniformisationTorusMonoAndFactor.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.uniformisationTorus_mono_and_factor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (t : SAB H (Sp R)) (P : PELUnif I t)
     (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (a : R →+* A) (e : ℕ) (ha : ∀ x ∈ I ^ (e + 1), a x = 0)

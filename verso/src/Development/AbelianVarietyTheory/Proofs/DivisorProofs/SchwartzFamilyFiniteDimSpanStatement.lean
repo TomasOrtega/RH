@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceFinDim.slices_of_bounded | exact GlobalTheory.SliceFinDim.slices_of_bounded | (intros; apply GlobalTheory.SliceFinDim.slices_of_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SliceFinDim.slices_of_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzFamilyFiniteDimSpan.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.schwartz_family_finite_dim_span : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : Type) (Ψ : T → (κ → AF F) → ℂ), (∀ t, Ψ t ∈ schA F κ) →
     (∀ l ∈ (adeleClass F).adm κ, ∃ C : ℝ, ∀ t, ‖l (Ψ t)‖ ≤ C) →

@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MetricExists.exists_hermLB | exact GlobalTheory.MetricExists.exists_hermLB | (intros; apply GlobalTheory.MetricExists.exists_hermLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MetricExists.exists_hermLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHermitianMetricLineBundle.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_hermitian_metric_line_bundle : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ B : LB X, B.IsLB → ∃ L : HermLB p, L.B = B := by
   first | exact @GlobalTheory.MetricExists.exists_hermLB | exact GlobalTheory.MetricExists.exists_hermLB | (intros; apply GlobalTheory.MetricExists.exists_hermLB <;> assumption)

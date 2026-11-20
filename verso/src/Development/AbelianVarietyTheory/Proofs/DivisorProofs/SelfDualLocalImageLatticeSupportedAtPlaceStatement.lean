@@ -22,8 +22,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatVac.DualLoc.map_selfDual | exact GlobalTheory.LatVac.DualLoc.map_selfDual | (intros; apply GlobalTheory.LatVac.DualLoc.map_selfDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatVac.DualLoc.map_selfDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfDualLocalImageLatticeSupportedAtPlace.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.selfDual_localImage_latticeSupportedAtPlace : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {W : Type} [AddCommGroup W]
     [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)

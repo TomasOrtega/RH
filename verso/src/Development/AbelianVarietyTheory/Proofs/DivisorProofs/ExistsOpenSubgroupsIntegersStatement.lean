@@ -7,8 +7,10 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMa
 open NumberField IsDedekindDomain
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBBox.exists_box_invariant | exact GlobalTheory.SBBox.exists_box_invariant | (intros; apply GlobalTheory.SBBox.exists_box_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBBox.exists_box_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOpenSubgroupsIntegers.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.exists_open_subgroups_integers : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
     g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F) →

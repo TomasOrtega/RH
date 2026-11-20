@@ -11,8 +11,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.Orbit.main | exact GlobalTheory.CompanionTheory.WS.Orbit.main | (intros; apply GlobalTheory.CompanionTheory.WS.Orbit.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WS.Orbit.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLatticeAnnulusCosetDecomposition.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.lattice_annulus_coset_decomposition : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F), x ∉ GlobalTheory.CompanionTheory.WS.Ln F n → ∃ s : Finset Fˣ, s.Nonempty ∧ (∀ t ∈ s, t ∈ unitFiltrationUnits F 0) ∧ (GlobalTheory.CompanionTheory.WS.spanSet n x).indicator (1 : F × F → ℂ) - (GlobalTheory.CompanionTheory.WS.spanSet n (((unifUnit F : Fˣ) : F) • x)).indicator (1 : F × F → ℂ) = ∑ t ∈ s, GlobalTheory.CompanionTheory.WS.cosetInd n ((t : F) • x) := by
   first | exact @GlobalTheory.CompanionTheory.WS.Orbit.main | exact GlobalTheory.CompanionTheory.WS.Orbit.main | (intros; apply GlobalTheory.CompanionTheory.WS.Orbit.main <;> assumption)

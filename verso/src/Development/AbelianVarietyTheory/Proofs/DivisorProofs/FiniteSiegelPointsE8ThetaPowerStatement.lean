@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SharpFiniteTh.finite_sharpOver | exact GlobalTheory.SharpFiniteTh.finite_sharpOver | (intros; apply GlobalTheory.SharpFiniteTh.finite_sharpOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SharpFiniteTh.finite_sharpOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteSiegelPointsE8ThetaPower.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.finite_siegelPoints_e8ThetaPower : ∀ (g n : ℕ), 2 ≤ n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (K : Type) [Field K] [IsAlgClosed K] (Q : PolAV (Sp K)), Set.Finite {y : Sp K ⟶ F.X | GlobalTheory.Poinc.SharpOver F W Q y} := by
   first | exact @GlobalTheory.SharpFiniteTh.finite_sharpOver | exact GlobalTheory.SharpFiniteTh.finite_sharpOver | (intros; apply GlobalTheory.SharpFiniteTh.finite_sharpOver <;> assumption)

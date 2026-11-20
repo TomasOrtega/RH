@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.generic_iso_agrees_on_complete_points | exact GlobalTheory.generic_iso_agrees_on_complete_points | (intros; apply GlobalTheory.generic_iso_agrees_on_complete_points <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.generic_iso_agrees_on_complete_points` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FGenericIsoAgreesOnCompletePoints.lean&line=364#L364)
 -/
 theorem _root_.GlobalTheory.T.generic_iso_agrees_on_complete_points_alt : Laws → Laws2 → ∀ (R
     : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (I

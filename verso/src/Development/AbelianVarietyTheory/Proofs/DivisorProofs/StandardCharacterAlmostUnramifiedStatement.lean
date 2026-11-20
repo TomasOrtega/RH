@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiStdCond.psi_std_conductor | exact GlobalTheory.PsiStdCond.psi_std_conductor | (intros; apply GlobalTheory.PsiStdCond.psi_std_conductor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiStdCond.psi_std_conductor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardCharacterAlmostUnramified.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.standard_character_almost_unramified : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     (∀ᶠ v in cofinite, PsiUnr ψ v) ∧ ∀ v : Pl F, ∃ x, psiLoc ψ v x ≠ 1 := by

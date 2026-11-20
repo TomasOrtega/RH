@@ -4,8 +4,10 @@ import Mathlib
 open Matrix
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryGroupChart.unitary_chart | exact GlobalTheory.UnitaryGroupChart.unitary_chart | (intros; apply GlobalTheory.UnitaryGroupChart.unitary_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryGroupChart.unitary_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianUnitaryGroupOneParameterChart.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.hermitian_unitary_group_one_parameter_chart : ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ), Hᴴ = H → IsUnit H.det →
     ∀ (d e : ℕ) (Z : Fin d → Matrix (Fin n) (Fin n) ℂ) (j : Fin e → Fin d), Function.Injective j →

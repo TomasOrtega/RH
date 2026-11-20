@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.BK.norm_iA_mu_le | exact GlobalTheory.BSP.BK.norm_iA_mu_le | (intros; apply GlobalTheory.BSP.BK.norm_iA_mu_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.BK.norm_iA_mu_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormTeichmullerTiltMinusOneLe.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.norm_teichmullerTiltMinusOne_le : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (e : OCb l), IsEps e → ‖bk.iA (mu e)‖ ≤ (l : ℝ)⁻¹ ∧ (l = 2 → ‖bk.iA (mu e)‖ ≤ (4 : ℝ)⁻¹) := by
   first | exact @GlobalTheory.BSP.BK.norm_iA_mu_le | exact GlobalTheory.BSP.BK.norm_iA_mu_le | (intros; apply GlobalTheory.BSP.BK.norm_iA_mu_le <;> assumption)

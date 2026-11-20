@@ -9,8 +9,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportProductO
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.Split.strong_approx_split | exact GlobalTheory.CompanionTheory.PlaneSA.Split.strong_approx_split | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.Split.strong_approx_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PlaneSA.Split.strong_approx_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FQuaternionIsotropicSplitAllPlaces.lean&line=377#L377)
 -/
 theorem _root_.GlobalTheory.T.quaternion_isotropic_split_all_places : ∀ {F : Type} [Field F] [NumberField F] (d β : F), (∀ r : F, r ^ 2 ≠ d) → β ≠ 0 →
   (∃ x : Q d β F, x ≠ 0 ∧ qn x = 0) → ∀ s : Pl F, QSA d β s := by

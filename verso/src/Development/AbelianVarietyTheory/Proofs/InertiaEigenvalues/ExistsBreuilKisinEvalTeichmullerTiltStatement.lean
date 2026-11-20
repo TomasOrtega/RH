@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKReal.exists_ev_of_root | exact GlobalTheory.BKReal.exists_ev_of_root | (intros; apply GlobalTheory.BKReal.exists_ev_of_root <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKReal.exists_ev_of_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsBreuilKisinEvalTeichmullerTilt.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.exists_breuilKisin_eval_teichmuller_tilt : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (π : OC l), ¬ IsUnit π → ∃ (fl : OCb l) (ev : (Wq l a)⟦X⟧ →+* Ainf l), Per.θ l (WittVector.teichmuller l fl) = π ∧ ev X = WittVector.teichmuller l fl ∧ (∀ w, ev (C w) = wA l a w) ∧ ∀ x, ev (frobS l a x) = WittVector.frobenius (ev x) := by
   first | exact @GlobalTheory.BKReal.exists_ev_of_root | exact GlobalTheory.BKReal.exists_ev_of_root | (intros; apply GlobalTheory.BKReal.exists_ev_of_root <;> assumption)

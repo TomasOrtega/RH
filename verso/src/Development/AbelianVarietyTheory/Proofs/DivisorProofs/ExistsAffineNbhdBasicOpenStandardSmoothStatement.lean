@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth | exact GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth | (intros; apply GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAffineNbhdBasicOpenStandardSmooth.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_affine_nbhd_basicOpen_standardSmooth : ∀ (g : ℕ) (C Z : Scheme.{0}) [IsAffine Z] (e : C ⟶ Z), SmoothOfRelativeDimension g e → ∀ x : C, ∃ O : C.Opens, IsAffineOpen O ∧ x ∈ O ∧ ∀ r : Γ(C, O), (((C.basicOpen r).ι ≫ e).appTop).hom.IsStandardSmoothOfRelativeDimension g := by
   first | exact @GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth | exact GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth | (intros; apply GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth <;> assumption)

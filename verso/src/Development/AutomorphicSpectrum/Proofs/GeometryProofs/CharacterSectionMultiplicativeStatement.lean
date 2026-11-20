@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BT.charValues_mul | exact GlobalTheory.CompanionTheory.Ar.BT.charValues_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.charValues_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BT.charValues_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCharacterSectionMultiplicative.lean&line=279#L279)
 -/
 theorem _root_.GlobalTheory.T.character_section_multiplicative : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∀ (Y : Over (Spec (CommRingCat.of R))), (∀ y z : Y ⟶ Γ.G, (y * z).left.appTop s = y.left.appTop s * z.left.appTop s) ∧ (1 : Y ⟶ Γ.G).left.appTop s = 1 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BT.charValues_mul | exact GlobalTheory.CompanionTheory.Ar.BT.charValues_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.charValues_mul <;> assumption)

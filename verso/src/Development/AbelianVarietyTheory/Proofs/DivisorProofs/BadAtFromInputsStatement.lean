@@ -27,8 +27,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadIndef.bad_rows_indef | exact GlobalTheory.BadIndef.bad_rows_indef | (intros; apply GlobalTheory.BadIndef.bad_rows_indef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadIndef.bad_rows_indef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBadAtFromInputs.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.bad_at_from_inputs : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun _ _ _ _ p i _ _ _ => BadAt p i := by
   first | exact @GlobalTheory.BadIndef.bad_rows_indef | exact GlobalTheory.BadIndef.bad_rows_indef | (intros; apply GlobalTheory.BadIndef.bad_rows_indef <;> assumption)

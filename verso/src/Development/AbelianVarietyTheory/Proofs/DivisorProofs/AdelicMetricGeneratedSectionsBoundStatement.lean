@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrueGeo.HtEvalUp.main | exact GlobalTheory.TrueGeo.HtEvalUp.main | (intros; apply GlobalTheory.TrueGeo.HtEvalUp.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrueGeo.HtEvalUp.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicMetricGeneratedSectionsBound.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.adelic_metric_generated_sections_bound : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (k : ℕ+) (x : Y.X),
     IsClosed ({x} : Set Y.X) →

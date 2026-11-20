@@ -6,8 +6,10 @@ open GlobalTheory GlobalTheory.CxForm GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff ComplexConjugate Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.delAt_dbarAt_linear_local | exact GlobalTheory.CxForm.delAt_dbarAt_linear_local | (intros; apply GlobalTheory.CxForm.delAt_dbarAt_linear_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.delAt_dbarAt_linear_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDelOperatorAtDbarOperatorAtLinearLocal.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.delOperatorAt_dbarOperatorAt_linear_local : ∀ (n : ℕ) (v : V n),
     (∀ F G : V n → Alt n, (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) →

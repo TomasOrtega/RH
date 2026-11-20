@@ -15,8 +15,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep.BaseTerms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.TermsTrans.terms_witnesses_baseChange | exact GlobalTheory.GSep.TermsTrans.terms_witnesses_baseChange | (intros; apply GlobalTheory.GSep.TermsTrans.terms_witnesses_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.TermsTrans.terms_witnesses_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTermsWitnessesBaseChangeAlongTower.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.termsWitnesses_baseChange_along_tower : ∀ {I : Type} (X₁ : GlobalTheory.GSep.GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (𝔗 : GlobalTheory.GSep.Tower X₁ act) (z₁ : X₁.M.Z)
     (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ →

@@ -19,8 +19,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq | exact GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq | (intros; apply GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryInjAtPlaceSkew.eq_of_piW_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryLocalEqOfMatrixMapEq.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.unitary_local_eq_of_matrix_map_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v),

@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphLineLoc.exists_locEquiv | exact GlobalTheory.SphLineLoc.exists_locEquiv | (intros; apply GlobalTheory.SphLineLoc.exists_locEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphLineLoc.exists_locEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalUnitaryIsoStabilizer.lean&line=355#L355)
 -/
 theorem _root_.GlobalTheory.T.local_unitary_iso_stabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ x, σ (σ x) = x) → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F) (δ : E), δ ≠ 0 → W.L.FG →

@@ -8,8 +8,10 @@ open NumberField Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Theta Form
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatDenseEnd.comm_all | exact GlobalTheory.RatDenseEnd.comm_all | (intros; apply GlobalTheory.RatDenseEnd.comm_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatDenseEnd.comm_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCommutesAllOfCommutesRationalUnitaryPoints.lean&line=242#L242)
 -/
 theorem _root_.GlobalTheory.T.commutes_all_of_commutes_rationalUnitaryPoints : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (tauL : D.what₂.Tau → (D.host.E →+* D.what₂.LL)),
     (∀ τ, D.what₂.embLL.comp (tauL τ) = Formalism.BasicNotions.TH.tauE D τ) →

@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open IsLocalRing
 open GlobalTheory.CompanionTheory.KoszulCount
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep | exact GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep | (intros; apply GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGenericSectionsCotangentIndep.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.generic_sections_cotangent_indep : ∀ (Y : Var ℂ) (L : LB Y.X), L.IsLB → ∀ (n d : ℕ) (b : Fin n → L.Sec), (⨆ j, nonzeroLocus (b j) = ⊤) → ∃ Q : MvPolynomial (Fin d × Fin n) ℂ, Q ≠ 0 ∧ ∀ C : Fin d → Fin n → ℂ, MvPolynomial.eval (fun p => C p.1 p.2) Q ≠ 0 → CotIndep (fun k => ∑ j, algebraMap ℂ Γ(Y.X, ⊤) (C k j) • b j) := by
   first | exact @GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep | exact GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep | (intros; apply GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep <;> assumption)

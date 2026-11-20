@@ -15,8 +15,10 @@ open GlobalTheory.ThK.EvAt0.PolD GlobalTheory.ArchUniq GlobalTheory.ArchUniq.Coo
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvAt0.PolD.Comm.dOp_comm_scalar | exact GlobalTheory.ThK.EvAt0.PolD.Comm.dOp_comm_scalar | (intros; apply GlobalTheory.ThK.EvAt0.PolD.Comm.dOp_comm_scalar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.EvAt0.PolD.Comm.dOp_comm_scalar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerOperatorsCommutatorScalar.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_operators_commutator_scalar : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a b a' b' : κ → mixedEmbedding.mixedSpace F),
     ∃ s : ℂ, ∀ f : SInf F κ, dOp a b (dOp a' b' f) - dOp a' b' (dOp a b f) = s • f := by

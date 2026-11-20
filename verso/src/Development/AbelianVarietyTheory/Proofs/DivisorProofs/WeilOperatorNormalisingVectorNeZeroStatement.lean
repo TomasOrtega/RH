@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormExact.om_normalising_ne_zero | exact GlobalTheory.NormExact.om_normalising_ne_zero | (intros; apply GlobalTheory.NormExact.om_normalising_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormExact.om_normalising_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilOperatorNormalisingVectorNeZero.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.weilOperator_normalisingVector_ne_zero : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) {a d : ℕ} (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0),
   Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ → oddE0 D cc δ t0 a d e0 →

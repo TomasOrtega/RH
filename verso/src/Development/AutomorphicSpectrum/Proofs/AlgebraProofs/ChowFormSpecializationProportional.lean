@@ -6,8 +6,10 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @ModelDimension.chow_form_product_formula | exact ModelDimension.chow_form_product_formula`.
+/- English proof (citation)
+Apply `ModelDimension.chow_form_product_formula` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FCommonZeroEvaluation%2FEvalEqZeroOfCommonZero.lean&line=216#L216)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.chow_form_specialization_proportional : ∀ (n e δ : ℕ) (W : Ideal (MvPolynomial (Fin n) ℂ)) (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ)
   (v : Fin e × Fin n → ℂ) (P : Finset (Fin n → ℂ)) (u₀ : Fin n → ℂ),

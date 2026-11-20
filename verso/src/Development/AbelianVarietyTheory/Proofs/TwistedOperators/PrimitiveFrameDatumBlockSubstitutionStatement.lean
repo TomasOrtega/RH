@@ -7,8 +7,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix ValuativeRel GlobalTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.TopLevelInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameSubst.phiA_blockSubst | exact GlobalTheory.FrameSubst.phiA_blockSubst | (intros; apply GlobalTheory.FrameSubst.phiA_blockSubst <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameSubst.phiA_blockSubst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPrimitiveFrameDatumBlockSubstitution.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.primitiveFrameDatum_blockSubstitution : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k]

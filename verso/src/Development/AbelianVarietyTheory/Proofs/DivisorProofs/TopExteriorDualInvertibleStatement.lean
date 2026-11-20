@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvertibleTopExteriorPower.invertible_alternatingMap_top | exact GlobalTheory.InvertibleTopExteriorPower.invertible_alternatingMap_top | (intros; apply GlobalTheory.InvertibleTopExteriorPower.invertible_alternatingMap_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvertibleTopExteriorPower.invertible_alternatingMap_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopExteriorDualInvertible.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.top_exterior_dual_invertible : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M]
     [Module.Projective R M] (n : ℕ), (∀ p, Module.rankAtStalk (R := R) M p = n) → Module.Invertible R (M [⋀^Fin n]→ₗ[R] R) := by

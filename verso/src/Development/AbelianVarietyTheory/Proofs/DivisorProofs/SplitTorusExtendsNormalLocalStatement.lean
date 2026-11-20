@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EqHalf.InducedProof.equivar_induced | exact GlobalTheory.EqHalf.InducedProof.equivar_induced | (intros; apply GlobalTheory.EqHalf.InducedProof.equivar_induced <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EqHalf.InducedProof.equivar_induced` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitTorusExtendsNormalLocal.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.split_torus_extends_normal_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (K : Type) [Field K] [CharZero K]
     (ξ : Sp K ⟶ X) (q : ℕ), q ≠ 0 → (∃ ζ : K, IsPrimitiveRoot ζ q) → SplitK t ξ q →

@@ -8,8 +8,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SepPer.depth_pays | exact GlobalTheory.SepPer.depth_pays | (intros; apply GlobalTheory.SepPer.depth_pays <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SepPer.depth_pays` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridDepthPaysEveryLoss.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.gridDepth_pays_every_loss : DepthPays := by
   first | exact @GlobalTheory.SepPer.depth_pays | exact GlobalTheory.SepPer.depth_pays | (intros; apply GlobalTheory.SepPer.depth_pays <;> assumption)

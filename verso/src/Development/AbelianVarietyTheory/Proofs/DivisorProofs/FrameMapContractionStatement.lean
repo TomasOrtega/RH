@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarAddVectorScalar
 open Matrix MeasureTheory Set Filter Topology GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.Gauge
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb | exact GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb | (intros; apply GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrameMapContraction.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.frameMap_contraction : ∀ {g : ℕ} (n : ℕ) (D : Matrix (Fin g) (Fin g) ℂ), IsUnit D → ∀ (d : Fin g) (w : Ext (n + n + g)), frameMap n D (contr (dzb n d) w) = ∑ a, star (D d a) • contr (dzb n a) (frameMap n D w) := by
   first | exact @GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb | exact GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb | (intros; apply GlobalTheory.TorsionForm.FrameContr.frameMap_contr_dzb <;> assumption)

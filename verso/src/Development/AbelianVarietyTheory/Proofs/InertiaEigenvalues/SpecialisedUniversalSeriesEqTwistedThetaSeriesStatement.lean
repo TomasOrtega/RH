@@ -7,8 +7,10 @@ open Formalism.IndefR.Links
 open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SpecFac.specXi_eq_specSer | exact GlobalTheory.SpecFac.specXi_eq_specSer | (intros; apply GlobalTheory.SpecFac.specXi_eq_specSer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SpecFac.specXi_eq_specSer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSpecialisedUniversalSeriesEqTwistedThetaSeries.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.specialised_universal_series_eq_twisted_thetaSeries : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X), ρ.Good →
   ∀ (Y : NExp D.R D.host D.what₂ D.LL0 N X), GlobalTheory.UnivChar.IsUnivChar Y →

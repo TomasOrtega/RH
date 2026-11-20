@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VecSecCol
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.VB GlobalTheory.FlagZ GlobalTheory.FlagZ.TautUniq
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.TautUniq.vecSec_mem_range_stepMap_iff | exact GlobalTheory.FlagZ.TautUniq.vecSec_mem_range_stepMap_iff | (intros; apply GlobalTheory.FlagZ.TautUniq.vecSec_mem_range_stepMap_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.TautUniq.vecSec_mem_range_stepMap_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStepMapSectionRange.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.step_map_section_range : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N), Taut.IsTaut ι N fl →

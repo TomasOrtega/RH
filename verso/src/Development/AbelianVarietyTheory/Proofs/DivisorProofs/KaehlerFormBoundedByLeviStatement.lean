@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPotentialPosit
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory GlobalTheory.ShFam GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KaehlerCmp.kaehler_le_levi_Om | exact GlobalTheory.KaehlerCmp.kaehler_le_levi_Om | (intros; apply GlobalTheory.KaehlerCmp.kaehler_le_levi_Om <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KaehlerCmp.kaehler_le_levi_Om` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKaehlerFormBoundedByLevi.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.kaehler_form_bounded_by_levi : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y),
     Y.dim = e → ∀ (a : Fin (M.n + 1)) (om : ChartForm Y.str (I.ε a) Y.dim), IsKaehlerForm (Y.an (I.ε a)) om →

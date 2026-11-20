@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DimEq.dim_eq | exact GlobalTheory.DimEq.dim_eq | (intros; apply GlobalTheory.DimEq.dim_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DimEq.dim_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothBaseDimEqPeriodSpaceDim.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.smoothBase_dim_eq_periodSpace_dim : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (Λ : Type) (F : Fam ℂ O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop) (d d' : ℕ) (D' : PLat O bar) (t : Λ → D'.La), 0 < N → (∀ a, F.eta a ^ N = 1) → SmoothOfRelativeDimension d F.s → QuasiCompact F.s → FineAt F (RingHom.id ℂ) ρ N C → C D' t → (∃ P, IsPeriod D' ρ P) → PerCoord D' ρ d' → d = d' := by
   first | exact @GlobalTheory.DimEq.dim_eq | exact GlobalTheory.DimEq.dim_eq | (intros; apply GlobalTheory.DimEq.dim_eq <;> assumption)

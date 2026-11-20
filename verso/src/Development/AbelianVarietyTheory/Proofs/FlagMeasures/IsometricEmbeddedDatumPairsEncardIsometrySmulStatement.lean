@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AdaptSelf
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt GlobalTheory.DegAsm
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TripInv.trip_encard_smul | exact GlobalTheory.TripInv.trip_encard_smul | (intros; apply GlobalTheory.TripInv.trip_encard_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TripInv.trip_encard_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FIsometricEmbeddedDatumPairsEncardIsometrySmul.lean&line=206#L206)
 -/
 theorem _root_.GlobalTheory.T.isometricEmbeddedDatumPairs_encard_isometry_smul : ∀ (K W : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (HW : HermSpace K W) (g j x x' : ℕ) (s : Formalism.HermitianLatticesTheory.isom HW.B.flip) (L : Submodule (𝓞 K) W), (Trip HW g (s • L) j x x').encard = (Trip HW g L j x x').encard := by
   first | exact @GlobalTheory.TripInv.trip_encard_smul | exact GlobalTheory.TripInv.trip_encard_smul | (intros; apply GlobalTheory.TripInv.trip_encard_smul <;> assumption)

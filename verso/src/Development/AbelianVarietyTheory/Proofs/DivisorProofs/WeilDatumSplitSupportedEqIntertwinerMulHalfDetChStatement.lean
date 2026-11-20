@@ -18,8 +18,10 @@ open GlobalTheory.BotClassDict (finQ)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitWeilDict.splitWeil_eq | exact GlobalTheory.SplitWeilDict.splitWeil_eq | (intros; apply GlobalTheory.SplitWeilDict.splitWeil_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitWeilDict.splitWeil_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilDatumSplitSupportedEqIntertwinerMulHalfDetCh.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.weilDatum_splitSupported_eq_intertwiner_mul_halfDetChar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
   (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →

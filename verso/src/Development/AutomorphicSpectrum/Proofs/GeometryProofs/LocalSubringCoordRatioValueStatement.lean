@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemPtsOverOfMemMcPt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OneMemChartLatNm
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing | exact GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing | (intros; apply GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLocalSubringCoordRatioValue.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.local_subring_coord_ratio_value : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] (y : (Σ k, J k) → Ω) (L : Type) [Field L] (z : (Σ k, J k) → L), z ∈ Small.ptsOver L (mCoordIdeal y) → ∃ (A : Subring Ω) (_ : IsLocalRing A), (∀ (k : K) (a b : J k), z ⟨k, b⟩ ≠ 0 → y ⟨k, b⟩ ≠ 0 ∧ y ⟨k, a⟩ / y ⟨k, b⟩ ∈ A) ∧ (∀ n : ℕ, (n : L) ≠ 0 → (n : Ω) ≠ 0 ∧ (n : Ω)⁻¹ ∈ A) ∧ ∀ s ∈ A, s⁻¹ ∈ A → s ≠ 0 → ∃ w : L, w ≠ 0 ∧ Small.HasVal y (0 : K → ℤ) s z w := by
   first | exact @GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing | exact GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing | (intros; apply GlobalTheory.CompanionTheory.Ar.ClosLoc.exists_localRing <;> assumption)

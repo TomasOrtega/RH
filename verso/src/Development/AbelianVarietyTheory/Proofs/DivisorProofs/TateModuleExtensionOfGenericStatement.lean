@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FracDescend.descend_tate_and_mu | exact GlobalTheory.FracDescend.descend_tate_and_mu | (intros; apply GlobalTheory.FracDescend.descend_tate_and_mu <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FracDescend.descend_tate_and_mu` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTateModuleExtensionOfGeneric.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.tate_module_extension_of_generic : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (GG : PDivGroup p R) (GG₀ : PDivGroup p K) (e : GG₀ ≅ GG.baseChange K) (L : Type) [AddCommGroup L] (ε₀ : (PDivGroup.mu p K).Tate) (τ₀ : L →+ GG₀.Tate), ∃ (ε : (PDivGroup.mu p R).Tate) (τ : L →+ GG.Tate), (∀ n, muRoot ε₀ n = algebraMap R K (muRoot ε n)) ∧ ∀ x, tateMap _ _ K e.hom (τ₀ x) = bcTate K (τ x) := by
   first | exact @GlobalTheory.FracDescend.descend_tate_and_mu | exact GlobalTheory.FracDescend.descend_tate_and_mu | (intros; apply GlobalTheory.FracDescend.descend_tate_and_mu <;> assumption)

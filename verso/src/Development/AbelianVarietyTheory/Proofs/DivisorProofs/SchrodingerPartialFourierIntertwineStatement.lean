@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPartialF
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPairingStdP
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrPairing.exists_multiplier | exact GlobalTheory.SchrPairing.exists_multiplier | (intros; apply GlobalTheory.SchrPairing.exists_multiplier <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrPairing.exists_multiplier` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerPartialFourierIntertwine.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_partial_fourier_intertwine : ∀ {V U : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup U] [InnerProductSpace ℝ U] [FiniteDimensional ℝ U] [MeasurableSpace U] [BorelSpace U]

@@ -4,8 +4,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnramValue.norm_of_mem_unramified_subfield | exact GlobalTheory.UnramValue.norm_of_mem_unramified_subfield | (intros; apply GlobalTheory.UnramValue.norm_of_mem_unramified_subfield <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnramValue.norm_of_mem_unramified_subfield` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormEqZpowOfMemMaxUnramifiedSubfield.lean&line=276#L276)
 -/
 theorem _root_.GlobalTheory.T.norm_eq_zpow_of_mem_maxUnramifiedSubfield : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (x : Om l), x ∈ K0 K → x ≠ 0 → ∃ n : ℤ, ‖x‖ = (l : ℝ) ^ n := by
   first | exact @GlobalTheory.UnramValue.norm_of_mem_unramified_subfield | exact GlobalTheory.UnramValue.norm_of_mem_unramified_subfield | (intros; apply GlobalTheory.UnramValue.norm_of_mem_unramified_subfield <;> assumption)

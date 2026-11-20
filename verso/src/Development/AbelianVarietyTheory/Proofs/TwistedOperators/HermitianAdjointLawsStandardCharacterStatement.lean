@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdjLawPf.adjLaw | exact GlobalTheory.AdjLawPf.adjLaw | (intros; apply GlobalTheory.AdjLawPf.adjLaw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdjLawPf.adjLaw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHermitianAdjointLawsStandardCharacter.lean&line=202#L202)
 -/
 theorem _root_.GlobalTheory.T.hermitianAdjoint_laws_standardCharacter : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ S T : HSp D, AdjLaw ψ S T := by
   first | exact @GlobalTheory.AdjLawPf.adjLaw | exact GlobalTheory.AdjLawPf.adjLaw | (intros; apply GlobalTheory.AdjLawPf.adjLaw <;> assumption)

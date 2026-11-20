@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.Cover.induces_pull_of_comp | exact GlobalTheory.Mean4O.Cover.induces_pull_of_comp | (intros; apply GlobalTheory.Mean4O.Cover.induces_pull_of_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4O.Cover.induces_pull_of_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormalArithModelGenericPointMap.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.normal_arith_model_generic_point_map : ∀ {F : Type} [Field F] [NumberField F] {C : TrueGeo.CxSt F} (Yv : ProjVar.Var F)
     (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (p : X ⟶ Sp (𝓞 F)) (p' : X' ⟶ Sp (𝓞 F))

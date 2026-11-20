@@ -11,8 +11,10 @@ open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheor
 open GlobalTheory.BigOn GlobalTheory.BigOn.Exp Formalism.L2.Theta GlobalTheory.ExportSeries
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.expOne_level | exact GlobalTheory.BigOn.Exp.expOne_level | (intros; apply GlobalTheory.BigOn.Exp.expOne_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigOn.Exp.expOne_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealDatumNormalizedRationalBase.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.real_datum_normalized_rational_base : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → AtTw fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp →

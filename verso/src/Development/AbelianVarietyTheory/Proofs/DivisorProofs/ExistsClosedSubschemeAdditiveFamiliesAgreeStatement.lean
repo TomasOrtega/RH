@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualLocus.exists_closed_same | exact GlobalTheory.DualLocus.exists_closed_same | (intros; apply GlobalTheory.DualLocus.exists_closed_same <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualLocus.exists_closed_same` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsClosedSubschemeAdditiveFamiliesAgree.lean&line=169#L169)
 -/
 theorem _root_.GlobalTheory.T.exists_closedSubscheme_additiveFamilies_agree : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A] [IsLocallyNoetherian T.left], IsAbelianScheme A → ∀ (N N' : LB (A ⊗ T).left), Fam A N → Fam A N' → ∃ (G : Over S) (i : G ⟶ T), IsClosedImmersion i.left ∧ ∀ (Y : Over S) (y : Y ⟶ T), Same A N N' y y ↔ ∃ z : Y ⟶ G, z ≫ i = y := by
   first | exact @GlobalTheory.DualLocus.exists_closed_same | exact GlobalTheory.DualLocus.exists_closed_same | (intros; apply GlobalTheory.DualLocus.exists_closed_same <;> assumption)

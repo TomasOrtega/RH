@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Kern
 open MeasureTheory Matrix GlobalTheory.CompanionTheory.MajC Ad3.K.LC Ad3.K.LC.B
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le | exact GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le | (intros; apply GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLintegralMajorantFiberBound.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.lintegral_majorant_fiber_bound : ∀ (ε K : ℝ), 0 < ε → 0 ≤ K → (∀ T₀ : ℝ, 0 < T₀ → ∫⁻ z : ℂ, ENNReal.ofReal (kern (2 * ε) T₀ z) ≤ ENNReal.ofReal K) → ∀ N : ℕ, 2 * ε ≤ N → ∀ (h : M22) (a b : ℂ), a ≠ 0 → 0 < dt h → 0 < ‖eta h‖ → ∫⁻ t : ℂ, ENNReal.ofReal (jm N h t a b) ≤ ENNReal.ofReal (K * ‖a‖ ^ (-ε) * dt h ^ (-2 + ε) * ‖eta h‖ ^ (-2 + 2 * ε) * ((1 + ‖h‖) ^ N)⁻¹ * ((1 + ‖b‖ * ‖eta h‖) ^ N)⁻¹) := by
   first | exact @GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le | exact GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le | (intros; apply GlobalTheory.CompanionTheory.MajC.TB.lintegral_jm_le <;> assumption)

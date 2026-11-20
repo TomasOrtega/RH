@@ -7,8 +7,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame | exact GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFrameIntegralEqCoefficientNonrepresented.lean&line=193#L193)
 -/
 theorem _root_.GlobalTheory.T.frame_integral_eq_coefficient_nonrepresented : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ), Hyp D r V ψ θ μ lam ν φ → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → (¬ ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = β.1) → IfrB V ν φ β = W ψ V μ lam φ β := by
   first | exact @GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame | exact GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame <;> assumption)

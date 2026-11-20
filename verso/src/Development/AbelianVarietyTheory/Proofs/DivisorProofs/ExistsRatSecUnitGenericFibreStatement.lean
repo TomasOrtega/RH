@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericRatSec.exists_ratSec | exact GlobalTheory.GenericRatSec.exists_ratSec | (intros; apply GlobalTheory.GenericRatSec.exists_ratSec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericRatSec.exists_ratSec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRatSecUnitGenericFibre.lean&line=251#L251)
 -/
 theorem _root_.GlobalTheory.T.exists_ratSec_unit_generic_fibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ Spec (.of O)) (D : LB Z), Flat f → D.IsLB →
   ∀ sig : (D.pull (genericι f)).Gen, sig.IsGen →

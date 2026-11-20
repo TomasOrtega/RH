@@ -25,8 +25,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetMet.det_metric | exact GlobalTheory.DetMet.det_metric | (intros; apply GlobalTheory.DetMet.det_metric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetMet.det_metric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicHeightOffBoundaryDecomposition.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.adelic_height_off_boundary_decomposition : ∀ (D : D7) (O : Setup D), O.Core → ∀ (a : ℕ → Bool) (c : O.s.Comp) (τ : D.what₂.Tau) (b : (O.var c).X),
     IsClosed ({b} : Set (O.var c).X) → (O.Φ.C c).π b ∉ GlobalTheory.Toroidal.genBd O.s.T.Z →

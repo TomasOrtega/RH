@@ -10,8 +10,10 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixPolar.exists_functional_mix | exact GlobalTheory.MixPolar.exists_functional_mix | (intros; apply GlobalTheory.MixPolar.exists_functional_mix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixPolar.exists_functional_mix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMixedDiscriminantFunctional.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_mixed_discriminant_functional : ∀ (κ : Type) [Fintype κ] (D : ℕ) (C : κ → Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ) (M : Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ), ∃ Λ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ, ∀ n : κ → ℝ, Λ (lin n ^ D) = mix D (∑ i, (n i : ℂ) • C i) M := by
   first | exact @GlobalTheory.MixPolar.exists_functional_mix | exact GlobalTheory.MixPolar.exists_functional_mix | (intros; apply GlobalTheory.MixPolar.exists_functional_mix <;> assumption)

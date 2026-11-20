@@ -21,8 +21,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.mem_range_of_norm_le_one_at_points_away | exact GlobalTheory.mem_range_of_norm_le_one_at_points_away | (intros; apply GlobalTheory.mem_range_of_norm_le_one_at_points_away <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.mem_range_of_norm_le_one_at_points_away` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FElementOfDvrTestPoints.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.element_of_dvr_test_points : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Algebra V A] [Algebra.FiniteType V A], Function.Injective (algebraMap V A) → ∀ e : A, e ≠ 0 → ∀ x : Localization.Away (p : A), (∀ (T : CDVR) (kO : T.V →+* 𝓞_ℂ_[p]) (φ : A →+* T.V), T.FinRes → Function.Injective kO → φ e ≠ 0 → ∀ ψ : Localization.Away (p : A) →+* ℂ_[p], ψ.comp (algebraMap A _) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (kO.comp φ) → ‖ψ x‖ ≤ 1) → ∃ a : A, algebraMap A (Localization.Away (p : A)) a = x := by
   first | exact @GlobalTheory.mem_range_of_norm_le_one_at_points_away | exact GlobalTheory.mem_range_of_norm_le_one_at_points_away | (intros; apply GlobalTheory.mem_range_of_norm_le_one_at_points_away <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.exists_genIso_ker | exact GlobalTheory.Vert.Model.exists_genIso_ker | (intros; apply GlobalTheory.Vert.Model.exists_genIso_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Vert.Model.exists_genIso_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FShortExactPairChernRelation.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.short_exact_pair_chern_relation : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (Z : GlobalTheory.Vert.Model O) (A B C A' B' C' : Z.X.Modules) (f : A ⟶ B) (g : B ⟶ C)

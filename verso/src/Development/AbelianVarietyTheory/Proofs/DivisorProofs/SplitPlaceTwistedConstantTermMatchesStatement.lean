@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt | exact GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt | (intros; apply GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitPlaceTwistedConstantTermMatches.lean&line=287#L287)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_twistedConstantTerm_matches : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∀ (n a : ℕ) (ha : a ≤ n) (w : Pl E), IsSplitAt w → ∀ (μ : (w.adicCompletion E)ˣ →* ℂˣ), ∀ K' : Subgroup (UL n w), IsLevel (MonoidHom.id _) (KL n w) K' → ∀ f, IsHecke K' f → Match n a (n - a) w μ f (ctMu (Nat.add_sub_cancel' ha) w μ f) := by
   first | exact @GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt | exact GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt | (intros; apply GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt <;> assumption)

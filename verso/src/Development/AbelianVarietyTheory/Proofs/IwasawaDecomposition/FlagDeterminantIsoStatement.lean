@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.ChernReg
 open scoped TensorProduct ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.lbIso_detOm_flag | exact GlobalTheory.ShFam.lbIso_detOm_flag | (intros; apply GlobalTheory.ShFam.lbIso_detOm_flag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.lbIso_detOm_flag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFlagDeterminantIso.lean&line=261#L261)
 -/
 theorem _root_.GlobalTheory.T.flag_determinant_iso : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp), LBIso ((Φ.C k).Y.lb (-∑ x : Letter S.Dw, (Φ.C k).gr x.1 x.2)) ((FlagMod.detOm s.T.Z).pull ((Φ.C k).π ≫ genι s.T.Z)) := by
   first | exact @GlobalTheory.ShFam.lbIso_detOm_flag | exact GlobalTheory.ShFam.lbIso_detOm_flag | (intros; apply GlobalTheory.ShFam.lbIso_detOm_flag <;> assumption)

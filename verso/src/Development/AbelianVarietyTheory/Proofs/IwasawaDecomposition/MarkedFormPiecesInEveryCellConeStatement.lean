@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjective
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.OrbMark
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.OrbMark.inRCone_pullAdd_of_isCell | exact GlobalTheory.PolFan.OrbMark.inRCone_pullAdd_of_isCell | (intros; apply GlobalTheory.PolFan.OrbMark.inRCone_pullAdd_of_isCell <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.OrbMark.inRCone_pullAdd_of_isCell` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMarkedFormPiecesInEveryCellCone.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.marked_form_pieces_in_every_cell_cone : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀),

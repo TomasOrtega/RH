@@ -6,8 +6,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt | exact GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt | (intros; apply GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCkAdditiveExtension.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.ck_additive_extension : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (P₁ P₂ P₃ : Pres B), IsExt P₁.mod P₂.mod P₃.mod → ∀ k : ℕ, P₂.ck p k = P₁.ck p k + P₃.ck p k := by
   first | exact @GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt | exact GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt | (intros; apply GlobalTheory.MixedLocalChains.ExtAdd.ck_add_of_isExt <;> assumption)

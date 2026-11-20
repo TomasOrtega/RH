@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.cupHH_self_eq_zero | exact GlobalTheory.AbCoh.cupHH_self_eq_zero | (intros; apply GlobalTheory.AbCoh.cupHH_self_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbCoh.cupHH_self_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCupSelfZeroDeRhamAbelian.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.cup_self_zero_de_rham_abelian : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ a : HH1 A.hom, cupHH A.hom a a = 0 := by
   first | exact @GlobalTheory.AbCoh.cupHH_self_eq_zero | exact GlobalTheory.AbCoh.cupHH_self_eq_zero | (intros; apply GlobalTheory.AbCoh.cupHH_self_eq_zero <;> assumption)

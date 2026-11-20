@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeFibre.exists_fibre_holUnif | exact GlobalTheory.LatticeFibre.exists_fibre_holUnif | (intros; apply GlobalTheory.LatticeFibre.exists_fibre_holUnif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeFibre.exists_fibre_holUnif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEllipticCurveAbelianSchemeModel.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.elliptic_curve_abelian_scheme_model : ∀ (R₁ : Subring ℂ) (W : WeierstrassCurve R₁), IsUnit W.Δ → ∀ (Λ : PeriodPair) (c : ℂ), c ≠ 0 →
     ((W.c₄ : R₁) : ℂ) = 12 * c ^ 4 * Λ.g₂ → ((W.c₆ : R₁) : ℂ) = 216 * c ^ 6 * Λ.g₃ →

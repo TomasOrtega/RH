@@ -14,8 +14,10 @@ open GlobalTheory.ThK.DescB
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairingVecMulVec.goodPlace_model | exact GlobalTheory.PairingVecMulVec.goodPlace_model | (intros; apply GlobalTheory.PairingVecMulVec.goodPlace_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairingVecMulVec.goodPlace_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaLiftHypPlaneSplit.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.theta_lift_hyp_plane_split : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₂ : ℕ) (H : Plane E a d₂), (d₂ + 2 = a ∧ form σ G.V.J H.x H.x = 0 ∧ form σ G.V.J H.y H.y = 0 ∧ form σ G.V.J H.x H.y = 1 ∧

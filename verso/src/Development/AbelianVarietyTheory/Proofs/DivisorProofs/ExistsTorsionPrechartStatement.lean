@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.nonempty_preChart | exact GlobalTheory.GroupBplus.Aff.nonempty_preChart | (intros; apply GlobalTheory.GroupBplus.Aff.nonempty_preChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.nonempty_preChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTorsionPrechart.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_torsion_prechart : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ q : PrimeSpectrum R, Nonempty (PreChart G N q) := by
   first | exact @GlobalTheory.GroupBplus.Aff.nonempty_preChart | exact GlobalTheory.GroupBplus.Aff.nonempty_preChart | (intros; apply GlobalTheory.GroupBplus.Aff.nonempty_preChart <;> assumption)

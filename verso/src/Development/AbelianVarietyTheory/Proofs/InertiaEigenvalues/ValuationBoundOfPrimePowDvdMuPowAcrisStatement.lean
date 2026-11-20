@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AcrisMuBound.main | exact GlobalTheory.AcrisMuBound.main | (intros; apply GlobalTheory.AcrisMuBound.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AcrisMuBound.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FValuationBoundOfPrimePowDvdMuPowAcris.lean&line=326#L326)
 -/
 theorem _root_.GlobalTheory.T.valuation_bound_of_primePow_dvd_mu_pow_acris : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ ε : OCb l, IsEps ε → ∀ (j n : ℕ) (x : ℤ_[l]), x ≠ 0 → (l : Per.Acris l) ^ n ∣ ainfToAcris l (muOf ε ^ j * algebraMap ℤ_[l] (Ainf l) x) → (l - 1) * n ≤ (l - 1) * x.valuation + 2 * j := by
   first | exact @GlobalTheory.AcrisMuBound.main | exact GlobalTheory.AcrisMuBound.main | (intros; apply GlobalTheory.AcrisMuBound.main <;> assumption)

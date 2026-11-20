@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.isTopForm_reDens | exact GlobalTheory.TorsionForm.isTopForm_reDens | (intros; apply GlobalTheory.TorsionForm.isTopForm_reDens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.isTopForm_reDens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralIsTopFormCurve.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.integral_is_top_form_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1) (θ : h.Fld), (∀ σ, (h.atlas σ).IsForm (θ σ)) → IsTopForm (fun σ (c : AlgChart p σ 1) y => (dens ((h.atlas σ).loc (θ σ) c (c.e y))).re) (h.integral θ) := by
   first | exact @GlobalTheory.TorsionForm.isTopForm_reDens | exact GlobalTheory.TorsionForm.isTopForm_reDens | (intros; apply GlobalTheory.TorsionForm.isTopForm_reDens <;> assumption)

@@ -20,8 +20,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ShFam.Pad GlobalTheory.FlatSecCover
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatSecCover.unitAt_flatSec_div_detFn | exact GlobalTheory.FlatSecCover.unitAt_flatSec_div_detFn | (intros; apply GlobalTheory.FlatSecCover.unitAt_flatSec_div_detFn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatSecCover.unitAt_flatSec_div_detFn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatSectionDivDetUnit.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.flat_section_div_det_unit : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (z : (O.var c).X),
     UnitAt z (flatSec O.s O.Φ c τ / detFn O c B τ z) := by

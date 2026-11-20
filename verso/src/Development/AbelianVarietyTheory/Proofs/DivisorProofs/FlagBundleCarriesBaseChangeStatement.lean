@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image | exact GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image | (intros; apply GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundleCarriesBaseChange.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_carries_base_change : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → B.Modules) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → ∀ (U : B.Opens) (eU : ∀ a, Fin (r a) → Γ(E a, U)), (∀ a, IsFrame (eU a)) → ∀ (T : Scheme.{0}) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback g).obj (E a)) (r a)), Carries π E r fl g' g w fl' → ∀ (V' : T.Opens) (hV' : V' ≤ g ⁻¹ᵁ U) (n' : (Σ a, Low (r a)) → Γ(T, V')), (∀ a, Spans (fl' a) V' (pullCol g (eU a) hV' (uniR fun s => n' ⟨a, s⟩))) → ∀ t ∈ V', ∃ (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n : (Σ a, Low (r a)) → Γ(Y, V)), g' t ∈ V ∧ ∀ a, Spans (fl a) V (pullCol π (eU a) hV (uniR fun s => n ⟨a, s⟩)) := by
   first | exact @GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image | exact GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image | (intros; apply GlobalTheory.FlagCell.CellOpen.spans_uniR_near_image <;> assumption)

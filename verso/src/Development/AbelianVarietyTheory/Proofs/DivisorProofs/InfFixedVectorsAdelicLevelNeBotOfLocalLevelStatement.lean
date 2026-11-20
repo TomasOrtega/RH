@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FixLev.inf_fixed_globLev_ne_bot | exact GlobalTheory.FixLev.inf_fixed_globLev_ne_bot | (intros; apply GlobalTheory.FixLev.inf_fixed_globLev_ne_bot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FixLev.inf_fixed_globLev_ne_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInfFixedVectorsAdelicLevelNeBotOfLocalLevel.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.inf_fixedVectors_adelicLevel_ne_bot_of_localLevel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → HasLevel S π K' → π ⊓ fixed (RF E n) (globLev S K') ≠ ⊥ := by
   first | exact @GlobalTheory.FixLev.inf_fixed_globLev_ne_bot | exact GlobalTheory.FixLev.inf_fixed_globLev_ne_bot | (intros; apply GlobalTheory.FixLev.inf_fixed_globLev_ne_bot <;> assumption)

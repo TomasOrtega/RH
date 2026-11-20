@@ -21,8 +21,10 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnfoldFam.unfold_fam | exact GlobalTheory.CompanionTheory.UnfoldFam.unfold_fam | (intros; apply GlobalTheory.CompanionTheory.UnfoldFam.unfold_fam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.UnfoldFam.unfold_fam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFundamentalDomainUnfoldingTwoSums.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.fundamental_domain_unfolding_two_sums : ∀ {A X Y U : Type} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd A]
     (lam : Measure A) [lam.IsAddLeftInvariant] (Λ : AddSubgroup A) [Countable Λ] (𝓖 : Set A)

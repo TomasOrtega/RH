@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_origVal | exact GlobalTheory.Mum.exists_origVal | (intros; apply GlobalTheory.Mum.exists_origVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_origVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRigidifiedValueAtOrigin.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.exists_rigidifiedValueAtOrigin : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (k : ℕ) (α : D.X) (b : D.SecB k α), ∃ v : R, OrigVal D b v := by
   first | exact @GlobalTheory.Mum.exists_origVal | exact GlobalTheory.Mum.exists_origVal | (intros; apply GlobalTheory.Mum.exists_origVal <;> assumption)

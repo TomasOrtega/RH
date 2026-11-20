@@ -8,8 +8,10 @@ open NumberField Complex
 open scoped nonZeroDivisors
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.HeckeTwo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeTwoSum.summable_qClass | exact GlobalTheory.HeckeTwoSum.summable_qClass | (intros; apply GlobalTheory.HeckeTwoSum.summable_qClass <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeTwoSum.summable_qClass` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSummableHilbertEisensteinWeightTwoQSeries.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.summable_hilbertEisensteinWeightTwoQSeries : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F), ∀ z ∈ GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F, Summable (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qClass 𝔞 𝔟 2 z) := by
   first | exact @GlobalTheory.HeckeTwoSum.summable_qClass | exact GlobalTheory.HeckeTwoSum.summable_qClass | (intros; apply GlobalTheory.HeckeTwoSum.summable_qClass <;> assumption)

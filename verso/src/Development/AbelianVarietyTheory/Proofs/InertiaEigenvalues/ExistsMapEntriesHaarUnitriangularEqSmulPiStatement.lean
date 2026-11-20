@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 open NumberField IsDedekindDomain Matrix Formalism.UG GlobalTheory.CuspRep MeasureTheory
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipCoord.map_coords_haar | exact GlobalTheory.UnipCoord.map_coords_haar | (intros; apply GlobalTheory.UnipCoord.map_coords_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipCoord.map_coords_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsMapEntriesHaarUnitriangularEqSmulPi.lean&line=306#L306)
 -/
 theorem _root_.GlobalTheory.T.exists_map_entries_haar_unitriangular_eq_smul_pi : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
     [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] (n : ℕ)

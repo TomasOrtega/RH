@@ -15,8 +15,10 @@ open scoped ComplexOrder
 open GlobalTheory.HodgeLocGeo
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.lnN_root_local | exact GlobalTheory.HodgeLocGeo.lnN_root_local | (intros; apply GlobalTheory.HodgeLocGeo.lnN_root_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeLocGeo.lnN_root_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDivisorGeneratesLocalPeriodMatrix.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.divisor_generates_local_period_matrix : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →

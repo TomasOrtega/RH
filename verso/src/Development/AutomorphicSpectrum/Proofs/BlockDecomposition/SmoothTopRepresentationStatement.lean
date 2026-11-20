@@ -18,8 +18,10 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSmoothTopRepresentation.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.smooth_top_representation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V), IsSmooth τ → IsSmooth (topRep τ W) := by
   first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep <;> assumption)

@@ -17,8 +17,10 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 open GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernTop GlobalTheory.Points
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef | exact GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef | (intros; apply GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFubiniStudyHessianPosDefOfChart.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.fubiniStudy_hessian_posDef_of_chart : ∀ (k : Type) [CommRing k] (N : ℕ) (σ : k →+* ℂ) (c0 : AlgChart (PSpace.str k N) σ N) (z : CxPts (PSpace.str k N) σ), z ∈ c0.e.source → ∀ (b : (ProjSpace.hermitianTwistingSheaf k N).B.ι), z ∈ ptsIn (PSpace.str k N) σ ((ProjSpace.hermitianTwistingSheaf k N).B.U b) → (c0.hess ((ProjSpace.hermitianTwistingSheaf k N).φ σ) b z).PosDef := by
   first | exact @GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef | exact GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef | (intros; apply GlobalTheory.FubiniStudyChart.fubiniStudy_hessian_posDef <;> assumption)

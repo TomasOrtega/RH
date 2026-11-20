@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBMove.isSBHalf_actO_lev | exact GlobalTheory.SBMove.isSBHalf_actO_lev | (intros; apply GlobalTheory.SBMove.isSBHalf_actO_lev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBMove.isSBHalf_actO_lev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchwartzBruhatHalfAdelicHomPairActionLevels.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.schwartzBruhatHalf_adelicHomPairAction_levels : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) α γ, ∀ Φ : WO ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) → ℂ, IsSBHalf A.e (stdHom _ _) Φ → ∀ (κ : A.U i α) (κ' : A.U (i + 1) γ), IsSBHalf A.e (stdHom _ _) (fun z => Φ (actO _ _ κ.1⁻¹ κ'.1⁻¹ z)) := by
   first | exact @GlobalTheory.SBMove.isSBHalf_actO_lev | exact GlobalTheory.SBMove.isSBHalf_actO_lev | (intros; apply GlobalTheory.SBMove.isSBHalf_actO_lev <;> assumption)

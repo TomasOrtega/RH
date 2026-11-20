@@ -16,8 +16,10 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BrPairLocal.finLocal | exact GlobalTheory.BrPairLocal.finLocal | (intros; apply GlobalTheory.BrPairLocal.finLocal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BrPairLocal.finLocal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBranchingPairingIntegralUpToExponents.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.branchingPairing_integral_upToExponents : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] [Fintype ι] (emb : ι → E →+* K) {n N : ℕ}
     (hN : N = n + 1) (Λ : ι → DomWeight N) (σ : ι → DomWeight n),

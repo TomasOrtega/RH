@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MirrorTodaRadialOper
 import Development.AbelianVarietyTheory.Definitions.Jets.BasicLiftAll
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MirrorToda.polyLift_ahatv | exact GlobalTheory.MirrorToda.polyLift_ahatv | (intros; apply GlobalTheory.MirrorToda.polyLift_ahatv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MirrorToda.polyLift_ahatv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FMirrorTodaRadialOperatorPolynomialCoefficientLif.lean&line=720#L720)
 -/
 theorem _root_.GlobalTheory.T.mirrorTodaRadialOperator_polynomialCoefficient_lift : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → ∀ y : ℝ, PolyLift P Bs (2 * P.r + P.k + 1) (8 * (P.r + 1) * (2 * P.r + P.k + 1)) (d.L.Ahatv y) := by
   first | exact @GlobalTheory.MirrorToda.polyLift_ahatv | exact GlobalTheory.MirrorToda.polyLift_ahatv | (intros; apply GlobalTheory.MirrorToda.polyLift_ahatv <;> assumption)

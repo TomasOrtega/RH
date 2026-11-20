@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLoca
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.BKReal GlobalTheory.Prism Formalism.BasicNotions.Examples₂.LB GlobalTheory.MemLoc GlobalTheory.AinfK GlobalTheory.AcrisK GlobalTheory.DiscEval GroundTheory.LocalField.FormalGroup
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrobRoots.thetaK_eq | exact GlobalTheory.FrobRoots.thetaK_eq | (intros; apply GlobalTheory.FrobRoots.thetaK_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrobRoots.thetaK_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FThetaOfTiltCompatibleSequence.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.theta_of_tilt_compatible_sequence : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Irreducible π → ∀ (v : ℕ → OC l) (ω : ℕ → AK K),
     (∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) →

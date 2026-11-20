@@ -7,8 +7,10 @@ import Formalism.LocalRingCardinality.DataCD
 open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MatHaarDensity.exists_hasDens | exact GlobalTheory.MatHaarDensity.exists_hasDens | (intros; apply GlobalTheory.MatHaarDensity.exists_hasDens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MatHaarDensity.exists_hasDens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsUniqueHaarDensityAtIdentity.lean&line=257#L257)
 -/
 theorem _root_.GlobalTheory.T.exists_unique_haarDensity_at_identity : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)), PI.IsMatGroup S → PI.IsHaarOnM S μ → ∃ c : ℝ, 0 < c ∧ HasDens S μ (ENNReal.ofReal c) ∧ ∀ c', HasDens S μ c' → c' = ENNReal.ofReal c := by
   first | exact @GlobalTheory.MatHaarDensity.exists_hasDens | exact GlobalTheory.MatHaarDensity.exists_hasDens | (intros; apply GlobalTheory.MatHaarDensity.exists_hasDens <;> assumption)

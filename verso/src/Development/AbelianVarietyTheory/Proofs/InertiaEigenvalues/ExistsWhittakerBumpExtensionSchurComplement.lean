@@ -41,8 +41,10 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.SchurExt
 open scoped ContDiff Topology
 set_option maxHeartbeats 1000000 in
 
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.SchurExtCpt.exists_compact_support`. Consider the case `exact GlobalTheory.SchurExtCpt.exists_compact_support`. Consider the case `(intros; apply GlobalTheory.SchurExtCpt.exists_compact_support <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchurExtCpt.exists_compact_support` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSchurFunctionCompactSupportModuloUnipotent.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.Tx.schur_function_compact_support_modulo_unipotent : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (β : GA E (m + 1) → ℂ) (b₁ : GA E (r + 1) → ℂ) (χ : (Fin (r + 1) → Fin (m + 1) → Cinf E) → ℝ), (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S, β h ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * h ∈ C) → (∃ C : Set (GA E (r + 1)), IsCompact C ∧ ∀ p, b₁ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (r + 1), u⁻¹ * p ∈ C) → HasCompactSupport χ → ∃ C : Set (GA E (m + r + 1 + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S (m + r + 1), schurF β b₁ χ p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + r + 1 + 1), u⁻¹ * p ∈ C := by
   first

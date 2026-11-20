@@ -9,8 +9,10 @@ open NumberField Complex
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.HeckeTwo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeTwo.TermDecay.intT_bound | exact GlobalTheory.HeckeTwo.TermDecay.intT_bound | (intros; apply GlobalTheory.HeckeTwo.TermDecay.intT_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeTwo.TermDecay.intT_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeYDerivativeTermIntegralPolynomialDecay.lean&line=169#L169)
 -/
 theorem _root_.GlobalTheory.T.heckeYDerivativeTermIntegral_polynomial_decay : ∀ K : Set ℂ, IsCompact K → K ⊆ halfPlane → ∀ a b m : ℕ, 2 ≤ a + 2 * b → ∀ N : ℕ, ∃ C : ℝ,
     ∀ σ ∈ K, ∀ ν y : ℝ, ν ≠ 0 → y ≠ 0 →

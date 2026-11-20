@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LbCocycle.exists_lb | exact GlobalTheory.CompanionTheory.LbCocycle.exists_lb | (intros; apply GlobalTheory.CompanionTheory.LbCocycle.exists_lb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LbCocycle.exists_lb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCocycleDefinesDescendedLineBundle.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.cocycle_defines_descended_line_bundle : H90 → ∀ {Z Q : Scheme.{0}} (h : Z ⟶ Q), Flat h → LocallyOfFinitePresentation h → Surjective h →
     ∀ (u : Γ(pullback h h, ⊤)) (hu : IsUnit u),

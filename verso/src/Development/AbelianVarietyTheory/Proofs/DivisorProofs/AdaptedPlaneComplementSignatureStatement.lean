@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewPlaneSig.hasSig_skew_complement | exact GlobalTheory.SkewPlaneSig.hasSig_skew_complement | (intros; apply GlobalTheory.SkewPlaneSig.hasSig_skew_complement <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewPlaneSig.hasSig_skew_complement` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneComplementSignature.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_complement_signature : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s : ℕ),

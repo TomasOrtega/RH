@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.KerKill.kernel_killed | exact GlobalTheory.AV.KerKill.kernel_killed | (intros; apply GlobalTheory.AV.KerKill.kernel_killed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.KerKill.kernel_killed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianVarietyFiniteHomKernelKilledByNat.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.abelianVariety_finiteHom_kernel_killed_by_nat : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsFinite f.hom.left → ∃ n : ℕ, 0 < n ∧ ∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ n = 1 := by
   first | exact @GlobalTheory.AV.KerKill.kernel_killed | exact GlobalTheory.AV.KerKill.kernel_killed | (intros; apply GlobalTheory.AV.KerKill.kernel_killed <;> assumption)

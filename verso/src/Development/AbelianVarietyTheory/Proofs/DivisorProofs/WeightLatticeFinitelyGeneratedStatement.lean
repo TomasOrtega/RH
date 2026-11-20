@@ -19,8 +19,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.SupFG.latW_fg | exact GlobalTheory.CovTop.SupFG.latW_fg | (intros; apply GlobalTheory.CovTop.SupFG.latW_fg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.SupFG.latW_fg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightLatticeFinitelyGenerated.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.weight_lattice_finitely_generated : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la → FiniteDimensional Y.d.c₂.F (Y.V (wtOf _ la 0)) → (GlobalTheory.AllWt.latW Y.U (wtOf _ la 0)).FG := by
   first | exact @GlobalTheory.CovTop.SupFG.latW_fg | exact GlobalTheory.CovTop.SupFG.latW_fg | (intros; apply GlobalTheory.CovTop.SupFG.latW_fg <;> assumption)

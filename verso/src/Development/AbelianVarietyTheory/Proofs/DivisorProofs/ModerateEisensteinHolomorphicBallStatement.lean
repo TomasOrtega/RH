@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.EisRes
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CircleSmooth.isSm_circleIntegral | exact GlobalTheory.CircleSmooth.isSm_circleIntegral | (intros; apply GlobalTheory.CircleSmooth.isSm_circleIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CircleSmooth.isSm_circleIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModerateEisensteinHolomorphicBall.lean&line=369#L369)
 -/
 theorem _root_.GlobalTheory.T.moderate_eisenstein_holomorphic_ball : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (H₀ : ℂ → GAd σ J → ℂ) (s₀ : ℂ) (r : ℝ) (V : Set ℂ),

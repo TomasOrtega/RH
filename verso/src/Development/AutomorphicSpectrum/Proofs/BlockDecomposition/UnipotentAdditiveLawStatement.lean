@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NzxAdd.nzx_add | exact GlobalTheory.CompanionTheory.NzxAdd.nzx_add | (intros; apply GlobalTheory.CompanionTheory.NzxAdd.nzx_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.NzxAdd.nzx_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnipotentAdditiveLaw.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.unipotent_heisenberg_mul : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (z z' : hermA D ρ) (x x' : Mx D ρ p), M.nzx z x * M.nzx z' x' = M.nzx (z + z') (x + x') := by
   first | exact @GlobalTheory.CompanionTheory.NzxAdd.nzx_add | exact GlobalTheory.CompanionTheory.NzxAdd.nzx_add | (intros; apply GlobalTheory.CompanionTheory.NzxAdd.nzx_add <;> assumption)

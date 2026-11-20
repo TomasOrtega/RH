@@ -21,8 +21,10 @@ open scoped Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.XiSize.xi_size | exact GlobalTheory.XiSize.xi_size | (intros; apply GlobalTheory.XiSize.xi_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.XiSize.xi_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAuxiliarySetLAdicPlace.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.auxiliary_set_l_adic_place : GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (d : ℕ)
     (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

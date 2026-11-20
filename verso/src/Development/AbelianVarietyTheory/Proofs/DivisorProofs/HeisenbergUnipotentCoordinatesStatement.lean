@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipCoord.exists_coord_unip | exact GlobalTheory.UnipCoord.exists_coord_unip | (intros; apply GlobalTheory.UnipCoord.exists_coord_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipCoord.exists_coord_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergUnipotentCoordinates.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.heisenberg_unipotent_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → Y.IsHerm σ B r s → H.IsAdapted σ B Y Y₁ i₀ i₁ →
   ∃ (Φ : unip σ Y H ≃ₜ (Fin n₁ → AE F E) × AF F) (β : (Fin n₁ → AE F E) → (Fin n₁ → AE F E) → AF F), Continuous (Function.uncurry β) ∧

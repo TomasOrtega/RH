@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.LevelFacts.levFacts | exact GlobalTheory.ChainOnto.LevelFacts.levFacts | (intros; apply GlobalTheory.ChainOnto.LevelFacts.levFacts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.LevelFacts.levFacts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainLevelProperties.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.thetaChain_level_properties : ∀ D : D7, LevFacts D := by
   first | exact @GlobalTheory.ChainOnto.LevelFacts.levFacts | exact GlobalTheory.ChainOnto.LevelFacts.levFacts | (intros; apply GlobalTheory.ChainOnto.LevelFacts.levFacts <;> assumption)

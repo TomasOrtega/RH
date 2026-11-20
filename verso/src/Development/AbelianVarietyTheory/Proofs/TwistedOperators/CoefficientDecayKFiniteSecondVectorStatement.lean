@@ -9,8 +9,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinDecay.decayAt_of_kFin | exact GlobalTheory.KFinDecay.decayAt_of_kFin | (intros; apply GlobalTheory.KFinDecay.decayAt_of_kFin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinDecay.decayAt_of_kFin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCoefficientDecayKFiniteSecondVector.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.coefficientDecay_kFinite_second_vector : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (v : M.H τ) (N : ℕ), v ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ → DecayAt M τ v v N → ∀ a ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ, DecayAt M τ v a N := by
   first | exact @GlobalTheory.KFinDecay.decayAt_of_kFin | exact GlobalTheory.KFinDecay.decayAt_of_kFin | (intros; apply GlobalTheory.KFinDecay.decayAt_of_kFin <;> assumption)

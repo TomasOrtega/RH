@@ -12,8 +12,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JcSmul.jc_smul | exact GlobalTheory.JcSmul.jc_smul | (intros; apply GlobalTheory.JcSmul.jc_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JcSmul.jc_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusExtDualNumberTermValueSmul.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.torusExtDualNumberTermValue_smul : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D F N) {k : ℕ} (s : Fam D F k) (a : F) (gm : GtPt D (TE R F)) (α : N.X),

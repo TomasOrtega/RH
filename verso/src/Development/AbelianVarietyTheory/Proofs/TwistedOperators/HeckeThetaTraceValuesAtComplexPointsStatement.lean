@@ -10,8 +10,10 @@ open GlobalTheory.FrameNorm (IsUnitFr)
 open scoped Matrix
 open GlobalTheory.HkFam (admitted)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeValues.hkPtC_values | exact GlobalTheory.HeckeValues.hkPtC_values | (intros; apply GlobalTheory.HeckeValues.hkPtC_values <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeValues.hkPtC_values` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeckeThetaTraceValuesAtComplexPoints.lean&line=406#L406)
 -/
 theorem _root_.GlobalTheory.T.heckeThetaTrace_values_at_complexPoints : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (p : ℕ) (y z : FrPt Xo c (CAt σ)) (C : Subgroup (Over.mk y.x ⟶ Xo.univ.t.G)),
   HkPtC p y C z →

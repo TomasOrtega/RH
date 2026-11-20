@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Heat.CoeffWt.isWt_coeff | exact GlobalTheory.Heat.CoeffWt.isWt_coeff | (intros; apply GlobalTheory.Heat.CoeffWt.isWt_coeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Heat.CoeffWt.isWt_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRaynaudTorusWeightZeroInvariantFieldCoeffs.lean&line=311#L311)
 -/
 theorem _root_.GlobalTheory.T.raynaudTorusWeight_zero_invariantField_coeffs : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) →
     ∀ (V : Q.P.A.left.Opens) (δ : Fld Y.H.left), IsField (Y.q.left ⁻¹ᵁ V) δ → (∀ O, O ≤ Y.q.left ⁻¹ᵁ V → ∀ r, δ O (constFn Y.H.hom O r) = 0) →

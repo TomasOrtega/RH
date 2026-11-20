@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot GlobalTheory.ThK.ConeEuler
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryRestr.isRestrGroup_UA | exact GlobalTheory.UnitaryRestr.isRestrGroup_UA | (intros; apply GlobalTheory.UnitaryRestr.isRestrGroup_UA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryRestr.isRestrGroup_UA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRestrictedProductUnitaryGroup.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.restricted_product_unitary_group : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n r s' : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s' → ∀ K : Subgroup (UA σ X.J), IsStab B K →
     GlobalTheory.RestrMeas.IsRestrGroup (X := UA σ X.J) (W := Unit) (V := Pl F)

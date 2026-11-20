@@ -6,8 +6,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance 100] LieRing.ofAssociativeRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EnvCommLie.envRepAll_comm_lie | exact GlobalTheory.EnvCommLie.envRepAll_comm_lie | (intros; apply GlobalTheory.EnvCommLie.envRepAll_comm_lie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EnvCommLie.envRepAll_comm_lie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEnvelopingActionCommutesTranslation.lean&line=242#L242)
 -/
 theorem _root_.GlobalTheory.T.enveloping_action_commutes_translation : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (R : RealPoints θ V) (u : GlobalTheory.AutFinLit.Env V), (∀ a ∈ GinfC V, ∀ (f : SmF θ V) (hfa : (fun x => f.1 (x * a)) ∈ SmF θ V), (envRepAll R u ⟨_, hfa⟩).1 = fun x => (envRepAll R u f).1 (x * a)) → ∀ x : GlobalTheory.AutFinLit.LieC V, envRepAll R (UniversalEnvelopingAlgebra.ι ℂ x) * envRepAll R u = envRepAll R u * envRepAll R (UniversalEnvelopingAlgebra.ι ℂ x) := by
   first | exact @GlobalTheory.EnvCommLie.envRepAll_comm_lie | exact GlobalTheory.EnvCommLie.envRepAll_comm_lie | (intros; apply GlobalTheory.EnvCommLie.envRepAll_comm_lie <;> assumption)

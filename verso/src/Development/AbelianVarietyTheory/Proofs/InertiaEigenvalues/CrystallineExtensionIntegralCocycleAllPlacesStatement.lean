@@ -4,8 +4,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places | exact GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places | (intros; apply GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_inte …`.
+/- English proof (citation)
+Apply `GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCrystallineExtensionIntegralCocycleAllPlaces.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.p8_of_cmpOf : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), P8 D HW F := by
   first | exact @GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places | exact GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places | (intros; apply GlobalTheory.NL.NygaardFrobeniusPower.crystalline_extension_integral_cocycle_all_places <;> assumption)

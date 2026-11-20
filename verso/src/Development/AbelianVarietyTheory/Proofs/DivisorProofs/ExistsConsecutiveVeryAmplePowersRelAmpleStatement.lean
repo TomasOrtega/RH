@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjecti
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.FormalAlg GlobalTheory.Degen.FormalEmb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ | exact GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ | (intros; apply GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConsecutiveVeryAmplePowersRelAmple.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.exists_consecutive_veryAmple_powers_relAmple : ∀ (R : Type) [CommRing R] (X : Over (Spec (CommRingCat.of R))) (L : LB X.left), L.IsLB → RelAmple X L → ∃ d : ℕ, 1 ≤ d ∧ ∀ c : ℕ, c = d ∨ c = d + 1 → ∃ (n : ℕ) (s : Fin (n + 1) → LB.Sec (GlobalTheory.AbLaw.pw L c)), VeryAmpleBy X.hom (GlobalTheory.AbLaw.pw L c) s := by
   first | exact @GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ | exact GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ | (intros; apply GlobalTheory.FormalAlg.ConsecPowers.exists_veryAmpleBy_pw_and_succ <;> assumption)

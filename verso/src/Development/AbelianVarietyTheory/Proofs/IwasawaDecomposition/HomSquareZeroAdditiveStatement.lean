@@ -16,8 +16,10 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqZeroAdd.map_add_comp | exact GlobalTheory.SqZeroAdd.map_add_comp | (intros; apply GlobalTheory.SqZeroAdd.map_add_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqZeroAdd.map_add_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHomSquareZeroAdditive.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.hom_square_zero_additive : ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
     {V W : Type} [AddCommGroup V] [Module S V] [Module Sᵐᵒᵖ V] [IsCentralScalar S V]

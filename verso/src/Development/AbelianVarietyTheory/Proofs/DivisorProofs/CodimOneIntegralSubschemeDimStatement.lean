@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfFora
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEqMultiDiff
 open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.FibreProj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one | exact GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one | (intros; apply GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCodimOneIntegralSubschemeDim.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.codim_one_integral_subscheme_dim : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z], Order.coheight (i (genericPoint Z)) = 1 → topologicalKrullDim Z = D := by
   first | exact @GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one | exact GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one | (intros; apply GlobalTheory.PrimeDivDim.dim_eq_of_coheight_eq_one <;> assumption)

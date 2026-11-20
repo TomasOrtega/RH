@@ -14,8 +14,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.OrthIsom.exists_unitary_latHat | exact GlobalTheory.Core.Rk.OrthIsom.exists_unitary_latHat | (intros; apply GlobalTheory.Core.Rk.OrthIsom.exists_unitary_latHat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.OrthIsom.exists_unitary_latHat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsUnitaryFiniteAdelicMapSelfDualCompletions.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_finiteAdelic_map_selfDual_completions : ∀ (D : D7) (A : HSp D) (L L' : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)),
     IsSelfDualC A L → IsSelfDualC A L' →

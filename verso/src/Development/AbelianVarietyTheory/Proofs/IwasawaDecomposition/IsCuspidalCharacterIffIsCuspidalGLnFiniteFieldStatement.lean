@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Gr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
 open CategoryTheory Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal | exact GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal | (intros; apply GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsCuspidalCharacterIffIsCuspidalGLnFiniteField.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField : ∀ (g : ℕ) [Fact g.Prime] (d : ℕ) (V : FDRep ℂ (GL (Fin d) (ZMod g))), 1 ≤ d → CategoryTheory.Simple V → (GlobalTheory.GLq.IsCusp (fun x => V.character x) ↔ Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal (ZMod g) V) := by
   first | exact @GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal | exact GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal | (intros; apply GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal <;> assumption)

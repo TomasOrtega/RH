@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KRamT.kernel_keeps_ramT | exact GlobalTheory.KRamT.kernel_keeps_ramT | (intros; apply GlobalTheory.KRamT.kernel_keeps_ramT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KRamT.kernel_keeps_ramT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FChainStepKernelPreservesLevelRamifiedForms.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.chainStepKernel_preserves_levelRamifiedForms : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ), i < B.R.m → ∀ φ : ColT I l u a i, RamT i φ → RamT (i + 1) ((I.chain l u a).K i φ) := by
   first | exact @GlobalTheory.KRamT.kernel_keeps_ramT | exact GlobalTheory.KRamT.kernel_keeps_ramT | (intros; apply GlobalTheory.KRamT.kernel_keeps_ramT <;> assumption)

@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsRat.torsion_point_rational | exact GlobalTheory.TorsRat.torsion_point_rational | (intros; apply GlobalTheory.TorsRat.torsion_point_rational <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsRat.torsion_point_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemePrimeToCharTorsionRational.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_primeToChar_torsion_rational : ∀ (K₀ K : Type) [Field K₀] [IsAlgClosed K₀] [Field K] (e : K₀ →+* K) (Y : Over (Sp K₀)) [GrpObj Y],
   IsAbelianScheme Y → ∀ n : ℕ, IsUnit (n : K₀) → ∀ y : Over.mk (spMap e) ⟶ Y, y ^ n = 1 →

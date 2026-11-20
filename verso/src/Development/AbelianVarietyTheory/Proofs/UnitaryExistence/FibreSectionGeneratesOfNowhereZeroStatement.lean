@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Frames.secGen_of_secNZ | exact GlobalTheory.Frames.secGen_of_secNZ | (intros; apply GlobalTheory.Frames.secGen_of_secNZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Frames.secGen_of_secNZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FFibreSectionGeneratesOfNowhereZero.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.fibreSectionGenerates_of_nowhereZero : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (s : LB.Sec (PPx x)), SecNZ x s → SecGen x s := by
   first | exact @GlobalTheory.Frames.secGen_of_secNZ | exact GlobalTheory.Frames.secGen_of_secNZ | (intros; apply GlobalTheory.Frames.secGen_of_secNZ <;> assumption)

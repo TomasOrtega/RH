@@ -16,8 +16,10 @@ open Formalism.L2.DIV (kP Pl LevelP)
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitDualElt.exists_dual_elt | exact GlobalTheory.SplitDualElt.exists_dual_elt | (intros; apply GlobalTheory.SplitDualElt.exists_dual_elt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitDualElt.exists_dual_elt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsDualElementStandardCharSplitPrime.lean&line=251#L251)
 -/
 theorem _root_.GlobalTheory.T.exists_dualElement_standardChar_splitPrime : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (e₁ : AE D) (PP : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e₁ PP → ∃ c : Datum.EAf D, (∀ Z : AE D, infPart D Z = 0 → ∀ r : Formalism.L2.Herm.intAf D.host.F D.host.E, resS D.host.F PP r = 0 → toEAf D Z = c * r → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * Z)) = 1) ∧ (∀ Z : AE D, infPart D Z = 0 → toEAf D Z = c → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * Z)) ≠ 1) := by
   first | exact @GlobalTheory.SplitDualElt.exists_dual_elt | exact GlobalTheory.SplitDualElt.exists_dual_elt | (intros; apply GlobalTheory.SplitDualElt.exists_dual_elt <;> assumption)

@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.CoefInt.integral_sq_terms | exact GlobalTheory.Poinc.Sep.CoefInt.integral_sq_terms | (intros; apply GlobalTheory.Poinc.Sep.CoefInt.integral_sq_terms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.CoefInt.integral_sq_terms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralSquaredThetaTermsTorusCoordinates.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.integral_squaredThetaTerms_torusCoordinates : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ →
     (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁), D.PsiEven → D.TauBimult →

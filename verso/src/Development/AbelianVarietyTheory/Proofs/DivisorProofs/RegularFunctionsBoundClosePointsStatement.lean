@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheory.TrueGeo
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtLocBound.htLoc | exact GlobalTheory.HtLocBound.htLoc | (intros; apply GlobalTheory.HtLocBound.htLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtLocBound.htLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularFunctionsBoundClosePoints.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.regular_functions_bound_close_points : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y), Y.ample A.D →
   (∃ (M : Model Y) (L : GlobalTheory.HermLB M.p) (q : ℕ+), A.Induced M L q 0) → (∀ σ, C.mSmooth Y σ A.D (A.m σ)) →

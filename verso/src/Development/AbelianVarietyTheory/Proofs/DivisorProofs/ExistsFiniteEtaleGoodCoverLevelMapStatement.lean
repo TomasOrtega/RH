@@ -10,8 +10,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FrM
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.EvNatPf
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverGood.exists_good_cover | exact GlobalTheory.CoverGood.exists_good_cover | (intros; apply GlobalTheory.CoverGood.exists_good_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverGood.exists_good_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteEtaleGoodCoverLevelMap.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteEtale_goodCover_levelMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev →

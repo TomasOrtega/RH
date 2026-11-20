@@ -7,8 +7,10 @@ open Formalism.IndefR.Links
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseLiftWeight.lam_eq | exact GlobalTheory.BaseLiftWeight.lam_eq | (intros; apply GlobalTheory.BaseLiftWeight.lam_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseLiftWeight.lam_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGoodBaseDataWeightEqLiftCoeffModuleWeight.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.good_baseData_weight_eq_lift_coeff_module_weight : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), L.Is μ0 → B.Good → B.mu0 = L.mu0 ((j : ℕ) + 1) → (∀ τ, B.w.ap τ = aPl D j ((Wc D j).sig (tauE D τ)).1 τ) → (∀ τ, B.w.am τ = aMi D j ((Wc D j).sig (tauE D τ)).1 ((Wc D j).sig (tauE D τ)).2 τ) → B.w.lam = FWT.lamV D j := by
   first | exact @GlobalTheory.BaseLiftWeight.lam_eq | exact GlobalTheory.BaseLiftWeight.lam_eq | (intros; apply GlobalTheory.BaseLiftWeight.lam_eq <;> assumption)

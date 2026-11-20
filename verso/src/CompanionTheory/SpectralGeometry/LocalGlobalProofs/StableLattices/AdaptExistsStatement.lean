@@ -6,8 +6,10 @@ import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.SmoothCycli
 import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmoothVectors.IwaCore
 open CompanionTheory.Bmu
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BmuAdapt.adaptExists | exact GlobalTheory.CompanionTheory.BmuAdapt.adaptExists | (intros; apply GlobalTheory.CompanionTheory.BmuAdapt.adaptExists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BmuAdapt.adaptExists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FAdaptExists.lean&line=314#L314)
 -/
 theorem _root_.GlobalTheory.T.AdaptedBasisExistsAlt : AdaptExists := by
   first | exact @GlobalTheory.CompanionTheory.BmuAdapt.adaptExists | exact GlobalTheory.CompanionTheory.BmuAdapt.adaptExists | (intros; apply GlobalTheory.CompanionTheory.BmuAdapt.adaptExists <;> assumption)

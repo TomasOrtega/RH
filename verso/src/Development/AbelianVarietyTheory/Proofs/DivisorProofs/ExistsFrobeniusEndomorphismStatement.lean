@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.FrobPow.exists_isFrob_pow | exact GlobalTheory.AV.FrobPow.exists_isFrob_pow | (intros; apply GlobalTheory.AV.FrobPow.exists_isFrob_pow; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.FrobPow.exists_isFrob_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFrobeniusEndomorphism.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_frobenius_endomorphism : ∀ (K : Type) [Field K] [Fintype K] (A : AbVar K), ∃ π : End A, IsFrob π ∧ (∀ x : A.X.left, (Hom.hom (A := A) (B := A) π).left x = x) ∧ ∀ (U : A.X.left.Opens) (h : U ≤ (Hom.hom (A := A) (B := A) π).left ⁻¹ᵁ U) (s : Γ(A.X.left, U)), ((Hom.hom (A := A) (B := A) π).left.appLE U U h).hom s = s ^ Fintype.card K := by
   first | exact @GlobalTheory.AV.FrobPow.exists_isFrob_pow | exact GlobalTheory.AV.FrobPow.exists_isFrob_pow | (intros; apply GlobalTheory.AV.FrobPow.exists_isFrob_pow; all_goals assumption)

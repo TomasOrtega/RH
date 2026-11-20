@@ -17,8 +17,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RigidEndo.eq_translate | exact GlobalTheory.RigidEndo.eq_translate | (intros; apply GlobalTheory.RigidEndo.eq_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RigidEndo.eq_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeDualNumberEndoEqTranslation.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_dualNumber_endo_eq_translation : ∀ (k : Type) [Field k] (B : Over (Sp (DualNumber k))) [GrpObj B], IsAbelianScheme B → ∀ (α : B ⟶ B), (∀ (Z : Scheme.{0}) (z : Z ⟶ B.left) (y : Z ⟶ Sp k), z ≫ B.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → z ≫ α.left = z) → α = lift (toUnit B ≫ η[B] ≫ α) (𝟙 B) ≫ μ[B] := by
   first | exact @GlobalTheory.RigidEndo.eq_translate | exact GlobalTheory.RigidEndo.eq_translate | (intros; apply GlobalTheory.RigidEndo.eq_translate <;> assumption)

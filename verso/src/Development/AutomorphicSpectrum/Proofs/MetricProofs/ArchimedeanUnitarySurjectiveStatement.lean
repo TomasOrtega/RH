@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FArchimedeanUnitarySurjective.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.archimedean_unitary_surjective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (b : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ), (∀ τ, (b τ)ᴴ * C.gr τ * b τ = C.gr τ) → ∃ a : C.Arch, ∀ τ, C.tm a τ = b τ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj <;> assumption)

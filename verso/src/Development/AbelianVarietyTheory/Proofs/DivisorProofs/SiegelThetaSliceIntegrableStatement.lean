@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompInjInt.main | exact GlobalTheory.CompInjInt.main | (intros; apply GlobalTheory.CompInjInt.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompInjInt.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelThetaSliceIntegrable.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.siegel_theta_slice_integrable : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (m : Type) [Fintype m]
     [DecidableEq m] (B : (m → F) →ₗ[F] (κ → F)), Function.Injective B →

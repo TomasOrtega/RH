@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq | exact GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq | (intros; apply GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.PolScale.exists_nat_mul_polForm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarizationFormsCommensurable.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.polarization_forms_commensurable : GlobalTheory.Published.AbelianDeRham → ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R : Type) [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (c c₀ : 𝔠.elt), (c₀ : F) ≠ 0 → ∀ ψ ψ₀ : LinearMap.BilinForm R (HdR X.A),

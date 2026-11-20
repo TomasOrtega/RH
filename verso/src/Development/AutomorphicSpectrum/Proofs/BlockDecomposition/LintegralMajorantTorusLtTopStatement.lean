@@ -10,8 +10,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AestronglyMeasu
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Ga
 open MeasureTheory Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerUC.GaInt.ga_integrable | exact GlobalTheory.CompanionTheory.PerUC.GaInt.ga_integrable | (intros; apply GlobalTheory.CompanionTheory.PerUC.GaInt.ga_integrable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PerUC.GaInt.ga_integrable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLintegralMajorantTorusLtTop.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.lintegral_majorant_torus_lt_top : ∀ σ : ℝ, 0 < σ → σ < 1 → Measurable (GlobalTheory.CompanionTheory.PerUC.ga σ 4) ∧ (∀ h, 0 ≤ GlobalTheory.CompanionTheory.PerUC.ga σ 4 h) ∧
     ∫⁻ h : Ad3.K.LC.M22, ENNReal.ofReal (GlobalTheory.CompanionTheory.PerUC.ga σ 4 h) < ⊤ := by

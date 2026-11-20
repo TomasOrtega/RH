@@ -14,8 +14,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotClassSumSmall.classSum_small | exact GlobalTheory.BotClassSumSmall.classSum_small | (intros; apply GlobalTheory.BotClassSumSmall.classSum_small <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotClassSumSmall.classSum_small` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomTriangleNonzeroConstantFirst.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.bottom_triangle_nonzero_constant_first : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

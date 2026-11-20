@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 open GlobalTheory.Mem.CanonicalSurjection
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bideterminantProducts | exact GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bideterminantProducts | (intros; apply GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bide …`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bideterminantProducts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FWeightPolynomialFramesMemSpanBideterminantProduc.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.weightPolynomial_frames_mem_span_bideterminantProducts : ∀ (K L : Type) [Field K] [Field L] [Infinite K] (φ : K →+* L) (ι : Type) [Fintype ι] (N : ℕ)
     (ν : ι → Fin N → ℕ) (M : ι → Matrix (Fin N) (Fin N) L), ∀ Q ∈ WtPol K ν,

@@ -6,8 +6,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArcBasisIndep.arcBasis_indep | exact GlobalTheory.ArcBasisIndep.arcBasis_indep | (intros; apply GlobalTheory.ArcBasisIndep.arcBasis_indep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArcBasisIndep.arcBasis_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaShiftProofs%2FConstantEigenbasisIndependentOfWitness.lean&line=444#L444)
 -/
 theorem _root_.GlobalTheory.T.constantEigenbasis_independent_of_witness : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)), ArcBasis W ρ e → (∀ (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Y' : Model Xo c β') (b' : O' →+* A) (a' : ArcIn Dw l β' A b') (χ' : Sp (PowerSeries A) ⟶ Y'.X) (W' : Wit Y' a' χ') (p : Out.IsPullDeg (RingHom.id A) a.D₀ a'.D₀) (e' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a'.D₀ (epsR A)), (∀ (x : 𝓞 E) y, p.xe (x • y) = x • p.xe y) → (letI := H.starRing; ∀ x : 𝓞 E, (a'.oa.onB.act x).left ≫ prj p = prj p ≫ (a.oa.onB.act x).left) → (∀ τ k, LetBC p (e τ k) (e' τ k)) → ArcBasis W' ρ e') ∧ (∀ (χ' : Sp (PowerSeries A) ⟶ Y.X) (W' : Wit Y a χ'), ArcBasis W' ρ e) ∧ ∀ τ ν (v : epsR (PowerSeries A) ⟶ W.t.G), GtTanR ν → LieImg W ν v → (∀ x : 𝓞 E, (v ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R := A) (ρ τ x))) ≫ v.left) → ∃! cf : Fin (Dw.mult τ) → A, GtComb cf (e τ) ν := by
   first | exact @GlobalTheory.ArcBasisIndep.arcBasis_indep | exact GlobalTheory.ArcBasisIndep.arcBasis_indep | (intros; apply GlobalTheory.ArcBasisIndep.arcBasis_indep <;> assumption)

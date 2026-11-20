@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMFaithful.linearIndependent_actTate | exact GlobalTheory.CMFaithful.linearIndependent_actTate | (intros; apply GlobalTheory.CMFaithful.linearIndependent_actTate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMFaithful.linearIndependent_actTate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinearIndependentNumberFieldEndomorphismsTateMod.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.linearIndependent_numberFieldEndomorphisms_tateModule : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → (∃ d : ℕ, 0 < d ∧ SmoothOfRelativeDimension d A.hom) → ∀ (F : Type) [Field F] [NumberField F] (O : Type) [CommRing O] [Algebra O F] [IsFractionRing O F] (α : OAct O A) (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (n : ℕ) (a : Fin n → O), LinearIndependent ℚ (fun i => algebraMap O F (a i)) → LinearIndependent ℤ_[l] (fun i => actTate α.toRingAct l (ptOver K Ω) (a i)) := by
   first | exact @GlobalTheory.CMFaithful.linearIndependent_actTate | exact GlobalTheory.CMFaithful.linearIndependent_actTate | (intros; apply GlobalTheory.CMFaithful.linearIndependent_actTate <;> assumption)

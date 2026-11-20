@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KZ.isThB_act_isDiam_iff | exact GlobalTheory.KZ.isThB_act_isDiam_iff | (intros; apply GlobalTheory.KZ.isThB_act_isDiam_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KZ.isThB_act_isDiam_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FIsCuspFunctionalValueModPrimePowDiamondIndepende.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.isCuspFunctionalValueModPrimePow_diamond_independent : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w d : ℕ) (b : X.Fn l), b ∈ X.B N l w → ∀ s : SL(2, ℤ), IsDiam N l d s → ∀ φ : HahnSeries ℚ Ω,
   IsThB X A N l n (X.act l (s : Matrix (Fin 2) (Fin 2) ℤ) b) φ ↔ IsThB X A N l n (X.act l (sgD N l d : Matrix (Fin 2) (Fin 2) ℤ) b) φ := by

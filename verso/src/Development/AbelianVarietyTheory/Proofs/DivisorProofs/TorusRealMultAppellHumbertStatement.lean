@@ -17,8 +17,10 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RosatiAH.hermForm_prod_halfDiag | exact GlobalTheory.RosatiAH.hermForm_prod_halfDiag | (intros; apply GlobalTheory.RosatiAH.hermForm_prod_halfDiag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RosatiAH.hermForm_prod_halfDiag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusRealMultAppellHumbert.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.torus_real_mult_appell_humbert : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →

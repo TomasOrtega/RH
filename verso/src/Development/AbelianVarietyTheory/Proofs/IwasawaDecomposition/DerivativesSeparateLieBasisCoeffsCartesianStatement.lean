@@ -16,8 +16,10 @@ open scoped LaurentSeries
 open MonoidalCategory CartesianMonoidalCategory MonObj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArcLieCoord.sep | exact GlobalTheory.ArcLieCoord.sep | (intros; apply GlobalTheory.ArcLieCoord.sep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArcLieCoord.sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDerivativesSeparateLieBasisCoeffsCartesian.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.derivatives_separate_lieBasis_coeffs_cartesian : ∀ {S : Type} [CommRing S] {X : Scheme.{0}} {x : Sp S ⟶ X} {G : Over X} {G' : Over (Sp S)} [GrpObj G] [GrpObj G'] [IsCommMonObj G'] {φ : G'.left ⟶ G.left}, IsGrpPullback G' G x φ → ∀ {n : ℕ} (v : Fin n → (epsR S ⟶ G')), IsLieBasis v → ∀ {V : G.left.Opens}, IsAffineOpen V → ⊤ ≤ ((η[G']).left ≫ φ) ⁻¹ᵁ V → ∀ (b : Fin n → S), (∀ f : Γ(G.left, V), ∑ k, b k * (valR ((v k).left ≫ φ) V f).snd = 0) → b = 0 := by
   first | exact @GlobalTheory.ArcLieCoord.sep | exact GlobalTheory.ArcLieCoord.sep | (intros; apply GlobalTheory.ArcLieCoord.sep <;> assumption)

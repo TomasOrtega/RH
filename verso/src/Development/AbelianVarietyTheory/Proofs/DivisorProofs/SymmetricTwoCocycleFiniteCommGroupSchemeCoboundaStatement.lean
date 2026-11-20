@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PolRoot
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymCob.exists_coboundary | exact GlobalTheory.SymCob.exists_coboundary | (intros; apply GlobalTheory.SymCob.exists_coboundary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymCob.exists_coboundary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricTwoCocycleFiniteCommGroupSchemeCobounda.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.symmetricTwoCocycle_finiteCommGroupScheme_coboundary : ∀ (K : Type) [Field K] [IsAlgClosed K] (N : Over (Sp K)) [GrpObj N] [IsCommMonObj N], IsFinite N.hom → ∀ c : Γ((N ⊗ N).left, ⊤)ˣ, (∀ (T : Over (Sp K)) (x y z : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c * GlobalTheory.CharKer.pullTop (lift (x * y) z).left c = GlobalTheory.CharKer.pullTop (lift y z).left c * GlobalTheory.CharKer.pullTop (lift x (y * z)).left c) → (∀ (T : Over (Sp K)) (x y : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c = GlobalTheory.CharKer.pullTop (lift y x).left c) → ∃ u : Γ(N.left, ⊤)ˣ, ∀ (T : Over (Sp K)) (x y : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c * GlobalTheory.CharKer.pullTop (x * y).left u = GlobalTheory.CharKer.pullTop x.left u * GlobalTheory.CharKer.pullTop y.left u := by
   first | exact @GlobalTheory.SymCob.exists_coboundary | exact GlobalTheory.SymCob.exists_coboundary | (intros; apply GlobalTheory.SymCob.exists_coboundary <;> assumption)

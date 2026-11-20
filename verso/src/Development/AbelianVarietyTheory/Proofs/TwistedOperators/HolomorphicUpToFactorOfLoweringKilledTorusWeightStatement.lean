@@ -8,8 +8,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled | exact GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled | (intros; apply GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHolomorphicUpToFactorOfLoweringKilledTorusWeight.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.holomorphicUpToFactor_of_loweringKilled_torusWeight : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → ∀ (la : Wt C.X.Ψ T.rank) (m : D.what₂.Tau → ℤ) (φ : GA D T → ℂ), LowKilled C.θ T B φ → (∀ (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (g : GA D T), φ (g * torAt C.θ T B ρ t) = cexp (((∑ a, ((m ρ - la (C.m.e ρ) a : ℤ) : ℝ) * t a : ℝ) : ℂ) * I) * φ g) → HolUpTo C B la (detPow C.θ T m) φ := by
   first | exact @GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled | exact GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled | (intros; apply GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled <;> assumption)

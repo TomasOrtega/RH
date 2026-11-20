@@ -10,8 +10,10 @@ open GlobalTheory.HSCore GlobalTheory.QCoh
 open GlobalTheory
 open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSShort.GeoHyp.sysOf_hyp | exact GlobalTheory.HSShort.GeoHyp.sysOf_hyp | (intros; apply GlobalTheory.HSShort.GeoHyp.sysOf_hyp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSShort.GeoHyp.sysOf_hyp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHilbertSamuelLatticeSystemHyp.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.hilbertSamuelLatticeSystem_hyp : ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (Λ₀ : ℝ), GeoHyp X Λ₀ → (sysOf X Λ₀).Hyp := by
   first | exact @GlobalTheory.HSShort.GeoHyp.sysOf_hyp | exact GlobalTheory.HSShort.GeoHyp.sysOf_hyp | (intros; apply GlobalTheory.HSShort.GeoHyp.sysOf_hyp <;> assumption)

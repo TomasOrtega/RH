@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt | exact GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt | (intros; apply GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisedTraitMovesToFiniteExtension.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.uniformisedTrait_moves_to_finite_extension : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁], Base R₁ → ∀ (D₁ : DegData R₁ (maximalIdeal R₁)) (A : PolAV (Sp (FractionRing R₁))), UniTrait D₁.toPre A → ∀ (R₂ : Type) [CommRing R₂] [IsDomain R₂] [IsLocalRing R₂] (i₁₂ : R₁ →+* R₂), FinExt i₁₂ → IsLocalHom i₁₂ → ∀ (D₂ : DegData R₂ (maximalIdeal R₂)), Nonempty (IsPullDeg i₁₂ D₁.toPre D₂.toPre) → ∀ (A₂ : PolAV (Sp (FractionRing R₂))) (a : A₂.A.left ⟶ A.A.left), IsFib i₁₂ A A₂ a → UniTrait D₂.toPre A₂ := by
   first | exact @GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt | exact GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt | (intros; apply GlobalTheory.Mum.UniEnlarge.uniTrait_of_finExt <;> assumption)

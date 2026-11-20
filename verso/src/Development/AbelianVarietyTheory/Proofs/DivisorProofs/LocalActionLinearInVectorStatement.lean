@@ -15,8 +15,10 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocOpLin.acts_lin | exact GlobalTheory.LocOpLin.acts_lin | (intros; apply GlobalTheory.LocOpLin.acts_lin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocOpLin.acts_lin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalActionLinearInVector.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.local_action_linear_in_vector : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (v : Pl F) (Op : Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ)
     (φ φ' η η' ζ : (κ → Fv F v) → ℂ), φ ∈ SB (κ → Fv F v) → φ' ∈ SB (κ → Fv F v) →

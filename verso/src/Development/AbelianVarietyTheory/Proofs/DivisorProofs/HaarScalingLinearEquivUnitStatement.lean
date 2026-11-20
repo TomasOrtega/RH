@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.LeviModulus
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviModulus.CharVec.haarChar_smul_mulVec | exact GlobalTheory.LeviModulus.CharVec.haarChar_smul_mulVec | (intros; apply GlobalTheory.LeviModulus.CharVec.haarChar_smul_mulVec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviModulus.CharVec.haarChar_smul_mulVec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHaarScalingLinearEquivUnit.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.haar_scaling_linear_equiv_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n₁ : ℕ) (X₁ : Spc F E n₁) (r₁ s₁ : ℕ), B.IsGood σ → X₁.IsHerm σ B r₁ s₁ →

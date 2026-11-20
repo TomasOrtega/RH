@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RigCover.exists_flat_cover_triv | exact GlobalTheory.CompanionTheory.RigCover.exists_flat_cover_triv | (intros; apply GlobalTheory.CompanionTheory.RigCover.exists_flat_cover_triv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RigCover.exists_flat_cover_triv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FLineBundleTrivialAfterFlatCover.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.line_bundle_trivial_after_flat_cover : ∀ {P : Scheme.{0}} (M : LB P), M.IsLB → ∃ (Z : Scheme.{0}) (g : Z ⟶ P),
     Flat g ∧ LocallyOfFinitePresentation g ∧ Surjective g ∧ Triv (M.pull g) := by

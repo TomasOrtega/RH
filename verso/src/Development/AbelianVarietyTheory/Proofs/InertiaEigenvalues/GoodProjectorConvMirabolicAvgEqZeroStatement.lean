@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodNoChiTr.conv_mirC_eC | exact GlobalTheory.GoodNoChiTr.conv_mirC_eC | (intros; apply GlobalTheory.GoodNoChiTr.conv_mirC_eC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodNoChiTr.conv_mirC_eC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGoodProjectorConvMirabolicAvgEqZero.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.goodProjector_conv_mirabolicAvg_eq_zero : GlobalTheory.MirAvg.SeriesKillsAvg → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorizati
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TraceDualDifferent
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisNonConst.nonconst_terms | exact GlobalTheory.EisNonConst.nonconst_terms | (intros; apply GlobalTheory.EisNonConst.nonconst_terms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisNonConst.nonconst_terms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHilbertEisensteinNonconstantTermsHasSum.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.hilbertEisenstein_nonconstant_terms_hasSum : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F], GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.Lipschitz →
   ∀ (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (k : ℕ), 2 ≤ k → Even k →

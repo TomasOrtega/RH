@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (compFin ExtUnr
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColonInt.colon_int | exact GlobalTheory.ColonInt.colon_int | (intros; apply GlobalTheory.ColonInt.colon_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColonInt.colon_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegralOfKeepsSelfDualLatticeLineColon.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.integral_of_keeps_selfDualLatticeLineColon : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L : Lat S) (L₀ : Lat S₀) (v : Pl D), Tame D v → IsSelfDualC S L → MonoAt d L L₀ v → ∀ (i j : Fin ρ) (x : AE D), x - 1 ∈ idAt D (· = v) → (∀ r ∈ idAt D (· = v), (∀ a : AE D, colMul d.jX j a ∈ latV S L (· = v) → colMul d.jX i (r * a) ∈ latV S L (· = v)) → ∀ a : AE D, colMul d.jX j a ∈ latV S L (· = v) → colMul d.jX i (r * x * a) ∈ latV S L (· = v)) → x - 1 ∈ intAt D (· = v) := by
   first | exact @GlobalTheory.ColonInt.colon_int | exact GlobalTheory.ColonInt.colon_int | (intros; apply GlobalTheory.ColonInt.colon_int <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPsiLocNe
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep GlobalTheory.RSJ GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 open scoped ENNReal NNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZUnfTheta.zint_eq_mirabolic | exact GlobalTheory.ZUnfTheta.zint_eq_mirabolic | (intros; apply GlobalTheory.ZUnfTheta.zint_eq_mirabolic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZUnfTheta.zint_eq_mirabolic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRankinSelbergThetaIntegralUnfoldMirabolic.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.rankinSelbergThetaIntegral_unfold_mirabolic : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (μ : Measure (GA E (m + 1))) [μ.IsHaarMeasure] (𝓕 𝓕P : Set (GA E (m + 1))),

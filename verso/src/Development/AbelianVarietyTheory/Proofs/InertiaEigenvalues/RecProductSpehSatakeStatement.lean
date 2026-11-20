@@ -9,8 +9,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FormDict.RecTLaws.recLaws_recT | exact GlobalTheory.FormDict.RecTLaws.recLaws_recT | (intros; apply GlobalTheory.FormDict.RecTLaws.recLaws_recT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FormDict.RecTLaws.recLaws_recT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRecProductSpehSatake.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.rec_product_speh_satake : GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (T : GlobalTheory.RowTie.WDTie N A), RecProd (recT T hL) ∧ RecSpeh (recT T hL) ∧ RecSatake (recT T hL) := by
   first | exact @GlobalTheory.FormDict.RecTLaws.recLaws_recT | exact GlobalTheory.FormDict.RecTLaws.recLaws_recT | (intros; apply GlobalTheory.FormDict.RecTLaws.recLaws_recT <;> assumption)

@@ -7,8 +7,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.XFTorsion.torsion_rational | exact GlobalTheory.XFTorsion.torsion_rational | (intros; apply GlobalTheory.XFTorsion.torsion_rational <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.XFTorsion.torsion_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniversalAbelianSchemeTorsionRationalFieldPoint.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.universalAbelianScheme_torsion_rational_fieldPoint : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (K K' : Type) [Field K] [Field K'] [IsAlgClosed K'] (κ : K →+* K') (y : Sp K ⟶ Xo.XF c) (x : Over.mk (spMap κ ≫ y ≫ pullback.fst _ _) ⟶ Xo.univ.t.G), x ^ l.M' = 1 → ∃ x₀ : Over.mk (y ≫ pullback.fst _ _) ⟶ Xo.univ.t.G, x₀ ^ l.M' = 1 ∧ x.left = spMap κ ≫ x₀.left := by
   first | exact @GlobalTheory.XFTorsion.torsion_rational | exact GlobalTheory.XFTorsion.torsion_rational | (intros; apply GlobalTheory.XFTorsion.torsion_rational <;> assumption)

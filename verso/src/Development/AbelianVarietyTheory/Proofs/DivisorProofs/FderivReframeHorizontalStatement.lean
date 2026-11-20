@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarAddVectorScalar
 open Matrix MeasureTheory Set Filter Topology GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.Gauge
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor | exact GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor | (intros; apply GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFderivReframeHorizontal.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.fderiv_reframe_horizontal : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g), IsPeriodMap B τ → IsPeriodMap B (fun b => moeb γ (τ b)) → ∀ P ∈ cov B g, ∀ v : E, fderiv ℝ (reframe τ γ) P (hor τ P v) = hor (fun b => moeb γ (τ b)) (reframe τ γ P) v := by
   first | exact @GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor | exact GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor | (intros; apply GlobalTheory.TorsionForm.ReframeHor.fderiv_reframe_hor <;> assumption)

@@ -14,8 +14,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.integral_pull_injective | exact GlobalTheory.integral_pull_injective | (intros; apply GlobalTheory.integral_pull_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.integral_pull_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelMapIntegrableDistribution.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.siegel_map_integrable_distribution : ∀ (F : Type) [Field F] [NumberField F] (ι κ : Type) [Fintype ι] [Fintype κ] (D : Matrix κ ι F),
     (∀ z : ι → F, D *ᵥ z = 0 → z = 0) →

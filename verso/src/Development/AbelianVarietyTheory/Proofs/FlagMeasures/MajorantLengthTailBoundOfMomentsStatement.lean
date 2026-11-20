@@ -11,8 +11,10 @@ import Formalism.LocalRingCardinality.DataTies
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp GlobalTheory.TypeAsm Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Amp.TailTwo.tailBd_of_moments | exact GlobalTheory.Amp.TailTwo.tailBd_of_moments | (intros; apply GlobalTheory.Amp.TailTwo.tailBd_of_moments <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Amp.TailTwo.tailBd_of_moments` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMajorantLengthTailBoundOfMoments.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.majorantLengthTailBound_of_moments : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (νS : Measure (Mt k r)) (Φ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Wp) (q : ℕ) (H₁ : ℝ), inWb k r z → 0 < H₁ → νS {x | Matrix.of x ∉ GG k r} = 0 → ContinuousOn Φ (GG k r) → MomBd z νS Φ q H₁ → (∀ a : Fin (r + 1), ∫⁻ x, ENNReal.ofReal ((lA k r z (Matrix.of x) a)⁻¹ ^ (2 * q)) * (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂νS ≤ ENNReal.ofReal (H₁ ^ (2 * q)) * l2SG νS Φ) → TailBd z νS Φ q H₁ := by
   first | exact @GlobalTheory.Amp.TailTwo.tailBd_of_moments | exact GlobalTheory.Amp.TailTwo.tailBd_of_moments | (intros; apply GlobalTheory.Amp.TailTwo.tailBd_of_moments <;> assumption)

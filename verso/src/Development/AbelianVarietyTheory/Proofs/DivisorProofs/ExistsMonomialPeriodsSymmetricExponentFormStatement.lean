@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MonPeriods.exists_isMonomial_symm | exact GlobalTheory.MonPeriods.exists_isMonomial_symm | (intros; apply GlobalTheory.MonPeriods.exists_isMonomial_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MonPeriods.exists_isMonomial_symm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMonomialPeriodsSymmetricExponentForm.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_monomialPeriods_symmetric_exponentForm : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ ϖ : W, Irreducible ϖ →
     ∀ D : DegData W (maximalIdeal W), ∃ β : LinearMap.BilinForm ℤ D.toPre.X, (∀ a b, β a b = β b a) ∧

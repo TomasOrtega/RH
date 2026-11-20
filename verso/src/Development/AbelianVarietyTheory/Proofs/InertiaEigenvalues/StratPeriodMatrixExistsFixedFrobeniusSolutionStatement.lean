@@ -6,8 +6,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.MReal.exists_fixed_frob | exact GlobalTheory.BSP.MReal.exists_fixed_frob | (intros; apply GlobalTheory.BSP.MReal.exists_fixed_frob <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.MReal.exists_fixed_frob` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FStratPeriodMatrixExistsFixedFrobeniusSolution.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.stratPeriodMatrix_exists_fixed_frobenius_solution : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') ℤ_[l]) (T : Matrix (Fin d) (Fin d) (WCb l)) (T' : Matrix (Fin d') (Fin d') (WCb l)), MReal S ρ T → MReal S' ρ' T' → ∀ f : Matrix (Fin d') (Fin d) ℤ_[l], (∀ g, f * ρ g = ρ' g * f) → ∃ X : Matrix (Fin d') (Fin d) (WCb l), T' * X = zW f * T ∧ (∀ g : ↥(GK K), bk.FixFlat g → X.map (galW l (g : GQ l)) = X) ∧ bk.evW bk.E ^ S.a • (S'.A.map bk.evW * X.map (frobW l)) = bk.evW bk.E ^ S'.a • (X * S.A.map bk.evW) := by
   first | exact @GlobalTheory.BSP.MReal.exists_fixed_frob | exact GlobalTheory.BSP.MReal.exists_fixed_frob | (intros; apply GlobalTheory.BSP.MReal.exists_fixed_frob <;> assumption)

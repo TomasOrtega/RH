@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CayleyTransformTrivialPhaseSkewHermitian
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.CayleyCong.cayley_cong | exact GlobalTheory.Hk3.CayleyCong.cayley_cong | (intros; apply GlobalTheory.Hk3.CayleyCong.cayley_cong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.CayleyCong.cayley_cong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FCayleyTransformIntegralUnitaryCongruentOne.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.cayley_transform_integral_unitary_congruent_one : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),

@@ -25,8 +25,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UniformTranslateBound.tsum_norm_translate_le | exact GlobalTheory.UniformTranslateBound.tsum_norm_translate_le | (intros; apply GlobalTheory.UniformTranslateBound.tsum_norm_translate_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UniformTranslateBound.tsum_norm_translate_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTsumNormAdelicSchwartzRationalTranslatesLe.lean&line=154#L154)
 -/
 theorem _root_.GlobalTheory.T.tsum_norm_adelicSchwartz_rationalTranslates_le : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι], ∀ Φ ∈ GlobalTheory.WeilM.schA F ι,
     ∃ B : ℝ, ∀ z : ι → AF F, ∑' ξ : ι → F, ‖Φ ((fun i => algebraMap F (AF F) (ξ i)) + z)‖ ≤ B := by

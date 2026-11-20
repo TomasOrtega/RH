@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div | exact GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div | (intros; apply GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrableIdelesPowerDecay.lean&line=300#L300)
 -/
 theorem _root_.GlobalTheory.T.integrable_ideles_power_decay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (μ : Measure (idelesAt E (evI F))), μ.IsHaarMeasure → ∀ z : ℕ, 1 ≤ z →

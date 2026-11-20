@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PELU.gram_re_posdef_adj | exact GlobalTheory.PELU.gram_re_posdef_adj | (intros; apply GlobalTheory.PELU.gram_re_posdef_adj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PELU.gram_re_posdef_adj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramRePosDefAdjointPeriod.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.gram_re_posDef_adjoint_period : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (D : PLat O bar) (P : D.La →+ (Fin g → ℂ)) (r : ℕ) (e : Module.Basis (Fin r) ℤ D.La), IsPeriod D ρ P → ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.IsHermitian ∧ (∀ z : Fin r → ℂ, z ≠ 0 → 0 < (star z ⬝ᵥ (Q *ᵥ z)).re) ∧ ∀ a : O, Q * actM D e ℂ (bar a) = (actM D e ℂ a)ᴴ * Q := by
   first | exact @GlobalTheory.PELU.gram_re_posdef_adj | exact GlobalTheory.PELU.gram_re_posdef_adj | (intros; apply GlobalTheory.PELU.gram_re_posdef_adj <;> assumption)

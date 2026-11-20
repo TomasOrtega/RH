@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtInfKapX.htInf_kapX_le | exact GlobalTheory.HtInfKapX.htInf_kapX_le | (intros; apply GlobalTheory.HtInfKapX.htInf_kapX_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtInfKapX.htInf_kapX_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInfiniteHeightTransposeGramUnitaryLe.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.infiniteHeight_transposeGramUnitary_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E} (hJ : J = D.host.xi0 • reindex e e X.gramᵀ), ∃ C : NNReal, ∀ h : GA D X, ∏ w, GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (kapX X e hJ h).1) ≤ C * ∏ τ, GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infHt θ X τ h := by
   first | exact @GlobalTheory.HtInfKapX.htInf_kapX_le | exact GlobalTheory.HtInfKapX.htInf_kapX_le | (intros; apply GlobalTheory.HtInfKapX.htInf_kapX_le <;> assumption)

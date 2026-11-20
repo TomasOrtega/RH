@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PropZCore.gen_of_exponent | exact GlobalTheory.PropZCore.gen_of_exponent | (intros; apply GlobalTheory.PropZCore.gen_of_exponent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PropZCore.gen_of_exponent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularSectionExtendsOverFibre.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.regular_section_extends_over_fibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ Spec (.of O)) (D : LB Z), Hyp f D → genericPoint Z ∈ Z.basicOpen (f.appTop.hom ((Scheme.ΓSpecIso (.of O)).inv.hom ϖ)) →
   IsField Γ(reducedSpecialFibre f, ⊤) →

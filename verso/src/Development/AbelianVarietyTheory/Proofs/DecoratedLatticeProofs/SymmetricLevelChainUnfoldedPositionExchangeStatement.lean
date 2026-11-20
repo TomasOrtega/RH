@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricL
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymChain.ExchangeProof.exchangeAt | exact GlobalTheory.SymChain.ExchangeProof.exchangeAt | (intros; apply GlobalTheory.SymChain.ExchangeProof.exchangeAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymChain.ExchangeProof.exchangeAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSymmetricLevelChainUnfoldedPositionExchange.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.symmetricLevelChain_unfolded_position_exchange : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], S.Pattern t → S.ExchangeAt t ν := by
   first | exact @GlobalTheory.SymChain.ExchangeProof.exchangeAt | exact GlobalTheory.SymChain.ExchangeProof.exchangeAt | (intros; apply GlobalTheory.SymChain.ExchangeProof.exchangeAt <;> assumption)

@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.LevelPull.exists_level_pull | exact GlobalTheory.RealMult.LevelPull.exists_level_pull | (intros; apply GlobalTheory.RealMult.LevelPull.exists_level_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.LevelPull.exists_level_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelStructurePullbackExists.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.level_structure_pullback_exists : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {b : S' ⟶ S}
     {φ : X'.A.left ⟶ X.A.left}, X'.IsPullBy X b φ → ∀ {N : ℕ} (α : X.Level N),

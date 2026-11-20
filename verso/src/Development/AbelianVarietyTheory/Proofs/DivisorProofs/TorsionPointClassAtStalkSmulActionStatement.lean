@@ -19,8 +19,10 @@ open MonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsSpec.class_act | exact GlobalTheory.TorsSpec.class_act | (intros; apply GlobalTheory.TorsSpec.class_act <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsSpec.class_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionPointClassAtStalkSmulAction.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.torsionPointClassAtStalk_smul_action : ∀ {E : Type} [Field E] {X' : Scheme.{0}} [IsIntegral X'] [GlobalTheory.IsNormalScheme X'] (G : Over X') [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] (n : ℕ) (hn : IsUnit (n : Γ(X', ⊤))) {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X')

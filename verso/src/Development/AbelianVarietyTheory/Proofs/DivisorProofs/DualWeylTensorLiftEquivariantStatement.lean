@@ -10,8 +10,10 @@ open GlobalTheory.FrameRead
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameRead.LiftEquiv.phi_equivariant | exact GlobalTheory.FrameRead.LiftEquiv.phi_equivariant | (intros; apply GlobalTheory.FrameRead.LiftEquiv.phi_equivariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameRead.LiftEquiv.phi_equivariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualWeylTensorLiftEquivariant.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.dualWeylTensorLift_equivariant : ∀ (K C : Type) [Field K] [Field C] (e0 : K →+* C) (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (lam : ι → DomWeight n) (lamW : ι → ℕ → ℕ) (c : ι → ℤ) (Φ : VV K lam →ₛₗ[e0] NablaT C n lamW), Shift lam lamW c → IsPhi e0 lam lamW Φ → ∀ (g : ι → GL (Fin n) K) (v : VV K lam), Φ (rhoK lam (invTrK g) v) = lamG C n lamW c (fun τ => Matrix.GeneralLinearGroup.map e0 (g τ)) (Φ v) := by
   first | exact @GlobalTheory.FrameRead.LiftEquiv.phi_equivariant | exact GlobalTheory.FrameRead.LiftEquiv.phi_equivariant | (intros; apply GlobalTheory.FrameRead.LiftEquiv.phi_equivariant <;> assumption)

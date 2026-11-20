@@ -8,8 +8,10 @@ open GlobalTheory.LBDescent GlobalTheory.DescNorm
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescDefect.defect_exists | exact GlobalTheory.DescDefect.defect_exists | (intros; apply GlobalTheory.DescDefect.defect_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescDefect.defect_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDescentCocycleDefectOfCompatible.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.exists_descentCocycleDefect_of_compatible : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (L : LB X) (φ : ∀ i j, Γ(pullback f f, chart f L i j)ˣ), L.IsLB → DescCompat f L φ → ∃ D : Γ(Triple f, ⊤)ˣ, Defect f L φ D := by
   first | exact @GlobalTheory.DescDefect.defect_exists | exact GlobalTheory.DescDefect.defect_exists | (intros; apply GlobalTheory.DescDefect.defect_exists <;> assumption)

@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeZcls.main | exact GlobalTheory.CompanionTheory.ConeZcls.main | (intros; apply GlobalTheory.CompanionTheory.ConeZcls.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ConeZcls.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FConeCocycleClassIndependent.lean&line=247#L247)
 -/
 theorem _root_.GlobalTheory.T.cone_cocycle_class_independent : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {C : Type 1} [Category.{0} C] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X} (Λ Λ' : CLiftK g D) (s : ℕ), (∀ c, (g.obj c).pdPow s = ⊥) → ∀ (hz : CH.d _ 2 (zK Λ s) = 0) (hz' : CH.d _ 2 (zK Λ' s) = 0), (CH.cx _).cls (zK Λ s) hz = (CH.cx _).cls (zK Λ' s) hz' := by
   first | exact @GlobalTheory.CompanionTheory.ConeZcls.main | exact GlobalTheory.CompanionTheory.ConeZcls.main | (intros; apply GlobalTheory.CompanionTheory.ConeZcls.main <;> assumption)

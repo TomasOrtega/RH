@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ScaledIntegerPer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GJReg.span_latInd_lat | exact GlobalTheory.GJReg.span_latInd_lat | (intros; apply GlobalTheory.GJReg.span_latInd_lat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GJReg.span_latInd_lat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSphericalSchwartzLatticeCombination.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.spherical_schwartz_lattice_combination : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (φ : Matrix (Fin n) (Fin n) k → ℂ), φ ∈ SB (Matrix (Fin n) (Fin n) k) →

@@ -10,8 +10,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 open scoped TensorProduct ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernReg.ExphOn.short_vectors_near_base | exact GlobalTheory.ChernReg.ExphOn.short_vectors_near_base | (intros; apply GlobalTheory.ChernReg.ExphOn.short_vectors_near_base <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernReg.ExphOn.short_vectors_near_base` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExponentialControlUniformDelta.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.exponential_control_uniform_delta : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) (a : ChartForm p σ d), IsKaehlerForm R a → ∀ (E : ChartMap p σ d) (W : Set (CxPts p σ)) (ε : ℝ), 0 < ε → ExphOn.IsExphOn a E W ε → ∀ (c : AlgChart p σ d) (L : Set (CxPts p σ)) (r : ℝ), IsCompact L → L ⊆ W → L ⊆ c.e.source → 0 < r → ∃ δ > 0, ∀ c₀ : AlgChart p σ d, ∀ y ∈ L, y ∈ c₀.e.source → ∀ ξ, a c₀ y ξ < δ → E c₀ y ξ ∈ c.e.source ∧ c.e (E c₀ y ξ) ∈ Metric.ball (c.e y) r := by
   first | exact @GlobalTheory.ChernReg.ExphOn.short_vectors_near_base | exact GlobalTheory.ChernReg.ExphOn.short_vectors_near_base | (intros; apply GlobalTheory.ChernReg.ExphOn.short_vectors_near_base <;> assumption)

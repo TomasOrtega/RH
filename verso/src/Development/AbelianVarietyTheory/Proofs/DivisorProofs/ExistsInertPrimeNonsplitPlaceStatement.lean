@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertOfNoEmb.exists_isInertAt | exact GlobalTheory.InertOfNoEmb.exists_isInertAt | (intros; apply GlobalTheory.InertOfNoEmb.exists_isInertAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertOfNoEmb.exists_isInertAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInertPrimeNonsplitPlace.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_inert_prime_nonsplit_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ v : Pl F, IsEmpty (E →ₐ[F] Fv F v) →

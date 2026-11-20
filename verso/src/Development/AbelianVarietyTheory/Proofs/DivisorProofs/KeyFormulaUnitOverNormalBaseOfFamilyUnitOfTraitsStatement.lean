@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait | exact GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait | (intros; apply GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKeyFormulaUnitOverNormalBaseOfFamilyUnitOfTraits.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.keyFormulaUnitOverNormalBase_of_familyUnit_of_traits : ∀ κ : Rule, FamUnit κ → KeyTrait κ → KeyLoc κ := by
   first | exact @GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait | exact GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait | (intros; apply GlobalTheory.KeyEven.LocPf.keyLoc_of_famUnit_keyTrait <;> assumption)

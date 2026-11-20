@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Geo
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4 GlobalTheory.Mean4O
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagSmooth.smooth_π | exact GlobalTheory.FlagSmooth.smooth_π | (intros; apply GlobalTheory.FlagSmooth.smooth_π <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagSmooth.smooth_π` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagComponentProjectionSmooth.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.flag_component_projection_smooth : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp), Smooth (Φ.C k).π := by
   first | exact @GlobalTheory.FlagSmooth.smooth_π | exact GlobalTheory.FlagSmooth.smooth_π | (intros; apply GlobalTheory.FlagSmooth.smooth_π <;> assumption)

@@ -15,8 +15,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KLFinite.kl_finite | exact GlobalTheory.KLFinite.kl_finite | (intros; apply GlobalTheory.KLFinite.kl_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KLFinite.kl_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelOfLineBundleRationalPointsFiniteClosed.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.kernelOfLineBundle_rationalPoints_finite_closed : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB), Out.RelAmple A L → ∃ S : Finset A.left, (∀ s ∈ S, IsClosed ({s} : Set A.left)) ∧ ∀ x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ A, GlobalTheory.CechPic.lam (cls L hL) (toUnit A ≫ x) (𝟙 A) = 0 → x.left (IsLocalRing.closedPoint K) ∈ S := by
   first | exact @GlobalTheory.KLFinite.kl_finite | exact GlobalTheory.KLFinite.kl_finite | (intros; apply GlobalTheory.KLFinite.kl_finite <;> assumption)

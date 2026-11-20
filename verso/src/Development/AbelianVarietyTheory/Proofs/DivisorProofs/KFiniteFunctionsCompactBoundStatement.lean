@@ -21,8 +21,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.ThK.FlagCT GlobalTheory.ThK.FlagPar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.KFinCoef.bounded_differentiable_foldr_lineDer | exact GlobalTheory.ThK.KFinCoef.bounded_differentiable_foldr_lineDer | (intros; apply GlobalTheory.ThK.KFinCoef.bounded_differentiable_foldr_lineDer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.KFinCoef.bounded_differentiable_foldr_lineDer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKFiniteFunctionsCompactBound.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.k_finite_functions_compact_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (K : Subgroup (GAd σ J)) (S : Set (GAd σ J)), IsCompact S → (∀ k ∈ S, ∀ k' ∈ K, k * k' ∈ S) →

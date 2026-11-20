@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.FlatTors GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenTorsMap.exists_genericMap | exact GlobalTheory.GenTorsMap.exists_genericMap | (intros; apply GlobalTheory.GenTorsMap.exists_genericMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenTorsMap.exists_genericMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FGenericPartImagePullback.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.generic_part_image_pullback : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ y N p₀, PairRep ψW k y N p₀ → ∃ u : genPart (overW W N) ⟶ t.G, u ^ k = 1 ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (x : Sp F ⟶ (genPart (overW W N)).left), OverGen F (genPart (overW W N)) x → ∀ q : QkPt P.D.toPre F k, QkPtW.IsPullF F (x ≫ (genι (overW W N)).left) p₀ q → IsImage P F k q (x ≫ u.left) := by
   first | exact @GlobalTheory.GenTorsMap.exists_genericMap | exact GlobalTheory.GenTorsMap.exists_genericMap | (intros; apply GlobalTheory.GenTorsMap.exists_genericMap <;> assumption)

@@ -8,8 +8,10 @@ open Formalism.L2.SG.RowsJoinPinned Formalism.L2.SG.RowDict Formalism.L2.SG.Poin
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevZeroFamRead.red_of_isLoc | exact GlobalTheory.LevZeroFamRead.red_of_isLoc | (intros; apply GlobalTheory.LevZeroFamRead.red_of_isLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevZeroFamRead.red_of_isLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FReducesToResidueOfLocalLevelElementMovedBack.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.reducesToResidue_of_localLevelElement_movedBack : ∀ {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Formalism.L2.DIV.Pl D.host.E) (b : GA D (c.V 0)) (β : GL (Fin (c.V 0).rank) (Lev.EAf D)), GlobalTheory.LevZero.LocAt G PP b β → b ∈ GfC (c.V 0) → ∀ (hr : D.R.r ≤ (c.V 0).rank) (g : GA D (c.V 0)) (x : G.S.P.J), (ofSplit G.q).IsLoc (G.FY 0 (G.s + 1) (Nat.zero_add _)) g (GlobalTheory.LevZeroGen.upZero G.S (Fin D.R.t) x.1) → finE (c.V 0) (b⁻¹ * g * b) ∈ Formalism.L2.DIV.St β → GlobalTheory.LevZero.Red G PP x (upperLeftBlock hr (redFn β PP (finE (c.V 0) (b⁻¹ * g * b)))) := by
   first | exact @GlobalTheory.LevZeroFamRead.red_of_isLoc | exact GlobalTheory.LevZeroFamRead.red_of_isLoc | (intros; apply GlobalTheory.LevZeroFamRead.red_of_isLoc <;> assumption)

@@ -21,8 +21,10 @@ open scoped Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatioForm.form_ratio | exact GlobalTheory.RatioForm.form_ratio | (intros; apply GlobalTheory.RatioForm.form_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatioForm.form_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAuxiliarySetFieldDataCongruence.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.auxiliary_set_field_data_congruence : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)

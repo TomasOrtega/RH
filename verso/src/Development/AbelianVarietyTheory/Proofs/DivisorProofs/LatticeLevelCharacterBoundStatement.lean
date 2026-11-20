@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers | exact GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers | (intros; apply GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeLevelCharacterBound.lean&line=330#L330)
 -/
 theorem _root_.GlobalTheory.T.lattice_level_character_bound : Hypotheses2 → Gram → DeepGood → Covers fun Fm x _ ι p i Y _ _ => ∃ (fr : TypeFrame (dat p i) Y.d.l₂) (ψ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq (Fm.D x ι).host, AddChar (ZMod ((Fm.D x ι).host.g v.1)) Y.d.c₂.F), (∀ v, ψ v ≠ 1) ∧ GlobalTheory.LevDesc.IsTypeLevel Y.d.l₂ ∧ latDeep p i Y = latN fr Y.U (Gk p i) ψ ∧ Real.log (Nat.card (grpHR fr)) ≤ 45 * zBase (Fm.L x ι) ^ 2 := by
   first | exact @GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers | exact GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers | (intros; apply GlobalTheory.CovTop.TypeLattice.latDeep_eq_latN_covers <;> assumption)

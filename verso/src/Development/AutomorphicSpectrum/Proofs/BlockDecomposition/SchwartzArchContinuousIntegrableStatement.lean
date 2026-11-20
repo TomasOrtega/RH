@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts <;> as …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSchwartzArchContinuousIntegrable.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.schwartz_arch_continuous_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (κ : Ainf F ⊗[F] E ≃+* (NumberField.InfinitePlace F → ℂ)), IsHomeomorph κ → ∀ (n M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → Continuous φ ∧ Integrable φ (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M) ∧ (∃ B : ℝ, ∀ X, ‖φ X‖ ≤ B) ∧ ∀ k : ℕ, ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R → ∀ X, X ∉ GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ (fun _ _ => R) → ‖φ X‖ ≤ C / R ^ k := by
   first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts <;> assumption)

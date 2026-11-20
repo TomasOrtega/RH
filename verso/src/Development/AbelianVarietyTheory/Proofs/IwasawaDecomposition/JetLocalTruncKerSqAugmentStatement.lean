@@ -16,8 +16,10 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JetBasic.jet_basic | exact GlobalTheory.JetBasic.jet_basic | (intros; apply GlobalTheory.JetBasic.jet_basic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JetBasic.jet_basic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FJetLocalTruncKerSqAugment.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.jet_local_trunc_ker_sq_augment : ∀ {S : Type} [Field S] {ρ : Type} (m : ℕ),
     IsLocalRing (Jet S ρ m) ∧ RingHom.ker (jetTrunc : Jet S ρ (m + 1) →ₐ[S] Jet S ρ m) ^ 2 = ⊥ ∧

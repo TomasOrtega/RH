@@ -16,8 +16,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RelBasis.indepOn_spanOn_of_affine | exact GlobalTheory.RelBasis.indepOn_spanOn_of_affine | (intros; apply GlobalTheory.RelBasis.indepOn_spanOn_of_affine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RelBasis.indepOn_spanOn_of_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FPullbackSectionsBasisAffineBaseChangeOfAffine.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.pullbackSections_basis_affine_baseChange_of_affine : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (p : X ⟶ Sp R) (L : LB X) (t : ℤ) (N : ℕ) (b : Fin N → LB.Sec (pw L t)), (∀ (R' : Type) [CommRing R'] (f : R →+* R'), ∃ (Y : Scheme.{0}) (p₁ : Y ⟶ Sp R') (p₂ : Y ⟶ X), IsPullback p₂ p₁ p (spMap f) ∧ GlobalTheory.RelBasis.IndepOn b p₁ p₂ ⊤ ∧ GlobalTheory.RelBasis.SpanOn b p₁ p₂ ⊤) → ∀ (T Y : Scheme.{0}) (q : T ⟶ Sp R) (p₁ : Y ⟶ T) (p₂ : Y ⟶ X), IsPullback p₂ p₁ p q → ∀ W : T.Opens, IsAffineOpen W → GlobalTheory.RelBasis.IndepOn b p₁ p₂ W ∧ GlobalTheory.RelBasis.SpanOn b p₁ p₂ W := by
   first | exact @GlobalTheory.RelBasis.indepOn_spanOn_of_affine | exact GlobalTheory.RelBasis.indepOn_spanOn_of_affine | (intros; apply GlobalTheory.RelBasis.indepOn_spanOn_of_affine <;> assumption)

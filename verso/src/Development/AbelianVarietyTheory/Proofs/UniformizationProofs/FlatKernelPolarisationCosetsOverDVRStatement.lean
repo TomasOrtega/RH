@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StabFlat.flat_of_isFinite | exact GlobalTheory.StabFlat.flat_of_isFinite | (intros; apply GlobalTheory.StabFlat.flat_of_isFinite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StabFlat.flat_of_isFinite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FFlatKernelPolarisationCosetsOverDVR.lean&line=235#L235)
 -/
 theorem _root_.GlobalTheory.T.flat_kernelPolarisation_cosets_over_DVR : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (B : Over (Spec (CommRingCat.of V))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom → ∀ (L : RigLB B) (_ : CubicalStr B L) (O : LB B.left), O.IsLB → (∃ u : LB.Gen (abelian₂ B O), u.IsGen) → ∀ (H : Over (Spec (CommRingCat.of V))) (j : H ⟶ B), IsClosedImmersion j.left → (∀ (T : Over (Spec (CommRingCat.of V))) (x : T ⟶ B), (∀ p : (T).left, ∃ U : (T).left.Opens, p ∈ U ∧ Triv ((LB.div (translDiff B L.L x) (O.pull (snd (T) B).left)).pull ((fst (T) B).left ⁻¹ᵁ U).ι)) ↔ ∃ y : T ⟶ H, y ≫ j = x) → IsFinite H.hom → Flat H.hom := by
   first | exact @GlobalTheory.StabFlat.flat_of_isFinite | exact GlobalTheory.StabFlat.flat_of_isFinite | (intros; apply GlobalTheory.StabFlat.flat_of_isFinite <;> assumption)

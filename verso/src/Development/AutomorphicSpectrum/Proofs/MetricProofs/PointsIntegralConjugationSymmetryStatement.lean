@@ -13,8 +13,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj | exact GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FPointsIntegralConjugationSymmetry.lean&line=186#L186)
 -/
 theorem _root_.GlobalTheory.T.points_integral_conjugation_symmetry : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ) (Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (L : Fin e → HermLine ι) (B B' : HermLine ι), IsArithVar P (e + 1) → IsGoodProj P Ψ → (∀ w, Ψ' (star w) = star (Ψ w)) → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsConjInvariantH (L j)) → B.a = 0 → IsSmoothHerm B → B'.a = 0 → IsSmoothHerm B' → (∀ z ∈ mcPts P, B'.h (star z) = B.h z) → IsGoodProj P Ψ' ∧ ptsIntegralAt P Ψ' (pot L) (logNorm B' 1) = ptsIntegralAt P Ψ (pot L) (logNorm B 1) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj | exact GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistKernel.twisted_kernel | exact GlobalTheory.TwistKernel.twisted_kernel | (intros; apply GlobalTheory.TwistKernel.twisted_kernel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistKernel.twisted_kernel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedKernelFiniteFlatSurjectiveOverBase.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.twistedKernel_finite_flat_surjective_over_base : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → ∀ (T : Over (Sp R)) [IsAffine T.left], LocallyOfFiniteType T.hom → ∀ N : LB (A ⊗ T).left, Fam A N → ∃ (H : Over (Sp R)) (h : H ⟶ A ⊗ T), IsClosedImmersion h.left ∧ IsFinite (h ≫ snd A T).left ∧ Flat (h ≫ snd A T).left ∧ Surjective (h ≫ snd A T).left ∧ ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ T), Same A (abelian₂ A L) N a t ↔ ∃ z : Y ⟶ H, z ≫ h = lift a t := by
   first | exact @GlobalTheory.TwistKernel.twisted_kernel | exact GlobalTheory.TwistKernel.twisted_kernel | (intros; apply GlobalTheory.TwistKernel.twisted_kernel <;> assumption)

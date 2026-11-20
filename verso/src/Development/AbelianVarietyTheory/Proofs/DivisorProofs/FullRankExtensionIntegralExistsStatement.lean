@@ -6,8 +6,10 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.exists_fullRk_fibre_integral_eq | exact GlobalTheory.FullRankCoinv.exists_fullRk_fibre_integral_eq | (intros; apply GlobalTheory.FullRankCoinv.exists_fullRk_fibre_integral_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullRankCoinv.exists_fullRk_fibre_integral_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFullRankExtensionIntegralExists.lean&line=173#L173)
 -/
 theorem _root_.GlobalTheory.T.full_rank_extension_integral_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ρ e d : ℕ)
     [MeasurableSpace (Matrix (Fin e) (Fin d) k)] [BorelSpace (Matrix (Fin e) (Fin d) k)]

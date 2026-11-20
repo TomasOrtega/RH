@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMean
 import Formalism.SharpRestriction.Divisibility.LatticeTransfer
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.MainNotions.WeightThresholdDefs Filter Topology Classical GlobalTheory.FlagPoly GlobalTheory.FlagAr GlobalTheory.Mean4
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4.volEq_and_slopeMean | exact GlobalTheory.Mean4.volEq_and_slopeMean | (intros; apply GlobalTheory.Mean4.volEq_and_slopeMean <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4.volEq_and_slopeMean` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqualVolumeAndSlopeMean.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.equal_volume_and_slope_mean : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), ∀ (Φ : ℝ → Fn Y) (C : ℝ), 2 < D.R.f * (Y.N - 1) → LimFam Φ → PolySize A Φ → Agree A → Degrees A → EqVol A → Propor Y → Lower Φ C → GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.VolEq Y ∧ GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.SlopeMean Y C := by
   first | exact @GlobalTheory.Mean4.volEq_and_slopeMean | exact GlobalTheory.Mean4.volEq_and_slopeMean | (intros; apply GlobalTheory.Mean4.volEq_and_slopeMean <;> assumption)

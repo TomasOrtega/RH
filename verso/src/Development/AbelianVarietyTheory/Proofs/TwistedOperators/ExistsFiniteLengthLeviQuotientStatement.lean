@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSubAug
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RkSubSuccLe
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaGLCover.layer_cover | exact GlobalTheory.ThetaGLCover.layer_cover | (intros; apply GlobalTheory.ThetaGLCover.layer_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaGLCover.layer_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFiniteLengthLeviQuotient.lean&line=548#L548)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_length_levi_quotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (χ : GL (Fin n) k →* ℂˣ), IsOpen {g | χ g = 1} → ∀ (ρ t : ℕ) (h : ρ + t = m),

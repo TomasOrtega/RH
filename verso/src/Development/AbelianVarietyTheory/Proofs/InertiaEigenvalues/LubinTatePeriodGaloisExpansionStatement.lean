@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfInAMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsKerPowDvd
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.AinfK GroundTheory.LocalField.FormalGroup GlobalTheory.AcrisK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LTOmega.main | exact GlobalTheory.LTOmega.main | (intros; apply GlobalTheory.LTOmega.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LTOmega.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLubinTatePeriodGaloisExpansion.lean&line=271#L271)
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_period_galois_expansion : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l), LTData K χ π z →
     ∃ ω : AK K, ω ≠ 0 ∧ thetaK K ω = 0 ∧ frobq K ω = inO K π * ω + ω ^ resCard K ∧

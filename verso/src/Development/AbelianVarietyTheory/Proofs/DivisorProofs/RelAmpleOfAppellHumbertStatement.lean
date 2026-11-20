@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LefschetzAmple.relAmple_of_isAH | exact GlobalTheory.LefschetzAmple.relAmple_of_isAH | (intros; apply GlobalTheory.LefschetzAmple.relAmple_of_isAH <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LefschetzAmple.relAmple_of_isAH` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRelAmpleOfAppellHumbert.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.rel_ample_of_appell_humbert : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

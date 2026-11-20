@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.inRCone_of_interior_linearOn' | exact GlobalTheory.PolFan.inRCone_of_interior_linearOn' | (intros; apply GlobalTheory.PolFan.inRCone_of_interior_linearOn' <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.inRCone_of_interior_linearOn'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FInRealConeCellOfLinearPieceThroughCellPoint.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.inRealCone_cell_of_linearPiece_through_cellPoint : ∀ {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] {m k : ℕ}
   (γ : Fin m → LinearMap.BilinForm ℤ X) (γ' : Fin k → LinearMap.BilinForm ℤ X), IsCell bar φ γ → (∀ i, γ' i ∈ balForms bar X) →

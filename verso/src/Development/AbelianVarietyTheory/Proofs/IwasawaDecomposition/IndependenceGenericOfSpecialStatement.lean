@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.LN GlobalTheory.TorRef
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndepFibre.indepAlong_generic | exact GlobalTheory.IndepFibre.indepAlong_generic | (intros; apply GlobalTheory.IndepFibre.indepAlong_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndepFibre.indepAlong_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIndependenceGenericOfSpecial.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.independence_generic_of_special : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (L : LB G.left) (N n : ℕ)
     (b : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk (𝟙 (Sp R))))) (K : Type) [Field K] (V : ValuationSubring K)

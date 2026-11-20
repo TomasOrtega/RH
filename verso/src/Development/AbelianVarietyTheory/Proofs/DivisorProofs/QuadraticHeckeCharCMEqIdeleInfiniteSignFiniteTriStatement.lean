@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaInfSign.quadChar_eq_infSign | exact GlobalTheory.EtaInfSign.quadChar_eq_infSign | (intros; apply GlobalTheory.EtaInfSign.quadChar_eq_infSign <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaInfSign.quadChar_eq_infSign` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuadraticHeckeCharCMEqIdeleInfiniteSignFiniteTri.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.quadraticHeckeCharCM_eq_ideleInfiniteSign_finiteTrivial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (b : Neutral.B1.Ideles (maximalRealSubfield E)),
     (∀ v, (b : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).2 v = 1) →

@@ -8,8 +8,10 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce | exact PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce`.
+/- English proof (citation)
+Apply `PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FTorusUniformisation%2FChowMahlerFamilies%2FTXgzChowMahlerE0reduce.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ball_average_fibre_count : ∀ (n e : ℕ) (S : Set (EuclideanSpace ℂ (Fin n))), IsScaleStable S → IsSigmaCompact S →
   ∀ T : ℝ≥0∞ → ℝ≥0∞, Measurable T →

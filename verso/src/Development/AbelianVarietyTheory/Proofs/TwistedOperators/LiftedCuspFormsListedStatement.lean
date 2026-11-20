@@ -12,8 +12,10 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StartCusp.lift_isCuspListed | exact GlobalTheory.StartCusp.lift_isCuspListed | (intros; apply GlobalTheory.StartCusp.lift_isCuspListed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StartCusp.lift_isCuspListed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLiftedCuspFormsListed.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.lifted_cusp_forms_listed : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), IsCuspListed (G := ch.G) ch.W.θ (.grid 0 0) (ch.cv.lift t y) := by
   first | exact @GlobalTheory.StartCusp.lift_isCuspListed | exact GlobalTheory.StartCusp.lift_isCuspListed | (intros; apply GlobalTheory.StartCusp.lift_isCuspListed <;> assumption)

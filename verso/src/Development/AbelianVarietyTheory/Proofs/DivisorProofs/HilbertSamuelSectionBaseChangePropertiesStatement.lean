@@ -10,8 +10,10 @@ open GlobalTheory.HSCore GlobalTheory.QCoh
 open GlobalTheory
 open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSShort.totExt_props | exact GlobalTheory.HSShort.totExt_props | (intros; apply GlobalTheory.HSShort.totExt_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSShort.totExt_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHilbertSamuelSectionBaseChangeProperties.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.hilbertSamuelSectionBaseChange_properties : ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (Λ₀ : ℝ) (E : Type) [Field E] [NumberField E] [Algebra F E], (∀ (m : ℕ) (v : Fin m → (sysOf X Λ₀).V X.T), LinearIndependent F v → LinearIndependent E fun i => totExt X.toGeo E (v i)) ∧ (∀ u x, shift (X.toGeo.baseChange E) (fun k => algebraMap F E (u k)) (totExt X.toGeo E x) = totExt X.toGeo E (shift X.toGeo u x)) ∧ ∀ j, Submodule.span E (totExt X.toGeo E '' (sysOf X Λ₀).V j) = LinearMap.range (incl (X.baseChange E) j) := by
   first | exact @GlobalTheory.HSShort.totExt_props | exact GlobalTheory.HSShort.totExt_props | (intros; apply GlobalTheory.HSShort.totExt_props <;> assumption)

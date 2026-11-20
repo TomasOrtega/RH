@@ -21,8 +21,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacShapeCl.closure_Sa_eq_matLat | exact GlobalTheory.VacShapeCl.closure_Sa_eq_matLat | (intros; apply GlobalTheory.VacShapeCl.closure_Sa_eq_matLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacShapeCl.closure_Sa_eq_matLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosureVanishingLatticeEqRowLatticeMatrices.lean&line=590#L590)
 -/
 theorem _root_.GlobalTheory.T.closure_vanishing_lattice_eq_row_lattice_matrices : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

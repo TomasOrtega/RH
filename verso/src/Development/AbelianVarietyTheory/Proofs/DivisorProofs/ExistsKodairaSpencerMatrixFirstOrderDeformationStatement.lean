@@ -10,8 +10,10 @@ open GlobalTheory.FlagTan (dimFlag psiSet TIx HIx VIx IsTanFrame IsDef IsVert KS
 open GlobalTheory.AllWt (exOf)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KSFam.ksFamily | exact GlobalTheory.KSFam.ksFamily | (intros; apply GlobalTheory.KSFam.ksFamily <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KSFam.ksFamily` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsKodairaSpencerMatrixFirstOrderDeformation.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_kodairaSpencerMatrix_firstOrderDeformation : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (hP : GlobalTheory.Published.AbelianDeRham) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (x' : Sp (DualNumber S) ⟶ Xo.X) (h1 : x' ≫ Xo.s = sOf c (DualNumber S))

@@ -10,8 +10,10 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFiniteComp.isGenFinite_comp | exact GlobalTheory.GenFiniteComp.isGenFinite_comp | (intros; apply GlobalTheory.GenFiniteComp.isGenFinite_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFiniteComp.isGenFinite_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenFiniteCompDegreeMul.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.gen_finite_comp_degree_mul : ∀ (T'' T' T : Scheme.{0}) [IsIntegral T''] [IsIntegral T'] [IsIntegral T] (ρ' : T'' ⟶ T') (ρ : T' ⟶ T) (d' d : ℕ), IsGenFinite ρ' d' → IsGenFinite ρ d → IsGenFinite (ρ' ≫ ρ) (d' * d) := by
   first | exact @GlobalTheory.GenFiniteComp.isGenFinite_comp | exact GlobalTheory.GenFiniteComp.isGenFinite_comp | (intros; apply GlobalTheory.GenFiniteComp.isGenFinite_comp <;> assumption)

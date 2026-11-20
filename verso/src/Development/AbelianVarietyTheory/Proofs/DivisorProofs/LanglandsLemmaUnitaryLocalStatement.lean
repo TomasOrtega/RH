@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockCentre
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JacRel.polyAt_leftTr_cuspComp_eq_zero | exact GlobalTheory.JacRel.polyAt_leftTr_cuspComp_eq_zero | (intros; apply GlobalTheory.JacRel.polyAt_leftTr_cuspComp_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JacRel.polyAt_leftTr_cuspComp_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLanglandsLemmaUnitaryLocal.lean&line=159#L159)
 -/
 theorem _root_.GlobalTheory.T.langlands_lemma_unitary_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

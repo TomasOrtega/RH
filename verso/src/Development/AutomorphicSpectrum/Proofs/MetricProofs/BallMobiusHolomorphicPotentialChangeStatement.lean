@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FBallMobiusHolomorphicPotentialChange.lean&line=291#L291)
 -/
 theorem _root_.GlobalTheory.T.ball_mobius_holomorphic_potential_change : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ), (∀ τ, IsSgU (u τ)) → DifferentiableOn ℂ (moebBall q u) (ballDom q) ∧ Set.MapsTo (moebBall q u) (ballDom q) (ballDom q) ∧ ∃ G : (Fin n → ℂ) → ℂ, DifferentiableOn ℂ G (ballDom q) ∧ ∀ t ∈ ballDom q, ballPot q (moebBall q u t) = ballPot q t + (G t).re := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb.moebBall_props <;> assumption)

@@ -23,8 +23,10 @@ open Filter Topology
 open GlobalTheory.ShFam GlobalTheory.ShFam.BdArc GlobalTheory.Toroidal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.affineOpen_injects_to_dense | exact GlobalTheory.affineOpen_injects_to_dense | (intros; apply GlobalTheory.affineOpen_injects_to_dense <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.affineOpen_injects_to_dense` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAffineOpenRingInjectsToRingMappingToDense.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.affineOpen_ring_injects_to_ring_mapping_to_dense : ∀ (X : Scheme.{0}) [IsReduced X] [IsLocallyNoetherian X] (U : X.Opens), Dense (U : Set X) → ∀ (W : X.Opens) (hW : IsAffineOpen W), ∃ (K : Type) (_ : CommRing K) (ρ : Γ(X, W) →+* K), Function.Injective ρ ∧ ⊤ ≤ (spMap ρ ≫ (show Sp Γ(X, W) ⟶ X from hW.fromSpec)) ⁻¹ᵁ U := by
   first | exact @GlobalTheory.affineOpen_injects_to_dense | exact GlobalTheory.affineOpen_injects_to_dense | (intros; apply GlobalTheory.affineOpen_injects_to_dense <;> assumption)

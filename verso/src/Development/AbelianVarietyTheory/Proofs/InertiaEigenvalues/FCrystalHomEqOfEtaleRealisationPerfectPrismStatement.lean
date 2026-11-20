@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.fHom_eq_of_realises | exact GlobalTheory.BSP.fHom_eq_of_realises | (intros; apply GlobalTheory.BSP.fHom_eq_of_realises <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.fHom_eq_of_realises` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFCrystalHomEqOfEtaleRealisationPerfectPrism.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.fCrystalHom_eq_of_etale_realisation_perfectPrism : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (T' : Type) [AddCommGroup T'] [Module ℤ_[l] T'] (ρ' : ↥(GK K) → (T' →ₗ[ℤ_[l]] T')) (M M' : FCrys l ↥(OL K)) (j' : M'.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T')), Realises K M' (ainfObj K) (ainfId K) T' ρ' j' → ∀ u u' : FHom M M', (∀ x, j' (u.u (ainfObj K) x) = j' (u'.u (ainfObj K) x)) → u = u' := by
   first | exact @GlobalTheory.BSP.fHom_eq_of_realises | exact GlobalTheory.BSP.fHom_eq_of_realises | (intros; apply GlobalTheory.BSP.fHom_eq_of_realises <;> assumption)

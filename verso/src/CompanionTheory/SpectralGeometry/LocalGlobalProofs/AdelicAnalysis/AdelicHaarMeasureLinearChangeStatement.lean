@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale | exact GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale | (intros; apply GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FAdelicHaarMeasureLinearChange.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.adelic_haar_measure_linear_change : ∀ (F : Type) [Field F] [NumberField F], ∀ [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι], (∀ g : Matrix ι ι F, g.det ≠ 0 → ∀ s : Set (ι → A F), MeasurableSet s → (Measure.pi fun _ : ι => lf) ((fun x => Bf g *ᵥ x) '' s) = ENNReal.ofReal (|((Algebra.norm ℚ g.det : ℚ) : ℝ)|⁻¹) * (Measure.pi fun _ : ι => lf) s) ∧ ∀ (a : (A F)ˣ) (s : Set (ι → A F)), MeasurableSet s → (Measure.pi fun _ : ι => lf) ((fun x => (a : A F) • x) '' s) = lf ((fun x => (a : A F) * x) '' Oh F) ^ Fintype.card ι * (Measure.pi fun _ : ι => lf) s := by
   first | exact @GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale | exact GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale | (intros; apply GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale <;> assumption)

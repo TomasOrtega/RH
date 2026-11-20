@@ -9,8 +9,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le | exact GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le | (intros; apply GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsAmpleTensorLbPowMonoOfGenerated.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.isAmple_tensor_lbPow_mono_of_generated : ∀ (S : Scheme.{0}) (L M : LB S) (N k : ℕ), L.IsLB → M.IsLB → GlobalTheory.IsGenerated (lbPow L N) → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow L (N * k)) M) → ∀ k', k ≤ k' → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens (lbPow L (N * k')) M) := by
   first | exact @GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le | exact GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le | (intros; apply GlobalTheory.AmpleTwistLarger.isAmpleLB_tens_lbPow_of_le <;> assumption)

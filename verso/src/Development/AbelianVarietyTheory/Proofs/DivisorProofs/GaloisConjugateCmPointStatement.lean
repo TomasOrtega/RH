@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjWeil.weil_transport | exact GlobalTheory.ConjWeil.weil_transport | (intros; apply GlobalTheory.ConjWeil.weil_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjWeil.weil_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisConjugateCmPoint.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.galois_conjugate_cm_point : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (t : (Af K)ˣ)
     (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)

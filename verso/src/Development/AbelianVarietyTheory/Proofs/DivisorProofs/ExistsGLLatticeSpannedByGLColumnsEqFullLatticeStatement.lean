@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwOrbLat.exists_lat_eq | exact GlobalTheory.TwOrbLat.exists_lat_eq | (intros; apply GlobalTheory.TwOrbLat.exists_lat_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwOrbLat.exists_lat_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGLLatticeSpannedByGLColumnsEqFullLattice.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_GL_latticeSpannedByGLColumns_eq_fullLattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E) (a : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K) (b : Module.Basis (Fin a) K.E B.A) (L : Submodule K.O B.A), GlobalTheory.UnitLemma.IsLat K.O K.E L → ∃ q : GLw a w, GlobalTheory.TwLat.lat e b q = L := by
   first | exact @GlobalTheory.TwOrbLat.exists_lat_eq | exact GlobalTheory.TwOrbLat.exists_lat_eq | (intros; apply GlobalTheory.TwOrbLat.exists_lat_eq <;> assumption)

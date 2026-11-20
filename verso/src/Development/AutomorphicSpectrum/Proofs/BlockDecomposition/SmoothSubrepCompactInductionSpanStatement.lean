@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSubrepCom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
 open GlobalTheory.PRep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps | exact GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps | (intros; apply GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSmoothSubrepCompactInductionSpan.lean&line=159#L159)
 -/
 theorem _root_.GlobalTheory.T.smooth_subrep_compact_induction_span : ∀ {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) (ρ : Representation ℂ H W)

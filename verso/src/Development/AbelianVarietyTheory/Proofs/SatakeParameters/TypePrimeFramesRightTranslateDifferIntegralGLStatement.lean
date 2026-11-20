@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartPointRightT
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.MainNotions Formalism.L2.Ker GlobalTheory.TwU GlobalTheory.TwV GlobalTheory.TwTop GlobalTheory.TopStep
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevFrame.frame_lev | exact GlobalTheory.LevFrame.frame_lev | (intros; apply GlobalTheory.LevFrame.frame_lev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevFrame.frame_lev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTypePrimeFramesRightTranslateDifferIntegralGL.lean&line=197#L197)
 -/
 theorem _root_.GlobalTheory.T.type_prime_frames_right_translate_differ_integral_GL : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (κ : ((St i hi).K β).lev.U),

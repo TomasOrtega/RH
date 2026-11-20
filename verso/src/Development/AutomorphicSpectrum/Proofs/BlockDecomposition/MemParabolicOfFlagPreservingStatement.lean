@@ -25,8 +25,10 @@ open Matrix
 open scoped Pointwise
 open GlobalTheory.SiegelSet GlobalTheory.CompanionTheory.RegInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RegInt.mem_parRat_frameFlag_firstCols | exact GlobalTheory.CompanionTheory.RegInt.mem_parRat_frameFlag_firstCols | (intros; apply GlobalTheory.CompanionTheory.RegInt.mem_parRat_frameFlag_firstCols <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RegInt.mem_parRat_frameFlag_firstCols` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMemParabolicOfFlagPreserving.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.mem_parabolic_of_flag_preserving : ∀ (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (j : Fin r) (δ : GF V),

@@ -17,8 +17,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DivSpread.dvd_everywhere | exact GlobalTheory.DivSpread.dvd_everywhere | (intros; apply GlobalTheory.DivSpread.dvd_everywhere <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DivSpread.dvd_everywhere` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleSectionDvdEverywhereSmoothConnectedFib.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.lineBundle_section_dvd_everywhere_smooth_connected_fibres : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (X : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of R)), Smooth p → GeometricallyConnected p → ∀ (e : Spec (CommRingCat.of R) ⟶ X), e ≫ p = 𝟙 _ → ∀ (L : LB X), L.IsLB → ∀ (s : LB.Sec L) (q : R), q ≠ 0 → (∀ (x : X), p x = closedPoint R → ∀ j, x ∈ L.U j → ∃ t, gs (𝟙 X) x (L.U j) (s.f j) = cst p x q * t) → ∀ (x : X) j, x ∈ L.U j → ∃ t, gs (𝟙 X) x (L.U j) (s.f j) = cst p x q * t := by
   first | exact @GlobalTheory.DivSpread.dvd_everywhere | exact GlobalTheory.DivSpread.dvd_everywhere | (intros; apply GlobalTheory.DivSpread.dvd_everywhere <;> assumption)

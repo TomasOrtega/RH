@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr | exact GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr | (intros; apply GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusSplitting%2FCardMulLeAddValEtaExpr.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.card_mul_le_val_etaExpr_of_le_sum_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (k : ℕ) [Finite (LevGrp Dw k)] (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (xs : J → Fin n → LatMod Dw k) (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (w : LatMod Dw k → F) (q : ℚ), (∀ (g : LevGrp Dw k) j, (q : WithTop ℚ) ≤ ∑ b, v (w (g (xs j b)))) → (((Nat.card (LevGrp Dw k) : ℚ) * q : ℚ) : WithTop ℚ) ≤ v (etaExpr k cf xs w) := by
   first | exact @GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr | exact GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr | (intros; apply GlobalTheory.EtaVal.card_mul_le_addVal_etaExpr <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsL2OnDiag
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory NumberField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero | exact GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero | (intros; apply GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConstantAbelianSchemeThetaDegreeZero.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.constant_abelian_scheme_theta_degree_zero : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (K : Type) [Field K] [NumberField K] (E : PPAS (Sp (𝓞 K))), E.HasTheta → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) [IsIntegral Y], IsRegSurf p → ∀ q : Y ⟶ Sp (𝓞 K), ∃ Q : PPAS Y, Q.g = E.g ∧ Q.HasTheta ∧ Q.degOmega p = 0 ∧ Q.IsCh2Omega p 0 := by
   first | exact @GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero | exact GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero | (intros; apply GlobalTheory.PPAS.exists_pull_ringOfIntegers_ch2Omega_zero <;> assumption)

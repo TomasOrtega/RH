@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicBumpTest.exists_nonneg_test | exact GlobalTheory.AdelicBumpTest.exists_nonneg_test | (intros; apply GlobalTheory.AdelicBumpTest.exists_nonneg_test <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdelicBumpTest.exists_nonneg_test` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonnegAdelicSchwartzBumpTest.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_nonneg_adelicSchwartz_bump_test : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (U : Set (κ → AF F)), U ∈ nhds 0 →
     ∃ Φ ∈ schA F κ, Continuous Φ ∧ (∀ x, Φ x ≠ 0 → x ∈ U) ∧ (∀ x, (Φ x).im = 0 ∧ 0 ≤ (Φ x).re) ∧ Φ 0 = 1 := by

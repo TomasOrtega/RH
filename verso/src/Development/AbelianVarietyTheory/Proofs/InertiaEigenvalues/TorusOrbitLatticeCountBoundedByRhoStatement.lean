@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 open GlobalTheory.UnitLemma Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusOrbitLat.orbit_count | exact GlobalTheory.TorusOrbitLat.orbit_count | (intros; apply GlobalTheory.TorusOrbitLat.orbit_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusOrbitLat.orbit_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTorusOrbitLatticeCountBoundedByRho.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.torus_orbit_lattice_count_bounded_by_rho : ∀ (K : UQ) (B : InvAlg K) (L : Submodule K.O B.A), stabLat K.O L ⊓ B.T ≤ intUnits K.O B.A → (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) ≠ 0 → ∀ a : K.O, (∀ j : ℕ, 0 < B.rho (algebraMap K.O B.A a ^ j)) → ∀ m k : ℕ, m ≤ k → (∀ y : B.A, IsIntegral K.O y → algebraMap K.O B.A a ^ m * y ∈ L) → (∀ y ∈ L, IsIntegral K.O (algebraMap K.O B.A a ^ m * y)) → Finite {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ∧ (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) * B.rho (algebraMap K.O B.A a ^ (k - m)) ≤ Nat.card {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ∧ Nat.card {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ≤ (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) * B.rho (algebraMap K.O B.A a ^ (k + m)) := by
   first | exact @GlobalTheory.TorusOrbitLat.orbit_count | exact GlobalTheory.TorusOrbitLat.orbit_count | (intros; apply GlobalTheory.TorusOrbitLat.orbit_count <;> assumption)

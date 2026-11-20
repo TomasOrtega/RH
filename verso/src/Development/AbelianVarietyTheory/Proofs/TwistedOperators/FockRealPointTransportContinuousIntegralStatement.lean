@@ -7,8 +7,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.FockTransl
 open Formalism.L2.Ker (VCx DVar derivAt0)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockTransport.fockPt_transport | exact GlobalTheory.FockTransport.fockPt_transport | (intros; apply GlobalTheory.FockTransport.fockPt_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockTransport.fockPt_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFockRealPointTransportContinuousIntegral.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.fockRealPoint_transport_continuous_integral : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T), Continuous (fockPt σ A B) ∧ (∀ w : WO S T, w.map (finPart D) = 0 → ∃ z, fockPt σ A B z = w) ∧ ∀ g : VCx D.what₂.Tau S.rank T.rank → ℂ, Integrable g → ∃ (m : Measure (WO S T)) (α : WO S T → ℂ), SFinite m ∧ Integrable α m ∧ ∀ H : WO S T → ℂ, ∫ w, α w * H w ∂m = ∫ z, g z * H (fockPt σ A B z) := by
   first | exact @GlobalTheory.FockTransport.fockPt_transport | exact GlobalTheory.FockTransport.fockPt_transport | (intros; apply GlobalTheory.FockTransport.fockPt_transport <;> assumption)

@@ -6,8 +6,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DistRel.thURel_of_fullTie | exact GlobalTheory.DistRel.thURel_of_fullTie | (intros; apply GlobalTheory.DistRel.thURel_of_fullTie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DistRel.thURel_of_fullTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUniversalTwistedSeriesDistributionOfCompatibilit.lean&line=383#L383)
 -/
 theorem _root_.GlobalTheory.T.universalTwistedSeriesDistribution_of_compatibility : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd → Laws hρ rd → ThURel D.nexp := by
   first | exact @GlobalTheory.DistRel.thURel_of_fullTie | exact GlobalTheory.DistRel.thURel_of_fullTie | (intros; apply GlobalTheory.DistRel.thURel_of_fullTie <;> assumption)

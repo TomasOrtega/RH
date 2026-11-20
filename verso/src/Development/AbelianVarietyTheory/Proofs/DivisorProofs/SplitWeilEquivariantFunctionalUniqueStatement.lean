@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetEqv.OpenPart.vanish_of_vanish_on_corner_zero | exact GlobalTheory.DetEqv.OpenPart.vanish_of_vanish_on_corner_zero | (intros; apply GlobalTheory.DetEqv.OpenPart.vanish_of_vanish_on_corner_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetEqv.OpenPart.vanish_of_vanish_on_corner_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitWeilEquivariantFunctionalUnique.lean&line=325#L325)
 -/
 theorem _root_.GlobalTheory.T.split_weil_equivariant_functional_unique : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), GlobalTheory.DetEqv.VanishAt k n → ∀ (Y : Type) [TopologicalSpace Y] (m : ℕ), n < m →
     ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) → ∀ L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k) →ₗ[ℂ] ℂ,

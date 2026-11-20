@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.jacGrp_split_inf_fin | exact GlobalTheory.jacGrp_split_inf_fin | (intros; apply GlobalTheory.jacGrp_split_inf_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.jacGrp_split_inf_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFourierJacobiGroupSplitRealFinite.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.fourierJacobiGroup_split_real_finite : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ), ∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b ∈ jacGrp d → a ∈ jacGrp d ∧ b ∈ jacGrp d := by
   first | exact @GlobalTheory.jacGrp_split_inf_fin | exact GlobalTheory.jacGrp_split_inf_fin | (intros; apply GlobalTheory.jacGrp_split_inf_fin <;> assumption)

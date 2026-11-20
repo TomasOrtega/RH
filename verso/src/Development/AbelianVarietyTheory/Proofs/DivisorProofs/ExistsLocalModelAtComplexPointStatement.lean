@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.exists_locModel_at_point | exact GlobalTheory.FieldPair.exists_locModel_at_point | (intros; apply GlobalTheory.FieldPair.exists_locModel_at_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.exists_locModel_at_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLocalModelAtComplexPoint.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_localModel_at_complexPoint : ∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.EssFiniteType ℂ A] (ε : A →ₐ[ℂ] ℂ),
   ∃ T : Subring (FractionRing A), IsLocModel (algebraMap ℂ (FractionRing A)) T ∧

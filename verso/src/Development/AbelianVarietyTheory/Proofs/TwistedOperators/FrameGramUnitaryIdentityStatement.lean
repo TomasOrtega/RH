@@ -27,8 +27,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinTransJet.fock_jets_heisO_fin | exact GlobalTheory.FinTransJet.fock_jets_heisO_fin | (intros; apply GlobalTheory.FinTransJet.fock_jets_heisO_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinTransJet.fock_jets_heisO_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFrameGramUnitaryIdentity.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.frame_gram_unitary_identity : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) →
     ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)

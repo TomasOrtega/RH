@@ -15,8 +15,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareSectionWeightZero.main | exact GlobalTheory.SquareSectionWeightZero.main | (intros; apply GlobalTheory.SquareSectionWeightZero.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareSectionWeightZero.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsBundleSquareSectionWeightZeroNonzero.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_bundleSquare_section_weightZero_nonzero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), ∃ (σ : H0 U.LG.L 2) (f : ∀ α : D.toPre.X, D.toPre.SecB 2 α), (∀ e : ℕ, U.ExpandsAt e 2 σ f) ∧ ¬ ∀ j, (f 0).f j = 0 := by
   first | exact @GlobalTheory.SquareSectionWeightZero.main | exact GlobalTheory.SquareSectionWeightZero.main | (intros; apply GlobalTheory.SquareSectionWeightZero.main <;> assumption)

@@ -11,8 +11,10 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.CenTheta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one | exact GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNormLocalCentralScalarsEqOne.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.norm_local_central_scalars_eq_one : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok → ∀ (a : (Qv v)ˣ), ‖omW m a‖ = 1 ∧ ‖om0 m a‖ = 1 := by
   first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one | exact GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_central_scalars_eq_one <;> assumption)

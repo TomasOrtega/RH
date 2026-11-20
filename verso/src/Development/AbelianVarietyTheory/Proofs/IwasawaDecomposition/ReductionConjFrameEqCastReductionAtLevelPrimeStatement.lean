@@ -9,8 +9,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.LiftBrg.ActQ.redZ_eq_castGL_redFn | exact GlobalTheory.Mem.R3.LiftBrg.ActQ.redZ_eq_castGL_redFn | (intros; apply GlobalTheory.Mem.R3.LiftBrg.ActQ.redZ_eq_castGL_redFn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.LiftBrg.ActQ.redZ_eq_castGL_redFn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FReductionConjFrameEqCastReductionAtLevelPrime.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.reduction_conj_frame_eq_cast_reduction_at_level_prime : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), LevOf X I U L →

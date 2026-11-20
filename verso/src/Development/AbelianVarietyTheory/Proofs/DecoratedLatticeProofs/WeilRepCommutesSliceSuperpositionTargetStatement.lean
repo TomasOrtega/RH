@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target | exact GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target | (intros; apply GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilRepCommutesSliceSuperpositionTarget.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.weilRep_commutes_slice_superposition_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (T A B S : HSp D) (o : OrthDec T A B) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om S A), IsWeilDatumO ψ S A χ χ' om → ∀ (F : WO S T → ℂ), IsThetaFunO ψ S T F → ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) (k : Ω → WO S B) (a : Ω → ℂ), Measurable k → Integrable a μ → ∀ p, IsThetaFunO ψ S T (fun x => om p (fun u => F ((o.resT S).symm (u, (o.resT S x).2))) (o.resT S x).1) ∧ ∀ u₀, om p (fun u => ∫ w, a w * F ((o.resT S).symm (u, k w)) ∂μ) u₀ = ∫ w, a w * om p (fun u => F ((o.resT S).symm (u, k w))) u₀ ∂μ := by
   first | exact @GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target | exact GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target | (intros; apply GlobalTheory.SliceSumTarget.weil_comm_sliceSum_target <;> assumption)

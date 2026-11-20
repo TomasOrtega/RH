@@ -17,8 +17,10 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial | exact GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial | (intros; apply GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsogenyTorsionGeneratorPower.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.isogeny_torsion_generator_power : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB →
     ∀ (P : Out.PolAV (Sp ℂ)) (ψ : A ⟶ P.A) (ρ : P.A ⟶ A) (N : ℕ), IsMonHom ψ → IsMonHom ρ →

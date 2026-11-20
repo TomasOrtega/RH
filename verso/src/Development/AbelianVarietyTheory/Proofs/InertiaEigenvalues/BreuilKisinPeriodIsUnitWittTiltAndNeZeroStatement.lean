@@ -6,8 +6,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.isUnit_inclW_of_isPer | exact GlobalTheory.BSP.isUnit_inclW_of_isPer | (intros; apply GlobalTheory.BSP.isUnit_inclW_of_isPer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.isUnit_inclW_of_isPer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBreuilKisinPeriodIsUnitWittTiltAndNeZero.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → IsUnit (inclW l τ) ∧ bk.iA τ ≠ 0 ∧ τ ≠ 0 ∧ ∀ g : GQ l, IsUnit (inclW l (Per.σA g τ)) := by
   first | exact @GlobalTheory.BSP.isUnit_inclW_of_isPer | exact GlobalTheory.BSP.isUnit_inclW_of_isPer | (intros; apply GlobalTheory.BSP.isUnit_inclW_of_isPer <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftGaps.lift_gaps | exact GlobalTheory.LiftGaps.lift_gaps | (intros; apply GlobalTheory.LiftGaps.lift_gaps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftGaps.lift_gaps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightAntitoneBoundary.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.weight_antitone_boundary : Size → Covers fun Fm x _ ι p i Y PP _ => 1 ≤ (dat p i).p ∧ ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), (∀ τ, Antitone (la τ)) ∧ ∀ τ (a b : Fin ((dat p i).p + (dat p i).q)), (a : ℕ) + 1 = (dat p i).p → (b : ℕ) = (dat p i).p → (GlobalTheory.RefSum.nCol (dat p i) : ℤ) + 1 ≤ la τ a - la τ b := by
   first | exact @GlobalTheory.LiftGaps.lift_gaps | exact GlobalTheory.LiftGaps.lift_gaps | (intros; apply GlobalTheory.LiftGaps.lift_gaps <;> assumption)

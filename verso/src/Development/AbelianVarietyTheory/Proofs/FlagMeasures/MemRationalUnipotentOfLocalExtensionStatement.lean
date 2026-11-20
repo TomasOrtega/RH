@@ -12,8 +12,10 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocReflect.mem_nrat_of_ext | exact GlobalTheory.LocReflect.mem_nrat_of_ext | (intros; apply GlobalTheory.LocReflect.mem_nrat_of_ext <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocReflect.mem_nrat_of_ext` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMemRationalUnipotentOfLocalExtension.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.mem_rationalUnipotent_of_local_extension : ∀ (D : D7) (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p), GlobalTheory.LocOver.Ext p γ g → g ∈ NU (locH Z p) (scaled Z p (frame F)) → γ ∈ NRat F := by
   first | exact @GlobalTheory.LocReflect.mem_nrat_of_ext | exact GlobalTheory.LocReflect.mem_nrat_of_ext | (intros; apply GlobalTheory.LocReflect.mem_nrat_of_ext <;> assumption)

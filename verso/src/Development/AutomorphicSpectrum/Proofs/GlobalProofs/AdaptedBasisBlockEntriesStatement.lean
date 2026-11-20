@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Published GlobalTheory.Published.AutFin GlobalTheory.StdPar GlobalTheory.ThK.SmoothLev GlobalTheory.CompanionTheory.Hypotheses₂.ConstFin GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart
 open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd | exact GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd | (intros; apply GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FAdaptedBasisBlockEntries.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.block_embedding_adapted_basis : ∀ (D : D7) [IsTotallyComplex D.host.E] (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),

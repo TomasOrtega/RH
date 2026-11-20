@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.induced_endo_compat | exact GlobalTheory.GroupBplus.Aff.induced_endo_compat | (intros; apply GlobalTheory.GroupBplus.Aff.induced_endo_compat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.induced_endo_compat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivisibleModelActionPolarization.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.p_divisible_model_action_polarization : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (G₀ : Over (Sp K)) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (spMap (algebraMap R K)) F → ∀ (GG : PDivGroup p R) (θ : TorsionMap G GG), IsModel K θ → ∀ (GG₀ : PDivGroup p K) (θ₀ : TorsionMap G₀ GG₀) (e : GG₀ ≅ GG.baseChange K), GenCompat F θ θ₀ e → (∀ (n : ℕ) (B : Type) [CommRing B] [Algebra K B], Function.Bijective (θ₀.pt n B)) → ∀ (f : G ⟶ G) (f₀ : G₀ ⟶ G₀) [IsMonHom f₀] (g : GG ⟶ GG) (g₀ : GG₀ ⟶ GG₀), f₀.left ≫ F = F ≫ f.left → θ.Intertwines f g → θ₀.Intertwines f₀ g₀ → g₀ ≫ e.hom = e.hom ≫ PDivGroup.baseChangeMap K g := by
   first | exact @GlobalTheory.GroupBplus.Aff.induced_endo_compat | exact GlobalTheory.GroupBplus.Aff.induced_endo_compat | (intros; apply GlobalTheory.GroupBplus.Aff.induced_endo_compat <;> assumption)

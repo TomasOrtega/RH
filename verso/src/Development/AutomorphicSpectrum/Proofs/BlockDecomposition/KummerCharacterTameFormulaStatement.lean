@@ -13,8 +13,10 @@ import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.TransportA
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate
 open GroundTheory.ProfCoh GroundTheory.LocalField ValuativeRel CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup | exact GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup | (intros; apply GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FKummerCharacterTameFormula.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.kummer_character_tame_formula : ∀ (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] (n : ℕ) [NeZero n] (ζ y : Ωˣ) (a : Kˣ), ζ ^ n = 1 → ord (a : K) = 1 → (y : Ω) ^ n = algebraMap K Ω a → ∀ (κ χ : Gal(Ω/K) → ZMod n), (∀ g : Gal(Ω/K), g (y : Ω) = (ζ : Ω) ^ (κ g).val * y) → (∀ g h, χ (g * h) = χ g + χ h) → Continuous χ → (∀ g, unramifiedDegree K Ω g = Multiplicative.ofAdd 1 → χ g = 1) → ∀ x : cocycles (galUnits.{0} K Ω) 2, (∀ s : Fin 2 → Gal(Ω/K), cochainOf _ (cocycleι _ 2 x) s = Additive.ofMul (ζ ^ (κ (s 0) * χ (s 1)).val)) → brauerInv K Ω (cohomologyπ _ 2 x) = - zmodToQZ n 1 := by
   first | exact @GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup | exact GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup | (intros; apply GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup <;> assumption)

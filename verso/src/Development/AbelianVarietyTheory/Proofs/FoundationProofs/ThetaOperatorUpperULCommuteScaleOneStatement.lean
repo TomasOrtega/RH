@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThHeckeU.isThB_act_heckeU | exact GlobalTheory.ThHeckeU.isThB_act_heckeU | (intros; apply GlobalTheory.ThHeckeU.isThB_act_heckeU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThHeckeU.isThB_act_heckeU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FThetaOperatorUpperULCommuteScaleOne.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.thetaOperator_upperU_l_commute_scale_one : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w d : ℕ), Algebra.IsAlgebraic ℚ Ω → (∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs) → l ≠ 2 → 1 ≤ N → Odd w → (l : Ω) ∈ A.nonunits → d.Coprime N → ¬ l ∣ N → ∀ b : X.Fn l, b ∈ X.B N l w → ∀ φ : HahnSeries ℚ Ω,
   IsLat 1 φ →

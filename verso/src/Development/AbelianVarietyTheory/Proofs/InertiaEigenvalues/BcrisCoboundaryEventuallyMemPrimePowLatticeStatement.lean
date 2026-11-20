@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CocycleCont.cont_at_one | exact GlobalTheory.CocycleCont.cont_at_one | (intros; apply GlobalTheory.CocycleCont.cont_at_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CocycleCont.cont_at_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBcrisCoboundaryEventuallyMemPrimePowLattice.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.bcrisCoboundary_eventually_mem_prime_pow_lattice : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (LL : FinExt l) (T : QLat LL) (b : TW (OB l ↥(OL LL)) T) (c : Gl l → T.V), IsCobOf (sQ l) T b c → ∀ m : ℕ, ∀ᶠ g in nhds (1 : Gl l), ∃ x ∈ T.L.T, c g = ((l : ↥LL.1) ^ m) • x := by
   first | exact @GlobalTheory.CocycleCont.cont_at_one | exact GlobalTheory.CocycleCont.cont_at_one | (intros; apply GlobalTheory.CocycleCont.cont_at_one <;> assumption)

@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.sec_eq_spanBy_N | exact GlobalTheory.Desc.sec_eq_spanBy_N | (intros; apply GlobalTheory.Desc.sec_eq_spanBy_N <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.sec_eq_spanBy_N` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCartierMultipleGlobalSectionsEqSpanRegularLattic.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.cartierMultipleGlobalSections_eq_span_regularLattice : ∀ (σ : Setup) (k : ℕ), Sec σ.D k = spanBy (GlobalTheory.Desc.cst σ.A.hom) (σ.N k) := by
   first | exact @GlobalTheory.Desc.sec_eq_spanBy_N | exact GlobalTheory.Desc.sec_eq_spanBy_N | (intros; apply GlobalTheory.Desc.sec_eq_spanBy_N <;> assumption)

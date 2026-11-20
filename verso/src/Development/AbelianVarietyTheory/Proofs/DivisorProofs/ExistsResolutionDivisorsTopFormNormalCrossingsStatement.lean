@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 open GlobalTheory.Discrepancy GlobalTheory.EtaleKlt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResPairSupp.exists_resolution_supp | exact GlobalTheory.ResPairSupp.exists_resolution_supp | (intros; apply GlobalTheory.ResPairSupp.exists_resolution_supp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResPairSupp.exists_resolution_supp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsResolutionDivisorsTopFormNormalCrossings.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.exists_resolution_divisors_topForm_normalCrossings : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n)

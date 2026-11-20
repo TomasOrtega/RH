@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoFacCore.exists_skew_cayley | exact GlobalTheory.TwoFacCore.exists_skew_cayley | (intros; apply GlobalTheory.TwoFacCore.exists_skew_cayley <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoFacCore.exists_skew_cayley` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSkewCayleyInertPlaceStabilizer.lean&line=292#L292)
 -/
 theorem _root_.GlobalTheory.T.exists_skew_cayley_inertPlace_stabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Dept
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport | exact GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport | (intros; apply GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsSubquotientJacquetModuleOfSupercuspidalSup.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.exists_subquotient_jacquetModule_of_supercuspidalSupport : GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (x : IrrGL k) (s : Multiset (IrrGL k)), HasSupport x.rep s → ∃ (r : ℕ) (u : Fin r → IrrGL k) (e : (Σ a, Fin (u a).1) ≃ Fin x.1), (∀ a, u a ∈ s) ∧ IsSubquotient (piTensor fun a => (u a).rep) (jac e x.rep) := by
   first | exact @GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport | exact GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport | (intros; apply GlobalTheory.CuspQuot.exists_isSubquotient_jac_of_hasSupport <;> assumption)

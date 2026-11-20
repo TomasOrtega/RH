@@ -14,8 +14,10 @@ open GlobalTheory.LFun (IsSplitChart IsInertChart KGL)
 open GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitLatIdx.latIndex_split | exact GlobalTheory.SplitLatIdx.latIndex_split | (intros; apply GlobalTheory.SplitLatIdx.latIndex_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitLatIdx.latIndex_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelfDualLatticeIndexSplitPlaceEqMul.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.selfDualLatticeIndex_splitPlace_eq_mul : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (h' : w'.under (𝓞 D.host.F) = v), IsSplit (E := D.host.E) v → w ≠ w' → ∀ g : GlobalTheory.FinZeta.Gv T v, latIndex T (GlobalTheory.FinZeta.embV T v g) = GlobalTheory.LocKerMod.idxAt T w h g * GlobalTheory.LocKerMod.idxAt T w' h' g := by
   first | exact @GlobalTheory.SplitLatIdx.latIndex_split | exact GlobalTheory.SplitLatIdx.latIndex_split | (intros; apply GlobalTheory.SplitLatIdx.latIndex_split <;> assumption)

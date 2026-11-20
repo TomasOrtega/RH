@@ -5,8 +5,10 @@ import Formalism.SatakeDualWeyl.Statement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMatLat
 open Polynomial Matrix GlobalTheory.LatOrb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatOrb.exists_unitary_matLat_eq | exact GlobalTheory.LatOrb.exists_unitary_matLat_eq | (intros; apply GlobalTheory.LatOrb.exists_unitary_matLat_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatOrb.exists_unitary_matLat_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryAdjoinLatticeImageEq.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_adjoin_lattice_image_eq : ∀ {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K] [Algebra O K] [IsFractionRing O K]

@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjSpace GlobalTheory.CompanionTheory.Ar.BaseZ GlobalTheory.CompanionTheory.Ar.BGS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range | exact GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FSheetIsOpenEmbeddingRange.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.sheet_isOpenEmbedding_range : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ), Topology.IsOpenEmbedding (sheet t τ : CxPts p σ → CxPts t τ) ∧ Set.range (sheet t τ : CxPts p σ → CxPts t τ) = {y | emb p y = σ} := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range | exact GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.Sheet.isOpenEmbedding_and_range <;> assumption)

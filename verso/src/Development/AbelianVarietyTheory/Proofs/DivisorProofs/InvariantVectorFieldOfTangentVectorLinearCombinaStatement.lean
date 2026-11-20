@@ -15,8 +15,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Heat.InvComb.isInv_comb | exact GlobalTheory.Heat.InvComb.isInv_comb | (intros; apply GlobalTheory.Heat.InvComb.isInv_comb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Heat.InvComb.isInv_comb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantVectorFieldOfTangentVectorLinearCombina.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.invariant_vectorField_of_tangent_vector_linear_combination : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g : ℕ) (w : Fin g → TanM (𝟙 (Sp R)) G) (e : Fin g → Fld G.left), (∀ c, IsInv G (w c) (e c)) → ∀ a : Fin g → R, IsInv G (∑ c, a c • w c) (fun O f => ∑ c, constFn G.hom O (a c) * e c O f) := by
   first | exact @GlobalTheory.Heat.InvComb.isInv_comb | exact GlobalTheory.Heat.InvComb.isInv_comb | (intros; apply GlobalTheory.Heat.InvComb.isInv_comb <;> assumption)

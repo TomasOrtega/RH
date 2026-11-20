@@ -22,8 +22,10 @@ open Formalism.IndefR.Mult IsDedekindDomain NumberField MeasureTheory GlobalTheo
 open scoped TensorProduct ComplexConjugate GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem | exact GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem | (intros; apply GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FExistsSplitPlaceOutside.lean&line=176#L176)
 -/
 theorem _root_.GlobalTheory.T.exists_split_place_outside : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois ℚ E] (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)), ∃ v ∉ S, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SplitsFully E v ∧ Nonempty (E →ₐ[F] Fv F v) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem | exact GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem | (intros; apply GlobalTheory.CompanionTheory.Ar.RT.exists_splitsFully_notMem <;> assumption)

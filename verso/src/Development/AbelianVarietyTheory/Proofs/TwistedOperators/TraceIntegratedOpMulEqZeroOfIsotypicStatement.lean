@@ -27,8 +27,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic | exact GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic | (intros; apply GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTraceIntegratedOpMulEqZeroOfIsotypic.lean&line=161#L161)
 -/
 theorem _root_.GlobalTheory.T.trace_integratedOp_mul_eq_zero_of_isotypic : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) (f : G → ℂ), Integrable f μ → ∀ (X : Type) [NormedAddCommGroup X] [InnerProductSpace ℂ X] [CompleteSpace X] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (δ : G →* (X →L[ℂ] X)) (π : G →* (H →L[ℂ] H)), IsIrrUnitary δ → IsUnitaryRep π → GlobalTheory.AutMult.IsIsotypic δ π → ∀ [SecondCountableTopology G] (Q : H →L[ℂ] H), (∀ g, Q * π g = π g * Q) → HasTrace (repOp δ μ f) 0 → IsTraceClass (repOp π μ f * Q) → trace (repOp π μ f * Q) = 0 := by
   first | exact @GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic | exact GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic | (intros; apply GlobalTheory.trace_repOp_mul_eq_zero_of_isIsotypic <;> assumption)

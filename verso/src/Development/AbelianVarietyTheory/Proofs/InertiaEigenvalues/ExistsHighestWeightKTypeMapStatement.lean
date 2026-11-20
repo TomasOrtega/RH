@@ -22,8 +22,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KHwExist.exists_kHwMap | exact GlobalTheory.KHwExist.exists_kHwMap | (intros; apply GlobalTheory.KHwExist.exists_kHwMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KHwExist.exists_kHwMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsHighestWeightKTypeMap.lean&line=282#L282)
 -/
 theorem _root_.GlobalTheory.T.exists_highest_weight_K_type_map : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (W : Type) [AddCommGroup W] [Module ℂ W] (T : Submodule ℂ (W →ₗ[ℂ] PolF D m n)), FiniteDimensional ℂ T → T ≠ ⊥ → (∀ ψ ∈ T, ∀ (τ : D.what₂.Tau) (a b : Fin m), GlobalTheory.LowestKType.Cpt w τ a b → GlobalTheory.LowestKType.kop w τ a b ∘ₗ ψ ∈ T) → ∃ ψ ∈ T, ψ ≠ 0 ∧ GlobalTheory.LowestKType.IsKHwMap w ψ := by
   first | exact @GlobalTheory.KHwExist.exists_kHwMap | exact GlobalTheory.KHwExist.exists_kHwMap | (intros; apply GlobalTheory.KHwExist.exists_kHwMap <;> assumption)

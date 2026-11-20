@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowLift.mem_jacGrp_of_hasLoc | exact GlobalTheory.RowLift.mem_jacGrp_of_hasLoc | (intros; apply GlobalTheory.RowLift.mem_jacGrp_of_hasLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowLift.mem_jacGrp_of_hasLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemFourierJacobiGroupOfLocalLatticeMatrices.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.mem_fourierJacobiGroup_of_local_lattice_matrices : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t j σ, j ∈ idx D → ∀ (hj : j ≤ D.R.m) (hj' : j < D.R.m) (hσ : D.R.m - 1 - j = 2 * σ),
     1 ≤ σ → ∀ (r : GA D (ch.G.V (.grid D.R.m j))) (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),

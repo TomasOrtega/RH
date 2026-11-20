@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermCongAlmostAll.eventually_congr_int | exact GlobalTheory.HermCongAlmostAll.eventually_congr_int | (intros; apply GlobalTheory.HermCongAlmostAll.eventually_congr_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermCongAlmostAll.eventually_congr_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEventuallyHermitianIntegrallyCongruentCmExt.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.eventually_hermitian_integrally_congruent_cmExt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J J' : Matrix (Fin n) (Fin n) E), IsHermND σ J → IsHermND σ J' → ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∃ u : GL (Fin n) (Fv F v ⊗[F] E), Formalism.UG.cT (sigR (Fv F v) σ) u.1 * JR (Fv F v) J * u.1 = JR (Fv F v) J' ∧ ∀ y, u.1 *ᵥ y ∈ latLoc F (stdLattice E n) v ↔ y ∈ latLoc F (stdLattice E n) v := by
   first | exact @GlobalTheory.HermCongAlmostAll.eventually_congr_int | exact GlobalTheory.HermCongAlmostAll.eventually_congr_int | (intros; apply GlobalTheory.HermCongAlmostAll.eventually_congr_int <;> assumption)

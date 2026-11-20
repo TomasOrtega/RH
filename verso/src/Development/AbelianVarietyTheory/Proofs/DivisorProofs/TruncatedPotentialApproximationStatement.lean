@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InterpClose.interp_close_hodge | exact GlobalTheory.InterpClose.interp_close_hodge | (intros; apply GlobalTheory.InterpClose.interp_close_hodge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InterpClose.interp_close_hodge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTruncatedPotentialApproximation.lean&line=208#L208)
 -/
 theorem _root_.GlobalTheory.T.truncated_potential_approximation : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c, ∃ C : ℝ, ∀ u σ (R : ℝ), 2 ≤ R → ∀ x, x ∉ (T.M c).Z σ → (T.M c).r σ x ≤ Real.sqrt R → |(T.F c).phR R u σ x - (T.F c).ph u σ x| ≤ C * ‖u‖ / R := by
   first | exact @GlobalTheory.InterpClose.interp_close_hodge | exact GlobalTheory.InterpClose.interp_close_hodge | (intros; apply GlobalTheory.InterpClose.interp_close_hodge <;> assumption)

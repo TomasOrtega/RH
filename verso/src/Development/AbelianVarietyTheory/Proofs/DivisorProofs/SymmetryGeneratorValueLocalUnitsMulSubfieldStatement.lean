@@ -17,8 +17,10 @@ open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.USep.EvG.SymVal.sym_val | exact GlobalTheory.USep.EvG.SymVal.sym_val | (intros; apply GlobalTheory.USep.EvG.SymVal.sym_val <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.USep.EvG.SymVal.sym_val` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetryGeneratorValueLocalUnitsMulSubfield.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.symmetryGenerator_value_localUnits_mul_subfield : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]

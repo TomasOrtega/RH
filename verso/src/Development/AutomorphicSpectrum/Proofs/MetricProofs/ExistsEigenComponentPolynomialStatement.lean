@@ -11,8 +11,10 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenPr
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination | exact GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsEigenComponentPolynomial.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.exists_eigenComponent_polynomial : ∀ (E : Type) [Field E] [NumberField E] (s₀ : 𝓞 E →+* ℂ), ∃ c : 𝓞 E →₀ ℂ, ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+* Module.End ℂ V), (∀ x, eigComp ρ s₀ x = ∑ a ∈ c.support, c a • ρ a x) ∧ (∀ x, eigComp ρ s₀ x ∈ eigSp ρ s₀) ∧ ∀ x ∈ eigSp ρ s₀, eigComp ρ s₀ x = x := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination | exact GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination <;> assumption)

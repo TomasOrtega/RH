@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.TChart GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd | exact GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd | (intros; apply GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsGtPointInvolutionActionSubOfIdempotent.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.isGtPointInvolutionAction_sub_of_idempotent : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] {O : Type} [Ring O] [StarRing O] [Module O D.X] (oa : D.OAct O) (a : O), a * a = a → ∀ g₀ g h t : GtPtF D F, GtPtAct oa a g₀ g → GtPtAct oa a h h → GtPtF.IsAdd t h g → GtPtAct oa a t t := by
   first | exact @GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd | exact GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd | (intros; apply GlobalTheory.Mum.IdemDiff.gtPtAct_of_isAdd <;> assumption)

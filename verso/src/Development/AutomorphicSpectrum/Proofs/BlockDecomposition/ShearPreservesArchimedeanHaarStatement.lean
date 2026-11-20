@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FShearPreservesArchimedeanHaar.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.shear_preserves_archimedean_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ (a : Fin n) (s : Fin n → Ainf F ⊗[F] E), s a = 0 → (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M).map (GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearK a s) = GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M := by
   first | exact @GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK | exact GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK | (intros; apply GlobalTheory.CompanionTheory.WhitFree.AvgInf.coordW_map_shearK <;> assumption)

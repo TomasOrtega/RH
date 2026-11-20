@@ -14,8 +14,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinApprox.exists_rat_approx | exact GlobalTheory.FinApprox.exists_rat_approx | (intros; apply GlobalTheory.FinApprox.exists_rat_approx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinApprox.exists_rat_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRationalApproxFinitePointVacuumLevel.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_approx_finitePoint_vacuumLevel : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),

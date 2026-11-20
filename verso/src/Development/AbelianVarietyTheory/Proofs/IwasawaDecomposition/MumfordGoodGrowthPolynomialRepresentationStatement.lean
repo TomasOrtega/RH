@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ch
 open AlgebraicGeometry MvPolynomial GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RepBound.goodBound_ev | exact GlobalTheory.RepBound.goodBound_ev | (intros; apply GlobalTheory.RepBound.goodBound_ev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RepBound.goodBound_ev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMumfordGoodGrowthPolynomialRepresentation.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.mumfordGoodGrowth_polynomialRepresentation : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyRep m) (c : ℝ) (N : ℕ), ∃ (c' : ℝ) (N' : ℕ), ∀ (n : ℕ) (S : Finset (Fin n)) (G : V n → Mat m ℂ) (v : V n), (∀ τ, MContDiffAt 2 (fun u => G u τ) v) → (∀ τ, (G v τ).det ≠ 0) → 1 ≤ ∑ a ∈ S, |Real.log ‖v a‖| → (∀ τ, GoodBound S c N (fun u => G u τ) v) → GoodBound S c' N' (fun u => ρ.ev (G u)) v := by
   first | exact @GlobalTheory.RepBound.goodBound_ev | exact GlobalTheory.RepBound.goodBound_ev | (intros; apply GlobalTheory.RepBound.goodBound_ev <;> assumption)

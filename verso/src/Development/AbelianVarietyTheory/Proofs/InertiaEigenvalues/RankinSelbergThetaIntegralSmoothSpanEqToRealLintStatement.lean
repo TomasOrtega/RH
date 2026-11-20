@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.JSW GroundTheory.Global.IdeleGroup Formalism.L2.Host
 open scoped ENNReal nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RSPoleToc.thetaZ_eq_toReal_lintegral | exact GlobalTheory.RSPoleToc.thetaZ_eq_toReal_lintegral | (intros; apply GlobalTheory.RSPoleToc.thetaZ_eq_toReal_lintegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RSPoleToc.thetaZ_eq_toReal_lintegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRankinSelbergThetaIntegralSmoothSpanEqToRealLint.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.rankinSelbergThetaIntegral_smoothSpan_eq_toReal_lintegral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a) (π : CuspSub E a)
     (F : GA E a → ℂ), F ∈ GlobalTheory.JSW.mspanR π → Continuous F →

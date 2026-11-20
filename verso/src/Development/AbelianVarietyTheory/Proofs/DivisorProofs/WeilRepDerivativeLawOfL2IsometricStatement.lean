@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilL2Words.dS_om_eq | exact GlobalTheory.WeilL2Words.dS_om_eq | (intros; apply GlobalTheory.WeilL2Words.dS_om_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilL2Words.dS_om_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepDerivativeLawOfL2Isometric.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.weilRep_derivative_law_of_L2Isometric : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), GlobalTheory.WeilL2Words.IsStdInf F ψ →

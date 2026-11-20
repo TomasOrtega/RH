@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatHessian.dholo_dbar_log_metric | exact GlobalTheory.FlatHessian.dholo_dbar_log_metric | (intros; apply GlobalTheory.FlatHessian.dholo_dbar_log_metric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatHessian.dholo_dbar_log_metric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatChernLogHessian.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.flat_chern_log_hessian : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {h : Pt E g → ℝ} (hτ : IsPeriodMap B τ)

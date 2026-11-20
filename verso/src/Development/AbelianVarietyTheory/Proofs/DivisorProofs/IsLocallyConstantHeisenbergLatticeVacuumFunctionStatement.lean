@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place | exact GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place | (intros; apply GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLocallyConstantHeisenbergLatticeVacuumFunction.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.isLocallyConstant_heisenberg_lattice_vacuum_function : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ), Continuous ψ₀ → ∀ (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))),

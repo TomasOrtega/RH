@@ -11,8 +11,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatMulAt.latMul_inv_smul | exact GlobalTheory.LatMulAt.latMul_inv_smul | (intros; apply GlobalTheory.LatMulAt.latMul_inv_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatMulAt.latMul_inv_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FScaledLatticeCompletionSupportedInvIdealSmul.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.scaledLatticeCompletion_supported_invIdeal_smul : ∀ {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (I : GlobalTheory.SeeSaw.FI D) (v : GlobalTheory.FinPl.Pl D) (y : Fin S.rank → AE D), y ∈ GlobalTheory.FinPl.latMul S {a | a ∈ I} L (· = v) → (∀ i, y i ∈ idAt D (· = v)) ∧ ∀ s ∈ GlobalTheory.SeeSaw.idV I⁻¹ v, s • y ∈ latV S L (· = v) := by
   first | exact @GlobalTheory.LatMulAt.latMul_inv_smul | exact GlobalTheory.LatMulAt.latMul_inv_smul | (intros; apply GlobalTheory.LatMulAt.latMul_inv_smul <;> assumption)

@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.lam_transl_iso | exact GlobalTheory.Mum.lam_transl_iso | (intros; apply GlobalTheory.Mum.lam_transl_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.lam_transl_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCubeBundleOfTranslate.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.mumfordBundle_translate_iso_cubical : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G), CubicalStr G L → ∀ (a : 𝟙_ (Over S) ⟶ G) (N : LB G.left), N.IsLB → LBIso N (L.L.pull ((toUnit G ≫ a) * 𝟙 G).left) → LBIso (abelian₂ G N) (abelian₂ G L.L) := by
   first | exact @GlobalTheory.Mum.lam_transl_iso | exact GlobalTheory.Mum.lam_transl_iso | (intros; apply GlobalTheory.Mum.lam_transl_iso <;> assumption)

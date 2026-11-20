@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PicGlue.addCls_of_locally | exact GlobalTheory.PicGlue.addCls_of_locally | (intros; apply GlobalTheory.PicGlue.addCls_of_locally <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PicGlue.addCls_of_locally` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdditivePicClassOfLocallyAdditive.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.additive_picClass_of_locally_additive : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAbelianScheme A → ∀ c : Pic (A ⊗ T).left, GlobalTheory.CechPic.pull (lift (1 : T ⟶ A) (𝟙 T)).left c = 0 → (∀ p : T.left, ∃ (Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left ∧ p ∈ Set.range z.left ∧ AddCls A (GlobalTheory.CechPic.pull (A ◁ z).left c)) → AddCls A c := by
   first | exact @GlobalTheory.PicGlue.addCls_of_locally | exact GlobalTheory.PicGlue.addCls_of_locally | (intros; apply GlobalTheory.PicGlue.addCls_of_locally <;> assumption)

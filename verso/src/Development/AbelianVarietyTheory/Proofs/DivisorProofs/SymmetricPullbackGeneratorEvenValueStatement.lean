@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTau0.uw_even_val | exact GlobalTheory.UTau0.uw_even_val | (intros; apply GlobalTheory.UTau0.uw_even_val <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTau0.uw_even_val` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricPullbackGeneratorEvenValue.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.symmetricPullbackGenerator_even_value : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : DegPre R) (f : D₀.P.A ⟶ D₀.P.A) [IsMonHom f]
     (uw : LB.Gen (LB.LinComb D₀.P.L (GlobalTheory.UTau0.w0φ D₀ f) GlobalTheory.UTau0.w0ε)), uw.IsGen →

@@ -15,8 +15,10 @@ open scoped NNReal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellMass.cell_mass | exact GlobalTheory.CellMass.cell_mass | (intros; apply GlobalTheory.CellMass.cell_mass <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellMass.cell_mass` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnfoldingCellMassEqConstMulLocalCoefficients.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.unfolding_cell_mass_eq_const_mul_local_coefficients : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ)
     (ρ : ∀ j, Measure ((rowGrp ch.G j).subgroupOf (GfC _))) (μ : ∀ j, Measure (GfC (ch.G.V (.grid D.R.m j)))),

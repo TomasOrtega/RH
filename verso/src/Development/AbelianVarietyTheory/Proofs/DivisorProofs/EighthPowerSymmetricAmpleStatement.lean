@@ -20,8 +20,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.S
 open GlobalTheory.PrincSubring
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EighthPowerBundle.powLB_props | exact GlobalTheory.EighthPowerBundle.powLB_props | (intros; apply GlobalTheory.EighthPowerBundle.powLB_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EighthPowerBundle.powLB_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEighthPowerSymmetricAmple.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.eighth_power_symmetric_ample : ∀ {S : Scheme.{0}} (h : ℕ) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (A ⊗ A).left), IsSymmetricPair h A P → Out.RelAmple A (diagPull A P) → IsAbelianScheme (Out.powObj A 8) ∧ (powLB A P).IsLB ∧ Out.RelAmple (Out.powObj A 8) (powLB A P) ∧ Out.Rigidified (Out.powObj A 8) (powLB A P) ∧ Out.Sym (Out.powObj A 8) (powLB A P) := by
   first | exact @GlobalTheory.EighthPowerBundle.powLB_props | exact GlobalTheory.EighthPowerBundle.powLB_props | (intros; apply GlobalTheory.EighthPowerBundle.powLB_props <;> assumption)

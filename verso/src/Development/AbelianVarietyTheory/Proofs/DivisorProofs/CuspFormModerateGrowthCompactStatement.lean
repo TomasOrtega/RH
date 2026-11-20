@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate | exact GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspFormModerateGrowthCompact.lean&line=202#L202)
 -/
 theorem _root_.GlobalTheory.T.cusp_form_moderate_growth_compact : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E a) (φ : Sm E a), φ ∈ π.V → ∀ F ∈ GlobalTheory.JSW.MirSemi.locSpan S φ.1, Continuous F ∧ ∀ K : Set (GA E a), IsCompact K → ∃ (C : ℝ) (N : ℕ), ∀ g ∈ K, ∀ y : GL (Fin a) (Cinf E), ‖F (g * infGL E a y)‖ ≤ C * height y ^ N := by
   first | exact @GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate | exact GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate <;> assumption)

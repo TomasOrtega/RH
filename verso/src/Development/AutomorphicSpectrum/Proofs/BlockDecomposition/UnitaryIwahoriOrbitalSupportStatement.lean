@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.BCT GlobalTheor
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DiagCoset.fU_diag | exact GlobalTheory.CompanionTheory.DiagCoset.fU_diag | (intros; apply GlobalTheory.CompanionTheory.DiagCoset.fU_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DiagCoset.fU_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitaryIwahoriOrbitalSupport.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.unitary_iwahori_orbital_support : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n : ℕ) (b : GLw n w), IsWitt n w b → ∀ (ϖ : (w.adicCompletion E)ˣ), IsUnifAt ϖ → ∀ (l : Fin (n / 2) → ℤ), Cone l → ∀ (γ : UL n w) (u : Fin n → (w.adicCompletion E)ˣ), (∀ i, ordL (u i : w.adicCompletion E) = wexp n l i) → γ.1 = b * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * b⁻¹ → ∀ x ∈ iwU n w b, ∀ z ∈ iwU n w b, fU n w b ϖ l (x * γ * z) = 1 := by
   first | exact @GlobalTheory.CompanionTheory.DiagCoset.fU_diag | exact GlobalTheory.CompanionTheory.DiagCoset.fU_diag | (intros; apply GlobalTheory.CompanionTheory.DiagCoset.fU_diag <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JetOneTan.jetOne_tan_span | exact GlobalTheory.JetOneTan.jetOne_tan_span | (intros; apply GlobalTheory.JetOneTan.jetOne_tan_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JetOneTan.jetOne_tan_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FJetOrderOneTangentDecomp.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.jet_order_one_tangent_decomp : ∀ {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ],
     (∀ r : ρ, (jetTrunc : Jet S ρ (0 + 1) →ₐ[S] Jet S ρ 0) (Ideal.Quotient.mk _ (MvPolynomial.X r)) = 0) ∧

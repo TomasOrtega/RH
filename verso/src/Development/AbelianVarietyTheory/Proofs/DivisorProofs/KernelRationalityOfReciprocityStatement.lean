@@ -8,8 +8,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneCo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.PlaneCo.GlueEv.restr_isEv | exact GlobalTheory.ThK.PlaneCo.GlueEv.restr_isEv | (intros; apply GlobalTheory.ThK.PlaneCo.GlueEv.restr_isEv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.PlaneCo.GlueEv.restr_isEv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelRationalityOfReciprocity.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.adapted_evaluation_block_transform : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ : ℕ} {κ' : Type} [Fintype κ'] (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

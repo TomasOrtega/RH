@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLieOp.exists_realOp | exact GlobalTheory.RealLieOp.exists_realOp | (intros; apply GlobalTheory.RealLieOp.exists_realOp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLieOp.exists_realOp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRealLieOperatorThetaQuotientLine.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.exists_real_lie_operator_theta_quotient_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

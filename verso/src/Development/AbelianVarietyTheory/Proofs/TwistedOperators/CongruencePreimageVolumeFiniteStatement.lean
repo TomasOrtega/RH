@@ -11,8 +11,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top | exact GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top | (intros; apply GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCongruencePreimageVolumeFinite.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.congruence_preimage_volume_finite : ∀ (D : D7) (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ μ : Measure (GfC Y), μ.IsHaarMeasure → MeasurableSet {b : GfC Y | Lev.finE V (stabilizerEmbedding d (b : GA D Y)) ∈ congLev D.sp.cm V.gram Λ 𝔪} ∧ 0 < μ {b : GfC Y | Lev.finE V (stabilizerEmbedding d (b : GA D Y)) ∈ congLev D.sp.cm V.gram Λ 𝔪} ∧ μ {b : GfC Y | Lev.finE V (stabilizerEmbedding d (b : GA D Y)) ∈ congLev D.sp.cm V.gram Λ 𝔪} < ⊤ := by
   first | exact @GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top | exact GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top | (intros; apply GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top <;> assumption)

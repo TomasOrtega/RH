@@ -12,8 +12,10 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Mi.SepPer (contLeft)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagRealUnip.atTau_mem_NFlag | exact GlobalTheory.FlagRealUnip.atTau_mem_NFlag | (intros; apply GlobalTheory.FlagRealUnip.atTau_mem_NFlag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagRealUnip.atTau_mem_NFlag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAtRealPlaceMemUnipotentFlagAdelic.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.atRealPlace_mem_unipotentFlag_adelic : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (B : HSp D) {ρ : ℕ} (e : Matrix (Fin B.rank) (Fin ρ) D.host.E) (τ : D.what₂.Tau)
     (u : Matrix (Fin B.rank) (Fin B.rank) ℂ), u ∈ GlobalTheory.RealBessel.unipRad (gramAt D B τ) (e.map (tauE D τ)) →

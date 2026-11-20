@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrTestVec.exists_fixed | exact GlobalTheory.SchrTestVec.exists_fixed | (intros; apply GlobalTheory.SchrTestVec.exists_fixed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrTestVec.exists_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSchwartzBruhatSchroedingerFixedLocalField.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_schwartzBruhat_schroedingerFixed_localField : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (ψ : AddChar (Fv F v) ℂ),
     Continuous ψ → ∀ {κ : Type} [Fintype κ], ∃ φ₁ ∈ GlobalTheory.WeilM.SB (κ → Fv F v), φ₁ ≠ 0 ∧

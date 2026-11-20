@@ -21,8 +21,10 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form | exact GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form | (intros; apply GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitaryBlockInvertibleCriterion.lean&line=248#L248)
 -/
 theorem _root_.GlobalTheory.T.unitary_block_invertible_criterion : ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n ρ p : ℕ} (hn : ρ + p = n) (a₁ b₁ Z : Matrix (Fin ρ) (Fin ρ) K) (a₂ b₂ X Y : Matrix (Fin ρ) (Fin p) K)
       (a₃ b₃ W : Matrix (Fin p) (Fin ρ) K) (a₄ b₄ c' d' : Matrix (Fin p) (Fin p) K),

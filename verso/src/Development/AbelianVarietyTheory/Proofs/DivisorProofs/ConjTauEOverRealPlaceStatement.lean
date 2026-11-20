@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace | exact GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace | (intros; apply GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConjTauEOverRealPlace.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.exists_conj_tauE_comp_algebraMap_eq_embedding : ∀ {D : D7} (w : InfinitePlace D.host.F), ∃ τ : D.what₂.Tau,
     ((starRingEnd ℂ).comp (tauE D τ)).comp (algebraMap D.host.F D.host.E) = w.embedding := by

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordsSecondKindFor
 open Filter Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosedMonoid.coords_second_kind_of_spanning | exact GlobalTheory.ClosedMonoid.coords_second_kind_of_spanning | (intros; apply GlobalTheory.ClosedMonoid.coords_second_kind_of_spanning <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosedMonoid.coords_second_kind_of_spanning` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLieAlgebraExpGenerators.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_lie_algebra_exp_generators : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (S : Set 𝔸), IsClosed S → (1 : 𝔸) ∈ S →
     (∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) → (∀ Z : 𝔸, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S) →

@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelCut.grpAt_eq_prod_local | exact GlobalTheory.LevelCut.grpAt_eq_prod_local | (intros; apply GlobalTheory.LevelCut.grpAt_eq_prod_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelCut.grpAt_eq_prod_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSeeSawFixedLevelElementEqProdLocalParts.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.seeSaw_fixedLevel_element_eq_prod_local_parts : ∀ {D : D7} {c : Comm D} {v : VCom c} {n : ℕ}, c.Is → v.Is → ∀ (G : Fin n → GLoc v), GPin G → ∀ (j' : ℕ), ∀ x ∈ grpAt (c.V j') (· ∈ v.gP), ∃ xs : Fin n → GA D (c.V j'), (∀ i, SuppAt (G i).q.e (c.V j') (xs i)) ∧ x = (List.ofFn xs).prod := by
   first | exact @GlobalTheory.LevelCut.grpAt_eq_prod_local | exact GlobalTheory.LevelCut.grpAt_eq_prod_local | (intros; apply GlobalTheory.LevelCut.grpAt_eq_prod_local <;> assumption)

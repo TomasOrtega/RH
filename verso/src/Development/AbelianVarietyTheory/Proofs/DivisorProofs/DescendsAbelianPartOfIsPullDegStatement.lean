@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.USep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.USep.descAt_of_isPullDeg | exact GlobalTheory.USep.descAt_of_isPullDeg | (intros; apply GlobalTheory.USep.descAt_of_isPullDeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.USep.descAt_of_isPullDeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDescendsAbelianPartOfIsPullDeg.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.descendsAbelianPart_of_isPullDeg : ∀ (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] (ρ : V →+* V₁) (Q : DegPre V) (D : DegPre V₁), IsPullDeg ρ Q D → D.P.g = Q.P.g ∧ ∀ (K : Type) [Field K] (ev : V₁ →+* K) (k₀ : Subfield K), DescAt D ev k₀ → DescAt Q (ev.comp ρ) k₀ := by
   first | exact @GlobalTheory.USep.descAt_of_isPullDeg | exact GlobalTheory.USep.descAt_of_isPullDeg | (intros; apply GlobalTheory.USep.descAt_of_isPullDeg <;> assumption)

@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTau0.SecondDiff.uw_second_diff | exact GlobalTheory.UTau0.SecondDiff.uw_second_diff | (intros; apply GlobalTheory.UTau0.SecondDiff.uw_second_diff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTau0.SecondDiff.uw_second_diff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricPullbackGeneratorSecondDifference.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.symmetricPullbackGenerator_second_difference : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : DegPre R) (f g : D₀.P.A ⟶ D₀.P.A) [IsMonHom f] [IsMonHom g],
     padd D₀.P.A f g = 𝟙 D₀.P.A →

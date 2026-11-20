@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjApprox.approx_idele | exact GlobalTheory.ConjApprox.approx_idele | (intros; apply GlobalTheory.ConjApprox.approx_idele <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjApprox.approx_idele` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormCoprimeLatticeMultiplier.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.norm_coprime_lattice_multiplier : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (t : (Af K)ˣ) (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →

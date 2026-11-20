@@ -15,8 +15,10 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.FlagMod GlobalTheory.Reg
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFrameField.lieFrame_baseChange | exact GlobalTheory.LieFrameField.lieFrame_baseChange | (intros; apply GlobalTheory.LieFrameField.lieFrame_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFrameField.lieFrame_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTangentBasisPullbackCompatible.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.tangent_basis_pullback_compatible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     (tK : SAB H (Sp K)), ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),

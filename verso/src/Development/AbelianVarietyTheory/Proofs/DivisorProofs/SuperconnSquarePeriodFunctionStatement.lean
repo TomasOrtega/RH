@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicConnecti
 open Matrix Set Filter Topology GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift | exact GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift | (intros; apply GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSuperconnSquarePeriodFunction.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.superconn_square_period_function : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ} [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ {h : Pt E g → ℝ}, ContDiffOn ℝ ∞ h (cov B g) → (∀ P ∈ cov B g, 0 < h P) → ∀ (β : Fin n → E) (u : ℝ) {ψ : E → Fin g → ℂ}, ContDiffOn ℝ ∞ ψ B → ∀ {b : E}, b ∈ B → ∀ {f : (Fin g → ℂ) → Ext (n + n + g)}, ContDiff ℝ ∞ f → ∀ (z : Fin g → ℂ), superconn τ h β u (superconn τ h β u fun P => f (P.2 + ψ P.1)) (b, z) = superconn τ h β u (superconn τ h β u fun P => f (P.2 + ψ b)) (b, z) := by
   first | exact @GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift | exact GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift | (intros; apply GlobalTheory.TorsionForm.CurvExt.superconn_sq_shift <;> assumption)

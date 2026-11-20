@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLift.CharTrace.deriv_char | exact GlobalTheory.RealLift.CharTrace.deriv_char | (intros; apply GlobalTheory.RealLift.CharTrace.deriv_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLift.CharTrace.deriv_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanFrameCharacterFactorization.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.archimedean_frame_character_factorization : GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (β : Type) [Fintype β]

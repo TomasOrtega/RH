@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivi
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlgebraMapConeRing
 open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.SurjectionOntoH4
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis | exact GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis | (intros; apply GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFinsetSystemInjectiveExtension.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.finset_system_injective_extension : ∀ {K : Type} [CommRing K] {ι : Type} [DecidableEq ι] [Fintype ι] {W : Type} [AddCommGroup W] [Module K W] {Λ : Type} (b : Module.Basis Λ K W) (good' : Λ → Prop) (T : Λ → Finset ι), (∀ l, good' l → T l ≠ Finset.univ) → ∀ (M : Finset ι → Type) [∀ S, AddCommGroup (M S)] (r : ∀ {S S' : Finset ι}, S ⊆ S' → M S → M S') (j : ∀ S, M S →+ W), (∀ S, Function.Injective (j S)) → (∀ {S S' : Finset ι} (h : S ⊆ S') x, j S' (r h x) = j S x) → (∀ S w, (∃ x, j S x = w) ↔ w ∈ Submodule.span K (b '' {l | good' l ∧ T l ⊆ S})) → ExP M r := by
   first | exact @GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis | exact GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis | (intros; apply GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis <;> assumption)

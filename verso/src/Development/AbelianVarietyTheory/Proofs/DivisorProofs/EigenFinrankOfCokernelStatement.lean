@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZe
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeTateKernel
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilIntegral GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel TensorProduct CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ChTor CategoryTheory.MonObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeTateEigenRank.finrank_eigW | exact GlobalTheory.HodgeTateEigenRank.finrank_eigW | (intros; apply GlobalTheory.HodgeTateEigenRank.finrank_eigW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeTateEigenRank.finrank_eigW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenFinrankOfCokernel.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.eigen_finrank_of_cokernel : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), CokernelBound P → P.W = Submodule.span C (Set.range P.bLie) → ∀ τ : Λ →+* O, Module.finrank C (P.eigW τ) = AvDefs.rTau P.Gt P.oGt τ := by
   first | exact @GlobalTheory.HodgeTateEigenRank.finrank_eigW | exact GlobalTheory.HodgeTateEigenRank.finrank_eigW | (intros; apply GlobalTheory.HodgeTateEigenRank.finrank_eigW <;> assumption)

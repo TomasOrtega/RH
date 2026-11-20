@@ -17,8 +17,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPartAt.chi_mul | exact GlobalTheory.FinPartAt.chi_mul | (intros; apply GlobalTheory.FinPartAt.chi_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPartAt.chi_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeTateGluedSection.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.hodge_tate_glued_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) (G' : Over (Sp O)) [GrpObj G'] (π : G'.left ⟶ t.G.left) (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (κ : (Sp (FractionRing R) ⟶ t.G.left) → Rˣ) (b : P'.Bˣ), P'.Gl κ b → ∀ (S : Over (Sp O)) (x y z : S ⟶ Hs P' x0 hu), z ≫ aH P' x0 hu hg.1 = (x ≫ aH P' x0 hu hg.1) * (y ≫ aH P' x0 hu hg.1) → z ≫ chi P' x0 hu b = (x ≫ chi P' x0 hu b) * (y ≫ chi P' x0 hu b) := by
   first | exact @GlobalTheory.FinPartAt.chi_mul | exact GlobalTheory.FinPartAt.chi_mul | (intros; apply GlobalTheory.FinPartAt.chi_mul <;> assumption)

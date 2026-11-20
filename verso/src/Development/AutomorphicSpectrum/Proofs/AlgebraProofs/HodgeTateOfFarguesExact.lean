@@ -33,8 +33,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact | exact PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact`.
+/- English proof (citation)
+Apply `PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FTorusUniformisation%2FChowMahlerFamilies%2FXXgzFarOfExact.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.hodge_tate_of_fargues_exact : HT.FarguesExact → HT.FarguesHodgeTate := by
   first | exact @PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact | exact PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact

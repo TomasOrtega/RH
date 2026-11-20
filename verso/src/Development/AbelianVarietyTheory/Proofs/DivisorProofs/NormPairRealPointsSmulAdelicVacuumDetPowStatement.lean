@@ -13,8 +13,10 @@ open GlobalTheory.NormDict
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormDict.vacuum_smul_realA | exact GlobalTheory.NormDict.vacuum_smul_realA | (intros; apply GlobalTheory.NormDict.vacuum_smul_realA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormDict.vacuum_smul_realA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormPairRealPointsSmulAdelicVacuumDetPow.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.norm_pair_real_points_smul_adelic_vacuum_det_pow : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P), IsDict P X →
     (∀ τ, HasInfExp D X.χB τ (-((P.n τ : ℚ) + (P.d : ℚ) / 2))) →

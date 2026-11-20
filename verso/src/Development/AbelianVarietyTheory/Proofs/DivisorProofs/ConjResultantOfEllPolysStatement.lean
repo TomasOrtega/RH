@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResConj.conj_resultant | exact GlobalTheory.ResConj.conj_resultant | (intros; apply GlobalTheory.ResConj.conj_resultant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResConj.conj_resultant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConjResultantOfEllPolys.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.conj_resultant_of_ell_polys : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (P₁ P₂ : E[X]), P₁ ∈ Ell E a → P₂ ∈ Ell E b → IsCMField.complexConj E (resultant P₁ P₂) * (((-1) ^ a * P₁.coeff 0) ^ b * ((-1) ^ b * P₂.coeff 0) ^ a) = (-1) ^ (a * b) * resultant P₁ P₂ := by
   first | exact @GlobalTheory.ResConj.conj_resultant | exact GlobalTheory.ResConj.conj_resultant | (intros; apply GlobalTheory.ResConj.conj_resultant <;> assumption)

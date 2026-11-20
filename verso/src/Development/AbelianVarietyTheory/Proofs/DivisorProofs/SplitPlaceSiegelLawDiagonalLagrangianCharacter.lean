@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.ThKW.lagrangian_integral_parseval | exact PositivityTheory.ThKW.lagrangian_integral_parseval | (intros; apply PositivityTheory.ThKW.lagrangian_integral_parseval <;> assumption)`.
+/- English proof (citation)
+Apply `PositivityTheory.ThKW.lagrangian_integral_parseval` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FThetaLifts%2FReductions%2FWeilPairs%2FSplitPlaceSiegelLawDiagonalLagrangianCharacter.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_siegelLaw_diagonalLagrangian_character : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

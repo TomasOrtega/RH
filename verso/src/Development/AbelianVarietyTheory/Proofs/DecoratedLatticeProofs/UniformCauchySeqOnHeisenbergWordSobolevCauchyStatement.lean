@@ -15,8 +15,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word | exact GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word | (intros; apply GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FUniformCauchySeqOnHeisenbergWordSobolevCauchy.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.uniformCauchySeqOn_heisenbergWord_sobolevCauchy : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → (∀ d, ∀ ε : ℝ≥0∞, 0 < ε → ∃ J, ∀ i ≥ J, ∀ j ≥ J, sobO ψ θ μ 𝓕 d (u i - u j) < ε) → ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), UniformCauchySeqOn (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) Filter.atTop Set.univ := by
   first | exact @GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word | exact GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word | (intros; apply GlobalTheory.ThetaDensCauchy.uniformCauchySeqOn_word <;> assumption)

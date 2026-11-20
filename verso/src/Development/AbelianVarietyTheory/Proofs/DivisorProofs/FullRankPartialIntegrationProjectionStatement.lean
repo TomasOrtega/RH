@@ -6,8 +6,10 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreLinear.fibre_linear | exact GlobalTheory.FibreLinear.fibre_linear | (intros; apply GlobalTheory.FibreLinear.fibre_linear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreLinear.fibre_linear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFullRankPartialIntegrationProjection.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.full_rank_partial_integration_projection : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ρ e d : ℕ)
     [MeasurableSpace (Matrix (Fin e) (Fin d) k)] [BorelSpace (Matrix (Fin e) (Fin d) k)]

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped CategoryTheory.MonObj
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg | exact GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg | (intros; apply GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIsogenyKernelFiniteAlgebraFinrankEqDegree.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_isogeny_kernel_finite_algebra_finrank_eq_degree : ∀ (k : Type) [Field k] (A B : AbVar k) (f : A ⟶ B), IsIsogeny f → ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X), KerPow f 0 H i ∧ Module.finrank k H = deg f := by
   first | exact @GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg | exact GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg | (intros; apply GlobalTheory.AV.KerPart.exists_kerPow_zero_finrank_eq_deg; all_goals assumption)

@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn | exact GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn | (intros; apply GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiValueIsUnitOfPsiUnitOnLocalRing.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.psiValue_isUnit_of_psiUnitOn_localRing : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (W : (Sp R).Opens) (χ : D.X), PsiUnitOn D χ W → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (T : Subring F) [IsLocalRing T] (φ₁ : R →+* T), (∀ r, (φ₁ r : F) = algebraMap (FractionRing R) F (algebraMap R _ r)) → spMap φ₁ (closedPoint T) ∈ W → ∀ (J₀ : D.P.A.left → D.P.L.ι), (∀ x, x ∈ D.P.L.U (J₀ x)) → ∀ (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι), (∀ ψ : Sp T ⟶ D.P.A.left, J (spMap T.subtype ≫ ψ) = J₀ (ψ (closedPoint T))) → ∃ u : Tˣ, (GlobalTheory.BXOf.sig F (val (D.psi χ) ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (closedPoint F) J) : F) = ((u : T) : F) := by
   first | exact @GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn | exact GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn | (intros; apply GlobalTheory.PsiValUnit.psi_val_unit_of_psiUnitOn <;> assumption)

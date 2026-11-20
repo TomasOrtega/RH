@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.pow_card_sum_sym | exact GlobalTheory.FlagCell2.pow_card_sum_sym | (intros; apply GlobalTheory.FlagCell2.pow_card_sum_sym <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.pow_card_sum_sym` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDzWedgeDzbarSumPowCardEqFactorialDetProd.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.dzWedgeDzbar_sum_pow_card_eq_factorial_det_prod : ∀ (n : ℕ) (B : Type) [Fintype B] [DecidableEq B] (e : B → Fin n), Function.Injective e → ∀ K : Matrix B B ℂ, (∑ a, ∑ b, K a b • sym (e a, e b) : Ev n) ^ Fintype.card B = ((Fintype.card B).factorial * K.det : ℂ) • ∏ a, sym (e a, e a) := by
   first | exact @GlobalTheory.FlagCell2.pow_card_sum_sym | exact GlobalTheory.FlagCell2.pow_card_sum_sym | (intros; apply GlobalTheory.FlagCell2.pow_card_sum_sym <;> assumption)

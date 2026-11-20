@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.TrivFlag GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.TrueCx
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameGlue.flagOfTriv_of_modPFrames | exact GlobalTheory.FrameGlue.flagOfTriv_of_modPFrames | (intros; apply GlobalTheory.FrameGlue.flagOfTriv_of_modPFrames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameGlue.flagOfTriv_of_modPFrames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModpFramesPowerSectionsLift.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.modp_frames_power_sections_lift : ∀ (X : Scheme.{0}) [IsIntegral X] (p : ℕ) (ι : Type) (N : ℕ) (U : ι → X.Opens)
     (M : ι → Matrix (Fin N) (Fin N) X.functionField) (c : ι → Fin N → X.functionFieldˣ), GlobalTheory.FrameGlue.ModPFrames p U M c →

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjective
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.OrbMark
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.OrbMark.exists_desc_rays_pullAdd | exact GlobalTheory.PolFan.OrbMark.exists_desc_rays_pullAdd | (intros; apply GlobalTheory.PolFan.OrbMark.exists_desc_rays_pullAdd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.OrbMark.exists_desc_rays_pullAdd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsDescendedRaysMarkedFormPieces.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_descended_rays_marked_form_pieces : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀]
   [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (hm : ∀ i, δ₀ i ∈ balForms H.bar X₀),

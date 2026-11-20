@@ -6,8 +6,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.ainf_inter_OE | exact GlobalTheory.BSP.ainf_inter_OE | (intros; apply GlobalTheory.BSP.ainf_inter_OE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.ainf_inter_OE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralWittElementOfEvaluation.lean&line=218#L218)
 -/
 theorem _root_.GlobalTheory.T.integral_witt_element_of_evaluation : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), ∀ w ∈ bk.OE, ∀ a : Ainf l, w = inclW l a → ∃ s : bk.S, a = bk.ev s := by
   first | exact @GlobalTheory.BSP.ainf_inter_OE | exact GlobalTheory.BSP.ainf_inter_OE | (intros; apply GlobalTheory.BSP.ainf_inter_OE <;> assumption)

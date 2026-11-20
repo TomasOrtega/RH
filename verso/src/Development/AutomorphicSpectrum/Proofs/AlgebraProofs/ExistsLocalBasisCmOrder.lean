@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.Xgf.exists_local_basis_cm_order | exact PositivityTheory.Xgf.exists_local_basis_cm_order`.
+/- English proof (citation)
+Apply `PositivityTheory.Xgf.exists_local_basis_cm_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FSesquilinearFractions%2FDOkBasis.lean&line=183#L183)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.exists_local_basis_cm_order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ℓ : ℕ), ℓ.Prime → ∃ (f : ℕ) (b : Fin f → 𝓞 E), 2 * f = Module.finrank ℚ E ∧ IsLocBasis (Algebra.adjoin ℤ {H.w0}) ℓ b := by
   first | exact @PositivityTheory.Xgf.exists_local_basis_cm_order | exact PositivityTheory.Xgf.exists_local_basis_cm_order

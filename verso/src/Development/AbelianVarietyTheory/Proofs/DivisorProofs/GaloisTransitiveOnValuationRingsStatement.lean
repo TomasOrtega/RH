@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove | exact GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove | (intros; apply GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisTransitiveOnValuationRings.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.galois_transitive_on_valuation_rings : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (Ω : Type) [Field Ω] [Algebra K Ω] [IsGalois K Ω] [FiniteDimensional K Ω] (V V' : ValuationSubring Ω), IsAbove R K V.toSubring → IsAbove R K V'.toSubring → ∃ g : Ω ≃ₐ[K] Ω, g • V = V' := by
   first | exact @GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove | exact GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove | (intros; apply GlobalTheory.ProlongConj.exists_smul_eq_of_isAbove <;> assumption)

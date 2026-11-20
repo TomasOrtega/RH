@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSingl
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published Sa2 GlobalTheory.CompanionTheory.SaGen
 open scoped TensorProduct Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single | exact GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single | (intros; apply GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSpecialUnitarySupportProduct.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.special_unitary_support_product : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (N : Subgroup (HA (AF F) σ J)) {T₁ : Finset (InfinitePlace F)} {T₂ : Finset (HeightOneSpectrum (𝓞 F))} {δ : AF F}, IsPlacesIdem T₁ T₂ δ → (∀ w ∈ T₁, ∀ e : AF F, IsPlacesIdem {w} ∅ e → SUSupp σ J e ⊆ N) → (∀ v ∈ T₂, ∀ e : AF F, IsPlacesIdem ∅ {v} e → SUSupp σ J e ⊆ N) → SUSupp σ J δ ⊆ N := by
   first | exact @GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single | exact GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single | (intros; apply GlobalTheory.CompanionTheory.SaGen.Supp.supp_le_of_single <;> assumption)

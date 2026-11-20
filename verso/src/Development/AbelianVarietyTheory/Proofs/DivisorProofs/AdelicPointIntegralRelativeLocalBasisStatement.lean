@@ -10,8 +10,10 @@ open GlobalTheory.FrameRead
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis | exact GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis | (intros; apply GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicPointIntegralRelativeLocalBasis.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.adelicPoint_integral_relative_localBasis : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (l : ℕ) [Fact l.Prime] (inc : D.host.E →+* PadicAlgCl l) (ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l), EvOk inc ev → V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame) → ∀ (y : Bridge.Gf V) (B : GL (Fin V.rank) D.host.E), Formalism.L2.Forms.IsLocBasis l (Bridge.hLat V y : Set (Fin V.rank → D.host.E)) B → ∀ a b, ‖((Matrix.GeneralLinearGroup.map inc B)⁻¹ * Matrix.GeneralLinearGroup.map ev (y : GL (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E))).val a b‖ ≤ 1 := by
   first | exact @GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis | exact GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis | (intros; apply GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis <;> assumption)

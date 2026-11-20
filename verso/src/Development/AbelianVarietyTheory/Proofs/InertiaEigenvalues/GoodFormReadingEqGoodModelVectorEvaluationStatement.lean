@@ -7,8 +7,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeriesTie.rd_good_model | exact GlobalTheory.SeriesTie.rd_good_model | (intros; apply GlobalTheory.SeriesTie.rd_good_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeriesTie.rd_good_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGoodFormReadingEqGoodModelVectorEvaluation.lean&line=159#L159)
 -/
 theorem _root_.GlobalTheory.T.good_form_reading_eq_good_model_vector_evaluation : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool),
     ∀ x ∈ V0 D.nexp i ((j : ℕ) + 1) b, ∃ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.goodModel X.R.toRealDat j,

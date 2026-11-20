@@ -30,8 +30,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankBergman.rkC_le_of_bergLe | exact GlobalTheory.RankBergman.rkC_le_of_bergLe | (intros; apply GlobalTheory.RankBergman.rkC_le_of_bergLe <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankBergman.rkC_le_of_bergLe` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspFormRankLeBergmanBoundGoodCover.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.cuspFormRank_le_bergmanBound_goodCover : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : AllWt.Weight (T.Q.Dw j)) (Z : Comp Y.d.Xo₂ Y.d.c₂) (β : ℝ), 0 ≤ β → BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la β → (Y.rkC la Z : ℝ) ≤ β := by
   first | exact @GlobalTheory.RankBergman.rkC_le_of_bergLe | exact GlobalTheory.RankBergman.rkC_le_of_bergLe | (intros; apply GlobalTheory.RankBergman.rkC_le_of_bergLe <;> assumption)

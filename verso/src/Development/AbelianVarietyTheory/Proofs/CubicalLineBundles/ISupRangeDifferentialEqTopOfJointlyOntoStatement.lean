@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiffSpan.iSup_range_diff_eq_top | exact GlobalTheory.DiffSpan.iSup_range_diff_eq_top | (intros; apply GlobalTheory.DiffSpan.iSup_range_diff_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiffSpan.iSup_range_diff_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FISupRangeDifferentialEqTopOfJointlyOnto.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.iSup_range_differential_eq_top_of_jointly_onto : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (σ : K →+* ℂ) (I : Type) (Q : I → Out.PolAV (Sp (𝓞 K))) (FQ : ∀ i, GenFib (Q i)) (f : ∀ i, (Q i).A ⟶ P.A) (M : ∀ i, (Fin (FQ i).P₀.g → K) →ₗ[K] (Fin F.P₀.g → K)), Finite I → (∀ i, IsMonHom (f i)) → (∀ i, (FQ i).IsDiffOf F (f i) (M i)) → OntoAt f (spMap (σ.comp (algebraMap (𝓞 K) K))) → ⨆ i, LinearMap.range (M i) = ⊤ := by
   first | exact @GlobalTheory.DiffSpan.iSup_range_diff_eq_top | exact GlobalTheory.DiffSpan.iSup_range_diff_eq_top | (intros; apply GlobalTheory.DiffSpan.iSup_range_diff_eq_top <;> assumption)

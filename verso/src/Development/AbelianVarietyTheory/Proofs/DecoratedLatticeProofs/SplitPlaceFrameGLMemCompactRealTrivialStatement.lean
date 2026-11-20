@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.AdForm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameGfC.gl_mem_GfC | exact GlobalTheory.FrameGfC.gl_mem_GfC | (intros; apply GlobalTheory.FrameGfC.gl_mem_GfC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameGfC.gl_mem_GfC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPlaceFrameGLMemCompactRealTrivial.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.splitPlaceFrameGL_mem_compactRealTrivial : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (g : GL n k), β.gl g ∈ GfC S := by
   first | exact @GlobalTheory.FrameGfC.gl_mem_GfC | exact GlobalTheory.FrameGfC.gl_mem_GfC | (intros; apply GlobalTheory.FrameGfC.gl_mem_GfC <;> assumption)

@@ -7,8 +7,10 @@ import ReciprocityTheory.Hypotheses.GalCohDefs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevRepZApply
 open ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShapeNeg.levKO_card | exact GlobalTheory.ShapeNeg.levKO_card | (intros; apply GlobalTheory.ShapeNeg.levKO_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShapeNeg.levKO_card` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteCardTorsionLevelFractionRingQuot.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.finite_card_torsionLevel_fractionRingQuot : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)]
     {ϖ : O}, Irreducible ϖ → ∀ {M : Type} [AddCommGroup M] [Module O M], (M ≃ₗ[O] Formalism.NG.KO O) → ∀ n : ℕ,

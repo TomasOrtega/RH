@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatActApply
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.LieLin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPel.HT.LieLin.lieMod_matAct_iff_lieIdeal_le_ker | exact GlobalTheory.UPel.HT.LieLin.lieMod_matAct_iff_lieIdeal_le_ker | (intros; apply GlobalTheory.UPel.HT.LieLin.lieMod_matAct_iff_lieIdeal_le_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPel.HT.LieLin.lieMod_matAct_iff_lieIdeal_le_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKottwitzLieConditionModuleIffIdealLeKer.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.kottwitzLieConditionModule_iff_ideal_le_ker : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (B : Type) [CommRing B]
   (βB : R →+* B) (n : ℕ) (M : 𝓞 D.F →+* Matrix (Fin n) (Fin n) B) (T : Type) [CommRing T] (f : B →+* T),

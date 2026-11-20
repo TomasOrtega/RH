@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram | exact GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsConjugateLogPeriods.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.exists_conjugate_log_periods : ∀ (n a g r : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ) (U : Fin r → (Fin n → ℂ) → Fin g → ℂ), (∀ i, Function.Bijective (L.T i)) → ∃ L' : Flat.LogPeriods n a g Λ, ∀ u ∈ Flat.punct n a 1, HodgeMetric.periodGram L' (fun k u' => star (U k (star u'))) u = (HodgeMetric.periodGram L U (star u)).map (starRingEnd ℂ) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram | exact GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods.exists_conj_periodGram <;> assumption)

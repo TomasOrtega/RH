@@ -5,8 +5,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchwartzBruhatRestrict.map_funLeft_extendZero | exact GlobalTheory.SchwartzBruhatRestrict.map_funLeft_extendZero | (intros; apply GlobalTheory.SchwartzBruhatRestrict.map_funLeft_extendZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchwartzBruhatRestrict.map_funLeft_extendZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExtendByZeroSchwartzBruhatMap.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.extend_by_zero_schwartzBruhat_map : ∀ (F : Type) [Field F] [NumberField F] {κ₁ κ : Type} [Fintype κ₁] [Fintype κ] (j : κ₁ → κ), Function.Injective j →
     ∀ v : Pl F, (SB (κ → Fv F v)).map (LinearMap.funLeft ℂ ℂ (fun y : κ₁ → Fv F v => Function.extend j y 0)) = SB (κ₁ → Fv F v) := by

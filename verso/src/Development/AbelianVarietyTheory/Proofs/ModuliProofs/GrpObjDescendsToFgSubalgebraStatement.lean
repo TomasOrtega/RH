@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MorphismsSprea
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.grpObj_descends_to_fg_subalgebra | exact GlobalTheory.grpObj_descends_to_fg_subalgebra | (intros; apply GlobalTheory.grpObj_descends_to_fg_subalgebra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.grpObj_descends_to_fg_subalgebra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FGrpObjDescendsToFgSubalgebra.lean&line=239#L239)
 -/
 theorem _root_.GlobalTheory.T.exists_fg_subalgebra_grpObj_model : ∀ (k V : Type) [CommRing k] [CommRing V] [Algebra k V] (A : Over (Sp V)) [GrpObj A] [IsCommMonObj A] (X : Scheme.{0}) (p : X ⟶ Sp k) (φ : A.left ⟶ X) (F : Finset V), Smooth p → IsSeparated p → QuasiCompact p → IsPullback φ A.hom p (spMap (algebraMap k V)) → ∃ (R : Subalgebra k V) (A₀ : Over (Sp R)) (_ : GrpObj A₀) (_ : IsCommMonObj A₀) (ψ : A.left ⟶ A₀.left), (F : Set V) ⊆ R ∧ R.FG ∧ Smooth A₀.hom ∧ IsSeparated A₀.hom ∧ QuasiCompact A₀.hom ∧ IsGrpPullback A A₀ (spMap R.val.toRingHom) ψ := by
   first | exact @GlobalTheory.grpObj_descends_to_fg_subalgebra | exact GlobalTheory.grpObj_descends_to_fg_subalgebra | (intros; apply GlobalTheory.grpObj_descends_to_fg_subalgebra <;> assumption)

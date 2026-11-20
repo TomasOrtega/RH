@@ -6,8 +6,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweD.AdelicSchur.schur | exact GlobalTheory.HoweD.AdelicSchur.schur | (intros; apply GlobalTheory.HoweD.AdelicSchur.schur <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweD.AdelicSchur.schur` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicSchroedingerSchurCommutingOperatorScalar.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.adelicSchroedinger_schur_commuting_operator_scalar : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
   ∀ M : Module.End ℂ ((κ → AF F) → ℂ), (∀ φ ∈ schA F κ, M φ ∈ schA F κ) →

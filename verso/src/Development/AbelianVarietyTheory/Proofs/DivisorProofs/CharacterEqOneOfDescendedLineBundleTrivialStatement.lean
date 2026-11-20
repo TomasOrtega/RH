@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.character_eq_one_of_triv | exact GlobalTheory.CharKer.character_eq_one_of_triv | (intros; apply GlobalTheory.CharKer.character_eq_one_of_triv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.character_eq_one_of_triv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharacterEqOneOfDescendedLineBundleTrivial.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.character_eq_one_of_descended_lineBundle_trivial : ∀ (K : Type) [Field K] (A A' N T : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A') (χ : Γ((N ⊗ T).left, ⊤)ˣ) (M : LB (A' ⊗ T).left) (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ), IsAbelianScheme A → IsMonHom q → IsPullback i (toUnit N) q η[A'] → M.IsLB → IsEquivGen i q χ M e → Triv M → χ = 1 := by
   first | exact @GlobalTheory.CharKer.character_eq_one_of_triv | exact GlobalTheory.CharKer.character_eq_one_of_triv | (intros; apply GlobalTheory.CharKer.character_eq_one_of_triv <;> assumption)

@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceInd.induction_places | exact GlobalTheory.PlaceInd.induction_places | (intros; apply GlobalTheory.PlaceInd.induction_places <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceInd.induction_places` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FFiniteAdelicGLInductionOverPlaces.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.finiteAdelicGL_induction_over_places : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (N : ℕ), 0 < N → ∀ p : GAf L n → Prop, (∀ κ, NG.Cong L n N κ → p κ) → (∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x y : GAf L n), TrivOutside {v} x → TrivOutside {v}ᶜ y → p y → p (x * y)) → ∀ g, p g := by
   first | exact @GlobalTheory.PlaceInd.induction_places | exact GlobalTheory.PlaceInd.induction_places | (intros; apply GlobalTheory.PlaceInd.induction_places <;> assumption)

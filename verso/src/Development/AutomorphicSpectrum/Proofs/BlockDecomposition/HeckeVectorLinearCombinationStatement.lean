@@ -11,8 +11,10 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum | exact GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum | (intros; apply GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHeckeVectorLinearCombination.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.hecke_vector_linear_combination : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (s : Finset (ℕ × ℕ)) (f : ℕ × ℕ → ℂ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLw a w × GLw b w) V) (x : V), heckeVec ρ (K2 a b w) (fun g => ∑ p ∈ s, f p * (Tj ℂ a (Ov E w) ϖ p.1 g.1 * Tj ℂ b (Ov E w) ϖ p.2 g.2)) x = ∑ p ∈ s, f p • heckeVec ρ (K2 a b w) (fun g => Tj ℂ a (Ov E w) ϖ p.1 g.1 * Tj ℂ b (Ov E w) ϖ p.2 g.2) x := by
   first | exact @GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum | exact GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum | (intros; apply GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum <;> assumption)

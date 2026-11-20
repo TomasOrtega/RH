@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumCmp.exists_translate_of_lam | exact GlobalTheory.MumCmp.exists_translate_of_lam | (intros; apply GlobalTheory.MumCmp.exists_translate_of_lam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumCmp.exists_translate_of_lam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTranslateOfMumfordBundleMatch.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_translate_of_mumfordBundle_match : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D₀ D : DegPre R)
   (β : D₀.P.A ≅ D.P.A), IsMonHom β.hom →

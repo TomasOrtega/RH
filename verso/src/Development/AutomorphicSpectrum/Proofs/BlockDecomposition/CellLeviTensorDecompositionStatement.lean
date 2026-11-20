@@ -9,8 +9,10 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper)
 open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr | exact GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr | (intros; apply GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCellLeviTensorDecomposition.lean&line=298#L298)
 -/
 theorem _root_.GlobalTheory.T.cell_levi_tensor_decomposition : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α β' : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] {c c' : α → β' → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] [∀ i j, Fintype (c' i j)] [∀ i j, DecidableEq (c' i j)], (∀ i j, Fintype.card (c i j) = Fintype.card (c' i j)) → ∀ (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j) (f' : ∀ i, (Σ j, c' i j) ≃ m i) (g' : ∀ j, (Σ i, c' i j) ≃ m' j) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k m) W), Nonempty ((cellFunctor f g ρ).Equiv (cellFunctor f' g' ρ)) := by
   first | exact @GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr | exact GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr | (intros; apply GlobalTheory.CompanionTheory.CellCongr.cellFunctor_congr <;> assumption)

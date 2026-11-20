@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.charpoly_det_bounded_of_isCompact | exact GlobalTheory.BCT.charpoly_det_bounded_of_isCompact | (intros; apply GlobalTheory.BCT.charpoly_det_bounded_of_isCompact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.charpoly_det_bounded_of_isCompact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharpolyCoeffDetInvValuationBoundedOfIsCompactGL.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.charpoly_coeff_det_inv_valuation_bounded_of_isCompact_GL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (C : Set (GLw n w)), IsCompact C → ∃ γ : WithZero (Multiplicative ℤ), ∀ y ∈ C, (∀ k, Valued.v (y.val.charpoly.coeff k) ≤ γ) ∧ Valued.v (y⁻¹ : GLw n w).val.det ≤ γ := by
   first | exact @GlobalTheory.BCT.charpoly_det_bounded_of_isCompact | exact GlobalTheory.BCT.charpoly_det_bounded_of_isCompact | (intros; apply GlobalTheory.BCT.charpoly_det_bounded_of_isCompact <;> assumption)

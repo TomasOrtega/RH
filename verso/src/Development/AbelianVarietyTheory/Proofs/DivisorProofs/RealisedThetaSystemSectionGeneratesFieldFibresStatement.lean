@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.isGenSec_real_pull | exact GlobalTheory.UMin.isGenSec_real_pull | (intros; apply GlobalTheory.UMin.isGenSec_real_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.isGenSec_real_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealisedThetaSystemSectionGeneratesFieldFibres.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.realisedThetaSystem_section_generates_field_fibres : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (K : Type) [Field K] (i : S.R →+* K), IsGenSec ρ.P.A ρ.P.L _ (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) := by
   first | exact @GlobalTheory.UMin.isGenSec_real_pull | exact GlobalTheory.UMin.isGenSec_real_pull | (intros; apply GlobalTheory.UMin.isGenSec_real_pull <;> assumption)

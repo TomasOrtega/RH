@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSecOn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.VB GlobalTheory.FlagZ GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.LocTaut.exists_frame_pullback_taut | exact GlobalTheory.FlagZ.LocTaut.exists_frame_pullback_taut | (intros; apply GlobalTheory.FlagZ.LocTaut.exists_frame_pullback_taut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.LocTaut.exists_frame_pullback_taut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagPointTautologicalFrame.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.flag_point_tautological_frame : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N), Taut.IsTaut ι N fl →

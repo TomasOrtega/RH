@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.relativeCentre | exact GlobalTheory.LeviHC.relativeCentre | (intros; apply GlobalTheory.LeviHC.relativeCentre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.relativeCentre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRelativeCentre.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.relativeCentre' : RelativeCentre := by
   first | exact @GlobalTheory.LeviHC.relativeCentre | exact GlobalTheory.LeviHC.relativeCentre | (intros; apply GlobalTheory.LeviHC.relativeCentre <;> assumption)

@@ -10,8 +10,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegCoverCommon.exists_regCover_le_both | exact GlobalTheory.RegCoverCommon.exists_regCover_le_both | (intros; apply GlobalTheory.RegCoverCommon.exists_regCover_le_both <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegCoverCommon.exists_regCover_le_both` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularCoversCommonRefinement.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.regular_covers_common_refinement : RegularAlteration → ∀ (k : Type) [CommRing k] (B : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp k), IsArithVar q 1 → ∀ C₁ C₂ : RegCover q, ∃ C : RegCover q, (∃ t₁ : C.Y ⟶ C₁.Y, t₁ ≫ C₁.ρ = C.ρ) ∧ ∃ t₂ : C.Y ⟶ C₂.Y, t₂ ≫ C₂.ρ = C.ρ := by
   first | exact @GlobalTheory.RegCoverCommon.exists_regCover_le_both | exact GlobalTheory.RegCoverCommon.exists_regCover_le_both | (intros; apply GlobalTheory.RegCoverCommon.exists_regCover_le_both <;> assumption)

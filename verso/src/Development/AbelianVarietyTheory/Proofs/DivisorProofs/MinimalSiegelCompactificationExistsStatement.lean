@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegMinTop.minSt5 | exact GlobalTheory.SiegMinTop.minSt5 | (intros; apply GlobalTheory.SiegMinTop.minSt5 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegMinTop.minSt5` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMinimalSiegelCompactificationExists.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.minimalSiegelCompactification_exists : GlobalTheory.SiegJoin.MinSt5 := by
   first | exact @GlobalTheory.SiegMinTop.minSt5 | exact GlobalTheory.SiegMinTop.minSt5 | (intros; apply GlobalTheory.SiegMinTop.minSt5 <;> assumption)

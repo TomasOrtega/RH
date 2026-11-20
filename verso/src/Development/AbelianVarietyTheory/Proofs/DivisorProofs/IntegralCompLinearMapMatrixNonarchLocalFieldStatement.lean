@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetScale.integral_comp_matrix | exact GlobalTheory.DetScale.integral_comp_matrix | (intros; apply GlobalTheory.DetScale.integral_comp_matrix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetScale.integral_comp_matrix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralCompLinearMapMatrixNonarchLocalField.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.integral_comp_linearMap_matrix_nonarchLocalField : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (a b : ℕ) (L : Matrix (Fin a) (Fin b) F →ₗ[F] Matrix (Fin a) (Fin b) F) (hL : LinearMap.det L ≠ 0) (φ : Matrix (Fin a) (Fin b) F → ℂ) (μ : @MeasureTheory.Measure (Matrix (Fin a) (Fin b) F) (borel _)), @MeasureTheory.Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∫ x, φ (L x) ∂μ = ((((MeasureTheory.distribHaarChar F (Units.mk0 _ hL) : NNReal) : ℝ) : ℂ))⁻¹ * ∫ x, φ x ∂μ := by
   first | exact @GlobalTheory.DetScale.integral_comp_matrix | exact GlobalTheory.DetScale.integral_comp_matrix | (intros; apply GlobalTheory.DetScale.integral_comp_matrix <;> assumption)

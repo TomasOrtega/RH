@@ -23,8 +23,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PosThrough.one_le_interNumRed | exact GlobalTheory.PosThrough.one_le_interNumRed | (intros; apply GlobalTheory.PosThrough.one_le_interNumRed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PosThrough.one_le_interNumRed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOneLeIntersectionNumberSubvarietyThroughPositive.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.one_le_intersectionNumber_subvariety_through_positive : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N₁ N₂ : LB X) (hN : N.IsLB) (h₁ : N₁.IsLB) (h₂ : N₂.IsLB) (a : ℕ) (x : X), IsNef k N → 0 < a → a • cls N hN = cls N₁ h₁ + cls N₂ h₂ → AmpleAt N₁ x → IsNef k N₂ → ∀ (Z : Closeds X) (e : ℕ), IsIrreducible (Z : Set X) → x ∈ Z → 1 ≤ e → topologicalKrullDim (Z : Set X) = e → 1 ≤ interNumRed k Z (fun _ : Fin e => N) := by
   first | exact @GlobalTheory.PosThrough.one_le_interNumRed | exact GlobalTheory.PosThrough.one_le_interNumRed | (intros; apply GlobalTheory.PosThrough.one_le_interNumRed <;> assumption)

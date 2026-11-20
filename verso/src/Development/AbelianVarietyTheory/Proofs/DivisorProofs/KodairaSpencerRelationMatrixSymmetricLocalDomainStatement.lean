@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KSRelSymm.ksRel_symm | exact GlobalTheory.KSRelSymm.ksRel_symm | (intros; apply GlobalTheory.KSRelSymm.ksRel_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KSRelSymm.ksRel_symm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKodairaSpencerRelationMatrixSymmetricLocalDomain.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.kodairaSpencer_relation_matrix_symmetric_local_domain : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (P : Out.PolAV (Sp R)) (g : ℕ) (w : Module.Basis (Fin g) R (TanM (𝟙 (Sp R)) P.A)) (e : Fin g → Fld P.A.left), (∀ c, IsInv P.A (w c) (e c)) → ∀ (D : Derivation ℤ R R) (M : Matrix (Fin g) (Fin g) R), KSRel P.A (𝟙 P.A.left) P.L e ⇑D M → Mᵀ = M := by
   first | exact @GlobalTheory.KSRelSymm.ksRel_symm | exact GlobalTheory.KSRelSymm.ksRel_symm | (intros; apply GlobalTheory.KSRelSymm.ksRel_symm <;> assumption)

@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InducesIsom.main | exact GlobalTheory.InducesIsom.main | (intros; apply GlobalTheory.InducesIsom.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InducesIsom.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedMetricOfIsometric.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.induced_metric_of_isometric : ∀ {F : Type} [Field F] [NumberField F] {C : TrueGeo.CxSt F} {Yv : ProjVar.Var F}
     (V : Cover Yv) (A : TrueGeo.Adl C Yv) (L M : HermLB V.p) (k : ℕ),

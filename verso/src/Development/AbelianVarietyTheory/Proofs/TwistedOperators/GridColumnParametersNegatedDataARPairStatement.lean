@@ -20,8 +20,10 @@ open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.Chain.RealIt GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NegPair.params | exact GlobalTheory.NegPair.params | (intros; apply GlobalTheory.NegPair.params <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NegPair.params` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridColumnParametersNegatedDataARPair.lean&line=569#L569)
 -/
 theorem _root_.GlobalTheory.T.gridColumnParameters_negated_dataAR_pair : ∀ (D : D7) (i : ℕ), i < D.R.m → ∀ τ : D.what₂.Tau, ∃ al be ga de : List ℚ,
     Formalism.MainNotions.SchurIrreducible.DataAR (GlobalTheory.Grid.sLen D - 1) al be ga de ∧

@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarConj.haarConj | exact GlobalTheory.HaarConj.haarConj | (intros; apply GlobalTheory.HaarConj.haarConj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarConj.haarConj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHaarFundamentalDomainConjugateUnitaryAdeli.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.exists_haar_fundamentalDomain_conjugateUnitaryAdelicIso : ∀ {D : D7} (V : HSp D) (c : D.host.E), c ≠ 0 → ∀ {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (hJ : J = c • V.gram)
     (ν : Measure (GA D V)) (fd : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) fd ν →

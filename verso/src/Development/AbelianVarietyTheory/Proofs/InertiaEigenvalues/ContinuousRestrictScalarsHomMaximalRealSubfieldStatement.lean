@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.restrictScalarsHom_maximalRealSubfield_continuous | exact GlobalTheory.restrictScalarsHom_maximalRealSubfield_continuous | (intros; apply GlobalTheory.restrictScalarsHom_maximalRealSubfield_continuous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.restrictScalarsHom_maximalRealSubfield_continuous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FContinuousRestrictScalarsHomMaximalRealSubfield.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.continuous_restrictScalarsHom_maximalRealSubfield : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω],
     Continuous (AlgEquiv.restrictScalarsHom (maximalRealSubfield E) : G E Ω →* G (maximalRealSubfield E) Ω) := by

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.levelQuot_represents | exact GlobalTheory.levelQuot_represents | (intros; apply GlobalTheory.levelQuot_represents <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.levelQuot_represents` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FLevelQuotientRepresentsReduced.lean&line=163#L163)
 -/
 theorem _root_.GlobalTheory.T.levelQuotient_represents_reduced : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (Xo₂ : Moduli D l₂) (Q : LevelQuot l Xo₂), 1 ≤ D.p + D.q → l.Dvd l₂ → ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (KA l)), IsReduced S → ∀ ob : Obj D l (baseKA l) s', ∃! f : S ⟶ Q.X, f ≫ Q.s = s' ∧ Nonempty (ObjMap ob Q.univ f) := by
   first | exact @GlobalTheory.levelQuot_represents | exact GlobalTheory.levelQuot_represents | (intros; apply GlobalTheory.levelQuot_represents <;> assumption)

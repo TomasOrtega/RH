@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsSumMo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc PowerSeries GlobalTheory.BK GlobalTheory.BKReal
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul | exact GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul | (intros; apply GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPowMulDescPochhammerEulerEqEisensteinPow.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_mul_descPochhammerEuler_eq_eisenstein_pow : ∀ (l e : ℕ) (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (f h : K⟦X⟧) (k m : ℕ), h ∈ A O K → (l : K⟦X⟧) ^ k * N K f = E K l e ^ m * h → ∀ i : ℕ, 1 ≤ i → ∃ h' ∈ A O K, (l : K⟦X⟧) ^ k * descN K i f = E K l e ^ (m + 1 - i) * h' := by
   first | exact @GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul | exact GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul | (intros; apply GlobalTheory.BKReal.exists_l_pow_mul_descN_eq_E_pow_mul <;> assumption)

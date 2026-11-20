@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm | exact GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm | (intros; apply GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSplitPlaceEmbeddingProperties.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.split_place_embedding_properties : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w₁ w₂ : PlK K)
   [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal], w₁ ≠ w₂ →

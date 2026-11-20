@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain | exact GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain | (intros; apply GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDescendPointValuationRingOfDominatingLocalDomain.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.descend_point_valuationRing_of_dominating_local_domain : ∀ (V K W L : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] [CommRing W] [IsDomain W] [IsLocalRing W] [Field L] [Algebra W L] [IsFractionRing W L] [Algebra V W] [Algebra K L], (algebraMap W L).comp (algebraMap V W) = (algebraMap K L).comp (algebraMap V K) → IsLocalHom (algebraMap V W) → ∀ (X : Scheme.{0}) (x : Sp K ⟶ X) (f : Sp W ⟶ X), spMap (algebraMap K L) ≫ x = spMap (algebraMap W L) ≫ f → ∃ x' : Sp V ⟶ X, spMap (algebraMap V K) ≫ x' = x := by
   first | exact @GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain | exact GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain | (intros; apply GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain <;> assumption)

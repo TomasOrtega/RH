@@ -18,8 +18,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchACosets.exists_eq_sum_pureA_cosetInd | exact GlobalTheory.SchACosets.exists_eq_sum_pureA_cosetInd | (intros; apply GlobalTheory.SchACosets.exists_eq_sum_pureA_cosetInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchACosets.exists_eq_sum_pureA_cosetInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactOpenSchwartzFiniteDecomposition.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.compact_open_schwartz_finite_decomposition : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     ∃ W ∈ 𝓝 (0 : κ → Af F), ∀ U : AddSubgroup (κ → Af F), IsOpen (U : Set (κ → Af F)) → IsCompact (U : Set (κ → Af F)) →

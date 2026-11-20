@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MumFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumFam.FactorAdj.factor_adj | exact GlobalTheory.MumFam.FactorAdj.factor_adj | (intros; apply GlobalTheory.MumFam.FactorAdj.factor_adj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumFam.FactorAdj.factor_adj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdempotentFactorProjectionAdjointPair.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.idempotentFactor_projection_adjointPair : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) (F : Factor D.toPre D'.toPre), Adj (pol D') (pol D) F.pr (F.inc ≫ F.o.onB.act (Star.star F.e * F.f)) F.xp ((DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star F.e * F.f)).comp F.xi) := by
   first | exact @GlobalTheory.MumFam.FactorAdj.factor_adj | exact GlobalTheory.MumFam.FactorAdj.factor_adj | (intros; apply GlobalTheory.MumFam.FactorAdj.factor_adj <;> assumption)

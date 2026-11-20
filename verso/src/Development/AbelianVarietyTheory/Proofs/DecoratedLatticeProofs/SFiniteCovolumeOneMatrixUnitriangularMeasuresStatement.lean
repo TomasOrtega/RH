@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.sFinite_vol | exact GlobalTheory.Unf.sFinite_vol | (intros; apply GlobalTheory.Unf.sFinite_vol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.sFinite_vol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSFiniteCovolumeOneMatrixUnitriangularMeasures.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.sFinite_covolume_one_matrix_unitriangular_measures : ∀ (D : D7) (ρ m : ℕ) (vb : VolM D ρ m) (vU : VolU D ρ), SFinite vb.μ ∧ SFinite vU.ν := by
   first | exact @GlobalTheory.Unf.sFinite_vol | exact GlobalTheory.Unf.sFinite_vol | (intros; apply GlobalTheory.Unf.sFinite_vol <;> assumption)

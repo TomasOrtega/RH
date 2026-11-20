@@ -8,8 +8,10 @@ open GlobalTheory.LBDescent GlobalTheory.DescNorm
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian | exact GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian | (intros; apply GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlobalUnitTripleFibreProductInvariantSetGroupCoo.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.globalUnit_tripleFibreProduct_invariant_setGroupCoordZero : ∀ (K : Type) [Field K] (A A' B : Over (Sp K)) [GrpObj B] (q : A ⟶ A'), IsAbelianScheme B → ∀ (D : Γ(Triple (q ▷ B).left, ⊤)ˣ) (w : Triple (q ▷ B).left), gm (rhoW q) w ⊤ D = gm (𝟙 _) w ⊤ D := by
   first | exact @GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian | exact GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian | (intros; apply GlobalTheory.DescNorm.RigidW.gm_rhoW_eq_gm_id_of_abelian <;> assumption)

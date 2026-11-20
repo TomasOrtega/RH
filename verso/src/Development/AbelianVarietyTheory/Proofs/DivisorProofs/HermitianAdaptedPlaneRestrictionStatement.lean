@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviTorusH.exists_levi | exact GlobalTheory.LeviTorusH.exists_levi | (intros; apply GlobalTheory.LeviTorusH.exists_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviTorusH.exists_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianAdaptedPlaneRestriction.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.hermitian_adapted_plane_restriction : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

@@ -10,8 +10,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PosOne.comb_eq_sum_cells | exact GlobalTheory.PosOne.comb_eq_sum_cells | (intros; apply GlobalTheory.PosOne.comb_eq_sum_cells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PosOne.comb_eq_sum_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSymmetricDoubleIntegralsPositionOneEqCellSum.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.symmetricDoubleIntegrals_positionOne_eq_cellSum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ),

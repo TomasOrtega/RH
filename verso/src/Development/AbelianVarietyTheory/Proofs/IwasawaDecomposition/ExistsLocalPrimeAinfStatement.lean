@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NStage
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MemLoc.exists_locPrime_tied | exact GlobalTheory.MemLoc.exists_locPrime_tied | (intros; apply GlobalTheory.MemLoc.exists_locPrime_tied <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MemLoc.exists_locPrime_tied` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLocalPrimeAinf.lean&line=281#L281)
 -/
 theorem _root_.GlobalTheory.T.exists_local_prime_ainf : ∀ (l : ℕ) [Fact l.Prime], ∃ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) := by
   first | exact @GlobalTheory.MemLoc.exists_locPrime_tied | exact GlobalTheory.MemLoc.exists_locPrime_tied | (intros; apply GlobalTheory.MemLoc.exists_locPrime_tied <;> assumption)

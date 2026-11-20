@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RigAtOrigin.frame_at_origin | exact GlobalTheory.RigAtOrigin.frame_at_origin | (intros; apply GlobalTheory.RigAtOrigin.frame_at_origin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RigAtOrigin.frame_at_origin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisedFibreFrameAtOriginEqRigidification.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.uniformisedFibre_frame_at_origin_eq_rigidification : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] (D : DegPre R) (x : KeyIn ℂ)
     (φ : x.P.A.left ⟶ D.P.A.left) (he : eSec x.P.A ≫ φ = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) ≫ eSec D.P.A)

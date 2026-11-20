@@ -8,8 +8,10 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open scoped ComplexOrder ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MetSmooth.metsmooth | exact GlobalTheory.MetSmooth.metsmooth | (intros; apply GlobalTheory.MetSmooth.metsmooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MetSmooth.metsmooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHodgeMetricsSmooth.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.hodge_metrics_smooth : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp) (x : ToroidalCompactificationData s) (t : D.what₂.Tau), (∀ a b, HodgeDomain.SmoothOn fun z : Pt D.what₂.Tau j (N - j) => x.metW L k z t a b) ∧ ∀ a b, HodgeDomain.SmoothOn fun z : Pt D.what₂.Tau j (N - j) => x.metOm L k z t a b := by
   first | exact @GlobalTheory.MetSmooth.metsmooth | exact GlobalTheory.MetSmooth.metsmooth | (intros; apply GlobalTheory.MetSmooth.metsmooth <;> assumption)

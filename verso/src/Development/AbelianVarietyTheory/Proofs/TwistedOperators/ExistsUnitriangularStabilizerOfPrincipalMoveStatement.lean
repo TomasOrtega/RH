@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrincipalMove.exists_move | exact GlobalTheory.PrincipalMove.exists_move | (intros; apply GlobalTheory.PrincipalMove.exists_move <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrincipalMove.exists_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsUnitriangularStabilizerOfPrincipalMove.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_unitriangularStabilizer_of_principal_move : ∀ {D : D7} (W : HSp D) {ρ : ℕ} (x : Mx D W.rank ρ) (Q : GlobalTheory.FinPl.Pl D → Prop) (g k : GA D W) (u : UX D ρ), g ∈ grpAt W Q → k ∈ grpAt W Q → MxOff Q (mt W k ⬝ x - mt W g⁻¹ ⬝ (x ⬝ u.1.1)) → ∃ r ∈ Rgrp W x, r ∈ grpAt W Q ∧ g = r * k⁻¹ := by
   first | exact @GlobalTheory.PrincipalMove.exists_move | exact GlobalTheory.PrincipalMove.exists_move | (intros; apply GlobalTheory.PrincipalMove.exists_move <;> assumption)

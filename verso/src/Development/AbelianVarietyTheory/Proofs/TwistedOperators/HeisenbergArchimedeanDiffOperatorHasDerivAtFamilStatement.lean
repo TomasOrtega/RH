@@ -15,8 +15,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 open GlobalTheory.HeisOrbit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt | exact GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt | (intros; apply GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergArchimedeanDiffOperatorHasDerivAtFamil.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.heisenbergArchimedeanDiffOperator_hasDerivAt_family : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (G : ℝ → SInf F κ) (P Q : ℝ → (κ → mixedEmbedding.mixedSpace F))
     (g' : SInf F κ) (P' Q' : κ → mixedEmbedding.mixedSpace F),

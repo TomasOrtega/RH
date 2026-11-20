@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomEqZeroOfIsConnOfIsEt
 open CategoryTheory GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDivGroup.semiHom_app_eq_conn_part | exact GlobalTheory.PDivGroup.semiHom_app_eq_conn_part | (intros; apply GlobalTheory.PDivGroup.semiHom_app_eq_conn_part <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PDivGroup.semiHom_app_eq_conn_part` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemilinearHomConnectedFactorThroughPart.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.semilinearHom_connected_factor_through_part : ∀ (p : ℕ) [Fact p.Prime] (k k' : Type) [Field k] [CharP k p] [PerfectRing k p]
     [Field k'] [CharP k' p] [PerfectRing k' p] (σ : k →+* k') (G' G'₀ G'₁ : PDivGroup p k') (C : PDivGroup p k)

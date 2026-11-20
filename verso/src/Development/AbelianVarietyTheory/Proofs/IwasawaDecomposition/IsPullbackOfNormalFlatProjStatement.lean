@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPullbackOf
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatDiagIffIsDiag
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.ShFam GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocM.Recode.exists_model_of_modification | exact GlobalTheory.LocM.Recode.exists_model_of_modification | (intros; apply GlobalTheory.LocM.Recode.exists_model_of_modification <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocM.Recode.exists_model_of_modification` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsPullbackOfNormalFlatProj.lean&line=273#L273)
 -/
 theorem _root_.GlobalTheory.T.isPullback_of_normal_flat_proj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Mdl Y i₀) (X' : Scheme.{0}) (f : X' ⟶ Z.X) (U : Z.X.Opens) (j : U.toScheme ⟶ X'), (U : Set Z.X) = Z.opn → IsProjOver (f ≫ Z.s) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' → Flat (f ≫ Z.s) → IsPullback j (𝟙 U.toScheme) f U.ι → Dense (Set.range j) → ∃ (Z' : Mdl Y i₀) (e : Z'.X ≅ X'), Z'.i = Z.i ∧ Z'.ty = Z.ty ∧ ∀ (Z₂ : Mdl Y i₀) (f₂ : X' ⟶ Z₂.X), GlobalTheory.LocM.Corr Z Z₂ → (∀ (k : Type) [Field k] (w : Sp k ⟶ U.toScheme), NatImg Z Z₂ (w ≫ U.ι) (w ≫ j ≫ f₂)) → IsMap Z' Z₂ (e.hom ≫ f₂) := by
   first | exact @GlobalTheory.LocM.Recode.exists_model_of_modification | exact GlobalTheory.LocM.Recode.exists_model_of_modification | (intros; apply GlobalTheory.LocM.Recode.exists_model_of_modification <;> assumption)

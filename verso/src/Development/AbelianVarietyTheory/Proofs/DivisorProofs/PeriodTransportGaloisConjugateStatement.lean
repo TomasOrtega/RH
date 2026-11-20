@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiagConj.diag_endo_iff_conj_diag | exact GlobalTheory.DiagConj.diag_endo_iff_conj_diag | (intros; apply GlobalTheory.DiagConj.diag_endo_iff_conj_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiagConj.diag_endo_iff_conj_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodTransportGaloisConjugate.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.period_transport_galois_conjugate : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left) (n : ℕ)
     (u : HolUnif A L n) (u' : HolUnif A' L' n) (g : ℂ ≃+* ℂ) (p : A'.left ⟶ A.left),

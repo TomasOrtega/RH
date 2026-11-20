@@ -19,8 +19,10 @@ open GlobalTheory.Grid GlobalTheory.ChiGrid GlobalTheory.GridJoin
 open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemSumIdeal.isIdemSum_props | exact GlobalTheory.IdemSumIdeal.isIdemSum_props | (intros; apply GlobalTheory.IdemSumIdeal.isIdemSum_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemSumIdeal.isIdemSum_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIdempotentSumInfPartIntegralOneSubMem.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.idempotentSum_infPart_integral_one_sub_mem : ∀ {D : D7} (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ), IsIdemSum e P → infPart D e = 0 ∧ toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ ∃ t ∈ Formalism.L2.DIV.idS D.host.F (∏ w ∈ P, w.asIdeal ^ d w), (t : EAf D) = 1 - toEAf D e := by
   first | exact @GlobalTheory.IdemSumIdeal.isIdemSum_props | exact GlobalTheory.IdemSumIdeal.isIdemSum_props | (intros; apply GlobalTheory.IdemSumIdeal.isIdemSum_props <;> assumption)

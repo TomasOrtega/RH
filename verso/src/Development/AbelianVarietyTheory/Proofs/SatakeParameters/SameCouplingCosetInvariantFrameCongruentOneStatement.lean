@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosetLoc.sameCoset_symm_iff | exact GlobalTheory.CosetLoc.sameCoset_symm_iff | (intros; apply GlobalTheory.CosetLoc.sameCoset_symm_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosetLoc.sameCoset_symm_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSameCouplingCosetInvariantFrameCongruentOne.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.sameCouplingCoset_invariant_frame_congruent_one : ∀ {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (cst : LocCst X (rowSG Pr sel mu)) (P : rowSG Pr sel mu) {n : ℕ} (κ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (y0 : Sp X.E n), cst.Ok →

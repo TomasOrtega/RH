@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBoundedStatement
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables <;> …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FTendstoTailInfiniteProductOne.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.weight_sum_as_finite_differences : ∀ (r l N : ℕ) (w : (Fin r → ℕ) → ℚ), 0 < l → GoodWeight l w →
   ∃ (Q : Type) (_ : Fintype Q) (cs : Q → List (Fin r)) (u : Q → (Fin r → ℕ) → ℚ),

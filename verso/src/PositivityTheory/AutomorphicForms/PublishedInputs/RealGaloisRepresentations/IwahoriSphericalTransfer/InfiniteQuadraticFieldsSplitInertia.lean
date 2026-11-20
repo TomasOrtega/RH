@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealGal.exists_infinite_qcm_split_ram | exact GlobalTheory.RealGal.exists_infinite_qcm_split_ram | (intros; apply GlobalTheory.RealGal.exists_infinite_qcm_split_ram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealGal.exists_infinite_qcm_split_ram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=PositivityTheory%2FAutomorphicForms%2FPublishedInputs%2FRealGaloisRepresentations%2FIwahoriSphericalTransfer%2FExistsInfiniteQcmSplitRam.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.infinite_quadratic_fields_split_inertia : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (T : HeightOneSpectrum (𝓞 F) → Prop), (∀ᶠ u in Filter.cofinite, T u) → ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → {Q : QCM F Ω | Dec (F := F) A ≤ (res F Ω ↥Q.K).range ∧ ∃ (u : HeightOneSpectrum (𝓞 F)) (A' : ValuationSubring Ω), T u ∧ IsPlaceOver A' u ∧ ¬ Ine (F := F) A' ≤ (res F Ω ↥Q.K).range}.Infinite := by
   first | exact @GlobalTheory.RealGal.exists_infinite_qcm_split_ram | exact GlobalTheory.RealGal.exists_infinite_qcm_split_ram | (intros; apply GlobalTheory.RealGal.exists_infinite_qcm_split_ram <;> assumption)

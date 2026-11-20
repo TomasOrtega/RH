@@ -6,8 +6,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeqDim.h1f_finrank | exact GlobalTheory.SeqDim.h1f_finrank | (intros; apply GlobalTheory.SeqDim.h1f_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeqDim.h1f_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFinrankH1fDeRham.lean&line=340#L340)
 -/
 theorem _root_.GlobalTheory.T.finrank_H1f_de_rham : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ A : GRep ↥(GK K) ℚ_[l] LL O, IsDR (P.PD K) A.ρ → Module.Finite LL (FiniteCohomology (P.PD K) A.ρ) ∧ (finrank LL (FiniteCohomology (P.PD K) A.ρ) : ℤ) = finrank LL ↥(H0V A.ρ) + ((finrank LL ↥(DdR (P.PD K) A.ρ) : ℤ) - finrank LL ↥(DdR (P.PD K) A.ρ ⊓ FilV (P.PD K) (LL := LL) (V := A.V) 0)) := by
   first | exact @GlobalTheory.SeqDim.h1f_finrank | exact GlobalTheory.SeqDim.h1f_finrank | (intros; apply GlobalTheory.SeqDim.h1f_finrank <;> assumption)

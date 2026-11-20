@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.fv_isCoc_and_ev_eq | exact GlobalTheory.PtExt.fv_isCoc_and_ev_eq | (intros; apply GlobalTheory.PtExt.fv_isCoc_and_ev_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.fv_isCoc_and_ev_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCrystallineCocycleOnPointsIsCocycleAndEvalEq.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), IsCoc (whole X) (fv f) ∧ ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (x : Pt X D) (x' : Pt X D') (φ : D →ₐ[R] D') (a : trivAt x ⟶ trivAt x'), (∀ r, a.φ r = φ r) → spOver φ ≫ x = x' ∧ ev f a = fv f D D' φ x := by
   first | exact @GlobalTheory.PtExt.fv_isCoc_and_ev_eq | exact GlobalTheory.PtExt.fv_isCoc_and_ev_eq | (intros; apply GlobalTheory.PtExt.fv_isCoc_and_ev_eq <;> assumption)

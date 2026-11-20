@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaIrred.orth_heis_translates | exact GlobalTheory.ThetaIrred.orth_heis_translates | (intros; apply GlobalTheory.ThetaIrred.orth_heis_translates <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaIrred.orth_heis_translates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FThetaFunctionHeisenbergIrreducibleOrthogonal.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.thetaFunction_heisenberg_irreducible_orthogonal : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) →
     ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 →

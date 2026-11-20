@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDetProdConstAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeSignatureSum
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.DetProd
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.MidJacGlobal.main | exact GlobalTheory.ThK.MidJacGlobal.main | (intros; apply GlobalTheory.ThK.MidJacGlobal.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.MidJacGlobal.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolDataWittFrameDecomp.lean&line=253#L253)
 -/
 theorem _root_.GlobalTheory.T.pol_data_witt_frame_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

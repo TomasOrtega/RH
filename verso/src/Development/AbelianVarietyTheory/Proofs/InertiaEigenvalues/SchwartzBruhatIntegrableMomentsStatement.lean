@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MeasurePreserv
 
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments | exact GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments | (intros; apply GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSchwartzBruhatIntegrableMoments.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.schwartz_bruhat_integrable_moments : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (F : (Fin m → Ad E) → ℂ),
     F ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi E (Fin m) →

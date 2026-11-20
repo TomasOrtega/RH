@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLim.differentiableOn_ev_up | exact GlobalTheory.ArchLim.differentiableOn_ev_up | (intros; apply GlobalTheory.ArchLim.differentiableOn_ev_up <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLim.differentiableOn_ev_up` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalChartBoundaryRegular.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.toroidal_chart_boundary_regular : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (σ : c.F →+* ℂ) (Y : Scheme.{0}) (q : Y ⟶ Sp (𝓞 c.F)) (jm : Y ⟶ Z.X) (hq : jm ≫ Z.s = q) (n : ℕ) (ch : AlgChart q (σ.comp (algebraMap (𝓞 c.F) c.F)) n) (W : (gen Z).Opens) (f : Γ(gen Z, W)), DifferentiableOn ℂ (ev (genStr Z) σ W f ∘ up jm hq σ ∘ ch.e.symm) (ch.e.target ∩ ch.e.symm ⁻¹' (up jm hq σ ⁻¹' ptsIn (genStr Z) σ W)) := by
   first | exact @GlobalTheory.ArchLim.differentiableOn_ev_up | exact GlobalTheory.ArchLim.differentiableOn_ev_up | (intros; apply GlobalTheory.ArchLim.differentiableOn_ev_up <;> assumption)

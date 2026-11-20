@@ -18,8 +18,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLinePreimage.arch_symm_lineAt | exact GlobalTheory.ArchLinePreimage.arch_symm_lineAt | (intros; apply GlobalTheory.ArchLinePreimage.arch_symm_lineAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLinePreimage.arch_symm_lineAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FArchimedeanPreimageRealPlaceLine.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.archimedean_preimage_realPlace_line : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (cS : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X),

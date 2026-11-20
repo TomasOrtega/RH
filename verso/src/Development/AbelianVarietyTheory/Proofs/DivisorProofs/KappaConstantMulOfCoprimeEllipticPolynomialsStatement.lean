@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.KapMul.kap_mul | exact GlobalTheory.BCT.KapMul.kap_mul | (intros; apply GlobalTheory.BCT.KapMul.kap_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.KapMul.kap_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKappaConstantMulOfCoprimeEllipticPolynomials.lean&line=503#L503)
 -/
 theorem _root_.GlobalTheory.T.kappaConstant_mul_of_coprime_ellipticPolynomials : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (a b : ℕ) (P₁ P₂ : E[X]), P₁ ∈ Ell E a → P₂ ∈ Ell E b → IsCoprime P₁ P₂ → kap (P₁ * P₂) = kap P₁ * kap P₂ ∧ (∃ δ : GL (Fin a) E, (δ * thE E a δ).val.charpoly = P₁) ∧ P₁ * P₂ ∈ Ell E (a + b) := by
   first | exact @GlobalTheory.BCT.KapMul.kap_mul | exact GlobalTheory.BCT.KapMul.kap_mul | (intros; apply GlobalTheory.BCT.KapMul.kap_mul <;> assumption)

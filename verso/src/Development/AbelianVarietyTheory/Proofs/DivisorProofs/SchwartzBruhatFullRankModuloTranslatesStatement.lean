@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExists
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 open GlobalTheory.WeilM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankStrata.exists_fullRank_sub_mem_span | exact GlobalTheory.RankStrata.exists_fullRank_sub_mem_span | (intros; apply GlobalTheory.RankStrata.exists_fullRank_sub_mem_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankStrata.exists_fullRank_sub_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzBruhatFullRankModuloTranslates.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.schwartzBruhat_full_rank_modulo_translates : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →

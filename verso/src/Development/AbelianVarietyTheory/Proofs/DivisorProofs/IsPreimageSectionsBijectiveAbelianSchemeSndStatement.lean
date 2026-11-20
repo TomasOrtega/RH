@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PicGlue.fnBij_snd | exact GlobalTheory.PicGlue.fnBij_snd | (intros; apply GlobalTheory.PicGlue.fnBij_snd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PicGlue.fnBij_snd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPreimageSectionsBijectiveAbelianSchemeSnd.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.isPreimageSectionsBijective_abelianScheme_snd : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAbelianScheme A → FnBij (snd A T).left := by
   first | exact @GlobalTheory.PicGlue.fnBij_snd | exact GlobalTheory.PicGlue.fnBij_snd | (intros; apply GlobalTheory.PicGlue.fnBij_snd <;> assumption)

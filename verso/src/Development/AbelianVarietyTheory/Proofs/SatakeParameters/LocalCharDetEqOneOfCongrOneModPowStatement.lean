@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMoveRight
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AwayMat.muAt_det_congr_one | exact GlobalTheory.AwayMat.muAt_det_congr_one | (intros; apply GlobalTheory.AwayMat.muAt_det_congr_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AwayMat.muAt_det_congr_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLocalCharDetEqOneOfCongrOneModPow.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.localChar_det_eq_one_of_congr_one_mod_pow : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
     {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ),

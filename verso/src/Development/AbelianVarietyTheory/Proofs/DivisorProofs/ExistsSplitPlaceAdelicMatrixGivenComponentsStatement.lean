@@ -25,8 +25,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitComps.exists_mat_comps | exact GlobalTheory.SplitComps.exists_mat_comps | (intros; apply GlobalTheory.SplitComps.exists_mat_comps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitComps.exists_mat_comps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSplitPlaceAdelicMatrixGivenComponents.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_splitPlace_adelicMatrix_given_components : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (τ : E →ₐ[F] Fv F v) {m n : Type} (P₀ P₁ : Matrix m n (Fv F v)), ∃ u : Matrix m n (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) u ∧ u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) = P₀ ∧ u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ)) = P₁ := by
   first | exact @GlobalTheory.SplitComps.exists_mat_comps | exact GlobalTheory.SplitComps.exists_mat_comps | (intros; apply GlobalTheory.SplitComps.exists_mat_comps <;> assumption)

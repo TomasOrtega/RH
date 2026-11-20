@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw GlobalTheory.CompanionTheory.PcFc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PcNb.pc_nb | exact GlobalTheory.CompanionTheory.PcNb.pc_nb | (intros; apply GlobalTheory.CompanionTheory.PcNb.pc_nb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PcNb.pc_nb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPartialCoefficientUnipotentMean.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.partial_coefficient_unipotent_mean : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (F : G D n → ℂ) {nb : hermA D n → G D n}, IsNMap nb → ∀ (g : G D n) (y : hermA D p), pc M m ψ b₀ F (nb (bT hn 0 0 y) * g) = pm hn m ψ b₀ (fun b => F (nb b * g)) y := by
   first | exact @GlobalTheory.CompanionTheory.PcNb.pc_nb | exact GlobalTheory.CompanionTheory.PcNb.pc_nb | (intros; apply GlobalTheory.CompanionTheory.PcNb.pc_nb <;> assumption)

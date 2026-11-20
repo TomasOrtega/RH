@@ -12,8 +12,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchurUnitary.main | exact GlobalTheory.SchurUnitary.main | (intros; apply GlobalTheory.SchurUnitary.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchurUnitary.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSymplecticFixingIWithDerivative.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.exists_symplectic_fixing_i_with_derivative : ∀ (g : ℕ) (k : Matrix.unitaryGroup (Fin g) ℂ), ∃ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, actB γ (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) = symPart (Complex.I • 1) ∧ ∀ v : symMat g, fderiv ℂ (actB γ) (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) v = symPart (k.1 * tauU v * k.1ᵀ) := by
   first | exact @GlobalTheory.SchurUnitary.main | exact GlobalTheory.SchurUnitary.main | (intros; apply GlobalTheory.SchurUnitary.main <;> assumption)

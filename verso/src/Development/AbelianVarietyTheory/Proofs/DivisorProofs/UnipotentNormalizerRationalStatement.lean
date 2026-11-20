@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StabNormal.stab_normalises_unip | exact GlobalTheory.StabNormal.stab_normalises_unip | (intros; apply GlobalTheory.StabNormal.stab_normalises_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StabNormal.stab_normalises_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentNormalizerRational.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.unipotent_normalizer_rational : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), Y.IsHerm σ B r s → H.IsAdapted σ B Y Y₁ i₀ i₁ → ∀ (t : (AE F E)ˣ) (m : UA σ Y.J), IsLevi (W₁ := Y₁) H t 1 m → ∀ q ∈ ratU σ Y.J ⊓ Subgroup.closure {g : UA σ Y.J | mat g *ᵥ incV F H.x = incV F H.x}, (∀ u ∈ unip σ Y H, q * u * q⁻¹ ∈ unip σ Y H) ∧ m⁻¹ * q * m * q⁻¹ ∈ unip σ Y H := by
   first | exact @GlobalTheory.StabNormal.stab_normalises_unip | exact GlobalTheory.StabNormal.stab_normalises_unip | (intros; apply GlobalTheory.StabNormal.stab_normalises_unip <;> assumption)

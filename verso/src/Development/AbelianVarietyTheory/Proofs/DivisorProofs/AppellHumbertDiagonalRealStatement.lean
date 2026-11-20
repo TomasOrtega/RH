@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RiemInt.riemannForm_int | exact GlobalTheory.RiemInt.riemannForm_int | (intros; apply GlobalTheory.RiemInt.riemannForm_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RiemInt.riemannForm_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAppellHumbertDiagonalReal.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.appell_humbert_diagonal_real : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →

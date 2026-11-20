@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipMassHerm.exists_fundDom_unip_herm | exact GlobalTheory.UnipMassHerm.exists_fundDom_unip_herm | (intros; apply GlobalTheory.UnipMassHerm.exists_fundDom_unip_herm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipMassHerm.exists_fundDom_unip_herm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentFundamentalDomainExists.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.unipotent_fundamental_domain_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

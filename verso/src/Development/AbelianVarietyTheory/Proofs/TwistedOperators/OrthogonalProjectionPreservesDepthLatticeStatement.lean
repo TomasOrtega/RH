@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjCore.proj_mem_latCore | exact GlobalTheory.ProjCore.proj_mem_latCore | (intros; apply GlobalTheory.ProjCore.proj_mem_latCore <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjCore.proj_mem_latCore` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FOrthogonalProjectionPreservesDepthLattice.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.orthogonal_projection_preserves_depth_lattice : OnStd fun {D} _ _ _ {G} _ F => ∀ u ∈ latCore G 0, F.oz.jA ⬝ (F.oz.pA ⬝ u) ∈ latCore G 0 := by
   first | exact @GlobalTheory.ProjCore.proj_mem_latCore | exact GlobalTheory.ProjCore.proj_mem_latCore | (intros; apply GlobalTheory.ProjCore.proj_mem_latCore <;> assumption)

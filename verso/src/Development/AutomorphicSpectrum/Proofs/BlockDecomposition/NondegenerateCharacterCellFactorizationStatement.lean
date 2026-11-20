@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS GlobalTheory.Eis GlobalTheory.CompanionTheory.SwUnf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell | exact GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell | (intros; apply GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNondegenerateCharacterCellFactorization.lean&line=209#L209)
 -/
 theorem _root_.GlobalTheory.T.nondegenerate_character_cell_factorization : ∀ {D : D7} {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ}, IsCharAF D.host.F ψ → ∀ (β : HermE D n), β.1.det ≠ 0 → ∀ (W : Submodule D.host.E (Fin n → D.host.E)), W ≠ ⊥ → ∃ ν : hermA D n, ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) ν.1 : Mx D n n))) ≠ 1 ∧ ∀ (γ u : G D n), γ ∈ GF D n → ∀ x : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, mat γ = x.map (incA D) → cellKer x = W → mat u = blk4 1 ν.1 0 1 → ∃ p ∈ P D n, ∃ a : GL (Fin n) (AE D), blkA (mat p) = a.1 ∧ Matrix.GeneralLinearGroup.det a = 1 ∧ γ * u = p * γ := by
   first | exact @GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell | exact GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell | (intros; apply GlobalTheory.CompanionTheory.SwUnf.SmallCell.small_cell <;> assumption)

@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixPer.flagCoord_homeo | exact GlobalTheory.MixPer.flagCoord_homeo | (intros; apply GlobalTheory.MixPer.flagCoord_homeo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixPer.flagCoord_homeo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsHomeomorphWittFlagCoordinates.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.exists_homeomorph_wittFlagCoordinates : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ e : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) ≃ₜ flagN d, ∀ p, (e p : GA D S) = d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2) := by
   first | exact @GlobalTheory.MixPer.flagCoord_homeo | exact GlobalTheory.MixPer.flagCoord_homeo | (intros; apply GlobalTheory.MixPer.flagCoord_homeo <;> assumption)

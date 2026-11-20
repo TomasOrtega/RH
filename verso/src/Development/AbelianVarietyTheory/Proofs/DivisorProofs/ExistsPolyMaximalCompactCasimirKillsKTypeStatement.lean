@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
 open NumberField GlobalTheory.CuspRep GlobalTheory.HCF GlobalTheory.CuspQuot GlobalTheory.HCAlpha MeasureTheory
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCKTypes.exists_casK_poly | exact GlobalTheory.HCKTypes.exists_casK_poly | (intros; apply GlobalTheory.HCKTypes.exists_casK_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCKTypes.exists_casK_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolyMaximalCompactCasimirKillsKType.lean&line=238#L238)
 -/
 theorem _root_.GlobalTheory.T.exists_poly_maximalCompactCasimir_kills_KType : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (W : Submodule ℂ (Kinf E a → ℂ)),
     FiniteDimensional ℂ W → ∃ q : Polynomial ℂ, q ≠ 0 ∧ ∀ φ : Sm E a,

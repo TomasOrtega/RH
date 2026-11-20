@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocalInvIdem.exists_inv | exact GlobalTheory.LocalInvIdem.exists_inv | (intros; apply GlobalTheory.LocalInvIdem.exists_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocalInvIdem.exists_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsIntegralInverseAtSplitPlacesOfUnits.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_inverse_at_splitPlaces_of_units : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → ∀ (a : EAf D) (ha : a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), (∀ PP ∈ Z, IsUnit (Formalism.L2.DIV.resS D.host.F PP ⟨a, ha⟩)) → ∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, a * w * toEAf D e = toEAf D e := by
   first | exact @GlobalTheory.LocalInvIdem.exists_inv | exact GlobalTheory.LocalInvIdem.exists_inv | (intros; apply GlobalTheory.LocalInvIdem.exists_inv <;> assumption)

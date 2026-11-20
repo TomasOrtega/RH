@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau | exact GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau | (intros; apply GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorDataSymmetricPullbackAndPsiEqTau.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.traceFormTwistIso_of_matAct_of_latAct : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (A₀ : Matrix (Fin r) (Fin r) ℤ) (O : Type) [CommRing O] [StarRing O] [Module O D'.toPre.X] (o : D'.toPre.OAct O) (w₀ : O), o.onB.act w₀ = GlobalTheory.TensAct.matAct T A₀ → (∀ y : D'.toPre.X, w₀ • y = GlobalTheory.TensAct.latAct T A₀ y) → W = (W + W.transpose) * A₀ → TraceFormTwistIso D'.toPre o w₀ := by
   first | exact @GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau | exact GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau | (intros; apply GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau <;> assumption)

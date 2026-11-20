@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaVal.NullMove.thC_of_isNullVal | exact GlobalTheory.EtaVal.NullMove.thC_of_isNullVal | (intros; apply GlobalTheory.EtaVal.NullMove.thC_of_isNullVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaVal.NullMove.thC_of_isNullVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusSplitting%2FNormalisedThetaConstantOfUniversalOriginValue.lean&line=159#L159)
 -/
 theorem _root_.GlobalTheory.T.normalisedThetaConstant_of_universal_origin_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (x : Sp (FractionRing R) ⟶ Xo.X) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (Φ : Fib Xo x A) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra c.F F] (z : FrPt Xo c F), z.x = spMap (algebraMap (FractionRing R) F) ≫ x → ∀ th : GlobalTheory.UT.SecA A F 1, Φ.SecTie z.x z.s th → ∀ (m : ℕ), Odd m → ∀ (p : ptO Xo z.x ⟶ Xo.univ.t.G) (p' : TFK (R := R) F ⟶ A.A) (w : F), p ^ (m ^ 2) = 1 → p'.left ≫ Φ.φ = p.left → IsNullVal Xo c m z p w → ∃ t, GlobalTheory.UT.ThC A Φ.ρ m th p' t w := by
   first | exact @GlobalTheory.EtaVal.NullMove.thC_of_isNullVal | exact GlobalTheory.EtaVal.NullMove.thC_of_isNullVal | (intros; apply GlobalTheory.EtaVal.NullMove.thC_of_isNullVal <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwasawaUnfold.iwasawa_unfold | exact GlobalTheory.IwasawaUnfold.iwasawa_unfold | (intros; apply GlobalTheory.IwasawaUnfold.iwasawa_unfold <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwasawaUnfold.iwasawa_unfold` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoublingConfigurationHaarIntegralUnfolding.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.doubling_configuration_haar_integral_unfolding : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

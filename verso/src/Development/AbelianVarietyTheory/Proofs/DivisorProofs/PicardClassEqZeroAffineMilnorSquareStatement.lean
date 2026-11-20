@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualOpen.pic_eq_zero_of_milnor | exact GlobalTheory.DualOpen.pic_eq_zero_of_milnor | (intros; apply GlobalTheory.DualOpen.pic_eq_zero_of_milnor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualOpen.pic_eq_zero_of_milnor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPicardClassEqZeroAffineMilnorSquare.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.picardClass_eq_zero_affineMilnorSquare : ∀ (S : Scheme.{0}) (A T T₁ T₂ T₀ : Over S) [Flat A.hom] (j₁ : T₁ ⟶ T) (j₂ : T₂ ⟶ T) (k₁ : T₀ ⟶ T₁) (k₂ : T₀ ⟶ T₂), Milnor j₁.left j₂.left k₁.left k₂.left → Function.Surjective (Units.map (A ◁ k₂).left.appTop.hom.toMonoidHom) → ∀ c : Pic (A ⊗ T).left, GlobalTheory.CechPic.pull (A ◁ j₁).left c = 0 → GlobalTheory.CechPic.pull (A ◁ j₂).left c = 0 → c = 0 := by
   first | exact @GlobalTheory.DualOpen.pic_eq_zero_of_milnor | exact GlobalTheory.DualOpen.pic_eq_zero_of_milnor | (intros; apply GlobalTheory.DualOpen.pic_eq_zero_of_milnor <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Cval
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTransl.tau_pow_bdd | exact GlobalTheory.ThetaTransl.tau_pow_bdd | (intros; apply GlobalTheory.ThetaTransl.tau_pow_bdd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTransl.tau_pow_bdd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FThetaTranslatePowerSeriesPowBoundedCoeffsOfTorsi.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.thetaTranslatePowerSeries_pow_boundedCoeffs_of_torsion : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p),
     GL3Theta.At D cc δ g → ∀ t : ℂ, GL3Theta.Tors1 p g.abelian₂ t → ∀ N : ℕ, 0 < N → (N : ℂ) * t ∈ g.abelian₂ →

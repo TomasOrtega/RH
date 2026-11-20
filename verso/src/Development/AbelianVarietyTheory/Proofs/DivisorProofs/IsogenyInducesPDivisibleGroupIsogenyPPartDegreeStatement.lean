@@ -8,8 +8,10 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory GlobalTheory.PD
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dieu.isIsog_hasLogDeg_map | exact GlobalTheory.Dieu.isIsog_hasLogDeg_map | (intros; apply GlobalTheory.Dieu.isIsog_hasLogDeg_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dieu.isIsog_hasLogDeg_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsogenyInducesPDivisibleGroupIsogenyPPartDegree.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.isogeny_induces_pDivisibleGroupIsogeny_pPartDegree : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k) (G H : PDivGroup p k) (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B), IsIsogeny f → IsIsog (t.map t' f.hom) ∧ HasLogDeg (t.map t' f.hom) (padicValNat p (deg f)) := by
   first | exact @GlobalTheory.Dieu.isIsog_hasLogDeg_map | exact GlobalTheory.Dieu.isIsog_hasLogDeg_map | (intros; apply GlobalTheory.Dieu.isIsog_hasLogDeg_map <;> assumption)

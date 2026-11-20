@@ -24,8 +24,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMPowerIsogeny.exists_isogeny | exact GlobalTheory.CMPowerIsogeny.exists_isogeny | (intros; apply GlobalTheory.CMPowerIsogeny.exists_isogeny <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMPowerIsogeny.exists_isogeny` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralLatticeLAdicReduction.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.integral_lattice_l_adic_reduction : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
     (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)) (Λ : PeriodPair), IsBaseCond 𝔣 →

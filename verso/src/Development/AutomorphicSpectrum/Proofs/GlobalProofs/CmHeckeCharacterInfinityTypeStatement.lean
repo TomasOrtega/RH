@@ -10,8 +10,10 @@ open GroundTheory.Automorphic.GodementSection (localChar)
 open Formalism.L2.Host (unif atFin unif_spec)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf | exact GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf | (intros; apply GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCmHeckeCharacterInfinityType.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.cm_hecke_character_infinity_type : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (χ : HChar E) (hu : IsUnitary χ) (n : I → ℤ), Formalism.L2.Host.HChar.HasInf χ φ n → ∀ i : I, (toHecke χ hu).infiniteTau (InfinitePlace.mk (φ i)) = 0 ∧ ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = (n i).natAbs := by
   first | exact @GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf | exact GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf | (intros; apply GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf <;> assumption)

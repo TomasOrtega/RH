@@ -22,8 +22,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.PointSurjectivity
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback | exact GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback | (intros; apply GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FAffineCoverOfProductFibres.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.affine_cover_of_product_fibres : ∀ {k : Type} [Field k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X) (q : Z ⟶ T)
     (H : IsPullback p q a b) {V : T.Opens} (hV : IsAffineOpen V) {κ : Type} [LinearOrder κ] [Fintype κ]

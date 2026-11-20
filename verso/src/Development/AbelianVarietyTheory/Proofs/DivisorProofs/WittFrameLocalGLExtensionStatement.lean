@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitFrameAction.frame_action_split | exact GlobalTheory.SplitFrameAction.frame_action_split | (intros; apply GlobalTheory.SplitFrameAction.frame_action_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitFrameAction.frame_action_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameLocalGLExtension.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.wittFrame_local_GL_extension : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v)

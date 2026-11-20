@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingRChain
 open GlobalTheory.RingChain
 open scoped TensorProduct Pointwise ChangeOfRings
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RingChain.modIso_tensor_mod | exact GlobalTheory.RingChain.modIso_tensor_mod | (intros; apply GlobalTheory.RingChain.modIso_tensor_mod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RingChain.modIso_tensor_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseChangeNakayamaApproximation.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.base_change_nakayama_approximation : ∀ (A R : Type) [CommRing A] [CommRing R] [Algebra A R] (a : A) (g : R), algebraMap A R a = g → ModIso R a → ∀ (M M' : Type) [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module R M'] (e : R ⊗[A] M ≃ₗ[R] M'), (∀ z : M', ∃ y : M, z - e (1 ⊗ₜ y) ∈ g • (⊤ : Submodule R M')) ∧ ∀ y : M, e (1 ⊗ₜ y) ∈ g • (⊤ : Submodule R M') → y ∈ a • (⊤ : Submodule A M) := by
   first | exact @GlobalTheory.RingChain.modIso_tensor_mod | exact GlobalTheory.RingChain.modIso_tensor_mod | (intros; apply GlobalTheory.RingChain.modIso_tensor_mod <;> assumption)

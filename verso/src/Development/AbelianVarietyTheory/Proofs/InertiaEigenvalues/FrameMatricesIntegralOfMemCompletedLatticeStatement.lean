@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatHalfInt.frMap_int_of_mem_lat | exact GlobalTheory.LatHalfInt.frMap_int_of_mem_lat | (intros; apply GlobalTheory.LatHalfInt.frMap_int_of_mem_lat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatHalfInt.frMap_int_of_mem_lat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFrameMatricesIntegralOfMemCompletedLattice.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.frameMatrices_integral_of_mem_completedLattice : ∀ {D : D7} {S T : HSp D} {F : Frame S T}, F.Good → ∀ {R : Finset (Pl D.host.E)}, PlacesOK ∅ R → ∀ {x : WO S T}, IsHalf (idem R) x → x ∈ F.lat → IsIntM (frMapO S T F.βS F.βT x) ∧ IsIntM (frMapAdj S T F.βS F.βT x) := by
   first | exact @GlobalTheory.LatHalfInt.frMap_int_of_mem_lat | exact GlobalTheory.LatHalfInt.frMap_int_of_mem_lat | (intros; apply GlobalTheory.LatHalfInt.frMap_int_of_mem_lat <;> assumption)

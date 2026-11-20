@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SwapWeil.isWeilDatumO_swap | exact GlobalTheory.SwapWeil.isWeilDatumO_swap | (intros; apply GlobalTheory.SwapWeil.isWeilDatumO_swap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SwapWeil.isWeilDatumO_swap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsWeilDatumCompGroupSwappingSymplecticEquiv.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.isWeilDatum_comp_group_swapping_symplectic_equiv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T S' T' : HSp D), S'.rank = T.rank → T'.rank = S.rank →
     ∀ (L : WO S' T' ≃ₗ[AE D] WO S T) (φ : GA D S' →* GA D T) (φ' : GA D T' →* GA D S),

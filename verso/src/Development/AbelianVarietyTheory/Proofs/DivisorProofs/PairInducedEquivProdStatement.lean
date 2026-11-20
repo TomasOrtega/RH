@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairIndProd.pairInd_equiv_prod₂ | exact GlobalTheory.PairIndProd.pairInd_equiv_prod₂ | (intros; apply GlobalTheory.PairIndProd.pairInd_equiv_prod₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairIndProd.pairInd_equiv_prod₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPairInducedEquivProd.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.pair_induced_equiv_prod : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ),

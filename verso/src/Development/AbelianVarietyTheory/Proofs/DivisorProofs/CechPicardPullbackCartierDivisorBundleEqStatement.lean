@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cartier.PullPres.pull_cls_toLB | exact GlobalTheory.Cartier.PullPres.pull_cls_toLB | (intros; apply GlobalTheory.Cartier.PullPres.pull_cls_toLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cartier.PullPres.pull_cls_toLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechPicardPullbackCartierDivisorBundleEq.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.cechPicardPullback_cartierDivisorBundle_eq : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     (D : CartierDiv X) (E : CartierDiv W),

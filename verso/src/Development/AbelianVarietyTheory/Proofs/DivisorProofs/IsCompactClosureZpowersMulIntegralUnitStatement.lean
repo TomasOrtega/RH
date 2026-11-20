@@ -9,8 +9,10 @@ open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial Globa
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwLat.isCompact_closure_zpowers_mulU | exact GlobalTheory.TwLat.isCompact_closure_zpowers_mulU | (intros; apply GlobalTheory.TwLat.isCompact_closure_zpowers_mulU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwLat.isCompact_closure_zpowers_mulU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsCompactClosureZpowersMulIntegralUnit.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.isCompact_closure_zpowers_mul_integralUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A) (a : B.Aˣ), a ∈ GlobalTheory.UnitLemma.intUnits K.O B.A → IsCompact (closure (Subgroup.zpowers (GlobalTheory.TwLat.mulU e b a) : Set (GLw m w))) := by
   first | exact @GlobalTheory.TwLat.isCompact_closure_zpowers_mulU | exact GlobalTheory.TwLat.isCompact_closure_zpowers_mulU | (intros; apply GlobalTheory.TwLat.isCompact_closure_zpowers_mulU <;> assumption)

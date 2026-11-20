@@ -21,8 +21,10 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows | exact GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows | (intros; apply GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSiegelParabolicQuotientIffRows.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.siegel_parabolic_quotient_iff_rows : ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n : ℕ} (x r : Matrix (Fin (n + n)) (Fin (n + n)) K),
     IsUnit r.det → IsUnitary σ (blk4 0 1 (-1) 0) x → IsUnitary σ (blk4 0 1 (-1) 0) r →

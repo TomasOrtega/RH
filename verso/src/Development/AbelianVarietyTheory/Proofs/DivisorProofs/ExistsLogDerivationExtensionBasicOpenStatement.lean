@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogDerLoc.exists_logDer_basicOpen | exact GlobalTheory.LogDerLoc.exists_logDer_basicOpen | (intros; apply GlobalTheory.LogDerLoc.exists_logDer_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogDerLoc.exists_logDer_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLogDerivationExtensionBasicOpen.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_logDerivation_extension_basicOpen : ∀ (X : Scheme.{0}) (K : Type) [CommRing K] (s : X ⟶ Sp K) (I : X.IdealSheafData) (U W : X.affineOpens) (hW : W.1 ≤ U.1) (f : Γ(X, U.1)), W.1 = X.basicOpen f → ∀ Dl ∈ GlobalTheory.LogKS.logDer s I U, ∃ DlW ∈ GlobalTheory.LogKS.logDer s I W, ∀ r, DlW ((X.presheaf.map (homOfLE hW).op).hom r) = (X.presheaf.map (homOfLE hW).op).hom (Dl r) := by
   first | exact @GlobalTheory.LogDerLoc.exists_logDer_basicOpen | exact GlobalTheory.LogDerLoc.exists_logDer_basicOpen | (intros; apply GlobalTheory.LogDerLoc.exists_logDer_basicOpen <;> assumption)

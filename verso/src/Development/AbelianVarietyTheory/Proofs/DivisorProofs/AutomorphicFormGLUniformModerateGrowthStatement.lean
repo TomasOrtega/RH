@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Cu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AutGrowth.uniform_growth_of_autForm | exact GlobalTheory.AutGrowth.uniform_growth_of_autForm | (intros; apply GlobalTheory.AutGrowth.uniform_growth_of_autForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AutGrowth.uniform_growth_of_autForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAutomorphicFormGLUniformModerateGrowth.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.automorphicForm_GL_uniform_moderate_growth : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a), IsAutForm φ → ∃ N : ℕ, ∀ l : List (Lie E a), ∃ C : ℝ, ∀ y, ‖((l.map (lie E a)).prod φ).1 (infGL E a y)‖ ≤ C * height y ^ N := by
   first | exact @GlobalTheory.AutGrowth.uniform_growth_of_autForm | exact GlobalTheory.AutGrowth.uniform_growth_of_autForm | (intros; apply GlobalTheory.AutGrowth.uniform_growth_of_autForm <;> assumption)

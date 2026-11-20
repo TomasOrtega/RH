@@ -7,8 +7,10 @@ import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtHopf
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.UnitarySelfGeneration.bt_sub_eq_top | exact PositivityTheory.UnitarySelfGeneration.bt_sub_eq_top`.
+/- English proof (citation)
+Apply `PositivityTheory.UnitarySelfGeneration.bt_sub_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHomogeneousNonvanishing%2FBtHopf.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.btOrder_eq_btOrder_top : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → Γ.btOrder U = Γ.btOrder ⊤ := by
   first | exact @PositivityTheory.UnitarySelfGeneration.bt_sub_eq_top | exact PositivityTheory.UnitarySelfGeneration.bt_sub_eq_top

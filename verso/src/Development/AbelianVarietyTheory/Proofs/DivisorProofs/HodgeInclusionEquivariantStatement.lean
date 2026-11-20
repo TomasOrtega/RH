@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbDatum.isEquivariant_hodgeIncl | exact GlobalTheory.AbDatum.isEquivariant_hodgeIncl | (intros; apply GlobalTheory.AbDatum.isEquivariant_hodgeIncl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbDatum.isEquivariant_hodgeIncl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeInclusionEquivariant.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.hodge_inclusion_equivariant : GlobalTheory.CovTop.Hypotheses2 → ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] [QuasiSeparated A.hom] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (i : OAct O A) (H : T.Modules)

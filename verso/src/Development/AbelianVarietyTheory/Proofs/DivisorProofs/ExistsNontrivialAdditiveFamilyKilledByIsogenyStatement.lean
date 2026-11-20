@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.exists_nontriv_family | exact GlobalTheory.CharKer.exists_nontriv_family | (intros; apply GlobalTheory.CharKer.exists_nontriv_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.exists_nontriv_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNontrivialAdditiveFamilyKilledByIsogeny.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_nontrivial_additive_family_killed_by_isogeny : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' N : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A'), IsAbelianScheme A → IsAbelianScheme A' → IsMonHom i → IsMonHom q → IsFinite N.hom → IsFinite q.left → Flat q.left → Surjective q.left → IsPullback i (toUnit N) q η[A'] → i ≠ 1 → ∃ (T : Over (Sp K)) (M : LB (A' ⊗ T).left), M.IsLB ∧ IsAdditive M ∧ Triv (ev M (fst A T ≫ q) (snd A T)) ∧ ¬ Triv M := by
   first | exact @GlobalTheory.CharKer.exists_nontriv_family | exact GlobalTheory.CharKer.exists_nontriv_family | (intros; apply GlobalTheory.CharKer.exists_nontriv_family <;> assumption)

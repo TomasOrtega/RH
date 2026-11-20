@@ -10,8 +10,10 @@ open GlobalTheory.FrameNorm (IsUnitFr)
 open scoped Matrix
 open GlobalTheory.HkFam (admitted)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeEx.frame_pull_eq_transition_mul | exact GlobalTheory.HeckeEx.frame_pull_eq_transition_mul | (intros; apply GlobalTheory.HeckeEx.frame_pull_eq_transition_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeEx.frame_pull_eq_transition_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeckeIsogenyAppellHumbertFramePullEqTransitionMu.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.heckeIsogeny_appellHumbertFrame_pull_eq_transition_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (yx zx : Sp ℂ ⟶ Xo.X) (p : ℕ)
   (ψp : (Over.mk yx ⟶ Xo.univ.t.G) →* (Over.mk zx ⟶ Xo.univ.t.G)) (b : Xo.univ.t.PP.L.ι → Xo.univ.t.PP.L.ι → (Over.mk yx ⟶ Xo.univ.t.G) → ℂ)

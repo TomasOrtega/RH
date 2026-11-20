@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.UnrOutside
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.JSW GroundTheory.Global.IdeleGroup Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.WhitNorm.continuous_whit_and_norm_mul | exact GlobalTheory.JSW.WhitNorm.continuous_whit_and_norm_mul | (intros; apply GlobalTheory.JSW.WhitNorm.continuous_whit_and_norm_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.WhitNorm.continuous_whit_and_norm_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGlobalWhittakerCoefficientContinuousNormInvarian.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.globalWhittakerCoefficient_continuous_norm_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ), Continuous F →
     (∀ γ g, F (ratGL E a γ * g) = F g) →

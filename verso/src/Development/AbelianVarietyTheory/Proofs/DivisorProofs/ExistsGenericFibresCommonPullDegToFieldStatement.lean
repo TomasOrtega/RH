@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_generic_common_pull | exact GlobalTheory.Mum.exists_generic_common_pull | (intros; apply GlobalTheory.Mum.exists_generic_common_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_generic_common_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGenericFibresCommonPullDegToField.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.exists_generic_fibres_common_pullDeg_to_field : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D₁ D₂ : DegData R (maximalIdeal R)) (W : Type) [CommRing W] [IsDomain W] (φ : R →+* W), Function.Injective φ → ∀ D' : DegPre W, IsPullDeg φ D₁.toPre D' → IsPullDeg φ D₂.toPre D' → ∃ (E₁ E₂ : DegPre (FractionRing R)) (L : Type) (_ : Field L) (β : FractionRing R →+* L) (E' : DegPre L), Nonempty (IsPullDeg (algebraMap R (FractionRing R)) D₁.toPre E₁) ∧ Nonempty (IsPullDeg (algebraMap R (FractionRing R)) D₂.toPre E₂) ∧ Nonempty (IsPullDeg β E₁ E') ∧ Nonempty (IsPullDeg β E₂ E') := by
   first | exact @GlobalTheory.Mum.exists_generic_common_pull | exact GlobalTheory.Mum.exists_generic_common_pull | (intros; apply GlobalTheory.Mum.exists_generic_common_pull <;> assumption)

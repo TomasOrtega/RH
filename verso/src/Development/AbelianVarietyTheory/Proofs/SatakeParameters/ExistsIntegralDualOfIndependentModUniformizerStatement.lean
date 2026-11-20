@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.IntWitt.exists_dual_of_indepMod | exact GlobalTheory.Hk3.IntWitt.exists_dual_of_indepMod | (intros; apply GlobalTheory.Hk3.IntWitt.exists_dual_of_indepMod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.IntWitt.exists_dual_of_indepMod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsIntegralDualOfIndependentModUniformizer.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_dual_of_independentModUniformizer : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),
     Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →

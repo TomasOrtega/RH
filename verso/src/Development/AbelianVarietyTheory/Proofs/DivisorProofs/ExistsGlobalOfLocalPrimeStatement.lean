@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral | exact GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral | (intros; apply GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGlobalOfLocalPrime.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_global_of_local_prime : ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (A : Type) [CommRing A] [Algebra R A] [Finite (A →ₐ[R] K)] (r : A) (f : (A →ₐ[R] K) → K), (∀ (P : Ideal A) [P.IsPrime], r ∉ P → ∃ c : Localization.AtPrime P, ∀ ψ : Localization.AtPrime P →ₐ[R] K, ψ c = f (ψ.comp (IsScalarTower.toAlgHom R A (Localization.AtPrime P)))) → ∃ (k : ℕ) (a : A), ∀ ψ : A →ₐ[R] K, ψ a = ψ r ^ k * f ψ := by
   first | exact @GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral | exact GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral | (intros; apply GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral <;> assumption)

@@ -13,8 +13,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.LogDR GlobalTheory.LogPair
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.EtCoordBasis.etale_coords_basis | exact _root_.GlobalTheory.EtCoordBasis.etale_coords_basis | (intros; apply _root_.GlobalTheory.EtCoordBasis.etale_coords_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtCoordBasis.etale_coords_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFractionFieldCoordinatesDlog.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.fraction_field_coordinates_dlog : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [IsDomain A] [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A), (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale → ∀ (L : Type) [Field L] [Algebra A L] [IsFractionRing A L] (ht : ∀ j, algebraMap A L (t j) ≠ 0), IsCoord (fun j => Units.mk0 (algebraMap A L (t j)) (ht j)) ∧ ∀ f : A, ∃ c : Fin n → A, KaehlerDifferential.D ℤ L (algebraMap A L f) = ∑ j, algebraMap A L (c j) • KaehlerDifferential.D ℤ L (algebraMap A L (t j)) := by
   first | exact @_root_.GlobalTheory.EtCoordBasis.etale_coords_basis | exact _root_.GlobalTheory.EtCoordBasis.etale_coords_basis | (intros; apply _root_.GlobalTheory.EtCoordBasis.etale_coords_basis <;> assumption)

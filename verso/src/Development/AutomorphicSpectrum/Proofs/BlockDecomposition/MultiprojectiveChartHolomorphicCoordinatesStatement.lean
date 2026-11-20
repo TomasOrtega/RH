@@ -13,8 +13,10 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPSmooth.mchart_affine_holo | exact GlobalTheory.CompanionTheory.MPSmooth.mchart_affine_holo | (intros; apply GlobalTheory.CompanionTheory.MPSmooth.mchart_affine_holo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MPSmooth.mchart_affine_holo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMultiprojectiveChartHolomorphicCoordinates.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.multiprojective_chart_holomorphic_coordinates : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k), IsAffineOpen (mchart c) ∧
   ∀ a : Γ(MP ℤ m n, mchart c), DifferentiableOn ℂ (CxPts.ev (mpStr ℤ m n) σ₀ (mchart c) a ∘ GlobalTheory.CompanionTheory.MPSmooth.multiprojectivePoint c)

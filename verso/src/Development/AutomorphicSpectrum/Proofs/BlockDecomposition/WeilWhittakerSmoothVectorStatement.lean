@@ -12,8 +12,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3 GlobalTheory.CompanionTheory.SphThet
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WinertLin.Wc_sum | exact GlobalTheory.CompanionTheory.WinertLin.Wc_sum | (intros; apply GlobalTheory.CompanionTheory.WinertLin.Wc_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WinertLin.Wc_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerSmoothVector.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_smooth_vector : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → ∀ (χ : AddChar F Circle), Continuous χ → ∀ (σ : E ≃ₐ[F] E) (lam : ℂ) (c : Eˣ →* ℂˣ) (n : ℕ) (a : Fin n → ℂ) (Ψ : Fin n → E → ℂ), (∀ j, Continuous (Ψ j)) → (∀ j, HasCompactSupport (Ψ j)) → ∀ g : GL (Fin 2) F, GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) lam c (fun z => ∑ j, a j * Ψ j z) g = ∑ j, a j * GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) lam c (Ψ j) g := by
   first | exact @GlobalTheory.CompanionTheory.WinertLin.Wc_sum | exact GlobalTheory.CompanionTheory.WinertLin.Wc_sum | (intros; apply GlobalTheory.CompanionTheory.WinertLin.Wc_sum <;> assumption)

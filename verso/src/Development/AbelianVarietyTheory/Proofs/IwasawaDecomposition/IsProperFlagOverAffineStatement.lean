@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlkProper.isProper_restrict_isoSpec | exact GlobalTheory.PlkProper.isProper_restrict_isoSpec | (intros; apply GlobalTheory.PlkProper.isProper_restrict_isoSpec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlkProper.isProper_restrict_isoSpec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsProperFlagOverAffine.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.isProper_flag_over_affine : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (V : (gen s.T.Z).Opens) (hV : IsAffineOpen V), IsProper (((Φ.C k).π ∣_ V) ≫ hV.isoSpec.hom) := by
   first | exact @GlobalTheory.PlkProper.isProper_restrict_isoSpec | exact GlobalTheory.PlkProper.isProper_restrict_isoSpec | (intros; apply GlobalTheory.PlkProper.isProper_restrict_isoSpec <;> assumption)

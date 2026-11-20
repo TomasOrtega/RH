@@ -17,8 +17,10 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColumnRenumber.phiA_renumber | exact GlobalTheory.ColumnRenumber.phiA_renumber | (intros; apply GlobalTheory.ColumnRenumber.phiA_renumber <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColumnRenumber.phiA_renumber` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNeZeroPrimitiveFrameDatumRenumber.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_primitiveFrameDatum_renumber : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (A A' C : Type) [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C]

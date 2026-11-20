@@ -15,8 +15,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.projB_mem_of_orthAt | exact GlobalTheory.FinPl.projB_mem_of_orthAt | (intros; apply GlobalTheory.FinPl.projB_mem_of_orthAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.projB_mem_of_orthAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FOrthogonalSummandProjectionMemLatticeOfSplits.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.orthogonalSummandProjection_mem_lattice_of_splits : ∀ {D : D7} {S A B : HSp D} (o : OrthDec S A B) {L : Lat S} {LA : Lat A} {LB : Lat B}, (∀ z : Fin B.rank → D.host.E, (∀ v : GlobalTheory.FinPl.Pl D, (fun i => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F (· = v)) ⊗ₜ[D.host.F] z i) ∈ latV B LB (· = v)) → z ∈ LB) → (∀ v, OrthAt o L LA LB v) → ∀ t ∈ L, o.qB *ᵥ t ∈ LB := by
   first | exact @GlobalTheory.FinPl.projB_mem_of_orthAt | exact GlobalTheory.FinPl.projB_mem_of_orthAt | (intros; apply GlobalTheory.FinPl.projB_mem_of_orthAt <;> assumption)

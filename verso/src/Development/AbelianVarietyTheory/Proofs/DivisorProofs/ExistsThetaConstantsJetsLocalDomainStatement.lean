@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.exists_thJet_local | exact GlobalTheory.MBLow.exists_thJet_local | (intros; apply GlobalTheory.MBLow.exists_thJet_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.exists_thJet_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsThetaConstantsJetsLocalDomain.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaConstantsJets_localDomain : ∀ (W : Type) [CommRing W] [IsDomain W] [IsNoetherianRing W] [IsLocalRing W] (x : KeyIn W) (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → IsUnit (m : W) → ∀ (I : Type) (pt : I → (baseOver (Sp W) ⟶ x.P.A)), (∀ i, pt i ^ (m ^ 2) = 1) → ∃ ϑ J, ThJet x hg m pt ϑ J := by
   first | exact @GlobalTheory.MBLow.exists_thJet_local | exact GlobalTheory.MBLow.exists_thJet_local | (intros; apply GlobalTheory.MBLow.exists_thJet_local <;> assumption)

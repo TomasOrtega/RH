@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsOneCocycleOnSu
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 open GlobalTheory.KCoh Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K4.geo_facts | exact GlobalTheory.K4.geo_facts | (intros; apply GlobalTheory.K4.geo_facts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K4.geo_facts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FFixingSubgroupOfIntermediateFieldProperties.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.fixingSubgroupOfIntermediateField_properties : ∀ (F K Ω : Type) [Field F] [Field K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [Algebra.IsAlgebraic F Ω],
  (∀ g : Ω ≃ₐ[F] Ω, g ∈ GlobalTheory.K4.geo F K Ω ↔ ∀ x : K, g (algebraMap K Ω x) = algebraMap K Ω x) ∧

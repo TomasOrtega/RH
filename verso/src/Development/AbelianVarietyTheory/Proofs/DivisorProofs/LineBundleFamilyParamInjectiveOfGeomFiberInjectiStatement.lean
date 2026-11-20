@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualInj.inj_of_fibInj | exact GlobalTheory.DualInj.inj_of_fibInj | (intros; apply GlobalTheory.DualInj.inj_of_fibInj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualInj.inj_of_fibInj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleFamilyParamInjectiveOfGeomFiberInjecti.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.lineBundleFamilyParamInjective_of_geomFiberInjective : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), LocallyOfFiniteType U.hom → Fam A M → FibInj A M → Inj A M := by
   first | exact @GlobalTheory.DualInj.inj_of_fibInj | exact GlobalTheory.DualInj.inj_of_fibInj | (intros; apply GlobalTheory.DualInj.inj_of_fibInj <;> assumption)

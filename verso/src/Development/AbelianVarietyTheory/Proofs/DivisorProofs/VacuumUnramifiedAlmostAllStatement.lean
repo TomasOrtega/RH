@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceRingExists.exists_isPlaceOver | exact GlobalTheory.PlaceRingExists.exists_isPlaceOver | (intros; apply GlobalTheory.PlaceRingExists.exists_isPlaceOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceRingExists.exists_isPlaceOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVacuumUnramifiedAlmostAll.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.exists_place_ring_over_prime : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (k : IntermediateField ℚ ℂ), FiniteDimensional ℚ k →
     ∃ R : Subring ℂ, IsPlaceOver l lam k R := by

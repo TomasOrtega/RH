@@ -19,8 +19,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unif_norm_indep | exact GlobalTheory.unif_norm_indep | (intros; apply GlobalTheory.unif_norm_indep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unif_norm_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormUniformizerConstant.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.norm_uniformizer_constant : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ ϖ : V, Irreducible ϖ → ∃ r : ℝ, ∀ φ : V →+* 𝓞_ℂ_[p], ‖((φ ϖ : 𝓞_ℂ_[p]) : ℂ_[p])‖ = r := by
   first | exact @GlobalTheory.unif_norm_indep | exact GlobalTheory.unif_norm_indep | (intros; apply GlobalTheory.unif_norm_indep <;> assumption)

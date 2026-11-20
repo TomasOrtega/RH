@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.TanGauge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.TanGauge.valR_secLin | exact GlobalTheory.MBLow.TanGauge.valR_secLin | (intros; apply GlobalTheory.MBLow.TanGauge.valR_secLin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.TanGauge.valR_secLin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionValueLinearRelationLinComb.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.sectionValue_linear_relation_linComb : ∀ {X Y Y' : Scheme.{0}} (L : LB X) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ) (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)) (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) {n : ℕ}

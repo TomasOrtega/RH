@@ -15,8 +15,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead | exact GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead | (intros; apply GlobalTheory.HeightCounting.Up …`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FE0ReadOfEigenLabeling.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.realOfRead_goodIdempotent_of_labelling : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ T w Z Wt _ t nch n c => ∀ (hC : t.r.z.R.C = TC.cf w.I w.l Z) (Xd : DivX (w.D Z)) (E : EigIdx (w.D Z) Xd) (labPi : E.Pi → (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A.fam.base.Ix) hb htup hg hf, GlobalTheory.NRows.GoodIdempotentReadsAsGoodTypeProjector (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf) := by
   first | exact @GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead | exact GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead | (intros; apply GlobalTheory.HeightCounting.Up.IdempotentAdelicReading.goodIdempotentReadsAsGoodTypeProjector_realOfRead <;> assumption)

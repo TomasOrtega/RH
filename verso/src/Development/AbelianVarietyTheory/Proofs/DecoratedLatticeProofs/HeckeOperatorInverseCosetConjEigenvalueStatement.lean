@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | exact GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | (intros; apply GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeOperatorInverseCosetConjEigenvalue.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.heckeOperator_inverseCoset_conj_eigenvalue : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ f ∈ GlobalTheory.FinZeta.bddAut V, (∀ k ∈ J, ∀ g, f (g * k) = χ k * f g) → ∀ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, (∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = e P (dualLab d) • f) → ∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = conj (e P d) • f := by
   first | exact @GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | exact GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | (intros; apply GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.torsion_rational_over_finite_extension | exact GlobalTheory.torsion_rational_over_finite_extension | (intros; apply GlobalTheory.torsion_rational_over_finite_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.torsion_rational_over_finite_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FTorsionRationalOverFiniteExtensionLevelStructure.lean&line=221#L221)
 -/
 theorem _root_.GlobalTheory.T.torsion_rational_over_finite_extension_level_structure : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (K : Type) [Field K] (x : Sp K ⟶ Xo.X) (M : ℕ), 0 < M → (∃ (L : Type) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧ AllRat Xo (spMap (algebraMap K L) ≫ x) M) ∧ (AllRat Xo x M → (∀ (L : Type) [Field L] (ψ : K →+* L), AllRat Xo (spMap ψ ≫ x) M) ∧ ∃ ev : Dw.La → (ptO Xo x ⟶ Xo.univ.t.G), (∀ a b, ev (a + b) = ev a * ev b) ∧ (∀ (o : 𝓞 E) a, ev (o • a) = ev a ≫ Xo.univ.t.act.act o) ∧ (∀ a, ev a = 1 ↔ Dw.ModN M a) ∧ ∀ w : (ptO Xo x ⟶ Xo.univ.t.G), w ^ M = 1 → ∃ a, ev a = w) := by
   first | exact @GlobalTheory.torsion_rational_over_finite_extension | exact GlobalTheory.torsion_rational_over_finite_extension | (intros; apply GlobalTheory.torsion_rational_over_finite_extension <;> assumption)

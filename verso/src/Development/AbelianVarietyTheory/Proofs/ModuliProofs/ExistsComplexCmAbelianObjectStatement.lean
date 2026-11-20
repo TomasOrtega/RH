@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_obj_complex | exact GlobalTheory.exists_obj_complex | (intros; apply GlobalTheory.exists_obj_complex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_obj_complex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsComplexCmAbelianObject.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_complex_cm_abelian_object : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → ∀ l : Level H, ∃ (b : Base l ℂ) (o : Obj D l b (𝟙 (Sp ℂ))), b.ρ = H.rt0 ∧ b.ζ = zeta l.A ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ o.t.G, x ≠ 1 := by
   first | exact @GlobalTheory.exists_obj_complex | exact GlobalTheory.exists_obj_complex | (intros; apply GlobalTheory.exists_obj_complex <;> assumption)

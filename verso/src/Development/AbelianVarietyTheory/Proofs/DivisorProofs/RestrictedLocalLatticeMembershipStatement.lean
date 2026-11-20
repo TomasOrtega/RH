@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisRestrict.mem_localLattice_restricted_iff | exact GlobalTheory.EisRestrict.mem_localLattice_restricted_iff | (intros; apply GlobalTheory.EisRestrict.mem_localLattice_restricted_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisRestrict.mem_localLattice_restricted_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRestrictedLocalLatticeMembership.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.restricted_local_lattice_membership : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

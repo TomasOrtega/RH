@@ -9,8 +9,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.pn_adlOf_genAt_of_adapted | exact GlobalTheory.CovTop.pn_adlOf_genAt_of_adapted | (intros; apply GlobalTheory.CovTop.pn_adlOf_genAt_of_adapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.pn_adlOf_genAt_of_adapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedFramePartitionFormula.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.adapted_frame_partition_formula : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (R : ℝ) (Gm : ∀ σ', EigMet O.s.T.Z σ')
     (hmet : ∀ σ n, O.met.hm c (some R) σ n = (O.Φ.C c).met (Gm (embOf O.κ.e σ)) n)

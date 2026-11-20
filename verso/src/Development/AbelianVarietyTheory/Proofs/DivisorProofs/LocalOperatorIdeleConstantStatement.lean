@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant | exact GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant | (intros; apply GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalOperatorIdeleConstant.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.local_operator_idele_locallyConstant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (H : Plane E n n₁)

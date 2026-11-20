@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularCoverO
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SecondChernDegreeVanishesTrueSurfaces
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagValuationRings.ch2Deg_eq_zero | exact GlobalTheory.FlagValuationRings.ch2Deg_eq_zero | (intros; apply GlobalTheory.FlagValuationRings.ch2Deg_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagValuationRings.ch2Deg_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernTwoDegreeZeroHodgePullback.lean&line=208#L208)
 -/
 theorem _root_.GlobalTheory.T.chern_two_degree_zero_hodge_pullback : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (K : Type) [Field K] [NumberField K] (E : PPAS (Sp (𝓞 K))), E.HasTheta → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) [IsIntegral Y], IsRegSurf p → ∀ (q : Y ⟶ Sp (𝓞 K)) (Q : PPAS Y) (φ : Q.A.left ⟶ E.A.left), Q.IsPull E q φ → ∀ h : VMetric p (LieVB.omega Q.A) Q.g, Q.IsHodge h → h.IsCInfNorm → ∀ a : ℝ, h.IsCh2Deg a → a = 0 := by
   first | exact @GlobalTheory.FlagValuationRings.ch2Deg_eq_zero | exact GlobalTheory.FlagValuationRings.ch2Deg_eq_zero | (intros; apply GlobalTheory.FlagValuationRings.ch2Deg_eq_zero <;> assumption)

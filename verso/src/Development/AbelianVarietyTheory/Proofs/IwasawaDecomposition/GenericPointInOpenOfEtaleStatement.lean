@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFibre.range_jK_subset_range_j | exact GlobalTheory.GenFibre.range_jK_subset_range_j | (intros; apply GlobalTheory.GenFibre.range_jK_subset_range_j <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFibre.range_jK_subset_range_j` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGenericPointInOpenOfEtale.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.generic_point_in_open_of_etale : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → Set.range (jK R ≫ ξ) ⊆ Set.range Z.j := by
   first | exact @GlobalTheory.GenFibre.range_jK_subset_range_j | exact GlobalTheory.GenFibre.range_jK_subset_range_j | (intros; apply GlobalTheory.GenFibre.range_jK_subset_range_j <;> assumption)

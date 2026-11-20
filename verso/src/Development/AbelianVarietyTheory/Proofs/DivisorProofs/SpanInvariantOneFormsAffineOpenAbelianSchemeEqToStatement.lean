@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvSpan.span_invForm_eq_top | exact GlobalTheory.InvSpan.span_invForm_eq_top | (intros; apply GlobalTheory.InvSpan.span_invForm_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvSpan.span_invForm_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSpanInvariantOneFormsAffineOpenAbelianSchemeEqTo.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.span_invariantOneForms_affineOpen_abelianScheme_eq_top : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ U : AffOp A.left, Submodule.span (Sec A.hom U.unop.1) (Set.range fun w : GlobalTheory.InvForm.InvForm A ↦ evForm A.hom U w.1) = ⊤ := by
   first | exact @GlobalTheory.InvSpan.span_invForm_eq_top | exact GlobalTheory.InvSpan.span_invForm_eq_top | (intros; apply GlobalTheory.InvSpan.span_invForm_eq_top <;> assumption)

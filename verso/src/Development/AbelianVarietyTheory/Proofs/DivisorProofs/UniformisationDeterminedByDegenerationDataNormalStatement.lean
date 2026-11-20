@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unif_determined_by_data_normal | exact GlobalTheory.unif_determined_by_data_normal | (intros; apply GlobalTheory.unif_determined_by_data_normal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unif_determined_by_data_normal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisationDeterminedByDegenerationDataNormal.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_determined_by_degenerationData_normal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, GlobalTheory.UT.Cl.Determined U := by
   first | exact @GlobalTheory.unif_determined_by_data_normal | exact GlobalTheory.unif_determined_by_data_normal | (intros; apply GlobalTheory.unif_determined_by_data_normal <;> assumption)

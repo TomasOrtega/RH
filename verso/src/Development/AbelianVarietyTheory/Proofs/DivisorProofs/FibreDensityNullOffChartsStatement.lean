@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartFibreNull.part_preimage_nonchart | exact GlobalTheory.ChartFibreNull.part_preimage_nonchart | (intros; apply GlobalTheory.ChartFibreNull.part_preimage_nonchart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartFibreNull.part_preimage_nonchart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFibreDensityNullOffCharts.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.fibre_density_null_off_charts : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n D : ℕ) (σ : k →+* ℂ) [IsIntegral B] [IsIntegral Y], IsArithVar q n → IsArithVar p D → π (genericPoint Y) = genericPoint B → ∀ ρ : AlgChart p σ D → CxPts p σ → ℝ, part ρ (PtsOver.map π w (spMap σ) ⁻¹' {u | ∀ c : AlgChart q σ n, u ∉ c.e.source}) = 0 := by
   first | exact @GlobalTheory.ChartFibreNull.part_preimage_nonchart | exact GlobalTheory.ChartFibreNull.part_preimage_nonchart | (intros; apply GlobalTheory.ChartFibreNull.part_preimage_nonchart <;> assumption)

@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjRefChar.exists_chiAt | exact GlobalTheory.ConjRefChar.exists_chiAt | (intros; apply GlobalTheory.ConjRefChar.exists_chiAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjRefChar.exists_chiAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsConjugateReferenceCharactersGoodEmbeddings.lean&line=218#L218)
 -/
 theorem _root_.GlobalTheory.T.exists_conjugate_reference_characters_good_embeddings : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F), T.Q.Pins → AlgTie T → R.toLevCh.Is A.μ0 → ValKs R → ∃ (chiW : ℕ → (T.Q.c.F →+* ℂ) → (AE D)ˣ →* Circle), (∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → ChiAt R i σ (chiW ((i : ℕ) + 1) (res T σ))) ∧ ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → IsHeckeChar D (chiW j σ) ∧ (∀ a, chiW j σ (idF D a) = 1) ∧ MuConj T.σ₀ σ (chiW j T.σ₀) (chiW j σ) := by
   first | exact @GlobalTheory.ConjRefChar.exists_chiAt | exact GlobalTheory.ConjRefChar.exists_chiAt | (intros; apply GlobalTheory.ConjRefChar.exists_chiAt <;> assumption)

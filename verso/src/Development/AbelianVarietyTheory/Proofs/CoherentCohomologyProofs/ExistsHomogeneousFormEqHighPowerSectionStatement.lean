@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbLaw.exists_form_eq_sec_pw | exact GlobalTheory.AbLaw.exists_form_eq_sec_pw | (intros; apply GlobalTheory.AbLaw.exists_form_eq_sec_pw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbLaw.exists_form_eq_sec_pw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FExistsHomogeneousFormEqHighPowerSection.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneousForm_eq_highPowerSection : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → ∀ σ : LB.Sec (pw H t), ∃ F : MvPolynomial (Fin (m + 1)) R, F.IsHomogeneous t ∧ ∀ k : H.ι, σ.f k = MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) F := by
   first | exact @GlobalTheory.AbLaw.exists_form_eq_sec_pw | exact GlobalTheory.AbLaw.exists_form_eq_sec_pw | (intros; apply GlobalTheory.AbLaw.exists_form_eq_sec_pw <;> assumption)

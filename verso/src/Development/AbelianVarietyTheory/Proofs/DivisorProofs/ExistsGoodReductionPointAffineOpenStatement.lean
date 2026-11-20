@@ -19,8 +19,10 @@ open scoped Classical
 open GlobalTheory.LieFilt
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.CentrePt.exists_centre_pt | exact GlobalTheory.ArLieBase.CentrePt.exists_centre_pt | (intros; apply GlobalTheory.ArLieBase.CentrePt.exists_centre_pt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArLieBase.CentrePt.exists_centre_pt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGoodReductionPointAffineOpen.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_good_reduction_point_affine_open : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},
     IsArithVar q d → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) → ∀ (V : X.Opens), IsAffineOpen V → ∀ x₀ ∈ V,

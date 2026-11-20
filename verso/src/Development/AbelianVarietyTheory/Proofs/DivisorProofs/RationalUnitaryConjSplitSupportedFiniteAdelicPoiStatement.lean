@@ -8,8 +8,10 @@ open scoped TensorProduct nonZeroDivisors
 open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.FunObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjSplit.conj_supp | exact GlobalTheory.ConjSplit.conj_supp | (intros; apply GlobalTheory.ConjSplit.conj_supp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjSplit.conj_supp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalUnitaryConjSplitSupportedFiniteAdelicPoi.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.rationalUnitary_conj_splitSupported_finiteAdelicPoint : ∀ (D : D7) (V : HSp D) (S : Finset ℕ) (γ : GL (Fin V.rank) D.host.E) (h : GA D V),
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1 * V.gram * γ.1 = V.gram → h ∈ GfC V →

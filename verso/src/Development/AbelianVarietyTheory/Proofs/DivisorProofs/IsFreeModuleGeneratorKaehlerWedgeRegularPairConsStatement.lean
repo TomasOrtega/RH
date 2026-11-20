@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons | exact GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons | (intros; apply GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsFreeModuleGeneratorKaehlerWedgeRegularPairCons.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.isFreeModuleGenerator_kaehlerWedge_regularPair_cons : ∀ {L : Type} [Field L] (cL : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel cL Q) (t u : Q),
   Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) → ringKrullDim Q = 2 →

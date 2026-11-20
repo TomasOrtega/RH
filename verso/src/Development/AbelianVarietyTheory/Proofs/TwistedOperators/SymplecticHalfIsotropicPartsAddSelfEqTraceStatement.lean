@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PhaseApply
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self | exact GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self | (intros; apply GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSymplecticHalfIsotropicPartsAddSelfEqTrace.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.symplecticHalf_isotropicParts_add_self_eq_trace : ∀ (D : D7) (V W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D C * V.gram * C' = 1 → ∀ u y : Mx D W.rank r, symplOH V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) + symplOH V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) = Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (HMul.hMul (GlobalTheory.MixModel.adj y) (HMul.hMul (GlobalTheory.MixModel.gA W) u)).trace) := by
   first | exact @GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self | exact GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self | (intros; apply GlobalTheory.IsoPartPairing.symplOH_isoPart_add_self <;> assumption)

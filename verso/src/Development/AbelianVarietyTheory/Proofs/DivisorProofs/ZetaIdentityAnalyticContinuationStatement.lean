@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ScaledIntegerPer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GJReg.sum_chiS_eq_of_halfPlane | exact GlobalTheory.GJReg.sum_chiS_eq_of_halfPlane | (intros; apply GlobalTheory.GJReg.sum_chiS_eq_of_halfPlane <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GJReg.sum_chiS_eq_of_halfPlane` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FZetaIdentityAnalyticContinuation.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.zeta_identity_analytic_continuation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (ν : kˣ →* ℂˣ) (m m' : ℕ) (c : Fin m → ℂ) (h : Fin m → GL (Fin n) k) (c' : Fin m' → ℂ)

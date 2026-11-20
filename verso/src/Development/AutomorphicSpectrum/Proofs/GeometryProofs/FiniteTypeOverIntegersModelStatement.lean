@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain MvPoly
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.ChartFType.main | exact GlobalTheory.CompanionTheory.Ar.ChartFType.main | (intros; apply GlobalTheory.CompanionTheory.Ar.ChartFType.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.ChartFType.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFiniteTypeOverIntegersModel.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.finite_type_over_integers_model : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type) [Finite κ] (x : κ → Ω), (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ x → ∃ s : X ⟶ Spec (CommRingCat.of ℤ), LocallyOfFiniteType s ∧ QuasiCompact s ∧ ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap ℤ Ω)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.ChartFType.main | exact GlobalTheory.CompanionTheory.Ar.ChartFType.main | (intros; apply GlobalTheory.CompanionTheory.Ar.ChartFType.main <;> assumption)

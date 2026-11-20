@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.JacobiThetaH
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntegralX.exists_integral_theta_ratio | exact GlobalTheory.IntegralX.exists_integral_theta_ratio | (intros; apply GlobalTheory.IntegralX.exists_integral_theta_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntegralX.exists_integral_theta_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExistsIntegralPeriodElement.lean&line=300#L300)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_period_element : EquidistributedConjugates.ConjugatesEquidistributed → PeriodLatticeAgreement.LatticePeriodEta → ThetaConstantWeber.ThetaWeberStatement →
     ∀ (D : D7), Formalism.MainNotions.GL3Theta.admJ D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ)

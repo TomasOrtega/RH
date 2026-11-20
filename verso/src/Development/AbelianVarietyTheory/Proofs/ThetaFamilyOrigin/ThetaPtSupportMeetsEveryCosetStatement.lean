@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ZH
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaSupport.exists_ne_zero_in_coset | exact GlobalTheory.ThetaSupport.exists_ne_zero_in_coset | (intros; apply GlobalTheory.ThetaSupport.exists_ne_zero_in_coset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSupport.exists_ne_zero_in_coset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaFamilyOrigin%2FThetaPtSupportMeetsEveryCoset.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.thetaPt_support_meets_every_coset : Out.Laws → ∀ (g n N' : ℕ), 2 ≤ n → n ^ 2 ∣ N' → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = g) (ze : Γ(Sp K, ⊤)ˣ) (lev : Out.Level P (N' ^ 2) ze) (v : (Fin (2 * g) → ZMod (N' ^ 2)) → Γ((Out.baseOver (Sp K)).left, ⊤)), Out.IsThetaPt P N' (levelPoint lev hg) v → ∀ c : Fin (2 * g) → ZMod (N' ^ 2), ∃ d : Fin (2 * g) → ZMod (N' ^ 2), v (c + n • d) ≠ 0 := by
   first | exact @GlobalTheory.ThetaSupport.exists_ne_zero_in_coset | exact GlobalTheory.ThetaSupport.exists_ne_zero_in_coset | (intros; apply GlobalTheory.ThetaSupport.exists_ne_zero_in_coset <;> assumption)

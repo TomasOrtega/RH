@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.expandsAt_origVal | exact GlobalTheory.Mum.expandsAt_origVal | (intros; apply GlobalTheory.Mum.expandsAt_origVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.expandsAt_origVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExpansionOriginValuesSumModPow.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.expansion_originValues_sum_modPow : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (D' : DegData W (maximalIdeal W)) (A : PolAV (Sp (FractionRing W))) (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal W) D' A G) (k e : ℕ) (σ' : H0 U.LG.L k) (f' : ∀ x, D'.toPre.SecB k x) (w : D'.toPre.X → W), (∀ x, OrigVal D'.toPre (f' x) (w x)) → U.ExpandsAt e k σ' f' → ∃ S : Finset D'.toPre.X, (∀ x ∉ S, w x ∈ maximalIdeal W ^ (e + 1)) ∧ ∀ J', Good U.LG.L (cpt W) J' → ∃ c ∈ maximalIdeal W ^ (e + 1), sval σ' (unitW G) (cpt W) J' = stalkOf (cpt W) (∑ x ∈ S, w x + c) * (val U.LG.rig (idW W) (cpt W) J').val ^ k := by
   first | exact @GlobalTheory.Mum.expandsAt_origVal | exact GlobalTheory.Mum.expandsAt_origVal | (intros; apply GlobalTheory.Mum.expandsAt_origVal <;> assumption)

@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AltBaseChange.exists_unique_baseChange_generator | exact GlobalTheory.AltBaseChange.exists_unique_baseChange_generator | (intros; apply GlobalTheory.AltBaseChange.exists_unique_baseChange_generator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AltBaseChange.exists_unique_baseChange_generator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueBaseChangeVolumeForm.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.exists_unique_base_change_volume_form : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (M : Type) [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] (N : Type) [AddCommGroup N] [Module R' N] (e : R' ⊗[R] M ≃ₗ[R'] N)

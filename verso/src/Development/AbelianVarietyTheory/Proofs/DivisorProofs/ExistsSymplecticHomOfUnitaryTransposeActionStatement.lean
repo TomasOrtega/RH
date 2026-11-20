@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix
 open MeasureTheory Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.RealWeil
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColActionD.exists_symplectic_hom_of_unitary_dep | exact GlobalTheory.ColActionD.exists_symplectic_hom_of_unitary_dep | (intros; apply GlobalTheory.ColActionD.exists_symplectic_hom_of_unitary_dep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColActionD.exists_symplectic_hom_of_unitary_dep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSymplecticHomOfUnitaryTransposeAction.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_symplectic_hom_of_unitary_transpose_action : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ι → ℕ)
     (φ : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),

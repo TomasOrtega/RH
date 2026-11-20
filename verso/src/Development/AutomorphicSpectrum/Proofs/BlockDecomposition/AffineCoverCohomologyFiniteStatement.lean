@@ -7,8 +7,10 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.CechSeparated
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.VBGlue.finite_H_cx | exact GlobalTheory.CompanionTheory.VBGlue.finite_H_cx | (intros; apply GlobalTheory.CompanionTheory.VBGlue.finite_H_cx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.VBGlue.finite_H_cx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAffineCoverCohomologyFinite.lean&line=297#L297)
 -/
 theorem _root_.GlobalTheory.T.affine_cover_cohomology_finite : ∀ {O : Type} [CommRing O] [IsNoetherianRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsProper q]
     {ι : Type} [Fintype ι] (U : ι → X.Opens) (hU : (⨆ α, U α) = ⊤) (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i))

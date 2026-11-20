@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.exists_isLevi | exact GlobalTheory.ThK.exists_isLevi | (intros; apply GlobalTheory.ThK.exists_isLevi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.exists_isLevi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLeviTorusElementCm.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_levi_torus_element_cm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ t : (AE F E)ˣ, ∃ m : UA σ W.J, IsLevi (W₁ := W₁) H' t 1 m := by
   first | exact @GlobalTheory.ThK.exists_isLevi | exact GlobalTheory.ThK.exists_isLevi | (intros; apply GlobalTheory.ThK.exists_isLevi <;> assumption)

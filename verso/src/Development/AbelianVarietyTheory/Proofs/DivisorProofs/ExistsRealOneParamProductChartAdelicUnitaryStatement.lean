@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableI
 open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut
 open scoped TensorProduct ContDiff Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitChart.exists_realLines_chart | exact GlobalTheory.UnitChart.exists_realLines_chart | (intros; apply GlobalTheory.UnitChart.exists_realLines_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitChart.exists_realLines_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRealOneParamProductChartAdelicUnitary.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_realOneParamProduct_chart_adelicUnitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∃ (d : ℕ) (δ : Fin d → ℝ → GAd σ J), (∀ a, IsRealLine σ J (δ a)) ∧
       ∀ U ∈ 𝓝 (1 : GAd σ J), ∃ W ∈ 𝓝 (1 : GAd σ J), ∃ s : GAd σ J → (Fin d → ℝ), ContinuousAt s 1 ∧

@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PhaseMove.phase_eq | exact GlobalTheory.PhaseMove.phase_eq | (intros; apply GlobalTheory.PhaseMove.phase_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PhaseMove.phase_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLevelCurvePhaseEqOfClose.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.exists_level_curvePhase_eq_of_close : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ →
   ∀ {a d : ℕ} (x : Formalism.MainNotions.StandardLatticesGL3.GA D a) (y : Formalism.MainNotions.StandardLatticesGL3.GA D d) (z : Matrix (Fin d) (Fin a) D.host.E),

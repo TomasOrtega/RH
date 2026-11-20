@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolArc.eq_of_comp_eq_of_generic | exact GlobalTheory.PolArc.eq_of_comp_eq_of_generic | (intros; apply GlobalTheory.PolArc.eq_of_comp_eq_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolArc.eq_of_comp_eq_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPullbackModelArcSection.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.pullback_model_arc_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

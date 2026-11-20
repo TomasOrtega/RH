@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FAdaptedFrameChangeUnitary.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.adapted_frame_change_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (A A' : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), R.form = F.form → C.IsAdapted R A → (∀ τ, (A' τ)ᴴ * C.sgr τ * A' τ = sgI j j') → (C.IsAdapted R A' ↔ ∀ τ, (C.cinv (A τ) τ * A' τ)ᴴ * (C.cinv (A τ) τ * A' τ) = 1) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.isAdapted_iff_unitary <;> assumption)

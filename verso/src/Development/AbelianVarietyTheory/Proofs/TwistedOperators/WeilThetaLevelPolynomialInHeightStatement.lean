@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelGrowth.level_poly | exact GlobalTheory.LevelGrowth.level_poly | (intros; apply GlobalTheory.LevelGrowth.level_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelGrowth.level_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilThetaLevelPolynomialInHeight.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.weilTheta_level_polynomial_in_height : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (M X : HSp D)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X) (hω : IsWeil ψ ε M X χ χ' ω) (Φ : WO M X → ℂ) (hΦ : IsThetaFunO ψ (sgn ε M) X Φ)

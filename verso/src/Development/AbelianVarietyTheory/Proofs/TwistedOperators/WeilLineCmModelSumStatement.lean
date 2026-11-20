@@ -26,8 +26,10 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchCont.continuous_line | exact GlobalTheory.ArchCont.continuous_line | (intros; apply GlobalTheory.ArchCont.continuous_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchCont.continuous_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilLineCmModelSum.lean&line=174#L174)
 -/
 theorem _root_.GlobalTheory.T.weil_line_cm_model_sum : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}

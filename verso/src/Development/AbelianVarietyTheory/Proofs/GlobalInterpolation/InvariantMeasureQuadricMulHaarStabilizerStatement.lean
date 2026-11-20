@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContinuousMat
 open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding GlobalTheory.CompactDualQuot
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuadricHaar.quadric_haar | exact GlobalTheory.QuadricHaar.quadric_haar | (intros; apply GlobalTheory.QuadricHaar.quadric_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuadricHaar.quadric_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FInvariantMeasureQuadricMulHaarStabilizer.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer : ∀ (P Q P' Q' : ℕ) (β : ℝ) (x₀ : Sp P Q) (j : UpqT P' Q' →* UpqT P Q) (ν : Measure (Sp P Q)) (μ : Measure (UpqT P Q)) (μ' : Measure (UpqT P' Q')), Topology.IsClosedEmbedding j → Set.range j = {g | act g x₀ = x₀} → IsFiniteMeasureOnCompacts ν → (∀ᵐ y ∂ν, qf y = β) → (∀ g : UpqT P Q, ν.map (act g) = ν) → μ.IsHaarMeasure → μ'.IsHaarMeasure → ∃ κ : ℝ≥0, ∀ s : Sp P Q → UpqT P Q, IsSection β x₀ s → ∀ f : UpqT P Q → ℝ≥0∞, Measurable f → ∫⁻ y, (∫⁻ g', f (s y * j g') ∂μ') ∂ν = κ * ∫⁻ g, f g ∂μ := by
   first | exact @GlobalTheory.QuadricHaar.quadric_haar | exact GlobalTheory.QuadricHaar.quadric_haar | (intros; apply GlobalTheory.QuadricHaar.quadric_haar <;> assumption)

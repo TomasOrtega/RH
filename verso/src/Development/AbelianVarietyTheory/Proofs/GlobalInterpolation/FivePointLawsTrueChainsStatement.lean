@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EFirstGeOfULa
 import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.LvT GlobalTheory.LvT.Built GlobalTheory.LvT.Built.TrueLaws
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LvT.Built.TrueLaws.laws_true_fam | exact GlobalTheory.LvT.Built.TrueLaws.laws_true_fam | (intros; apply GlobalTheory.LvT.Built.TrueLaws.laws_true_fam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LvT.Built.TrueLaws.laws_true_fam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FFivePointLawsTrueChains.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.fivePointLaws_trueChains : ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X), I.Ok → I.JetsIn → ∀ (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), ∃ Bd : Built.Dat (I.rec7 l Z) u, Bd.ch = tw (I.tw l l0 Z) u a ∧ (∀ i, i ≤ (I.rec7 l Z).R.m → Nonempty (Split (Bd.J.A i) Bd.J.T)) ∧ Bd.Sees ∧ (∀ i, i < (I.rec7 l Z).R.m → ∃ k : Bd.Ker i, Dat.KerEq k ∧ Dat.KerDil k ∧ Dat.KerUK k ∧ Dat.KerBar k ∧ Dat.KerP k) ∧ Bd = dat I l Z u a := by
   first | exact @GlobalTheory.LvT.Built.TrueLaws.laws_true_fam | exact GlobalTheory.LvT.Built.TrueLaws.laws_true_fam | (intros; apply GlobalTheory.LvT.Built.TrueLaws.laws_true_fam <;> assumption)

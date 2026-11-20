@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.dd_div_q_and_q_div_dd | exact GlobalTheory.FN.dd_div_q_and_q_div_dd | (intros; apply GlobalTheory.FN.dd_div_q_and_q_div_dd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.dd_div_q_and_q_div_dd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FModularDiscriminantDivQIntegerQExpansions.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.modularDiscriminant_div_q_integer_qExpansions : (∃ c : ℕ → ℤ, c 0 = 1 ∧ HasQ 1 (fun τ => DD τ / Complex.exp (2 * Real.pi * Complex.I * τ)) fun n => (c n : ℂ)) ∧ ∃ c : ℕ → ℤ, c 0 = 1 ∧ HasQ 1 (fun τ => Complex.exp (2 * Real.pi * Complex.I * τ) / DD τ) fun n => (c n : ℂ) := by
   first | exact @GlobalTheory.FN.dd_div_q_and_q_div_dd | exact GlobalTheory.FN.dd_div_q_and_q_div_dd | (intros; apply GlobalTheory.FN.dd_div_q_and_q_div_dd <;> assumption)

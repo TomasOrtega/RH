@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial | exact GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial | (intros; apply GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FChernIntegralPolynomialGrowth.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.chern_integral_polynomial_growth : ∀ (Y : Var ℂ) (Δ Δ₀ : Y.Dv) (L L₀ : LB Y.X) (r : L.ι → Y.Fnˣ) (r₀ : L₀.ι → Y.Fnˣ), Presents Δ L r → Presents Δ₀ L₀ r₀ → ∀ (φ : Weight Y.str (RingHom.id ℂ) L) (φ₀ : Weight Y.str (RingHom.id ℂ) L₀), φ.IsCInf → φ₀.IsCInf → ∃ P : Polynomial ℝ, P.natDegree ≤ Y.dim ∧ ∀ m : ℕ, ∃ (L' : LB Y.X) (r' : L'.ι → Y.Fnˣ) (ψ : Weight Y.str (RingHom.id ℂ) L'), Presents (Δ + m • Δ₀) L' r' ∧ ψ.IsCInf ∧ ψ.chernInt Y.dim Set.univ (fun _ => 1) = P.eval (m : ℝ) := by
   first | exact @GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial | exact GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial | (intros; apply GlobalTheory.CompanionTheory.ChernTwist.chernInt_twist_polynomial <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Proof.theta_zero_one_lower_vanish.thetaZeroOne_lower_eq_zero | exact GlobalTheory.Proof.theta_zero_one_lower_vanish.thetaZeroOne_lower_eq_zero | (intros; apply GlobalTheory.Proof.theta_zero_one_lower_vanish.thetaZeroOne_lower_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Proof.theta_zero_one_lower_vanish.thetaZeroOne_lower_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaZeroOneLowerVanish.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.theta_zero_one_lower_vanish : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

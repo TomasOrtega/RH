@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvEqn.exists_invariant_isEqn | exact GlobalTheory.InvEqn.exists_invariant_isEqn | (intros; apply GlobalTheory.InvEqn.exists_invariant_isEqn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvEqn.exists_invariant_isEqn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInvariantLocalEquationCartierFiniteQuotien.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.exists_invariant_localEquation_cartier_finiteQuotient : ∀ (F : Type) [Field F] [CharZero F] (X W : Scheme.{0}) [IsIntegral X] (s : X ⟶ Sp F)
     (Γ : Type) [Group Γ] [Finite Γ] (ρ : Γ →* Aut X) (q : X ⟶ W), IsAffineQuotient ρ q → ∀ (D : CartierDiv X),

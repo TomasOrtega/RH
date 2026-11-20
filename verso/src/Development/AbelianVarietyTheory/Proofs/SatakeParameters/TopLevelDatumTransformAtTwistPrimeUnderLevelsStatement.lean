@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formal
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwTopLaw.topLawQ_midTop | exact GlobalTheory.TwTopLaw.topLawQ_midTop | (intros; apply GlobalTheory.TwTopLaw.topLawQ_midTop <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwTopLaw.topLawQ_midTop` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTopLevelDatumTransformAtTwistPrimeUnderLevels.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.topLevelDatum_transform_at_twist_prime_under_levels : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)

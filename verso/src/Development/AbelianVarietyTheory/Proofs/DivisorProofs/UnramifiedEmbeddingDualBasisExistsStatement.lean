@@ -18,8 +18,10 @@ open GlobalTheory.ChainParts
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemCoef.exists_coef | exact GlobalTheory.IdemCoef.exists_coef | (intros; apply GlobalTheory.IdemCoef.exists_coef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemCoef.exists_coef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnramifiedEmbeddingDualBasisExists.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.unramified_embedding_dual_basis_exists : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime} {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ) (hjc : Pin W jc) (hun : UnramE D p), ∃ (n : ℕ) (b : Module.Basis (Fin n) ℤ (𝓞 D.host.E)) (ev : Emb D p → (𝓞 D.host.E →+* z.Z.i.c.V W))
       (cf : Emb D p → Fin n → z.Z.i.c.V W),

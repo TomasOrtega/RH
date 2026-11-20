@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowChart.exists_sFam_point | exact GlobalTheory.LowChart.exists_sFam_point | (intros; apply GlobalTheory.LowChart.exists_sFam_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowChart.exists_sFam_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSiegelFamilyPointOfPrincipalObject.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_siegel_family_point_of_principal_object : ∀ (n : ℕ), 3 ≤ n → Odd n → ∀ (h : ℕ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [CharZero V₁] (b₁ : cycAway n →+* V₁) (s : SiegPre h n (zetaAway n) (spMap b₁)), s.Principal → ∃ (F : SFam h n (zetaAway n)) (x : Sp V₁ ⟶ F.X), x ≫ F.s = spMap b₁ ∧ SiegPB s F.univ x := by
   first | exact @GlobalTheory.LowChart.exists_sFam_point | exact GlobalTheory.LowChart.exists_sFam_point | (intros; apply GlobalTheory.LowChart.exists_sFam_point <;> assumption)

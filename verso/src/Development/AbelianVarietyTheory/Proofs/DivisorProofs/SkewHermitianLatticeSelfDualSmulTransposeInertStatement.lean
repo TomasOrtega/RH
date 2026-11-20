@@ -15,8 +15,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchedFiniteMapsRe
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose | exact GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose | (intros; apply GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewHermitianLatticeSelfDualSmulTransposeInert.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.skewHermitianLattice_selfDual_smul_transpose_inert : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), W.IsSkew σ B r s →

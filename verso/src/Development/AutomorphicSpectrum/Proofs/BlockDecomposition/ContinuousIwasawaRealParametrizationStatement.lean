@@ -15,8 +15,10 @@ open Ad3.R (G2 Jd md KA lc)
 open scoped NumberField.AdeleRing ValuativeRel
 open GlobalTheory.CompanionTheory.GL2Factorization
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord | exact GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iw …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FContinuousIwasawaRealParametrization.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.continuous_iwasawa_real_parametrization : Continuous (fun p : ℝˣ × ℝˣ × GL (Fin 2) ℝ => dg2 (p.1 * p.2.1) p.2.1 * p.2.2) := by
   first | exact @GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord | exact GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.IwasawaCoord.continuous_iwasawa_coord <;> assumption)

@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymRoot.exists_polAV_sqOf | exact GlobalTheory.SymRoot.exists_polAV_sqOf | (intros; apply GlobalTheory.SymRoot.exists_polAV_sqOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymRoot.exists_polAV_sqOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsPrincipalPolarizationSymmetricSquareRoot.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_principalPolarization_symmetric_squareRoot : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [IsNoetherianRing R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)) (L : LB c.A.left), c.Principal → SmoothOfRelativeDimension h c.A.hom → L.IsLB → LBIso (abelian₂ c.A L) c.P → LBIso L (L.pull (GrpObj.inv : c.A ⟶ c.A).left) → ∃ (P : Out.PolAV (Sp R)) (φ : P.A.left ⟶ c.A.left), SqOf P c (𝟙 _) φ := by
   first | exact @GlobalTheory.SymRoot.exists_polAV_sqOf | exact GlobalTheory.SymRoot.exists_polAV_sqOf | (intros; apply GlobalTheory.SymRoot.exists_polAV_sqOf <;> assumption)

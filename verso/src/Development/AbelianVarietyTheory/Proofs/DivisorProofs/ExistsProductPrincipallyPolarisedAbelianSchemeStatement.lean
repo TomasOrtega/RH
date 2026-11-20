@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MumFam GlobalTheory.MumProd
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumProd.SumPol.exists_sum_polAV | exact GlobalTheory.MumProd.SumPol.exists_sum_polAV | (intros; apply GlobalTheory.MumProd.SumPol.exists_sum_polAV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumProd.SumPol.exists_sum_polAV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsProductPrincipallyPolarisedAbelianScheme.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.exists_product_principallyPolarised_abelianScheme : ∀ (S : Scheme.{0}) (P₁ P₂ : PolAV S), ∃ (P : PolAV S) (a₁ : P.A ⟶ P₁.A) (a₂ : P.A ⟶ P₂.A), IsSumPolAV P P₁ P₂ a₁ a₂ ∧ P.L = extLB P₁.L P₂.L a₁.left a₂.left := by
   first | exact @GlobalTheory.MumProd.SumPol.exists_sum_polAV | exact GlobalTheory.MumProd.SumPol.exists_sum_polAV | (intros; apply GlobalTheory.MumProd.SumPol.exists_sum_polAV <;> assumption)

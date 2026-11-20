@@ -9,8 +9,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinLocSchA.compact_support_locally_constant_fin | exact GlobalTheory.FinLocSchA.compact_support_locally_constant_fin | (intros; apply GlobalTheory.FinLocSchA.compact_support_locally_constant_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinLocSchA.compact_support_locally_constant_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicSchwartzSupportCompactInvariance.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.adelic_schwartz_support_compact_invariance : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     ∃ (C K : Set (κ → Af F)), IsCompact C ∧ IsOpen K ∧ (0 : κ → Af F) ∈ K ∧

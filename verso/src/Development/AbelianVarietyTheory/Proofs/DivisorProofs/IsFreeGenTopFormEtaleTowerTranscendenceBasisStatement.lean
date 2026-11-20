@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.isFreeGen_dForm_tower | exact GlobalTheory.FieldPair.isFreeGen_dForm_tower | (intros; apply GlobalTheory.FieldPair.isFreeGen_dForm_tower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.isFreeGen_dForm_tower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsFreeGenTopFormEtaleTowerTranscendenceBasis.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.isFreeGen_topForm_etaleTower_transcendenceBasis : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R),

@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisMidHtScale.ht_smul_eq | exact GlobalTheory.EisMidHtScale.ht_smul_eq | (intros; apply GlobalTheory.EisMidHtScale.ht_smul_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisMidHtScale.ht_smul_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEisensteinHeightSmulInvariant.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.eisenstein_height_smul_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

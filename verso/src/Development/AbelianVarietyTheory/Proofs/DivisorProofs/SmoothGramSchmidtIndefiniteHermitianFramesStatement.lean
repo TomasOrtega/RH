@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.GS.smooth_gramSchmidt | exact GlobalTheory.HolDict.GS.smooth_gramSchmidt | (intros; apply GlobalTheory.HolDict.GS.smooth_gramSchmidt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.GS.smooth_gramSchmidt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothGramSchmidtIndefiniteHermitianFrames.lean&line=176#L176)
 -/
 theorem _root_.GlobalTheory.T.smooth_gram_schmidt_indefinite_hermitian_frames : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n), OrthFr Hm q x₀ → ∃ β : (Fin n → Fin n → ℂ) → (Fin n → Fin n → ℂ), ContDiffOn ℝ ∞ β {x | Matrix.of x ∈ frDom Hm q} ∧ ∀ x : Fin n → Fin n → ℂ, Matrix.of x ∈ frDom Hm q → UpT (Matrix.of (β x)) ∧ Matrix.of x * (Matrix.of (β x))⁻¹ * x₀⁻¹ ∈ Formalism.QuantumDeterminants.UH Hm := by
   first | exact @GlobalTheory.HolDict.GS.smooth_gramSchmidt | exact GlobalTheory.HolDict.GS.smooth_gramSchmidt | (intros; apply GlobalTheory.HolDict.GS.smooth_gramSchmidt <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 open GlobalTheory.LineFrame
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineFrame.exists_unip_frameGL | exact GlobalTheory.LineFrame.exists_unip_frameGL | (intros; apply GlobalTheory.LineFrame.exists_unip_frameGL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineFrame.exists_unip_frameGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedFrameLocalDeterminant.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.adapted_frame_local_determinant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m r s i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m), B.IsGood σ → W.IsSkew σ B r s →

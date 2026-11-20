@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isIntegral_j_of_isIntLattice | exact GlobalTheory.isIntegral_j_of_isIntLattice | (intros; apply GlobalTheory.isIntegral_j_of_isIntLattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isIntegral_j_of_isIntLattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJInvariantIntegral.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.j_invariant_integral : ∀ (d : ℕ) (Λ : PeriodPair), d.Prime → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →
     IsIntegral ℤ (1728 * Λ.g₂ ^ 3 / latDisc Λ) := by

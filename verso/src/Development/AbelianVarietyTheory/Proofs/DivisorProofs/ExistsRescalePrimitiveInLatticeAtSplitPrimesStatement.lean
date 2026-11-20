@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix nonZeroDivisors
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.PlaneSkew
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaneSkewScale.exists_rescale_primAt | exact GlobalTheory.PlaneSkewScale.exists_rescale_primAt | (intros; apply GlobalTheory.PlaneSkewScale.exists_rescale_primAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaneSkewScale.exists_rescale_primAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRescalePrimitiveInLatticeAtSplitPrimes.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.exists_rescale_primitive_in_lattice_at_split_primes : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.IsLattice E → ∀ x y : Fin n → E, x ≠ 0 → y ≠ 0 →

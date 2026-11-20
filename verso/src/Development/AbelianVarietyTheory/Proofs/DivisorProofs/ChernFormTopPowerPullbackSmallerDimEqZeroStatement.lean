@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernLowDim.chernPart_pull_of_lt | exact GlobalTheory.ChernLowDim.chernPart_pull_of_lt | (intros; apply GlobalTheory.ChernLowDim.chernPart_pull_of_lt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernLowDim.chernPart_pull_of_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernFormTopPowerPullbackSmallerDimEqZero.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.chernForm_topPower_pullback_smaller_dim_eq_zero : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (e e' : ℕ), IsArithVar p e → IsArithVar q e' → e < e' → ∀ (g : Y ⟶ X) (hg : g ≫ p = q), g (genericPoint Y) = genericPoint X → ∀ (N : HermLB p) (σ : k →+* ℂ) (ε : ℤˣ), ((N.pull g hg).φ σ).chernPart e' ε = 0 := by
   first | exact @GlobalTheory.ChernLowDim.chernPart_pull_of_lt | exact GlobalTheory.ChernLowDim.chernPart_pull_of_lt | (intros; apply GlobalTheory.ChernLowDim.chernPart_pull_of_lt <;> assumption)

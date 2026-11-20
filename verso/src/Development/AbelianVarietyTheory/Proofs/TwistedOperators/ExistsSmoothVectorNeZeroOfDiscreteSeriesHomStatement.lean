@@ -27,8 +27,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothAvg.exists_smooth_ne_zero | exact GlobalTheory.SmoothAvg.exists_smooth_ne_zero | (intros; apply GlobalTheory.SmoothAvg.exists_smooth_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothAvg.exists_smooth_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsSmoothVectorNeZeroOfDiscreteSeriesHom.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.exists_smoothVector_ne_zero_of_discreteSeriesHom : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsUnitaryRep π → ∀ (hU : IsSubrep π ⊤) (Φ : homDS M π ⊤), Φ ≠ 0 → ∃ Ψ ∈ GlobalTheory.PRep.smoothPart (finPartDS M hU), Ψ ≠ 0 := by
   first | exact @GlobalTheory.SmoothAvg.exists_smooth_ne_zero | exact GlobalTheory.SmoothAvg.exists_smooth_ne_zero | (intros; apply GlobalTheory.SmoothAvg.exists_smooth_ne_zero <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.preChart_of_open | exact GlobalTheory.GroupBplus.Aff.preChart_of_open | (intros; apply GlobalTheory.GroupBplus.Aff.preChart_of_open <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.preChart_of_open` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIrreducibleDenseOpenAnalytic.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.finite_free_affine_open : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [IsSeparated G.hom]
     (N : ℕ) (q : PrimeSpectrum R) (r : R), r ∉ q.asIdeal → ∀ (C : Type) [CommRing C] [Algebra R C]

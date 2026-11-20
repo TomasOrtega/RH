@@ -14,8 +14,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CenterLocU.center_scalar_loc | exact GlobalTheory.CenterLocU.center_scalar_loc | (intros; apply GlobalTheory.CenterLocU.center_scalar_loc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CenterLocU.center_scalar_loc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FCenterLocalUnitaryGroupFinitePlaceScalar.lean&line=198#L198)
 -/
 theorem _root_.GlobalTheory.T.center_localUnitaryGroup_finitePlace_scalar : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)) (g : GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v), g ∈ Subgroup.center (GlobalTheory.AdelicU.GLoc D.sp.cm.sig V.gram v) → ∃ c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig V.gram g).1 = c • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)) := by
   first | exact @GlobalTheory.CenterLocU.center_scalar_loc | exact GlobalTheory.CenterLocU.center_scalar_loc | (intros; apply GlobalTheory.CenterLocU.center_scalar_loc <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZe
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeTateKernel
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilIntegral GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel TensorProduct CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ChTor CategoryTheory.MonObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeTateLevel.levelReduction | exact GlobalTheory.HodgeTateLevel.levelReduction | (intros; apply GlobalTheory.HodgeTateLevel.levelReduction <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeTateLevel.levelReduction` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelReductionHolds.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.level_reduction_holds : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), LevelReduction P := by
   first | exact @GlobalTheory.HodgeTateLevel.levelReduction | exact GlobalTheory.HodgeTateLevel.levelReduction | (intros; apply GlobalTheory.HodgeTateLevel.levelReduction <;> assumption)

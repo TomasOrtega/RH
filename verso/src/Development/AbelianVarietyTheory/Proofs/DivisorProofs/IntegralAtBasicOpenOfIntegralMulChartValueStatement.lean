@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.intAt_of_integral_mul_basicOpen | exact GlobalTheory.Mum.intAt_of_integral_mul_basicOpen | (intros; apply GlobalTheory.Mum.intAt_of_integral_mul_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.intAt_of_integral_mul_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralAtBasicOpenOfIntegralMulChartValue.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.integralAt_basicOpen_of_integral_mul_chartValue : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y ⟶ X) (k : ℕ) (s : SecK L α k) (j : L.ι) (W : X.Opens) (hW : W ≤ L.U j), IsAffineOpen W → ∀ (x : X) (d : Γ(X, W)), x ∈ X.basicOpen d → (α.app W).hom.IsIntegralElem ((α.app W).hom d * chartVal L α s j W hW) → IntAt L α s x := by
   first | exact @GlobalTheory.Mum.intAt_of_integral_mul_basicOpen | exact GlobalTheory.Mum.intAt_of_integral_mul_basicOpen | (intros; apply GlobalTheory.Mum.intAt_of_integral_mul_basicOpen <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsHe
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExact
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatShiftPf.flatShift | exact GlobalTheory.FlatShiftPf.flatShift | (intros; apply GlobalTheory.FlatShiftPf.flatShift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatShiftPf.flatShift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFlatMapsHeisenbergTranslationLaw.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.flatMaps_heisenbergTranslation_law : ∀ D : D7, GlobalTheory.FinPl.FlatShift D := by
   first | exact @GlobalTheory.FlatShiftPf.flatShift | exact GlobalTheory.FlatShiftPf.flatShift | (intros; apply GlobalTheory.FlatShiftPf.flatShift <;> assumption)

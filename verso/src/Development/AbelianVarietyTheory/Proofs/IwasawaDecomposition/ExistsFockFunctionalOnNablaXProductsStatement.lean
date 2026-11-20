@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualWeylEqSpanCo
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockMinorFunctional.fock_functional_nablaX | exact GlobalTheory.FockMinorFunctional.fock_functional_nablaX | (intros; apply GlobalTheory.FockMinorFunctional.fock_functional_nablaX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockMinorFunctional.fock_functional_nablaX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsFockFunctionalOnNablaXProducts.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.exists_fock_functional_on_nablaX_products : ∀ (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (g : Lt → MvPolynomial (Fin N × Fin N) ℤ),

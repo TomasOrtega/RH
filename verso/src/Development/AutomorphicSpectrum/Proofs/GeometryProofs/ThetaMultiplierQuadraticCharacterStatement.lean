@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular | exact GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FThetaMultiplierQuadraticCharacter.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.theta_multiplier_quadratic_character : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ), (∀ l l' : a.u.Λ, ∃ k : ℤ, (a.herm l l').im = k) ∧ (∀ w : Fin D.g → ℂ, (∀ l : a.u.Λ, ∃ k : ℤ, (a.herm w l).im = k) → w ∈ a.u.Λ) ∧ (∀ l l' : a.u.Λ, a.χ (l + l') = a.χ l * a.χ l' * Complex.exp (Real.pi * Complex.I * (a.herm l l').im)) ∧ ∀ l : a.u.Λ, a.χ l ^ 2 = 1 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular | exact GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Unimod.frame_unimodular <;> assumption)

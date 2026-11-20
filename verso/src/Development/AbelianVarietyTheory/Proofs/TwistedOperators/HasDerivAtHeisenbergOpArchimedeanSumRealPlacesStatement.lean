@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLineSum.hasDerivAt_realAd_smul | exact GlobalTheory.ArchLineSum.hasDerivAt_realAd_smul | (intros; apply GlobalTheory.ArchLineSum.hasDerivAt_realAd_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLineSum.hasDerivAt_realAd_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHasDerivAtHeisenbergOpArchimedeanSumRealPlaces.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.hasDerivAt_heisenbergOp_archimedean_sum_realPlaces : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (S T : HSp D) (f : WO S T → ℂ), IsThetaFunO ψ S T f →

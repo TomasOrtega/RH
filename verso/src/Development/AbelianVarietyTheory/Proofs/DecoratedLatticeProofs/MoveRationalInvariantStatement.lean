@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTh
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.RatMove.moveAt_rat | exact GlobalTheory.AdForm.RatMove.moveAt_rat | (intros; apply GlobalTheory.AdForm.RatMove.moveAt_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.RatMove.moveAt_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMoveRationalInvariant.lean&line=293#L293)
 -/
 theorem _root_.GlobalTheory.T.move_rational_invariant : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ r r', IsRatFin _ r → IsRatFin _ r' → A.MoveAt θ i hi c₀ (r * g) (r' * h) := by
   first | exact @GlobalTheory.AdForm.RatMove.moveAt_rat | exact GlobalTheory.AdForm.RatMove.moveAt_rat | (intros; apply GlobalTheory.AdForm.RatMove.moveAt_rat <;> assumption)

@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 import Formalism.SharpRestriction.LevelLetterCocycles.NEqRZeroMulXPow
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LetterWindows.lows_cloud_windows | exact GlobalTheory.LetterWindows.lows_cloud_windows | (intros; apply GlobalTheory.LetterWindows.lows_cloud_windows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LetterWindows.lows_cloud_windows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLowJumpsAndCloudInWindowsAlongFamily.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.lowJumps_and_cloud_in_windows_along_family : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ), Fm.x1 < x → ∀ (a : Fm.Ix x) (j : ℕ), 1 ≤ j → j ≤ (Fm.D x a).R.m →
     ∀ (up : Bool) (ρ : (Fm.D x a).what₂.Tau),

@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ValPts.points_generic_mulEquiv | exact GlobalTheory.ValPts.points_generic_mulEquiv | (intros; apply GlobalTheory.ValPts.points_generic_mulEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ValPts.points_generic_mulEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProperGroupSchemePointsValuationRingMulEquiv.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.proper_group_scheme_points_valuationRing_mulEquiv : ∀ (U Ω : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [Algebra U Ω] [IsFractionRing U Ω] (S : Scheme.{0}) (G : Over S) [GrpObj G], IsProper G.hom → ∀ u : Sp U ⟶ S, ∃ e : (Over.mk u ⟶ G) ≃* (Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ G), ∀ P, (e P).left = spMap (algebraMap U Ω) ≫ P.left := by
   first | exact @GlobalTheory.ValPts.points_generic_mulEquiv | exact GlobalTheory.ValPts.points_generic_mulEquiv | (intros; apply GlobalTheory.ValPts.points_generic_mulEquiv <;> assumption)

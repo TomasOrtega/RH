@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ReferenceMetricMulD
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverNorm.induced_of_norms | exact GlobalTheory.CoverNorm.induced_of_norms | (intros; apply GlobalTheory.CoverNorm.induced_of_norms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverNorm.induced_of_norms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedOfPositiveNorms.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.induced_of_positive_norms : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (L : HermLB M.p) (k : ℕ+), (∀ σ z, PosAt (A.m σ) z) → Norms (Cover.ofModel M hM) L (fun x => genAt A.D x ^ (k : ℕ)) (fun σ y => (k : ℕ) * lnAdl A σ y) (fun v e y => (k : ℕ) * A.lg v e y) → A.Induced M L k 0 := by
   first | exact @GlobalTheory.CoverNorm.induced_of_norms | exact GlobalTheory.CoverNorm.induced_of_norms | (intros; apply GlobalTheory.CoverNorm.induced_of_norms <;> assumption)

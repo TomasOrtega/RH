@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MvZOneEqMa
 open Formalism.BasicNotions Formalism.L2.DIV MeasureTheory
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AvgJet.avg_jet | exact GlobalTheory.AvgJet.avg_jet | (intros; apply GlobalTheory.AvgJet.avg_jet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AvgJet.avg_jet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCompactUnitaryAverageFockPolynomialJetFunctional.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.compactUnitaryAverage_fockPolynomial_jetFunctional : ∀ (ι : Type) [Fintype ι] (a b : ℕ), a ≤ b → 0 < a → ∀ (lam : ι → DomWeight a) (lam' : ι → DomWeight b)
     (nn : ι → ℕ), Formalism.L2.Ker.JetInVV ℂ lam lam' nn → ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K]

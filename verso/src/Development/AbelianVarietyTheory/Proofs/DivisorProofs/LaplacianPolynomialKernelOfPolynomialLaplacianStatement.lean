@@ -9,8 +9,10 @@ open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.HCA Grou
 open scoped ContDiff
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCA.solG_of_polyLap | exact GlobalTheory.HCA.solG_of_polyLap | (intros; apply GlobalTheory.HCA.solG_of_polyLap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCA.solG_of_polyLap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLaplacianPolynomialKernelOfPolynomialLaplacian.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.laplacianPolynomialKernel_of_polynomial_laplacian : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∀ p : Polynomial ℂ, p ≠ 0 → ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ (glL E a)) (P : Polynomial ℂ), P.Monic ∧ (∀ f : Lie E a → ℂ, ContDiffOn ℝ ∞ f (invSet E a) → (∀ y ∈ invSet E a, polyF E a p f y = 0) → (fun y : glG E a => f (toL y.1.val)) ∈ solG (glH E a) b P) ∧ ∀ φ : Sm E a, Polynomial.aeval (lapOp E a) p φ = 0 → ∀ x, glRes φ.1 x ∈ solG (glH E a) b P := by
   first | exact @GlobalTheory.HCA.solG_of_polyLap | exact GlobalTheory.HCA.solG_of_polyLap | (intros; apply GlobalTheory.HCA.solG_of_polyLap <;> assumption)

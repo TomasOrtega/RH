@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.ModelRep.model_rep | exact GlobalTheory.HolDict.ModelRep.model_rep | (intros; apply GlobalTheory.HolDict.ModelRep.model_rep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.ModelRep.model_rep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiscreteSeriesModelUnitaryIrreducibleOrthonormal.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau), CompleteSpace (M.H τ) ∧ IsURepOn (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (M.rep τ) ∧ IsIrredOn (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (M.rep τ) ∧ (HolShape M → OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ) ∧ ∀ a c, x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹ = (M.fr τ)⁻¹ * Matrix.single (arr (nNeg (M.ε τ)) a) (arr (nNeg (M.ε τ)) c) 1 * M.fr τ) := by
   first | exact @GlobalTheory.HolDict.ModelRep.model_rep | exact GlobalTheory.HolDict.ModelRep.model_rep | (intros; apply GlobalTheory.HolDict.ModelRep.model_rep <;> assumption)

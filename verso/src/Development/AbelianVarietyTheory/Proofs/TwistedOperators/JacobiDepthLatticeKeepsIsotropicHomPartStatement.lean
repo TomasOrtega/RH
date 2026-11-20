@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.SplitX.latRow_extX | exact GlobalTheory.AscFin.SplitX.latRow_extX | (intros; apply GlobalTheory.AscFin.SplitX.latRow_extX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.SplitX.latRow_extX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FJacobiDepthLatticeKeepsIsotropicHomPart.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.jacobi_depth_lattice_keeps_isotropic_hom_part : OnStd fun {D} _ _ {sc} {G} _ F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * σ + 2), (F.dJ (σ + 1) h).extX _ (u ⬝ (F.dJ (σ + 1) h).jX) ∈ latRow G (2 * σ + 2) := by
   first | exact @GlobalTheory.AscFin.SplitX.latRow_extX | exact GlobalTheory.AscFin.SplitX.latRow_extX | (intros; apply GlobalTheory.AscFin.SplitX.latRow_extX <;> assumption)

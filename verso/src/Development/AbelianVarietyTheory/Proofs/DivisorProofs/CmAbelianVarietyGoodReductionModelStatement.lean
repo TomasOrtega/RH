@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMVecBC.isCMVec_of_mem_eigLat | exact GlobalTheory.CMVecBC.isCMVec_of_mem_eigLat | (intros; apply GlobalTheory.CMVecBC.isCMVec_of_mem_eigLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMVecBC.isCMVec_of_mem_eigLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmAbelianVarietyGoodReductionModel.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.cm_abelian_variety_good_reduction_model : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.PeriodComparison → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E))
     (y : (Af E)ˣ) (𝔠 : FracId (FR E)) (R : Subring ℂ) [IsDiscreteValuationRing R]

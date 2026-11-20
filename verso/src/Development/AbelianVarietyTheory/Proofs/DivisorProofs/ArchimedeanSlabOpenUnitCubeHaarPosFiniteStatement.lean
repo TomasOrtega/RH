@@ -12,8 +12,10 @@ open scoped Classical
 open GlobalTheory.ArchDecay
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchDecay.slab_open_cube_pos_finite | exact GlobalTheory.ArchDecay.slab_open_cube_pos_finite | (intros; apply GlobalTheory.ArchDecay.slab_open_cube_pos_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchDecay.slab_open_cube_pos_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanSlabOpenUnitCubeHaarPosFinite.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.archimedeanSlab_open_unitCube_haar_pos_finite : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], (∀ m : ℕ, 0 < m → IsOpen (slab F κ m)) ∧ ∀ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → 0 < μ (archOut F κ ⁻¹' cube (dimA F κ) ∩ slab F κ 1) ∧ ∀ A : Set (Fin (dimA F κ) → ℝ), IsCompact A → μ (archOut F κ ⁻¹' A ∩ slab F κ 1) ≠ ⊤ := by
   first | exact @GlobalTheory.ArchDecay.slab_open_cube_pos_finite | exact GlobalTheory.ArchDecay.slab_open_cube_pos_finite | (intros; apply GlobalTheory.ArchDecay.slab_open_cube_pos_finite <;> assumption)

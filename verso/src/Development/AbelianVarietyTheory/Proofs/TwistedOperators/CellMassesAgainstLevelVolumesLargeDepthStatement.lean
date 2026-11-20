@@ -9,8 +9,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowWt.wtAt_big | exact GlobalTheory.RowWt.wtAt_big | (intros; apply GlobalTheory.RowWt.wtAt_big <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowWt.wtAt_big` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCellMassesAgainstLevelVolumesLargeDepth.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.cell_masses_against_level_volumes_large_depth : Big fun ch => ∀ s, WtAt ch s := by
   first | exact @GlobalTheory.RowWt.wtAt_big | exact GlobalTheory.RowWt.wtAt_big | (intros; apply GlobalTheory.RowWt.wtAt_big <;> assumption)

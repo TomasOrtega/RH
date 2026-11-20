@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl GlobalTheory.MixPer GlobalTheory.MixModel ValuativeRel
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.FrameLat.exists_lat | exact GlobalTheory.FinPl.FrameLat.exists_lat | (intros; apply GlobalTheory.FinPl.FrameLat.exists_lat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.FrameLat.exists_lat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSelfDualSplitComponentIsLatticeStabilizerEq.lean&line=346#L346)
 -/
 theorem _root_.GlobalTheory.T.selfDual_splitComponent_isLattice_stabilizer_eq : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S), IsSelfDualC S L →

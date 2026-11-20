@@ -10,8 +10,10 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit segre fibre IsGoodProj IsSheet HermLine IsSmoothHerm sheetDensity maDensity ptsIntegral ptsIntegralAt pot)
 open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBadProjectionLocusNull.lean&line=162#L162)
 -/
 theorem _root_.GlobalTheory.T.bad_projection_locus_null : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ),
     GlobalTheory.IsArithVar (i ≫ mpStr ℤ m n) D → ∀ Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D,

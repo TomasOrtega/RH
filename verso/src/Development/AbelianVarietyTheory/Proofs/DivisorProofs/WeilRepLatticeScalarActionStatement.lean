@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinComm.vac_law | exact GlobalTheory.FinComm.vac_law | (intros; apply GlobalTheory.FinComm.vac_law <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinComm.vac_law` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepLatticeScalarAction.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.weil_rep_lattice_scalar_action : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ), M.IsGood ψ →

@@ -14,8 +14,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KernelCut.notMem_support_kernel_cutHom | exact GlobalTheory.KernelCut.notMem_support_kernel_cutHom | (intros; apply GlobalTheory.KernelCut.notMem_support_kernel_cutHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KernelCut.notMem_support_kernel_cutHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNotMemSupportKerMulSectionOfNonvanishing.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.notMem_support_ker_mulSection_of_nonvanishing : ∀ {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (s : L.Sec) (G : Y.Modules) [G.IsQuasicoherent], ∀ x ∈ Out.nonzeroLocus s, x ∉ support (kernel (cutHom G hL s)) := by
   first | exact @GlobalTheory.KernelCut.notMem_support_kernel_cutHom | exact GlobalTheory.KernelCut.notMem_support_kernel_cutHom | (intros; apply GlobalTheory.KernelCut.notMem_support_kernel_cutHom <;> assumption)

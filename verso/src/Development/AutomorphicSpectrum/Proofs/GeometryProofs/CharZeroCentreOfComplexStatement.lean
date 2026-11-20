@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point | exact GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCharZeroCentreOfComplex.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.char_zero_centre_of_complex : ∀ (Ω : Type) [Field Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (z : Spec (CommRingCat.of ℂ) ⟶ X) (h : genPt ξ ⤳ centre z), IsCptGen ξ → Char0 ξ ⟨centre z, h⟩ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point | exact GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.char_zero_centre_complex_point <;> assumption)

@@ -20,8 +20,10 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 open MvPowerSeries
 open Formalism.DworkPowerSeriesWeights (Integral mvExp entLog ZV)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerStd.HypOrbit.hypZ_of_inHyp | exact GlobalTheory.KerStd.HypOrbit.hypZ_of_inHyp | (intros; apply GlobalTheory.KerStd.HypOrbit.hypZ_of_inHyp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerStd.HypOrbit.hypZ_of_inHyp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHyperbolicPairAdditiveCoordsLinearForms.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.orbitPlaces_thetaSeries_subst_orbMap_eq : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (hp : 5 ≤ p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {M N N' r : ℕ} (eA : Fin M ≃ R × Fin N)

@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.part_subset_chart | exact GlobalTheory.FlagCell2.part_subset_chart | (intros; apply GlobalTheory.FlagCell2.part_subset_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.part_subset_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFormPartSubsetChartEqLintegralImage.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.formPart_subset_chart_eq_lintegral_image : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n) (β : A.Fld), A.IsForm β → ∀ (s : ℤˣ) (i : A.ι) (T : Set M), MeasurableSet T → T ⊆ (A.e i).source → A.part β s T = ∫⁻ v in A.e i '' T, ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β i v)).re) := by
   first | exact @GlobalTheory.FlagCell2.part_subset_chart | exact GlobalTheory.FlagCell2.part_subset_chart | (intros; apply GlobalTheory.FlagCell2.part_subset_chart <;> assumption)

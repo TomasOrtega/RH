@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanOfPowMu
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KummerMove.main | exact GlobalTheory.KummerMove.main | (intros; apply GlobalTheory.KummerMove.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KummerMove.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsGaloisElementMovingTiltedUniformizer.lean&line=263#L263)
 -/
 theorem _root_.GlobalTheory.T.exists_galois_element_moving_tilted_uniformizer : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e), l ≠ 2 → ∃ (g : Gl l) (ε : OCb l) (c : ℕ), IsEps ε ∧ c ≠ 0 ∧ sQ l g ∈ GK (ϖ.field a) ∧ ∀ k : ℕ, ϖ.kummer (sQ l (g ^ k)) = ε ^ (c * k) := by
   first | exact @GlobalTheory.KummerMove.main | exact GlobalTheory.KummerMove.main | (intros; apply GlobalTheory.KummerMove.main <;> assumption)

@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsS
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertSurj.loc_surj | exact GlobalTheory.InertSurj.loc_surj | (intros; apply GlobalTheory.InertSurj.loc_surj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertSurj.loc_surj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInertLocalSurjectiveFromTrivOutside.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.inertLocal_surjective_from_trivOutside : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (y : GL (Fin n) (w.adicCompletion L)), y ∈ Formalism.UG.GU Dv.σw n → ∃ x : GAf L n, TrivOutside {v} x ∧ Dv.loc x = y := by
   first | exact @GlobalTheory.InertSurj.loc_surj | exact GlobalTheory.InertSurj.loc_surj | (intros; apply GlobalTheory.InertSurj.loc_surj <;> assumption)

@@ -15,8 +15,10 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNo
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL | exact GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL | (intros; apply GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FOrthProjReferenceFrameOnFlagBasisModLevel.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.orthProjReferenceFrame_on_flagBasis_mod_level : ∀ (D : D7) (X : HidaSetting D), (∀ y ∈ X.B.I.Lf, GlobalTheory.ScalW.prj0 X y ∈ X.B.I.Lf) ∧ ∀ j : ℕ, flagVec X.e0 X.f0 X.z0 X.bw X.bwd j ∈ X.B.I.Lf ∧ (D.R.rS ≤ j ∧ j < D.R.rS + D.R.k → GlobalTheory.ScalW.prj0 X (flagVec X.e0 X.f0 X.z0 X.bw X.bwd j) ∈ mL X.B.I X.B.g) ∧ (¬ (D.R.rS ≤ j ∧ j < D.R.rS + D.R.k) → GlobalTheory.ScalW.prj0 X (flagVec X.e0 X.f0 X.z0 X.bw X.bwd j) - flagVec X.e0 X.f0 X.z0 X.bw X.bwd j ∈ mL X.B.I X.B.g) := by
   first | exact @GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL | exact GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL | (intros; apply GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL <;> assumption)

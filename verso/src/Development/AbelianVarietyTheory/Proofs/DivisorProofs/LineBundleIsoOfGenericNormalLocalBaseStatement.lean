@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.lbIso_of_generic_local | exact GlobalTheory.Mum.lbIso_of_generic_local | (intros; apply GlobalTheory.Mum.lbIso_of_generic_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.lbIso_of_generic_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleIsoOfGenericNormalLocalBase.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.lineBundleIso_of_generic_normal_local_base : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R], ∀ (H : Over (Sp R)) [Smooth H.hom] [GeometricallyIntegral H.hom] (e : Sp R ⟶ H.left), e ≫ H.hom = 𝟙 _ → ∀ L L' : LB H.left, L.IsLB → L'.IsLB → LBIso (L.pull (pullback.fst H.hom (jK R))) (L'.pull (pullback.fst H.hom (jK R))) → LBIso L L' := by
   first | exact @GlobalTheory.Mum.lbIso_of_generic_local | exact GlobalTheory.Mum.lbIso_of_generic_local | (intros; apply GlobalTheory.Mum.lbIso_of_generic_local <;> assumption)

@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RigSq.exists_rescale | exact GlobalTheory.RigSq.exists_rescale | (intros; apply GlobalTheory.RigSq.exists_rescale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RigSq.exists_rescale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsRescaleRigidifiedSquareIso.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.exists_rescale_rigidified_square_iso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L L' : RigLB G)
     (w : LB.Iso (LB.LinComb L'.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2))

@@ -11,8 +11,10 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryFactor.exists_split_inert_factor | exact GlobalTheory.UnitaryFactor.exists_split_inert_factor | (intros; apply GlobalTheory.UnitaryFactor.exists_split_inert_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryFactor.exists_split_inert_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSplitInertFactorizationUnitaryLatticeStabi.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.exists_split_inert_factorization_unitaryLatticeStabilizer : ∀ (D : D7) {a : ℕ} (k : GA D a), k ∈ intG D a → ∃ (ks ki : GA D a) (x : (AE D)ˣ), k = ks * ki ∧ ks ∈ intG D a ∧ ki ∈ intG D a ∧ SuppSplit D (ks : GL (Fin a) (AE D)) ∧ SuppInert D (ki : GL (Fin a) (AE D)) ∧ (∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q ((x : AE D) - 1)) ∧ x = Matrix.GeneralLinearGroup.det (ks : GL (Fin a) (AE D)) * sgU D x ∧ IntU D x ∧ ∃ η ∈ OhE D, (x : AE D) - 1 = η * (((Matrix.GeneralLinearGroup.det (k : GL (Fin a) (AE D)) : (AE D)ˣ) : AE D) - 1) := by
   first | exact @GlobalTheory.UnitaryFactor.exists_split_inert_factor | exact GlobalTheory.UnitaryFactor.exists_split_inert_factor | (intros; apply GlobalTheory.UnitaryFactor.exists_split_inert_factor <;> assumption)

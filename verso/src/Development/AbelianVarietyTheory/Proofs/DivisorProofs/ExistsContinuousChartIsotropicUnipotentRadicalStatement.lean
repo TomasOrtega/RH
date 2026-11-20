@@ -20,8 +20,10 @@ open Formalism.UG (cT bc)
 open GlobalTheory.ResidueEisenstein.ModConj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResidueEisenstein.ChartU.chart | exact GlobalTheory.ResidueEisenstein.ChartU.chart | (intros; apply GlobalTheory.ResidueEisenstein.ChartU.chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResidueEisenstein.ChartU.chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsContinuousChartIsotropicUnipotentRadical.lean&line=240#L240)
 -/
 theorem _root_.GlobalTheory.T.exists_continuous_chart_isotropicUnipotentRadical : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), GlobalTheory.SphEis.Fr σ J C D Z J₀ → ∃ φ : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × GlobalTheory.ResidueEisenstein.ModConj.skewA σ j → GAd σ J, Continuous φ ∧ ∀ b s, GlobalTheory.SphEis.Crd σ J C D Z J₀ (φ (b, s)) b ((s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) - inclR (F := F) (AF F) (2⁻¹ : E) • (b * GlobalTheory.SphEis.plus σ J₀ b)) := by
   first | exact @GlobalTheory.ResidueEisenstein.ChartU.chart | exact GlobalTheory.ResidueEisenstein.ChartU.chart | (intros; apply GlobalTheory.ResidueEisenstein.ChartU.chart <;> assumption)

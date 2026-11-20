@@ -12,8 +12,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3 GlobalTheory.CompanionTheory.SphThet
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WinertRn.main | exact GlobalTheory.CompanionTheory.WinertRn.main | (intros; apply GlobalTheory.CompanionTheory.WinertRn.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WinertRn.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerRightUnipotentFormula.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_right_unipotent_formula : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → ∀ (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ) (x : F) (g : GL (Fin 2) F), GL2LocalData.Wc χ σ μ lam c Φ (g * uni2 x) = GL2LocalData.Wc χ σ μ lam c (fun z => (χ (x * Algebra.norm F z) : ℂ) * Φ z) g := by
   first | exact @GlobalTheory.CompanionTheory.WinertRn.main | exact GlobalTheory.CompanionTheory.WinertRn.main | (intros; apply GlobalTheory.CompanionTheory.WinertRn.main <;> assumption)

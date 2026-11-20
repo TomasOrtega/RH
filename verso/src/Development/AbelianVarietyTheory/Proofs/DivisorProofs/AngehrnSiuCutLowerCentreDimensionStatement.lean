@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairStep.logCanonicalCut_lowers_centre_dimension | exact GlobalTheory.PairStep.logCanonicalCut_lowers_centre_dimension | (intros; apply GlobalTheory.PairStep.logCanonicalCut_lowers_centre_dimension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairStep.logCanonicalCut_lowers_centre_dimension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAngehrnSiuCutLowerCentreDimension.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.angehrnSiu_cut_lower_centre_dimension : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

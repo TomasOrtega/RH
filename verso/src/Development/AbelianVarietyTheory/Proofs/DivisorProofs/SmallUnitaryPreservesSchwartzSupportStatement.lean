@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM GlobalTheory.AdelicU Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilSmallAct.smallAct | exact GlobalTheory.WeilSmallAct.smallAct | (intros; apply GlobalTheory.WeilSmallAct.smallAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilSmallAct.smallAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmallUnitaryPreservesSchwartzSupport.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.small_unitary_preserves_schwartz_support : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (M : Model σ X W)

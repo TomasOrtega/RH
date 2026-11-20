@@ -11,8 +11,10 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpNefFib.main | exact GlobalTheory.AmpNefFib.main | (intros; apply GlobalTheory.AmpNefFib.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpNefFib.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjModelClosedFiberIntegral.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.proj_model_closed_fiber_integral : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (P : Finset ℕ) (c : O.s.Comp) (X' : Scheme.{0}) (p' : X' ⟶ Sp (𝓞 D.what₂.LL)), IsProjOver p' →

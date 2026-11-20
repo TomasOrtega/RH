@@ -9,8 +9,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Coef.coefN_eq_theta | exact GlobalTheory.CompanionTheory.SiegelND.Coef.coefN_eq_theta | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Coef.coefN_eq_theta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Coef.coefN_eq_theta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FRepresentationTheoryGL%2FRegularisedSiegelWeil%2FThetaIdempotents%2FThetaCoefficients%2FSiegelWeilHermitianFormula.lean&line=303#L303)
 -/
 theorem _root_.GlobalTheory.T.siegel_weil_hermitian_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →

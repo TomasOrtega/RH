@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq | exact GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq | (intros; apply GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNormImageNeighbourhoodEventually.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.norm_image_neighbourhood_eventually : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (t₀ : Eˣ) (T : Set Eˣ), T ∈ 𝓝 t₀ → ∀ᶠ a in 𝓝 (Algebra.norm F (t₀ : E)), ∃ t ∈ T, Algebra.norm F (t : E) = a := by
   first | exact @GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq | exact GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq | (intros; apply GlobalTheory.CompanionTheory.NormLocal.eventually_exists_norm_eq <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JacquetShalikaExclu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDetProdConstAt
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.DetProd
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.DetProdSatake.false_of_ratioGap | exact GlobalTheory.ThK.DetProdSatake.false_of_ratioGap | (intros; apply GlobalTheory.ThK.DetProdSatake.false_of_ratioGap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.DetProdSatake.false_of_ratioGap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJacquetShalikaExcludesRatioGap.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.jacquet_shalika_excludes_ratio_gap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (τ : GlobalTheory.CuspRep.CuspSub E 2)
     (w : HeightOneSpectrum (𝓞 E)) (ρ : GlobalTheory.CuspRep.SmIrr (GL (Fin 2) (w.adicCompletion E)))

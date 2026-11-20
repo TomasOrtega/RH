@@ -19,8 +19,10 @@ open MonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsSpec.exists_etaSecL_of_torsI | exact GlobalTheory.TorsSpec.exists_etaSecL_of_torsI | (intros; apply GlobalTheory.TorsSpec.exists_etaSecL_of_torsI <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsSpec.exists_etaSecL_of_torsI` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLevelSectionOfIdealTorsionAtGeometricPoint.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_levelSection_of_ideal_torsion_at_geometricPoint : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}}

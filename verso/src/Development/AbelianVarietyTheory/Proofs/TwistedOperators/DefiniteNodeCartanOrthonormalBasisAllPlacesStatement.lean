@@ -10,8 +10,10 @@ open scoped TensorProduct Matrix
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowReal.defNode_cart_onb_all | exact GlobalTheory.RowReal.defNode_cart_onb_all | (intros; apply GlobalTheory.RowReal.defNode_cart_onb_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowReal.defNode_cart_onb_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDefiniteNodeCartanOrthonormalBasisAllPlaces.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.definiteNode_cartan_orthonormalBasis_allPlaces : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ0 : T}, L.Is μ0 →
     ∀ (W : G.Weil) (X : Node), DefNode D.R.m X → ∀ ρ,

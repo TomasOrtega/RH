@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfFora
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEqMultiDiff
 open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.FibreProj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MultPull.exists_isRatSec_pull_mult | exact GlobalTheory.MultPull.exists_isRatSec_pull_mult | (intros; apply GlobalTheory.MultPull.exists_isRatSec_pull_mult <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MultPull.exists_isRatSec_pull_mult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalSectionDivisorPullbackGeneric.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.rational_section_divisor_pullback_generic : ∀ (G Y : Scheme.{0}) [IsIntegral G] [IsIntegral Y] [IsLocallyNoetherian G] [IsLocallyNoetherian Y] (j : G ⟶ Y), j (genericPoint G) = genericPoint Y → (∀ x : G, IsIso (j.stalkMap x)) → ∀ (M : LB Y) (hM : M.IsLB) (r : M.ι → Y.functionFieldˣ) (hr : IsRatSec M r), ∃ (r' : (M.pull j).ι → G.functionFieldˣ) (hr' : IsRatSec (M.pull j) r'), ∀ x : G, (divOfRatSec (LB.isLB_pull hM j) hr').mult x = (divOfRatSec hM hr).mult (j x) := by
   first | exact @GlobalTheory.MultPull.exists_isRatSec_pull_mult | exact GlobalTheory.MultPull.exists_isRatSec_pull_mult | (intros; apply GlobalTheory.MultPull.exists_isRatSec_pull_mult <;> assumption)

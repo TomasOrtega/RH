@@ -11,8 +11,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open GlobalTheory.XCharBF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.XCharBF.DiagCoord.diag_mem_complId | exact GlobalTheory.XCharBF.DiagCoord.diag_mem_complId | (intros; apply GlobalTheory.XCharBF.DiagCoord.diag_mem_complId <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.XCharBF.DiagCoord.diag_mem_complId` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselStepDiagonalCoordinatesMemComplementIdeal.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.besselStep_diagonalCoordinates_mem_complementIdeal : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {F : Frames G}, Std F → ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (u : WO (negSp (G.V (.grid (2 * ρ + 2) 0))) (G.V (.grid (2 * ρ + 1) 0))), u ∈ latO _ _ (G.Λ (.grid (2 * ρ + 2) 0) : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (fun _ => True) → ∀ p : Fin ρ, ((F.dJ ρ h).pY ⬝ u ⬝ (F.dB ρ h).jY) p p ∈ complId (D.host.AA * G.pl.stAbar sc) := by
   first | exact @GlobalTheory.XCharBF.DiagCoord.diag_mem_complId | exact GlobalTheory.XCharBF.DiagCoord.diag_mem_complId | (intros; apply GlobalTheory.XCharBF.DiagCoord.diag_mem_complId <;> assumption)

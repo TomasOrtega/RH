@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.SimilitudeFacto
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
 open MeasureTheory Filter Topology Matrix NumberField ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.Cmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol | exact GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol | (intros; apply GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FFlagDomainCellCoordinates.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.flag_domain_cell_coordinates : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r j e : ℕ) (X : Data E r) (x0 : Frame X.Ψ r) (Ψ : Type) [Fintype Ψ] (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e), IsOrth X x0 → j ≤ r → X.p0 = r - j → (∀ z : Fin e → ℂ, z ∈ cellDom j q ↔ (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ OmF X x0) ∧ ∀ FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd X)), MeasurableSet FF → FF ⊆ OmF X x0 → muF X x0 FF = cellVol j q {z | (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ FF} := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol | exact GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol | (intros; apply GlobalTheory.CompanionTheory.Ar.Cmp.muF_orth_eq_cellVol <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacTriv.vacuum_const_trivial | exact GlobalTheory.VacTriv.vacuum_const_trivial | (intros; apply GlobalTheory.VacTriv.vacuum_const_trivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacTriv.vacuum_const_trivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMovedVacuumConstantTrivialFinitePairs.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.movedVacuum_constant_trivial_finite_pairs : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

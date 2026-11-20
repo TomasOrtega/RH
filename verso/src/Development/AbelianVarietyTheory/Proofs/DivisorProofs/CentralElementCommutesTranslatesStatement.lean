@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.RightTr.comm_rtr | exact GlobalTheory.LeviHC.RightTr.comm_rtr | (intros; apply GlobalTheory.LeviHC.RightTr.comm_rtr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.RightTr.comm_rtr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCentralElementCommutesTranslates.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.central_element_commutes_translates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

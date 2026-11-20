@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviKCentre.levi_one_kInf | exact GlobalTheory.LeviKCentre.levi_one_kInf | (intros; apply GlobalTheory.LeviKCentre.levi_one_kInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviKCentre.levi_one_kInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedRealLineSecond.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.adapted_real_line_second : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ i₀ i₁ r s r₁ s₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ → W.IsSkew σ B r s →

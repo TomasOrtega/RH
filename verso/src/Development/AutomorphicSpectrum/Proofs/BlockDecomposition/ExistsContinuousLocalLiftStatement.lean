@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSingl
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published Sa2 GlobalTheory.CompanionTheory.SaGen
 open scoped TensorProduct Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift | exact GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift | (intros; apply GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsContinuousLocalLift.lean&line=220#L220)
 -/
 theorem _root_.GlobalTheory.T.exists_continuous_local_lift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ {K : Type} [NontriviallyNormedField K] [Algebra F K] (P : PlaceMap F K), ∃ L : HA K σ J →* HA (AF F) σ J, Continuous L ∧ IsLift P σ J L := by
   first | exact @GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift | exact GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift | (intros; apply GlobalTheory.CompanionTheory.SaGen.ExLift.exists_continuous_lift <;> assumption)

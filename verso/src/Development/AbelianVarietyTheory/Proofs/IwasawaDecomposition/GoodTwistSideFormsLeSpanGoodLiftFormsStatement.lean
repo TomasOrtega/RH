@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCentralGro
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms | exact GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms | (intros; apply GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms <;> …`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGoodTwistSideFormsLeSpanGoodLiftForms.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.V0T_le_span_image_goodL : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool),
     1 ≤ j → j ≤ D.R.m → EIdem D → ∀ (Φ : S.WL j →+ FmT D T S i j b),

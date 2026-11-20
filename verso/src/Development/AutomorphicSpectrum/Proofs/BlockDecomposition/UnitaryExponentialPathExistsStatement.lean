@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsTestZero
 open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary GlobalTheory.DiscreteSum GlobalTheory.OpTrace GlobalTheory.UnitaryBC GlobalTheory.DiscSpec GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.CompanionTheory.SmoothRep
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve | exact GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve | (intros; apply GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitaryExponentialPathExists.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.unitary_exponential_path_exists : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (k : Kinf E a), ∃ (c : ℝ → GL (Fin a) (Cinf E)) (Y : Lie E a), c 0 = 1 ∧ c 1 = Unitary.toUnits k ∧ (∀ s, HasDerivAt (fun t => toL (c t).val) (toL ((c s).val * Matrix.of Y)) s) ∧ (∀ s, HasDerivAt (fun t => toL ((c t)⁻¹).val) (toL (-(Matrix.of Y * ((c s)⁻¹).val))) s) := by
   first | exact @GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve | exact GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve | (intros; apply GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve <;> assumption)

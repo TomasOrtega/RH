@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodLattice.periods_unif | exact GlobalTheory.PeriodLattice.periods_unif | (intros; apply GlobalTheory.PeriodLattice.periods_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodLattice.periods_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmDeRhamPeriodMapEquivariant.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.cm_de_rham_period_map_equivariant : GlobalTheory.Published.PeriodComparison →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)

@@ -13,8 +13,10 @@ open Formalism.IndefR Formalism.IndefR.Links Formalism.L2.DIV GlobalTheory.ChiGr
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per | exact GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per | (intros; apply GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselPeriodCorankOneLessEqTopBesselLevelPeriod.lean&line=188#L188)
 -/
 theorem _root_.GlobalTheory.T.besselPeriodCorankOneLess_eq_topBesselLevel_period : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) (M : GlobalTheory.FunObj.Vol G)
     (hM : M.Is t) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)),

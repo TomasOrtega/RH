@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelfDualSpread.exists_selfDual | exact GlobalTheory.SelfDualSpread.exists_selfDual | (intros; apply GlobalTheory.SelfDualSpread.exists_selfDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelfDualSpread.exists_selfDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianExtensionOverNormalBase.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.abelian_extension_over_normal_base : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.SemiAbelianHomExtension → ∀ (O : Type) [CommRing O] (c : O →+* O)
     (S : Scheme.{0}) [IsIntegral S] [AlgebraicGeometry.IsNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S →

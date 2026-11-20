@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open Matrix
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCFinLevel.main | exact GlobalTheory.HCFinLevel.main | (intros; apply GlobalTheory.HCFinLevel.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCFinLevel.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteLevelMatrixEntryIntegrality.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.finite_level_matrix_entry_integrality : ∀ (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (U : Subgroup (GlobalTheory.AdelicU.GAd s I.J)), IsOpen (U : Set (GlobalTheory.AdelicU.GAd s I.J)) → ∃ g : ℕ, 1 ≤ g ∧ ∀ k ∈ I.Kg g, GlobalTheory.HCFinU.bridgeS I s hs (1, k) ∈ U ∧ ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) s I.J (GlobalTheory.HCFinU.bridgeS I s hs (1, k)) : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E))).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA I.F) (AlgHom.id I.F I.E)) = 1 := by
   first | exact @GlobalTheory.HCFinLevel.main | exact GlobalTheory.HCFinLevel.main | (intros; apply GlobalTheory.HCFinLevel.main <;> assumption)

@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC | exact GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC | (intros; apply GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.HeckeUnit.cW_finprod_mul_chC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FProductFormulaGlobalCharacter.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.product_formula_global_character : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (DK : DatK K) (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (S : Finset (PlK K)), AdmK DK c n t S →

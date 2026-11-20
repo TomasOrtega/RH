@@ -9,8 +9,10 @@ open Finset PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.
 open CompanionTheory.D.LK (Pos)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LvComm.lv_bd_comm | exact GlobalTheory.CompanionTheory.LvComm.lv_bd_comm | (intros; apply GlobalTheory.CompanionTheory.LvComm.lv_bd_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LvComm.lv_bd_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeviCommuteUnipotentBoundary.lean&line=471#L471)
 -/
 theorem _root_.GlobalTheory.T.levi_commute_unipotent_boundary : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V),
     Monotone lev → IsPairA E1 E2 → ∀ p q : Fin n, lev p = lev q →

@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion | exact GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsUniqueTangentDualNumber.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_tangent_dual_number : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (e : L), ∃! (v : Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))) ⟶ Γ.G.left), v ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk _))) ∧ v ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (M.pt e).left := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion | exact GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion <;> assumption)

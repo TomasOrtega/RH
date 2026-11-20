@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.descend_of_emb | exact GlobalTheory.Mum.descend_of_emb | (intros; apply GlobalTheory.Mum.descend_of_emb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.descend_of_emb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianDescendsOfClosedFibreEmbedding.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.semiAbelian_descends_of_closedFibre_embedding : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G') (E : Emb M.π G'), E.Theta P'.L.L → ∃ (G : Over (Sp R)) (_ : GrpObj G) (_ : IsCommMonObj G) (P : GlobalTheory.UU.CP G) (β : G'.left ⟶ G.left), IsSemiAbelian G ∧ IsGrpPullback G' G M.π β ∧ LBIso P'.L.L (P.L.L.pull β) := by
   first | exact @GlobalTheory.Mum.descend_of_emb | exact GlobalTheory.Mum.descend_of_emb | (intros; apply GlobalTheory.Mum.descend_of_emb <;> assumption)

@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoOrthLoc.isotropic_orbit_orthogonal_at_place | exact GlobalTheory.IsoOrthLoc.isotropic_orbit_orthogonal_at_place | (intros; apply GlobalTheory.IsoOrthLoc.isotropic_orbit_orthogonal_at_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoOrthLoc.isotropic_orbit_orthogonal_at_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsotropicOrbitOrthogonalAtPlace.lean&line=277#L277)
 -/
 theorem _root_.GlobalTheory.T.isotropic_orbit_orthogonal_at_place' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W),

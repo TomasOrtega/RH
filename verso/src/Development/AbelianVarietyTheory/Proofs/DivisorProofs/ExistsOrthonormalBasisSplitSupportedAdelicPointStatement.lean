@@ -9,8 +9,10 @@ open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ke
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunObj.StdVertex.exists_std_vertex | exact GlobalTheory.FunObj.StdVertex.exists_std_vertex | (intros; apply GlobalTheory.FunObj.StdVertex.exists_std_vertex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunObj.StdVertex.exists_std_vertex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOrthonormalBasisSplitSupportedAdelicPoint.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_orthonormalBasis_splitSupported_adelicPoint : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), V.SigOK →
     (∀ τ, V.sig τ = (V.rank, 0)) → IsSelfDualC V Λ → ∀ S : Finset ℕ, (∀ q ∈ S, q.Prime) →

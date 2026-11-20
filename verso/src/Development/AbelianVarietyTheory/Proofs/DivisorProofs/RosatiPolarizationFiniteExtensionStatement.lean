@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusPart.exists_finite_polDescent | exact GlobalTheory.TorusPart.exists_finite_polDescent | (intros; apply GlobalTheory.TorusPart.exists_finite_polDescent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusPart.exists_finite_polDescent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRosatiPolarizationFiniteExtension.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.rosati_polarization_finite_extension : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (c : O →+* O) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ (j₀ : OAct O B) (P : Out.PolAV (Sp Ω))

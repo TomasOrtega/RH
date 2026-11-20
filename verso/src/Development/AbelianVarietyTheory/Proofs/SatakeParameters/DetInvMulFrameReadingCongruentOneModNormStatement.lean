@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 open GlobalTheory.TopStep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FramesDet.det_frame_mul_congAt | exact GlobalTheory.FramesDet.det_frame_mul_congAt | (intros; apply GlobalTheory.FramesDet.det_frame_mul_congAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FramesDet.det_frame_mul_congAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FDetInvMulFrameReadingCongruentOneModNorm.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.det_inv_mul_frame_reading_congruent_one_mod_norm : ∀ {D : D7} {X : Fields} (s : Seam D X) {i : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 X.E))}
     (fb : SB → GL (Fin (D.R.N i)) D.host.E) (dep : SB → ℕ) (P : SB), 1 ≤ dep P →

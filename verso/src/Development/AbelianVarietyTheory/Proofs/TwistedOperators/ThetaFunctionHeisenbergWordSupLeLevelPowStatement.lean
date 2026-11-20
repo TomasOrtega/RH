@@ -21,8 +21,10 @@ open scoped Pointwise
 open Formalism.IndefR.Datum
 open GlobalTheory.Grid
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelSupBound.supN_word_le | exact GlobalTheory.LevelSupBound.supN_word_le | (intros; apply GlobalTheory.LevelSupBound.supN_word_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelSupBound.supN_word_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaFunctionHeisenbergWordSupLeLevelPow.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.thetaFunction_heisenbergWord_sup_le_level_pow : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (V X : HSp D) (K₀ : Set (WO V X)), K₀ ∈ nhds (0 : WO V X) → IsCompact K₀ →

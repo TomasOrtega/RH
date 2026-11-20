@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Hypo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSubAug
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaGLSub.SumProper.main | exact GlobalTheory.ThetaGLSub.SumProper.main | (intros; apply GlobalTheory.ThetaGLSub.SumProper.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaGLSub.SumProper.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaSubmoduleSupNeTop.lean&line=193#L193)
 -/
 theorem _root_.GlobalTheory.T.theta_submodule_sup_ne_top : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.MinguezThetaGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n m : ℕ), 1 ≤ n → 1 ≤ m → ∀ χ : GL (Fin n) k →* ℂˣ, IsOpen {g | χ g = 1} →

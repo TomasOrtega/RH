@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordRelationsHomog
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds | exact GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds | (intros; apply GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAmpleOfSingleCoordBlock.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.ample_of_single_coord_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (k₀ : K) (a : K → ℤ), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → EmbedsGeneric ξ (fun i : J k₀ => y ⟨k₀, i⟩) → a k₀ = 1 → (∀ k, k ≠ k₀ → a k = 0) → Ht.AmpleQ y a := by
   first | exact @GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds | exact GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds | (intros; apply GlobalTheory.CompanionTheory.Ar.AmpleBlock.ampleQ_of_embeds <;> assumption)

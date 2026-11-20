@@ -7,8 +7,10 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete | exact GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete | (intros; apply GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitaryGroupCompactQuotient.lean&line=201#L201)
 -/
 theorem _root_.GlobalTheory.T.unitary_group_compact_quotient : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (H : Matrix (Fin n) (Fin n) E),
   IsUnit H.det → cT (IsCMField.complexConj E).toRingEquiv.toRingHom H = H → (∀ τ : E →+* ℂ, (H.map τ).PosDef) →

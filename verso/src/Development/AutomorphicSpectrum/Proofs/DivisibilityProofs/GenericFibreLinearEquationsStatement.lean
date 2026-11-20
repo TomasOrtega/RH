@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsChainFirst
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsBlockMapDrop
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FGenericFibreLinearEquations.lean&line=345#L345)
 -/
 theorem _root_.GlobalTheory.T.generic_fibre_linear_equations : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (K : Type) [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N), IsChain j → ∀ k₀ : K, (∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) → (∃ k, k ≠ k₀) → ∃ G : GenFibre (dropV j k₀) (PPart j), ∃ S : Set (MRingOver G.Φ (fibreIdx (PIdx j) (Subtype.val : {k // k ≠ k₀} → K))), (∀ f ∈ S, IsMultiHomog f fun _ => 1) ∧ fibreIdeal (Subtype.val : {k // k ≠ k₀} → K) G = Ideal.span S := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin <;> assumption)

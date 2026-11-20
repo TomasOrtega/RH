@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped TensorProduct NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinSupp.DenStd.exists_den | exact GlobalTheory.FinSupp.DenStd.exists_den | (intros; apply GlobalTheory.FinSupp.DenStd.exists_den <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinSupp.DenStd.exists_den` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBoundedDenominatorStandardCharTrivial.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.exists_bounded_denominator_standardChar_trivial : ∀ (F : Type) [Field F] [NumberField F], ∃ D : ℕ, 1 ≤ D ∧ ∀ ψ : AddChar (AF F) ℂ, IsStd ψ → ∀ t : F,
     (∀ a : 𝓞 F, ψ (GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((a : F) * t))) = 1) → IsIntegral ℤ ((D : F) * t) := by

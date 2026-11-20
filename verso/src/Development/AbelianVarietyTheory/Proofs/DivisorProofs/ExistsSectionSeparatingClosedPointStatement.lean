@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else | exact GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else | (intros; apply GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSectionSeparatingClosedPoint.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.exists_section_separating_closed_point : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → ∀ (L : LB X), L.IsLB → ∀ (J : X.IdealSheafData) (x : X) (U : X.Opens), IsClosed ({x} : Set X) → x ∈ U → (∀ y ∈ U, y ∈ J.support ↔ y = x) → Subsingleton (coh (twist (idealModule J) L) 1) → ∃ s : L.Sec, x ∈ nonzeroLocus s ∧ ∀ y ∈ J.support, y ≠ x → y ∉ nonzeroLocus s := by
   first | exact @GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else | exact GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else | (intros; apply GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else <;> assumption)

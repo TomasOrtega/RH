@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPartHeis.finPart_right | exact GlobalTheory.FinPartHeis.finPart_right | (intros; apply GlobalTheory.FinPartHeis.finPart_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPartHeis.finPart_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzFiniteApproximation.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.schwartz_finite_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (x : Fin n → E),

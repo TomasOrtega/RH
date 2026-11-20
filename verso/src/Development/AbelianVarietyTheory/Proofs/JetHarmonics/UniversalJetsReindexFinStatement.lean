@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotions.ModuliIntegralCharts.H1.BidegreeTwoJet GlobalTheory GlobalTheory.PowGerm
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowGerm.univConv | exact GlobalTheory.PowGerm.univConv | (intros; apply GlobalTheory.PowGerm.univConv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowGerm.univConv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FUniversalJetsReindexFin.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.universalJets_reindex_fin : UnivConvSt := by
   first | exact @GlobalTheory.PowGerm.univConv | exact GlobalTheory.PowGerm.univConv | (intros; apply GlobalTheory.PowGerm.univConv <;> assumption)

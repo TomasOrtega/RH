@@ -11,8 +11,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatioVal.main | exact GlobalTheory.RatioVal.main | (intros; apply GlobalTheory.RatioVal.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatioVal.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FValuationThetaRatioEqBilinear.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.valuation_thetaRatio_eq_bilinear : TWM.VRatioGtStatement := by
   first | exact @GlobalTheory.RatioVal.main | exact GlobalTheory.RatioVal.main | (intros; apply GlobalTheory.RatioVal.main <;> assumption)

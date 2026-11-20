@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrCyclic.mem_span_locOp | exact GlobalTheory.SchrCyclic.mem_span_locOp | (intros; apply GlobalTheory.SchrCyclic.mem_span_locOp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrCyclic.mem_span_locOp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalSpanTranslatesOfNonzeroSchwartz.lean&line=263#L263)
 -/
 theorem _root_.GlobalTheory.T.local_span_translates_of_nonzero_schwartz : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (v : Pl F), Continuous (psiLoc ψ v) →
     (∃ x : Fv F v, psiLoc ψ v x ≠ 1) → ∀ {κ : Type} [Fintype κ] (φ₀ φ : (κ → Fv F v) → ℂ), φ₀ ∈ SB _ → φ₀ ≠ 0 →

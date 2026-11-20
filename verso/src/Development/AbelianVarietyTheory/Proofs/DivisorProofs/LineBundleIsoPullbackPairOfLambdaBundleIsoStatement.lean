@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamPull.lbIso_pull_lift | exact GlobalTheory.LamPull.lbIso_pull_lift | (intros; apply GlobalTheory.LamPull.lbIso_pull_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamPull.lbIso_pull_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleIsoPullbackPairOfLambdaBundleIso.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.lineBundleIso_pullback_pair_of_lambdaBundle_iso : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left) (M : LB A.left), P.IsLB → M.IsLB → LBIso P (cubeLB A ![fst A A, snd A A] M) → ∀ (T : Over (Sp ℂ)) (a b : T ⟶ A), LBIso (P.pull (lift a b).left) (cubeLB A ![a, b] M) := by
   first | exact @GlobalTheory.LamPull.lbIso_pull_lift | exact GlobalTheory.LamPull.lbIso_pull_lift | (intros; apply GlobalTheory.LamPull.lbIso_pull_lift <;> assumption)

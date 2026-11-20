@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.SuppFin.suppFin | exact GlobalTheory.BCT.SuppFin.suppFin | (intros; apply GlobalTheory.BCT.SuppFin.suppFin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.SuppFin.suppFin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteRationalPointsSupportDefiniteUnitaryTestFu.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.finite_rationalPoints_support_definiteUnitary_testFunction : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → ∀ x : finU E n, {γ : UE E n | globFn S f (x⁻¹ * finPt γ * x) ≠ 0}.Finite := by
   first | exact @GlobalTheory.BCT.SuppFin.suppFin | exact GlobalTheory.BCT.SuppFin.suppFin | (intros; apply GlobalTheory.BCT.SuppFin.suppFin <;> assumption)

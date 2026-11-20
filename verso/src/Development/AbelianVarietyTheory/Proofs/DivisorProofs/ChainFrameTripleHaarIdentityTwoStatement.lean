@@ -23,8 +23,10 @@ open MeasureTheory
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefThetaNZ.exists_algF_thetaInt_ne_zero | exact GlobalTheory.DefThetaNZ.exists_algF_thetaInt_ne_zero | (intros; apply GlobalTheory.DefThetaNZ.exists_algF_thetaInt_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefThetaNZ.exists_algF_thetaInt_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChainFrameTripleHaarIdentityTwo.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.chain_frame_triple_haar_identity_two : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

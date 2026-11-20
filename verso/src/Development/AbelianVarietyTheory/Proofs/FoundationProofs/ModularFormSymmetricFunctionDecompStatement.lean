@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QFam.LagrangeFam.lagrange_fam | exact GlobalTheory.QFam.LagrangeFam.lagrange_fam | (intros; apply GlobalTheory.QFam.LagrangeFam.lagrange_fam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QFam.LagrangeFam.lagrange_fam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FModularFormSymmetricFunctionDecomp.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.modular_form_symmetric_function_decomp : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (act : ι → SL(2, ℤ) → ι) (m k N : ℕ) (t F : ι → ℍ → ℂ), 0 < N → ActBij act → IsFam act m t → IsFam act k F → (∀ i, ∃ a, HasQ N (t i) a) → (∀ i, ∃ a, HasQ N (F i) a) → ∃ c : ℕ → ℍ → ℂ, (∀ j, (∀ γ : SL(2, ℤ), c j ∣[((k + m * j : ℕ) : ℤ)] γ = c j) ∧ ∃ a, HasQ N (c j) a) ∧ ∀ i τ, F i τ * ∏ l ∈ Finset.univ.erase i, (t i τ - t l τ) = ∑ j ∈ Finset.range (Fintype.card ι), c j τ * t i τ ^ (Fintype.card ι - 1 - j) := by
   first | exact @GlobalTheory.QFam.LagrangeFam.lagrange_fam | exact GlobalTheory.QFam.LagrangeFam.lagrange_fam | (intros; apply GlobalTheory.QFam.LagrangeFam.lagrange_fam <;> assumption)

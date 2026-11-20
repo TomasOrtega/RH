@@ -11,8 +11,10 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated | exact GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated | (intros; apply GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformiserOrderEqOfAssociatedStalkImage.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.uniformiserOrder_eq_of_associated_stalkImage : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) (x : M.Z) (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z), ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∀ (R : Type) [CommRing R] (j : M.Z.presheaf.stalk x →+* R) (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (h : T.V →+* V') (g' : R →+* V'), Function.Injective h → Irreducible (h T.ϖ) → spMap g' ≫ (spMap j ≫ M.Z.fromSpecStalk x) = spMap h ≫ ξ → ∀ (a : M.Z.presheaf.stalk x) (k : ℕ), Associated (g' (j a)) (h T.ϖ ^ k) → UOrdEq M T ξ (M.stalkHom x a) k := by
   first | exact @GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated | exact GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated | (intros; apply GlobalTheory.UPoinc.uOrdEq_stalkHom_of_associated <;> assumption)

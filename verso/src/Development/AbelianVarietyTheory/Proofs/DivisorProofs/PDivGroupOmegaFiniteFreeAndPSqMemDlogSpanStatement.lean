@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZe
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeTateKernel
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilIntegral GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel TensorProduct CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ChTor CategoryTheory.MonObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span | exact GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span | (intros; apply GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivGroupOmegaFiniteFreeAndPSqMemDlogSpan.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.pDivGroup_omega_finite_free_and_p_sq_mem_dlog_span : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] (ε : PreTilt O p) (hε : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε), v.Integers O → GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε → ∀ G : PDivGroup p O, Module.Finite O G.omega ∧ Module.Free O G.omega ∧ ∀ w : G.omega, (p : O) ^ 2 • w ∈ Submodule.span O (Set.range (dlog (G := G))) := by
   first | exact @GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span | exact GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span | (intros; apply GlobalTheory.DlogSpan.finite_free_and_sq_smul_mem_span <;> assumption)

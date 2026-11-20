@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BesselCoords.besChar_atTau_coords | exact GlobalTheory.BesselCoords.besChar_atTau_coords | (intros; apply GlobalTheory.BesselCoords.besChar_atTau_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BesselCoords.besChar_atTau_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselCharacterRealPlaceUnipotentEqTrace.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.besselCharacter_realPlace_unipotent_eq_trace : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesDat A B ι) (τ : D.what₂.Tau) (u : Matrix (Fin B.rank) (Fin B.rank) ℂ),
   u ∈ GlobalTheory.RealBessel.unipRad (gramAt D B τ) (d.e.map (tauE D τ)) →

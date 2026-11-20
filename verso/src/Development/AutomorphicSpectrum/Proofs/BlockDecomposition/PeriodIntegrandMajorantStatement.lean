@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsIntegralTran
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrablePhi
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerUInt.pointwise_gamma_bound | exact GlobalTheory.CompanionTheory.PerUInt.pointwise_gamma_bound | (intros; apply GlobalTheory.CompanionTheory.PerUInt.pointwise_gamma_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PerUInt.pointwise_gamma_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPeriodIntegrandMajorant.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.period_integrand_majorant : ∀ (k : ℕ), 3 ≤ k → ∀ σ : ℝ, 0 < σ → σ < 1 → ∀ N : ℕ, 8 ≤ N → ∃ C : ℝ, ∀ h : Ad3.LR.M22, (Matrix.of h).det ≠ 0 →
     ‖Ad3.LR.Wm k (Matrix.of h)⁻¹‖ * |(Matrix.of h).det| ^ (-(3 : ℝ) / 2) * ‖Ad3.LR.B.eta h‖ ^ (σ - 1) / (1 + ‖h‖) ^ N ≤

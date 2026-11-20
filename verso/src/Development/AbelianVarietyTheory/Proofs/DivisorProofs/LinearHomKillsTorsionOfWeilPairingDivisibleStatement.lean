@@ -6,8 +6,10 @@ open NumberField
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatCM.TorsKill.kill | exact GlobalTheory.FlatCM.TorsKill.kill | (intros; apply GlobalTheory.FlatCM.TorsKill.kill <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatCM.TorsKill.kill` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinearHomKillsTorsionOfWeilPairingDivisible.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.linearHom_kills_torsion_of_weilPairing_divisible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)

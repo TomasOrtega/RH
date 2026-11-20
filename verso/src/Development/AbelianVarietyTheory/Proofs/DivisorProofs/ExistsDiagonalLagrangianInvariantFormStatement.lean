@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.diagLagrangian_form | exact GlobalTheory.diagLagrangian_form | (intros; apply GlobalTheory.diagLagrangian_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.diagLagrangian_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDiagonalLagrangianInvariantForm.lean&line=240#L240)
 -/
 theorem _root_.GlobalTheory.T.exists_diagonalLagrangian_invariant_form : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ], ∃ l : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ, l ∈ (adeleClass F).adm (κ ⊕ κ) ∧ (∀ (x y : κ → AF F), ∀ φ ∈ schA F (κ ⊕ κ), l (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l φ) ∧ ∃ φ ∈ schA F (κ ⊕ κ), l φ ≠ 0 := by
   first | exact @GlobalTheory.diagLagrangian_form | exact GlobalTheory.diagLagrangian_form | (intros; apply GlobalTheory.diagLagrangian_form <;> assumption)

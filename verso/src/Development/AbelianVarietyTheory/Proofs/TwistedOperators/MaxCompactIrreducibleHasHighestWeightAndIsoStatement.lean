@@ -10,8 +10,10 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTypeHighest.ktype_highest_weight | exact GlobalTheory.KTypeHighest.ktype_highest_weight | (intros; apply GlobalTheory.KTypeHighest.ktype_highest_weight <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KTypeHighest.ktype_highest_weight` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMaxCompactIrreducibleHasHighestWeightAndIso.lean&line=172#L172)
 -/
 theorem _root_.GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ → (∀ v, ContinuousOn (fun g => ρ g v) (UJset ε)) → (∀ k ∈ Kset ε, ∀ v, ‖ρ k v‖ = ‖v‖) → (∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S → (∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S) → ∃ Λ, IsKTypeOf ε ρ Λ S) ∧ ∀ (Λ : Fin n → ℝ) (S S' : Submodule ℂ H), IsKTypeOf ε ρ Λ S → IsKTypeOf ε ρ Λ S' → ∃ B : H →L[ℂ] H, (∀ k ∈ Kset ε, ∀ u, B (ρ k u) = ρ k (B u)) ∧ S.map (B : H →ₗ[ℂ] H) = S' := by
   first | exact @GlobalTheory.KTypeHighest.ktype_highest_weight | exact GlobalTheory.KTypeHighest.ktype_highest_weight | (intros; apply GlobalTheory.KTypeHighest.ktype_highest_weight <;> assumption)

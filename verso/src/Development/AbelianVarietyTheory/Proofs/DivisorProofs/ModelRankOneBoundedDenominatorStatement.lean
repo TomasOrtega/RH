@@ -12,8 +12,10 @@ open scoped Classical
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DarbouxDenom.exists_uniform_denom | exact GlobalTheory.DarbouxDenom.exists_uniform_denom | (intros; apply GlobalTheory.DarbouxDenom.exists_uniform_denom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DarbouxDenom.exists_uniform_denom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelRankOneBoundedDenominator.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.model_rank_one_bounded_denominator : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (hM : M.IsGood ψ) (x : Fin d → E), ∃ D : ℕ, 1 ≤ D ∧ ∀ β : Fin n → 𝓞 E, ∃ y z : Fin n × Fin d → 𝓞 F,

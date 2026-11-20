@@ -12,8 +12,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.exists_isTaut | exact GlobalTheory.FlagZ.exists_isTaut | (intros; apply GlobalTheory.FlagZ.exists_isTaut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.exists_isTaut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTautologicalFlagExists.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.tautological_flag_exists : ∀ (ι : Type) [Fintype ι] (N : ℕ), ∃ fl : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N)) N, GlobalTheory.FlagZ.Taut.IsTaut ι N fl := by
   first | exact @GlobalTheory.FlagZ.exists_isTaut | exact GlobalTheory.FlagZ.exists_isTaut | (intros; apply GlobalTheory.FlagZ.exists_isTaut <;> assumption)

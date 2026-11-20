@@ -17,8 +17,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.exists_tanMat | exact GlobalTheory.ChF.exists_tanMat | (intros; apply GlobalTheory.ChF.exists_tanMat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.exists_tanMat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FExistsTangentChartMatrixOfBasis.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.exists_tangentChartMatrix_of_basis : ∀ (R₀ : Type) [CommRing R₀] (B : BX R₀) (O : LAlg R₀) (g : ℕ) (F : FGLaw (O : Type) g) (Y : ∀ R : LAlg R₀, LHom O R → (Fin g → (R : Type)) → B.G R), BXChart B O F.F Y → ∀ gb : Module.Basis (Fin g) R₀ B.gg, ∃ S : Matrix (Fin g) (Fin g) (O : Type), IsUnit S ∧ TanMat B O Y gb S := by
   first | exact @GlobalTheory.ChF.exists_tanMat | exact GlobalTheory.ChF.exists_tanMat | (intros; apply GlobalTheory.ChF.exists_tanMat <;> assumption)

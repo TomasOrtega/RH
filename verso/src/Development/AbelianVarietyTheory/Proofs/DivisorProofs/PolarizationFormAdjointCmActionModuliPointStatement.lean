@@ -9,8 +9,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory GlobalTheory.DeRham GlobalTheory.Cris
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolAdjointRing.polForm_adjoint | exact GlobalTheory.PolAdjointRing.polForm_adjoint | (intros; apply GlobalTheory.PolAdjointRing.polForm_adjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolAdjointRing.polForm_adjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarizationFormAdjointCmActionModuliPoint.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.polarizationForm_adjoint_cmAction_moduli_point : GlobalTheory.Published.AbelianDeRham → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {A : Over (Sp S)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}, IsGrpPullback A Xo.univ.t.G x π → ∀ (a : OAct (𝓞 E) A), (∀ z, (a.act z).left ≫ π = π ≫ (Xo.univ.t.act.act z).left) → ∀ {ψ : LinearMap.BilinForm S (HdR A)}, IsPolForm (dp0 S) (𝟙 _) A (Xo.univ.t.PP.L.pull π) ψ → IsAdjointFor a (fun z => H.bar z) ψ := by
   first | exact @GlobalTheory.PolAdjointRing.polForm_adjoint | exact GlobalTheory.PolAdjointRing.polForm_adjoint | (intros; apply GlobalTheory.PolAdjointRing.polForm_adjoint <;> assumption)

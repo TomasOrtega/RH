@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.MajFrame.exists_maj_cart | exact GlobalTheory.Core.Rk.MajFrame.exists_maj_cart | (intros; apply GlobalTheory.Core.Rk.MajFrame.exists_maj_cart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.MajFrame.exists_maj_cart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsAdelicMajorantFrameForCartanInvolutions.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicMajorantFrame_for_cartanInvolutions : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (sA : RealMat A), IsInfFam θ → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → ∃ a : GL (Fin A.rank) (AE D), IsMaj A a ∧ ∀ τ, (compAt θ τ a.1)ᴴ * (gramAt D A τ * sA τ) * compAt θ τ a.1 = 1 := by
   first | exact @GlobalTheory.Core.Rk.MajFrame.exists_maj_cart | exact GlobalTheory.Core.Rk.MajFrame.exists_maj_cart | (intros; apply GlobalTheory.Core.Rk.MajFrame.exists_maj_cart <;> assumption)

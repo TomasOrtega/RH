@@ -12,8 +12,10 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FirstBlockEmb.exists_first_emb | exact GlobalTheory.CompanionTheory.FirstBlockEmb.exists_first_emb | (intros; apply GlobalTheory.CompanionTheory.FirstBlockEmb.exists_first_emb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FirstBlockEmb.exists_first_emb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsFirstBlockGroupEmbedding.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.exists_first_block_group_embedding : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n), ∃ ι : G D ρ →* G D n, Continuous ι ∧
   ∀ (h : G D ρ) (a b c d : Mx D ρ ρ), mat h = blk4 a b c d →

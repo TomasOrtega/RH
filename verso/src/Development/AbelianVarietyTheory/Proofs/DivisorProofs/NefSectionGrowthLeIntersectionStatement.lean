@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityThe
 open GlobalTheory GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovHt.Link GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.Cartier GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection | exact GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection | (intros; apply GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNefSectionGrowthLeIntersection.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.nef_section_growth_le_intersection : GlobalTheory.Published.NefNumerics → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv), Y.nef Δ → growth Y.dim (fun τ => Cardinal.toENat (Module.rank F (Y.H0 (τ • Δ)))) ≤ ENNReal.ofReal (Y.inter fun _ => Δ : ℝ) := by
   first | exact @GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection | exact GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection | (intros; apply GlobalTheory.NefSectionGrowth.growth_h0_le_self_intersection <;> assumption)

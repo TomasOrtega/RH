@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTPullEvery.exists_objMap | exact GlobalTheory.HTPullEvery.exists_objMap | (intros; apply GlobalTheory.HTPullEvery.exists_objMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTPullEvery.exists_objMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHarrisTaylorModuliObjectPullback.lean&line=286#L286)
 -/
 theorem _root_.GlobalTheory.T.exists_harrisTaylorModuliObject_pullback : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp R) (s' : S' ⟶ Sp R) (f : S' ⟶ S), f ≫ s = s' → ∀ o : Obj b N s, ∃ o' : Obj b N s', Nonempty (ObjMap o' o f) := by
   first | exact @GlobalTheory.HTPullEvery.exists_objMap | exact GlobalTheory.HTPullEvery.exists_objMap | (intros; apply GlobalTheory.HTPullEvery.exists_objMap <;> assumption)

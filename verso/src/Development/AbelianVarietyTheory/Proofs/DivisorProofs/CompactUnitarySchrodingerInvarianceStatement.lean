@@ -17,8 +17,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeUnif.coords_small_unif | exact GlobalTheory.ConeUnif.coords_small_unif | (intros; apply GlobalTheory.ConeUnif.coords_small_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeUnif.coords_small_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactUnitarySchrodingerInvariance.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.exists_open_finite_coords_mem_uniformly_on_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)

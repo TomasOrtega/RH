@@ -5,8 +5,10 @@ open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHec
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweD.exists_line_of_upqD | exact GlobalTheory.HoweD.exists_line_of_upqD | (intros; apply GlobalTheory.HoweD.exists_line_of_upqD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweD.exists_line_of_upqD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOneParameterSubgroupUnitaryOfRealPlaceLieA.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_oneParameterSubgroup_unitary_of_realPlace_lieAlg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (β : Type) [Fintype β]
     [DecidableEq β] (R S : InfinitePlace F → ℕ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E)) (b : ℂ)

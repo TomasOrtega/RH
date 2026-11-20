@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open GlobalTheory.ArchUniq MeasureTheory
 open scoped SchwartzMap Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisDerivArch.exists_heisLine_actsD_eq | exact GlobalTheory.HeisDerivArch.exists_heisLine_actsD_eq | (intros; apply GlobalTheory.HeisDerivArch.exists_heisLine_actsD_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisDerivArch.exists_heisLine_actsD_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsHeisenbergLineDerivativeFormula.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.exists_heisenbergLine_derivative_formula : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ), IsStd ψ →

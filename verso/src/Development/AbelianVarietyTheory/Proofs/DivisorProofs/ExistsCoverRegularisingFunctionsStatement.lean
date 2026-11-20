@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.exists_cover_gen_of_lc | exact GlobalTheory.LatChain.exists_cover_gen_of_lc | (intros; apply GlobalTheory.LatChain.exists_cover_gen_of_lc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.exists_cover_gen_of_lc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCoverRegularisingFunctions.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.exists_cover_regularising_functions : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime → ∀ (κ σ : Type) [Fintype κ] [Fintype σ] (f : V.X → κ → σ → V.X.functionField), (∀ x, Ov p x → (∀ i s, RegAt x (f x i s)) ∧ (∀ i, ∃ (s : σ) (a : ℕ), f x i s ≠ 0 ∧ RegAt x ((p : V.X.functionField) ^ a / f x i s)) ∧ ∀ᶠ z in 𝓝 x, Ov p z → ∀ i s, Lc (loc z) (f x i) (f z i s) ∧ Lc (loc z) (f z i) (f x i s)) → ∃ (V' : Cover Y) (π : V'.X ⟶ V.X) (hπ : π (genericPoint V'.X) ⤳ genericPoint V.X), π ≫ V.p = V'.p ∧ Lies V' V π ∧ ∀ x, Ov p x → ∀ i, ∃ η, Gen (loc x) (fun s => SmallSec.fnMap π hπ (f (π x) i s)) η := by
   first | exact @GlobalTheory.LatChain.exists_cover_gen_of_lc | exact GlobalTheory.LatChain.exists_cover_gen_of_lc | (intros; apply GlobalTheory.LatChain.exists_cover_gen_of_lc <;> assumption)

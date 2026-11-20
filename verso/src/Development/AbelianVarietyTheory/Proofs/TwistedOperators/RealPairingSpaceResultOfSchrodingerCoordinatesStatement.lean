@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open GlobalTheory.ArchUniq GlobalTheory.RealWeil MeasureTheory
 open scoped SchwartzMap
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchUniq.SchrTransport.transport | exact GlobalTheory.ArchUniq.SchrTransport.transport | (intros; apply GlobalTheory.ArchUniq.SchrTransport.transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchUniq.SchrTransport.transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPairingSpaceResultOfSchrodingerCoordinates.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.realPairingSpace_result_of_schrodingerCoordinates : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V), μ.IsAddHaarMeasure → ∀ (P : V → V → ℝ), IsPairing P → ∀ n : ℕ, Module.finrank ℝ V = n →
     (∀ (A' : ℝ → (Fin n ⊕ Fin n → ℝ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)) (T' : ℝ → Sch (Fin n) →ₗ[ℂ] Sch (Fin n)),

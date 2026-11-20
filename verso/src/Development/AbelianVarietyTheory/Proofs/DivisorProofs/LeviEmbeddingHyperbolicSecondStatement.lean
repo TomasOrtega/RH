@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviEmbHC.leviEmb | exact GlobalTheory.LeviEmbHC.leviEmb | (intros; apply GlobalTheory.LeviEmbHC.leviEmb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviEmbHC.leviEmb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviEmbeddingHyperbolicSecond.lean&line=183#L183)
 -/
 theorem _root_.GlobalTheory.T.levi_embedding_hyperbolic_second : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁),

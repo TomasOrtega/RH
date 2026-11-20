@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalT
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCompleteDvrPadicEmbedding.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.complete_dvr_padic_embedding : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e₀ : ℕ) (p : ℕ) [Fact p.Prime], OverLa la T.V io e₀ → T.FinRes → (p : 𝓞 c.F) ∈ la.asIdeal → ∃ ι : T.Fr →+* PadicAlgCl p, ∀ x, ‖ι x‖ = FinRd.absT p la T e₀ x := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Embed.exists_isometric_embedding <;> assumption)

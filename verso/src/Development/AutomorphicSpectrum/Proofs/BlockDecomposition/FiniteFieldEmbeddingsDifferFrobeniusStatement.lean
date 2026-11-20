@@ -12,8 +12,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 open GlobalTheory.CompanionTheory.LTPer.Tilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.Tilt.exists_frobenius_pow_of_ringHoms | exact GlobalTheory.CompanionTheory.LTPer.Tilt.exists_frobenius_pow_of_ringHoms | (intros; apply GlobalTheory.CompanionTheory.LTPer.Tilt.exists_frobenius_pow_of_ringHoms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.Tilt.exists_frobenius_pow_of_ringHoms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteFieldEmbeddingsDifferFrobenius.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.finite_field_embeddings_differ_frobenius : ∀ {l : ℕ} [Fact l.Prime] {k D : Type} [Field k] [Finite k] [CommRing D] [IsDomain D] [CharP D l]
     (α β : k →+* D), ∃ i : ℕ, ∀ x, β x = α x ^ l ^ i := by

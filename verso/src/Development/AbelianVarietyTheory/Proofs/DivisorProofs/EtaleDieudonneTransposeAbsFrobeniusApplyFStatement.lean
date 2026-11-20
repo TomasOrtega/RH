@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleDieudonneTrans
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRedDual
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu GlobalTheory.Dieu.EtFromConn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F | exact GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F | (intros; apply GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEtaleDieudonneTransposeAbsFrobeniusApplyF.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.etaleDieudonneTranspose_absFrobenius_apply_F : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn)) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (h : G.IsEt) (l l' : Mod B G h), IsTr B (frobRing (p_eq_zero p k)) h h (absFrob (p_eq_zero p k) G) l l' → ∀ y, l' (B.F G.dual (dual_conn h) y) = p * WittVector.frobenius (l y) := by
   first | exact @GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F | exact GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F | (intros; apply GlobalTheory.Dieu.EtFromConn.isTr_absFrob_F <;> assumption)

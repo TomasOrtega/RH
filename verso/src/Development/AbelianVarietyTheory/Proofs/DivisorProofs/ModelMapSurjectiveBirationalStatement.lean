@@ -16,8 +16,10 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTheory.ArInt ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.ProjVar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelBirational.main | exact GlobalTheory.ModelBirational.main | (intros; apply GlobalTheory.ModelBirational.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModelBirational.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelMapSurjectiveBirational.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.model_map_surjective_birational : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (P M : TrueGeo.Model Y) (π : P.X ⟶ M.X), π ≫ M.p = P.p → P.j ≫ π = M.j → Surjective π ∧ (haveI := P.ar.isIntegral; π.residueDegree (genericPoint P.X) = 1) := by
   first | exact @GlobalTheory.ModelBirational.main | exact GlobalTheory.ModelBirational.main | (intros; apply GlobalTheory.ModelBirational.main <;> assumption)

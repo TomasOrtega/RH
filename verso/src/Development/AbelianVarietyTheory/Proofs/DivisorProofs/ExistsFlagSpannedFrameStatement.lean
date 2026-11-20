@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.exists_flag_spans_of_frame | exact GlobalTheory.FlagCell.exists_flag_spans_of_frame | (intros; apply GlobalTheory.FlagCell.exists_flag_spans_of_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell.exists_flag_spans_of_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFlagSpannedFrame.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_flag_spanned_frame : ∀ (X : Scheme.{0}) (F : X.Modules) (m : ℕ) (v : Fin m → Γ(F, ⊤)), IsFrame v → ∃ fl : Vert.Flag F m, Spans fl ⊤ v := by
   first | exact @GlobalTheory.FlagCell.exists_flag_spans_of_frame | exact GlobalTheory.FlagCell.exists_flag_spans_of_frame | (intros; apply GlobalTheory.FlagCell.exists_flag_spans_of_frame <;> assumption)

@@ -18,8 +18,10 @@ open GlobalTheory.SeeConjGroup Formalism.L2.SG.HidaSetting
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjGroup.fmat_iota_eq_finE | exact GlobalTheory.SeeConjGroup.fmat_iota_eq_finE | (intros; apply GlobalTheory.SeeConjGroup.fmat_iota_eq_finE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjGroup.fmat_iota_eq_finE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteMatrixIotaEqFinitePart.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.finiteMatrix_iota_eq_finitePart : ∀ {D : D7} (κ : GA D (Yc D 0)), (GlobalTheory.SeeConjGroup.II D).fmat ((Formalism.IndefR.RationalEmbedding.iota D) κ).2 = (finE (Yc D 0) κ).val := by
   first | exact @GlobalTheory.SeeConjGroup.fmat_iota_eq_finE | exact GlobalTheory.SeeConjGroup.fmat_iota_eq_finE | (intros; apply GlobalTheory.SeeConjGroup.fmat_iota_eq_finE <;> assumption)

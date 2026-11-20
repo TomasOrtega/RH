@@ -14,8 +14,10 @@ open scoped NNReal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TermScales.exists_scales | exact GlobalTheory.TermScales.exists_scales | (intros; apply GlobalTheory.TermScales.exists_scales <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TermScales.exists_scales` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRowTestTupleTermMeasuresDifferByScalars.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.rowTest_tupleTerm_measures_differ_by_scalars : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t Φ β (M M' : Vol ch.G), M.Is t → IsTermVol t ch.S.toGridChoice Φ β M' →
     ∃ x : Node → ℝ≥0, Scales M M' x ∧

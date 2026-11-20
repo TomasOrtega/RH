@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UCanon.sabMap_keeps_eta | exact GlobalTheory.UCanon.sabMap_keeps_eta | (intros; apply GlobalTheory.UCanon.sabMap_keeps_eta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UCanon.sabMap_keeps_eta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSabMapKeepsLevelEta.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.sabMap_keeps_levelEta : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H} (c : Coeff l) (A W : Type) [CommRing A] [IsDomain A] [CommRing W] (bA : c.F →+* A) (b : c.F →+* W) (o' : LowObj D c bA) (o : LowObj D c b) (f : W →+* A), f.comp b = bA → ∀ m : SABMap o'.t o.t (spMap f), (∀ a, (o'.etaA a).left ≫ m.φ = spMap f ≫ (o.etaA a).left) → ∀ a, (o'.eta a).left ≫ m.φ = spMap f ≫ (o.eta a).left := by
   first | exact @GlobalTheory.UCanon.sabMap_keeps_eta | exact GlobalTheory.UCanon.sabMap_keeps_eta | (intros; apply GlobalTheory.UCanon.sabMap_keeps_eta <;> assumption)

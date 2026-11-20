@@ -13,8 +13,10 @@ open Formalism.L2.Host (aboveF)
 open GlobalTheory.TateUnr
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateUnr.absE_idelesAt | exact GlobalTheory.TateUnr.absE_idelesAt | (intros; apply GlobalTheory.TateUnr.absE_idelesAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TateUnr.absE_idelesAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdelesAbsNormProduct.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.ideles_abs_norm_product : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (l : idelesAt E (evFin F v)),

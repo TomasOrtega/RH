@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.InertFrameLoc
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertFrameLoc.thW_cond | exact GlobalTheory.InertFrameLoc.thW_cond | (intros; apply GlobalTheory.InertFrameLoc.thW_cond <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertFrameLoc.thW_cond` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FInertPlaceLocalTraceCharacterConductorIntegers.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.inertPlace_localTraceCharacter_conductor_integers : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E) (ϖ : w.adicCompletion D.host.E) (k : w.adicCompletion D.host.E), IsStdChar D ψ (-1) → IsConjAt D.sp.cm.sig h c → IsUnramInv ϖ c (qV D.host.F v) → GlobalTheory.InertLoc.IsGen D w k → ∀ z, (∀ u ∈ Formalism.UG.intL (w.adicCompletion D.host.E), thW ψ hw h (k * c k) (z * u) = 1) ↔ z ∈ Formalism.UG.intL (w.adicCompletion D.host.E) := by
   first | exact @GlobalTheory.InertFrameLoc.thW_cond | exact GlobalTheory.InertFrameLoc.thW_cond | (intros; apply GlobalTheory.InertFrameLoc.thW_cond <;> assumption)

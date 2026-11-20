@@ -13,8 +13,10 @@ open IsDedekindDomain Formalism.L2.NTheta
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EPartChart.latGHat_chart | exact GlobalTheory.EPartChart.latGHat_chart | (intros; apply GlobalTheory.EPartChart.latGHat_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EPartChart.latGHat_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIdempotentPartCompletedLatticeLocalChart.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.idempotent_part_completed_lattice_local_chart : ∀ (D : D7) (V : HSp D) (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F))
     (π : GlobalTheory.SplitPlace.RF D →+* Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v → AE D)

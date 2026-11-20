@@ -6,8 +6,10 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTorsionCardLeAbsNormPow.lean&line=312#L312)
 -/
 theorem _root_.GlobalTheory.T.torsion_card_le_absNorm_pow : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ) (L : Submodule (𝓞 K) (Fin m → K)), IsLat L → ∀ 𝔞 : Ideal (𝓞 K), 𝔞 ≠ ⊥ → Finite {x : (Fin m → K) ⧸ L // ∀ a ∈ 𝔞, a • x = 0} ∧ Nat.card {x : (Fin m → K) ⧸ L // ∀ a ∈ 𝔞, a • x = 0} ≤ Ideal.absNorm 𝔞 ^ m := by
   first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard.tor_card <;> assumption)

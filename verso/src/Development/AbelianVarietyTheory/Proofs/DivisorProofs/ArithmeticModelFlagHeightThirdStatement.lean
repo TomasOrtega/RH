@@ -7,8 +7,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames | exact GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames | (intros; apply GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticModelFlagHeightThird.lean&line=482#L482)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_model_flag_height_third : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (X W : Scheme.{0}) (jB : W ⟶ X) (πB : W ⟶ gen Z) (M : X.Modules) (r : ℕ) (τ : E →+* ℂ) (dual : Bool) (ι : Type) (U : ι → X.Opens) (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)) (u : ∀ i, LocAssign Z r jB (U i)), (∀ x : X, ∃ i, x ∈ U i) → (∀ i, IsLocFrame Z e jB πB r τ (U i) (u i)) → (∀ i j, FramesMatch Z jB πB dual (hf i) (f j) (u i) (u j)) → ∃ uu : FrAssign Z M r jB, IsLieFrames Z e jB πB M r τ dual uu ∧ ∀ i, uu (U i) (f i) (hf i) = u i := by
   first | exact @GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames | exact GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames | (intros; apply GlobalTheory.ArLieBase.exists_lieFrames_of_locFrames <;> assumption)

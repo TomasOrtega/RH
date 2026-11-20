@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralNormR
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContinuousIntegralInvMulOfLocallyIntegrable
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.CuspQuot GlobalTheory.AutomorphicL2Unitary GlobalTheory.OpTrace MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CentralExponent.abs_le_of_conj_mem | exact GlobalTheory.CentralExponent.abs_le_of_conj_mem | (intros; apply GlobalTheory.CentralExponent.abs_le_of_conj_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CentralExponent.abs_le_of_conj_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsSplitCentreExponentLeOfConjMemCompact.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.abs_splitCentre_exponent_le_of_conj_mem_compact : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a → ∀ W : Set (GA E a), IsCompact W → ∃ n₀ : ℕ, ∀ (γ : GL (Fin a) E) (n : ℤ) (g : GA E a), g⁻¹ * (ratGL E a γ * GlobalTheory.UnitaryBC.splitCentre E a 1 ^ n) * g ∈ W → |n| ≤ n₀ := by
   first | exact @GlobalTheory.CentralExponent.abs_le_of_conj_mem | exact GlobalTheory.CentralExponent.abs_le_of_conj_mem | (intros; apply GlobalTheory.CentralExponent.abs_le_of_conj_mem <;> assumption)

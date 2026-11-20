@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 open GlobalTheory.Mem.CanonicalSurjection
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.CanonicalSurjection.prod_bidFns_eq_minY | exact GlobalTheory.Mem.CanonicalSurjection.prod_bidFns_eq_minY | (intros; apply GlobalTheory.Mem.CanonicalSurjection.prod_bidFns_eq_minY <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.CanonicalSurjection.prod_bidFns_eq_minY` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FProdBideterminantsEqColumnChoiceMinorProduct.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.prod_bideterminants_eq_columnChoice_minorProduct : ∀ (D : D7) (K : Type) [CommRing K] (N : ℕ) (nu : Bool × Formalism.MainNotions.G.HH D → YoungDiagram)
     (ν : D.what₂.Tau → Fin N → ℕ), NuFits D nu ν → ∀ g : D.what₂.Tau → Matrix (Fin N) (Fin N) K → K,

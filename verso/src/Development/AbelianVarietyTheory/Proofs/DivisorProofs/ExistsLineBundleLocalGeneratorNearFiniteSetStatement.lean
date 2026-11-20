@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite | exact GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite | (intros; apply GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLineBundleLocalGeneratorNearFiniteSet.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_lineBundle_localGenerator_near_finiteSet : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (W : X.Opens), IsAffineOpen W → ∀ F : Set X, F.Finite → F ⊆ W → ∃ (V : X.Opens) (a : ∀ k, Γ(X, V ⊓ L.U k)ˣ), F ⊆ V ∧ GlobalTheory.Pinch.LocGen L V a := by
   first | exact @GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite | exact GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite | (intros; apply GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite <;> assumption)

@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts | exact GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FLogResolutionFromOrbitCharts.lean&line=158#L158)
 -/
 theorem _root_.GlobalTheory.T.log_resolution_from_orbit_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ), Nonempty K → IsMultiHomogIdeal P → ¬ (⊤ : Ideal (MRing ι)) ≤ P → (∀ z ∈ mcPts P, ∃ C : OrbitChart P e, z ∈ C.O) → ∃ R : AnLogRes P ⊤ e, ∀ C : OrbitChart P e, (mcPts P).Nonempty → ∃ ψ : OpenPartialHomeomorph R.X (Fin e → ℂ), IsCompatChart R.A ψ ∧ ψ.target = C.D ∧ (∀ x, x ∈ ψ.source ↔ R.lift x x ∈ C.O) ∧ ∀ x ∈ ψ.source, SameOrbit (C.φ (ψ x)) (R.lift x x) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts | exact GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WMan.Gen.exists_anLogRes_of_orbitCharts <;> assumption)

@@ -7,8 +7,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorL
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField MeasureTheory
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm | exact GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm | (intros; apply GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsSelfdualMeasureHermitianAdeles.lean&line=349#L349)
 -/
 theorem _root_.GlobalTheory.T.exists_selfdual_measure_hermitian_adeles : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ n : ℕ, ∃ ν : Measure (HermR (AF F) σ n), SdHerm F E σ (AF F) ψ n ν := by
   first | exact @GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm | exact GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm | (intros; apply GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepChainStep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainStepCoef.coef | exact GlobalTheory.ChainStepCoef.coef | (intros; apply GlobalTheory.ChainStepCoef.coef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainStepCoef.coef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilRepChainStepMatrixCoefficientTwisted.lean&line=174#L174)
 -/
 theorem _root_.GlobalTheory.T.weilRep_chainStep_matrixCoefficient_twisted : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
   ∀ (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →

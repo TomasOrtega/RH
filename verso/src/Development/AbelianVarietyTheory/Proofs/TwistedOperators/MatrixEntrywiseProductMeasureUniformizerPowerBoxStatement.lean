@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BoxVolume.volM_box | exact GlobalTheory.BoxVolume.volM_box | (intros; apply GlobalTheory.BoxVolume.volM_box <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BoxVolume.volM_box` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMatrixEntrywiseProductMeasureUniformizerPowerBox.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.matrixEntrywiseProductMeasure_uniformizer_power_box : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ϖ : kˣ),

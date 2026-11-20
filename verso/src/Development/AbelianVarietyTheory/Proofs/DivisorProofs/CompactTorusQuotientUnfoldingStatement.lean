@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordMeasure
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParabolicCoord.coordMeasure_map_mul_right | exact GlobalTheory.ParabolicCoord.coordMeasure_map_mul_right | (intros; apply GlobalTheory.ParabolicCoord.coordMeasure_map_mul_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParabolicCoord.coordMeasure_map_mul_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactTorusQuotientUnfolding.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.compact_torus_quotient_unfolding : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

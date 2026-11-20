@@ -14,8 +14,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.FlipMatch
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlipMatch.FourierInv.fourierSum_invFourierSum | exact GlobalTheory.FlipMatch.FourierInv.fourierSum_invFourierSum | (intros; apply GlobalTheory.FlipMatch.FourierInv.fourierSum_invFourierSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlipMatch.FourierInv.fourierSum_invFourierSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPartialFourierSumInverseOfLatticeDepth.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.partialFourierSum_inverse_of_latticeDepth : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A : Type) [Fintype A] [DecidableEq A] (C : Type) [Fintype C] [DecidableEq C] (ψ : AddChar k Circle) (ϖ : kˣ) (n : ℕ) (P : Finset C), IsUnif ϖ → HasConductor ψ 1 →
     ∀ Ξ : Matrix A C k → ℂ, HasDepth ϖ n (blockLat ϖ n P) Ξ → fourierSum ψ ϖ n P (invFourierSum ψ ϖ n P Ξ) = Ξ := by

@@ -11,8 +11,10 @@ open GlobalTheory.LogKS (IsField)
 open GlobalTheory.Heat GlobalTheory.FormalOrigin
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StalkDerField.exists_stalk_derivation | exact GlobalTheory.StalkDerField.exists_stalk_derivation | (intros; apply GlobalTheory.StalkDerField.exists_stalk_derivation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StalkDerField.exists_stalk_derivation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsStalkDerivationOfVectorFieldOnOpen.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.exists_stalk_derivation_of_vectorFieldOnOpen : ∀ (X : Scheme.{0}) (W : X.Opens) (d : Fld X), IsField W d → ∀ (x : X), x ∈ W → ∃ δ : Derivation ℤ (X.presheaf.stalk x) (X.presheaf.stalk x), ∀ (O : X.Opens) (hO : x ∈ O), O ≤ W → ∀ f, δ ((X.presheaf.germ O x hO).hom f) = (X.presheaf.germ O x hO).hom (d O f) := by
   first | exact @GlobalTheory.StalkDerField.exists_stalk_derivation | exact GlobalTheory.StalkDerField.exists_stalk_derivation | (intros; apply GlobalTheory.StalkDerField.exists_stalk_derivation <;> assumption)

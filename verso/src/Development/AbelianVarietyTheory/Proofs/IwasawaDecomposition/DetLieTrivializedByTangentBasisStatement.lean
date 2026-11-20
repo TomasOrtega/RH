@@ -15,8 +15,10 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.FlagMod GlobalTheory.Reg
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame | exact GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame | (intros; apply GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDetLieTrivializedByTangentBasis.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.det_lie_trivialized_by_tangent_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β)

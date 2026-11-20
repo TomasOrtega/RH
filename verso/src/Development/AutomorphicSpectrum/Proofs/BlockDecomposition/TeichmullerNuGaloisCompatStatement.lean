@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison.PAlg CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.NuGalSquare.nu_gal | exact GlobalTheory.CompanionTheory.NuGalSquare.nu_gal | (intros; apply GlobalTheory.CompanionTheory.NuGalSquare.nu_gal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.NuGalSquare.nu_gal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTeichmullerNuGaloisCompat.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.teichmuller_nu_galois_compat : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ w, ACris.galCris σ (r.w w) = r.w w) (n j : ℕ) (x : B.Hc (B.schFn M.p) (okToOC l K) true n j), Mid.nu r M n j hT (B.galHc (B.schFn M.p) (okToOC l K) σ (galOC_okToOC σ) true n j x) = galM r M σ hσ n j (Mid.nu r M n j hT x) := by
   first | exact @GlobalTheory.CompanionTheory.NuGalSquare.nu_gal | exact GlobalTheory.CompanionTheory.NuGalSquare.nu_gal | (intros; apply GlobalTheory.CompanionTheory.NuGalSquare.nu_gal <;> assumption)

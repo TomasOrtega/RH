@@ -13,8 +13,10 @@ open GlobalTheory.Heat GlobalTheory.FormalOrigin
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CoordsOrigin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoordsOrigin.tanDer_smul | exact GlobalTheory.CoordsOrigin.tanDer_smul | (intros; apply GlobalTheory.CoordsOrigin.tanDer_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoordsOrigin.tanDer_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentDerivativeAtOriginSmulTangentVector.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.tangentDerivativeAtOrigin_smul_tangentVector : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (r : R) (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)), tanDer G (r • v) f = r * tanDer G v f := by
   first | exact @GlobalTheory.CoordsOrigin.tanDer_smul | exact GlobalTheory.CoordsOrigin.tanDer_smul | (intros; apply GlobalTheory.CoordsOrigin.tanDer_smul <;> assumption)

@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLoca
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.BKReal GlobalTheory.Prism Formalism.BasicNotions.Examples₂.LB GlobalTheory.MemLoc GlobalTheory.AinfK GlobalTheory.AcrisK GlobalTheory.DiscEval GroundTheory.LocalField.FormalGroup
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AcrisK.exists_thetaB | exact GlobalTheory.AcrisK.exists_thetaB | (intros; apply GlobalTheory.AcrisK.exists_thetaB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AcrisK.exists_thetaB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FThetaExtensionToComplete.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.theta_extension_to_complete : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), ∃ ψ : GlobalTheory.AcrisK.BK K →+* ℂ_[l],
     ∀ x : AK K, ψ (toB K (ofA K x)) = ((thetaK K x : OC l) : ℂ_[l]) := by

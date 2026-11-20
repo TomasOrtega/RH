@@ -20,8 +20,10 @@ open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.gval_movesTo | exact GlobalTheory.HL.gval_movesTo | (intros; apply GlobalTheory.HL.gval_movesTo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.gval_movesTo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FGramInvariantIsometryUnitriangularMoves.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.gramInvariant_isometry_unitriangular_moves : ∀ {D : D7} {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T') (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U U' : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E), MovesTo F0 F0' F F' ρ U U' → Gval F F' = Gval F0 F0' := by
   first | exact @GlobalTheory.HL.gval_movesTo | exact GlobalTheory.HL.gval_movesTo | (intros; apply GlobalTheory.HL.gval_movesTo <;> assumption)

@@ -6,8 +6,10 @@ open NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTh
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot | exact GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot | (intros; apply GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsMetricOnLineGram.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.isMetricOn_line_gram : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a)), (∀ i, IsPot (I.pt a) (m i (I.ε a)) (Q i) ∧ IsPotential (M.A a) (Q i)) → IsMetricOn (ofDivisors Δ) ⊤ (lineGram (cxSt F) fun i => m i (I.ε a)) := by
   first | exact @GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot | exact GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot | (intros; apply GlobalTheory.ChernWeilLine.isMetricOn_lineGram_of_isPot <;> assumption)

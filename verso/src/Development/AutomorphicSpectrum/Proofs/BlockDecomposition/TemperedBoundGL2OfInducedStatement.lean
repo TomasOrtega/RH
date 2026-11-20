@@ -10,8 +10,10 @@ open GroundTheory.Global.AdicLiesOver
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker | exact GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker | (intros; apply GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTemperedBoundGL2OfInduced.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.temperedBoundGL2_of_induced : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle) (μ₁ μ₂ : Fˣ →* ℂˣ) (V : Submodule ℂ (GL (Fin 2) F → ℂ)), IsUnit1 μ₁ → IsUnit1 μ₂ → WhittakerModelGL2 ψ μ₁ μ₂ V → ∀ W ∈ V, TemperedBoundGL2 W := by
   first | exact @GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker | exact GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker | (intros; apply GlobalTheory.CompanionTheory.DualHol.temperedBoundGL2_of_whittaker <;> assumption)

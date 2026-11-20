@@ -9,8 +9,10 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.SpanLoc.spanSt | exact GlobalTheory.OmegaHT.SpanLoc.spanSt | (intros; apply GlobalTheory.OmegaHT.SpanLoc.spanSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OmegaHT.SpanLoc.spanSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOmegaSpanStatement.lean&line=205#L205)
 -/
 theorem _root_.GlobalTheory.T.OmegaSpanStatement : GlobalTheory.OmegaHT.SpanSt := by
   first | exact @GlobalTheory.OmegaHT.SpanLoc.spanSt | exact GlobalTheory.OmegaHT.SpanLoc.spanSt | (intros; apply GlobalTheory.OmegaHT.SpanLoc.spanSt <;> assumption)

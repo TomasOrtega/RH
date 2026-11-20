@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.StTri.stab_unitriangular | exact GlobalTheory.HL.StTri.stab_unitriangular | (intros; apply GlobalTheory.HL.StTri.stab_unitriangular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.StTri.stab_unitriangular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FGlobalFrameStabilizerActsUnitriangular.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.globalFrameStabilizer_acts_unitriangular : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), ∀ x ∈ G.St, ∃ s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) ∧ ((∀ i j, j < i → s' i j = 0) ∧ (∀ i, s' i i = 1)) ∧ (∀ j, x (G.f j) = ∑ i, s i j • G.f i) ∧ ∀ j, x (G.f' j) = ∑ i, s' i j • G.f' i := by
   first | exact @GlobalTheory.HL.StTri.stab_unitriangular | exact GlobalTheory.HL.StTri.stab_unitriangular | (intros; apply GlobalTheory.HL.StTri.stab_unitriangular <;> assumption)

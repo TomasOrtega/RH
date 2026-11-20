@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ZH GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.FlagPush
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagPush.SmallPf.main | exact GlobalTheory.FlagPush.SmallPf.main | (intros; apply GlobalTheory.FlagPush.SmallPf.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagPush.SmallPf.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoubleSpaceSmallOfFunctionFieldEmbedsRatFunc.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.doubleSpace_small_of_functionField_embeds_ratFunc : ∀ (F : Type) [Field F] (Y : Var F) (W : Dbl Y), ∀ j : W.Z.functionField →+* RatFunc Y.Fn, j.comp W.α₁ = algebraMap Y.Fn (RatFunc Y.Fn) → W.Small := by
   first | exact @GlobalTheory.FlagPush.SmallPf.main | exact GlobalTheory.FlagPush.SmallPf.main | (intros; apply GlobalTheory.FlagPush.SmallPf.main <;> assumption)

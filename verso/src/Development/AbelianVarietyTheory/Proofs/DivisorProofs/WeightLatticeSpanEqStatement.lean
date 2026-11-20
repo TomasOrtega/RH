@@ -24,8 +24,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenShift.span_latW_wtOf | exact GlobalTheory.GenShift.span_latW_wtOf | (intros; apply GlobalTheory.GenShift.span_latW_wtOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenShift.span_latW_wtOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightLatticeSpanEq.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.weight_lattice_span_eq : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.latW Y.U (wtOf _ la m) : Set (Y.V (wtOf _ la m))) = ⊤ := by
   first | exact @GlobalTheory.GenShift.span_latW_wtOf | exact GlobalTheory.GenShift.span_latW_wtOf | (intros; apply GlobalTheory.GenShift.span_latW_wtOf <;> assumption)

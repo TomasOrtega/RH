@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacFixPair.pair_fix_vacO | exact GlobalTheory.VacFixPair.pair_fix_vacO | (intros; apply GlobalTheory.VacFixPair.pair_fix_vacO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacFixPair.pair_fix_vacO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCongruentPairsFixVacuumWeilDatum.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

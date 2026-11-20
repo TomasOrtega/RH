@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullRankSB
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThK.MidJac GlobalTheory.CuspBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MidJacTwist.isSubquotient_midJac_twist | exact GlobalTheory.MidJacTwist.isSubquotient_midJac_twist | (intros; apply GlobalTheory.MidJacTwist.isSubquotient_midJac_twist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MidJacTwist.isSubquotient_midJac_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJacquetDetInducedTwist.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.jacquet_det_induced_twist : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a a' l n : ℕ)
     (h : l + n ≤ a + a') (x : ℝ), ∃ z : ℝ, ∀ (α β : kˣ →* ℂˣ)

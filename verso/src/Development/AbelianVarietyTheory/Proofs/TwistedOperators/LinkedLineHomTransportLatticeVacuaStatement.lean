@@ -11,8 +11,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KapVac.kappa_vac | exact GlobalTheory.KapVac.kappa_vac | (intros; apply GlobalTheory.KapVac.kappa_vac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KapVac.kappa_vac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLinkedLineHomTransportLatticeVacua.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.linked_line_hom_transport_lattice_vacua : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), (∀ x, ‖ψ x‖ = 1) → ∀ (L S : HSp D) (ζ ζ' : Fin L.rank → D.host.E), IsLineVec L ζ' → ∀ (l : Lnk L ζ L ζ') (Λ : AddSubgroup (WO S L)) (Ξ : WO L S → ℂ), IsLatVac (heisO ψ S L) Λ (fun w => star (Ξ (l.κ S w))) → ∀ w ∈ Λ, heisO ψ L S (2 • l.κ S w) Ξ = Ξ ∧ ∀ e, IsSplitIdem D e → IsHalf e (l.κ S w) → heisO ψ L S (l.κ S w) Ξ = Ξ := by
   first | exact @GlobalTheory.KapVac.kappa_vac | exact GlobalTheory.KapVac.kappa_vac | (intros; apply GlobalTheory.KapVac.kappa_vac <;> assumption)

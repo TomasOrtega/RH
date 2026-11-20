@@ -6,8 +6,10 @@ open Matrix Finset
 open scoped InnerProductSpace
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD GlobalTheory.CompanionTheory.RealCount
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PresRho.pres_rho | exact GlobalTheory.CompanionTheory.PresRho.pres_rho | (intros; apply GlobalTheory.CompanionTheory.PresRho.pres_rho <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PresRho.pres_rho` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLoweringWordsSpan.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.lowering_words_span : ∀ {n : ℕ} {A Z : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup Z] [Module ℂ Z]
     (G : Fin n → Fin n → Module.End ℂ A) (F : Fin n → Fin n → Module.End ℂ Z),

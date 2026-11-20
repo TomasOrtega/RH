@@ -27,8 +27,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn | exact GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCuspLatticeMulComponentSection.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.cusp_lattice_mul_component_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → Ref.UnifAll Xo c → ∀ (a : WZ E) (Z : Comp Xo c) (w : Rul Xo c), w ∈ (Ref.pjSys Xo c).lat (cuspZ Xo c U a) → e Z * w ∈ latOn U h a Z := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn | exact GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.indicator_mul_mem_latOn <;> assumption)

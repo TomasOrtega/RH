@@ -17,8 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StdRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdRead.unitChar_pow_eq_one | exact GlobalTheory.StdRead.unitChar_pow_eq_one | (intros; apply GlobalTheory.StdRead.unitChar_pow_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdRead.unitChar_pow_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitDetCharacterIntegralFramePowEqOne.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.unitDetCharacter_integralFrame_pow_eq_one : ∀ {D : D7} (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)), GoodMod e 𝔪 → ∀ ν : (AE D)ˣ →* Circle, KillsCong ν 𝔪 →
   ∀ {n : ℕ} (β : GL (Fin n) (EAf D)), IsIntM β.val → IsIntM (β⁻¹).val → ∃ m : ℕ, 0 < m ∧ unitChar ν e β.val ^ m = 1 := by

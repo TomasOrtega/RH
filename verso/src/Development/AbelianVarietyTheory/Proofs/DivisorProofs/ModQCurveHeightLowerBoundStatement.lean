@@ -14,8 +14,10 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurveRootGeometry.curveData_roots | exact GlobalTheory.CurveRootGeometry.curveData_roots | (intros; apply GlobalTheory.CurveRootGeometry.curveData_roots <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurveRootGeometry.curveData_roots` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModQCurveHeightLowerBound.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.mod_q_curve_height_lower_bound : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (q : ℕ) [Fact q.Prime], q ∉ FlagAr.setB O.Y B →

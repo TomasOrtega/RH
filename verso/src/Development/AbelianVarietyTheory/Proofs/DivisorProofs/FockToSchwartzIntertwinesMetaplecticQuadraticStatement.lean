@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open scoped TensorProduct Matrix
 open MeasureTheory Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.RealWeil
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLift.QuadFock.quad_fock | exact GlobalTheory.RealLift.QuadFock.quad_fock | (intros; apply GlobalTheory.RealLift.QuadFock.quad_fock <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLift.QuadFock.quad_fock` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockToSchwartzIntertwinesMetaplecticQuadratic.lean&line=178#L178)
 -/
 theorem _root_.GlobalTheory.T.fockToSchwartz_intertwines_metaplecticQuadratic : (∀ (l κ : Type) [Fintype l] [DecidableEq l] [Fintype κ] (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (u v : κ → (l ⊕ l → ℝ)),
     (∀ w, ∑ i, sympl (v i) w • u i = w) →

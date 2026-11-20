@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionLiftVal.torsion_lift_unique | exact GlobalTheory.TorsionLiftVal.torsion_lift_unique | (intros; apply GlobalTheory.TorsionLiftVal.torsion_lift_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionLiftVal.torsion_lift_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionLiftUniqueValuationRingAlgClosed.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.torsion_lift_unique_valuationRing_algClosed : ∀ (U Ω k : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [IsAlgClosed Ω] [Algebra U Ω] [IsFractionRing U Ω] [Field k] [IsAlgClosed k] (h : U →+* k) (S : Scheme.{0}) (G : Over S) [GrpObj G], IsAbelianScheme G → ∀ (u : Sp U ⟶ S) (n : ℕ), IsUnit (n : U) → ∀ y : Over.mk (spMap h ≫ u) ⟶ G, y ^ n = 1 → ∃! P : Over.mk u ⟶ G, P ^ n = 1 ∧ y.left = spMap h ≫ P.left := by
   first | exact @GlobalTheory.TorsionLiftVal.torsion_lift_unique | exact GlobalTheory.TorsionLiftVal.torsion_lift_unique | (intros; apply GlobalTheory.TorsionLiftVal.torsion_lift_unique <;> assumption)

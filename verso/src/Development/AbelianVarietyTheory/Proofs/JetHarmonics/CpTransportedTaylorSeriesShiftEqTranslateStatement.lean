@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPair
 open PowerSeries GlobalTheory.MomOne
 open scoped ComplexConjugate BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MomOne.Transfer.shift_eq_hat_translate | exact GlobalTheory.MomOne.Transfer.shift_eq_hat_translate | (intros; apply GlobalTheory.MomOne.Transfer.shift_eq_hat_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MomOne.Transfer.shift_eq_hat_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCpTransportedTaylorSeriesShiftEqTranslate.lean&line=173#L173)
 -/
 theorem _root_.GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω ζ : ℂ_[q]) (p : ℂ) (φ : ℂ → ℂ), M.MChart ω → M.At ω ζ p → Ell M.L φ → AnalyticAt ℂ φ 0 → Bdd (hat M.ι (C ω * logS) φ) → ∃ ψ : ℂ → ℂ, AnalyticAt ℂ ψ 0 ∧ (∀ᶠ z in 𝓝[≠] (0 : ℂ), ψ z = φ (z + p)) ∧ hat M.ι (C ω * logS) ψ = shiftS ζ (hat M.ι (C ω * logS) φ) := by
   first | exact @GlobalTheory.MomOne.Transfer.shift_eq_hat_translate | exact GlobalTheory.MomOne.Transfer.shift_eq_hat_translate | (intros; apply GlobalTheory.MomOne.Transfer.shift_eq_hat_translate <;> assumption)

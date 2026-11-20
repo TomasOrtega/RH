@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.exists_equivGen | exact GlobalTheory.CharKer.exists_equivGen | (intros; apply GlobalTheory.CharKer.exists_equivGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.exists_equivGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDescendedLineBundleEquivariantGenerator.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.exists_descended_lineBundle_equivariantGenerator : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A') (χ : Γ((N ⊗ T).left, ⊤)ˣ), IsMonHom i → IsMonHom q → IsFinite q.left → Flat q.left → Surjective q.left → IsPullback i (toUnit N) q η[A'] → IsCharacter χ → ∃ (M : LB (A' ⊗ T).left) (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ), M.IsLB ∧ IsEquivGen i q χ M e := by
   first | exact @GlobalTheory.CharKer.exists_equivGen | exact GlobalTheory.CharKer.exists_equivGen | (intros; apply GlobalTheory.CharKer.exists_equivGen <;> assumption)

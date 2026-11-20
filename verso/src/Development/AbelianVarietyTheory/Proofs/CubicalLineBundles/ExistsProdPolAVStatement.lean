@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolProd.exists_prod_polAV | exact GlobalTheory.PolProd.exists_prod_polAV | (intros; apply GlobalTheory.PolProd.exists_prod_polAV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolProd.exists_prod_polAV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsProdPolAV.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.exists_prod_polAV_add_g : Out.Laws → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P P' : Out.PolAV (Sp R)), ∃ (Q : Out.PolAV (Sp R)) (p : Q.A ⟶ P.A) (q : Q.A ⟶ P'.A), IsMonHom p ∧ IsMonHom q ∧ IsIso (lift p q) ∧ Q.g = P.g + P'.g := by
   first | exact @GlobalTheory.PolProd.exists_prod_polAV | exact GlobalTheory.PolProd.exists_prod_polAV | (intros; apply GlobalTheory.PolProd.exists_prod_polAV <;> assumption)

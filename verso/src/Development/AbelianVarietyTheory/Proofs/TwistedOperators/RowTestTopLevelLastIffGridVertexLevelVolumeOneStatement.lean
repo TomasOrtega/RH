@@ -14,8 +14,10 @@ open scoped NNReal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LastLevUnit.levTop_iff_levJ | exact GlobalTheory.LastLevUnit.levTop_iff_levJ | (intros; apply GlobalTheory.LastLevUnit.levTop_iff_levJ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LastLevUnit.levTop_iff_levJ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRowTestTopLevelLastIffGridVertexLevelVolumeOne.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.rowTest_topLevel_last_iff_gridVertexLevelVolumeOne : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t Φ β (h : D.R.m - 1 < D.R.m), 2 ≤ D.R.m → ∀ (k : FinPt ch.G (.top (D.R.m - 1))),
     finG (ch.G.V (.top (D.R.m - 1))) k ∈ ch.S.toGridChoice.levTop t Φ β (D.R.m - 1) h ↔

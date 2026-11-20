@@ -10,8 +10,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.UTrait.finrank_le_min | exact GlobalTheory.UPoinc.UTrait.finrank_le_min | (intros; apply GlobalTheory.UPoinc.UTrait.finrank_le_min <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.UTrait.finrank_le_min` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharacterGroupFinrankLeMinSignatureUnitaryTrait.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.character_group_finrank_le_min_signature_unitary_trait : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : UTrait Xo c), Module.finrank (𝓞 E) T.P.D.toPre.X ≤ min Dw.p Dw.q := by
   first | exact @GlobalTheory.UPoinc.UTrait.finrank_le_min | exact GlobalTheory.UPoinc.UTrait.finrank_le_min | (intros; apply GlobalTheory.UPoinc.UTrait.finrank_le_min <;> assumption)

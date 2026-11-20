@@ -17,8 +17,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing IsMultiHomog IsRelevant IsM
 open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ GlobalTheory GlobalTheory.ProjBlowup
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum | exact GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum | (intros; apply GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FEulerCharacteristicDimensionZero.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.euler_characteristic_dimension_zero : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ MP ℤ m n) [IsClosedImmersion f] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) Γ(Z, ⊤)], topologicalKrullDim Z = (0 : ℕ) → ∀ a : Fin 0 → Fin (m + 1) → ℤ, chi (ZMod p) (structureModule Z) = geoNum 0 (ptIdeal (f (genericPoint Z))) a := by
   first | exact @GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum | exact GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum | (intros; apply GlobalTheory.CompanionTheory.MixZ.VertBase.chi_eq_geoNum <;> assumption)

@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetDecomp.exists_detOne_mul_blkU | exact GlobalTheory.DetDecomp.exists_detOne_mul_blkU | (intros; apply GlobalTheory.DetDecomp.exists_detOne_mul_blkU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetDecomp.exists_detOne_mul_blkU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDetOneMulBlockUnitaryDecomposition.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.exists_detOne_mul_blockUnitary_decomposition : ∀ {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (h : J = skewGram A B e), 0 < d → ∀ x : UB J, ∃ (s : UB J) (g : GA D A × GA D B), (mat s).det = 1 ∧ x = s * blkU A B e h g := by

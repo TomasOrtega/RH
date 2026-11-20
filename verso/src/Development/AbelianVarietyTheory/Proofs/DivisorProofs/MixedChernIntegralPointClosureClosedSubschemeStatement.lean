@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.cycInt_of_closedImmersion | exact GlobalTheory.Mix.cycInt_of_closedImmersion | (intros; apply GlobalTheory.Mix.cycInt_of_closedImmersion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.cycInt_of_closedImmersion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernIntegralPointClosureClosedSubscheme.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.mixed_chern_integral_point_closure_closed_subscheme : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ [IsIntegral Y] (π : Y ⟶ X) [IsClosedImmersion π] (hπ : π ≫ p = q) (D : ℕ) (L : Fin D → MLine p σ) (f : CxPts p σ → ℝ), (CycIntg L f (π (genericPoint Y)) ↔ Intg (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y))) ∧ cycInt L f (π (genericPoint Y)) = Mix.int (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) := by
   first | exact @GlobalTheory.Mix.cycInt_of_closedImmersion | exact GlobalTheory.Mix.cycInt_of_closedImmersion | (intros; apply GlobalTheory.Mix.cycInt_of_closedImmersion <;> assumption)

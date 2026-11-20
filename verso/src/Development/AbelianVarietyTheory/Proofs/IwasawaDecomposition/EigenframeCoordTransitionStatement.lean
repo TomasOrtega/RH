@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular | exact GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular | (intros; apply GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEigenframeCoordTransition.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.eigenframe_coord_transition : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (V : (gen s.T.Z).Opens) (hV : IsAffineOpen V) (φ : κ.c.F →+* Γ(gen s.T.Z, V)) (g : EigFrame s.T.Z φ (hV.fromSpec ≫ genι s.T.Z)) (K : Type) [Field K] (c : Γ(gen s.T.Z, V) →+* K) (h h' : EigFrame s.T.Z (c.comp φ) ((spMap c ≫ hV.fromSpec) ≫ genι s.T.Z)) (M M' : GlobalTheory.FlagBundle.Mat S.Dw.mult K), g.Coord c h M → g.Coord c h' M' → (∀ τ, IsUnit (M τ).det) → (∀ τ, IsUnit (M' τ).det) → (∀ τ, ∃ L : Matrix (Fin (S.Dw.mult τ)) (Fin (S.Dw.mult τ)) K, M τ = L * M' τ ∧ ∀ i l, i < l → L i l = 0) → ∃ d, h'.Tri (RingHom.id K) h d := by
   first | exact @GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular | exact GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular | (intros; apply GlobalTheory.ShFam.EigFrame.tri_of_coord_lowerTriangular <;> assumption)

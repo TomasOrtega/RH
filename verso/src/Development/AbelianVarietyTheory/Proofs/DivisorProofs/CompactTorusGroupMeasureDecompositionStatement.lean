@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParabolicCoord.quotIntegral_right_invariant | exact GlobalTheory.ParabolicCoord.quotIntegral_right_invariant | (intros; apply GlobalTheory.ParabolicCoord.quotIntegral_right_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParabolicCoord.quotIntegral_right_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactTorusGroupMeasureDecomposition.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.compact_torus_group_measure_decomposition : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

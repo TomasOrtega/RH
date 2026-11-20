@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 open scoped ComplexOrder ENNReal NNReal ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelCompact.exists_level_compact | exact GlobalTheory.LevelCompact.exists_level_compact | (intros; apply GlobalTheory.LevelCompact.exists_level_compact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelCompact.exists_level_compact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsCommonHeisenbergLevelWeilTransformCompact.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.exists_common_heisenbergLevel_weilTransform_compact : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∀ K : Set (GA D S × GA D T), IsCompact K → ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ p ∈ K, om p f ∈ GlobalTheory.Size.thetaLevel ψ S T U := by
   first | exact @GlobalTheory.LevelCompact.exists_level_compact | exact GlobalTheory.LevelCompact.exists_level_compact | (intros; apply GlobalTheory.LevelCompact.exists_level_compact <;> assumption)

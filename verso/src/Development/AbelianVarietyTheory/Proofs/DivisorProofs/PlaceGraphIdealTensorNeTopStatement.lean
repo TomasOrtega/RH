@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair GlobalTheory.GraphLocal
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GraphLocal.graphIdeal_ne_top | exact GlobalTheory.GraphLocal.graphIdeal_ne_top | (intros; apply GlobalTheory.GraphLocal.graphIdeal_ne_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GraphLocal.graphIdeal_ne_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPlaceGraphIdealTensorNeTop.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.placeGraphIdealTensor_ne_top : ∀ {K κ κ' : Type} [Field K] [Field κ] [Field κ'] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ']
     (R : Subring K) (π : R →+* κ) (ρ : κ →ₐ[ℂ] κ') (E : Place (algebraMap ℂ K)),

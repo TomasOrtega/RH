@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInje
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlgWtF.DDHwT.hw_eigvec_transport | exact GlobalTheory.AlgWtF.DDHwT.hw_eigvec_transport | (intros; apply GlobalTheory.AlgWtF.DDHwT.hw_eigvec_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlgWtF.DDHwT.hw_eigvec_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHighestWeightDoubleDualUpperTriangularEigenvecto.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.highestWeight_doubleDual_upperTriangular_eigenvector : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (K : Type) [Field K] [CharZero K] (emb : ι → L →+* K) (lam : ι → DomWeight n), GlobalTheory.AlgWtF.CMDist emb →

@@ -8,8 +8,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilGaussNon.ball_integrals_cancel | exact GlobalTheory.CompanionTheory.WeilGaussNon.ball_integrals_cancel | (intros; apply GlobalTheory.CompanionTheory.WeilGaussNon.ball_integrals_cancel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WeilGaussNon.ball_integrals_cancel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNonNormWeilConstantValue.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.non_norm_weil_constant_value : (∀ (F E : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

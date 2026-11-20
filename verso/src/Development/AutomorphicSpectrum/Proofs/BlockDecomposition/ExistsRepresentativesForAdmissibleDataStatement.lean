@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KOneReps.exists_isReps | exact GlobalTheory.CompanionTheory.KOneReps.exists_isReps | (intros; apply GlobalTheory.CompanionTheory.KOneReps.exists_isReps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KOneReps.exists_isReps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsRepresentativesForAdmissibleData.lean&line=397#L397)
 -/
 theorem _root_.GlobalTheory.T.exists_representatives_for_admissible_data : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v), AdmM M → ∃ R : Finset (Pl →₀ ℤ), IsReps M R := by

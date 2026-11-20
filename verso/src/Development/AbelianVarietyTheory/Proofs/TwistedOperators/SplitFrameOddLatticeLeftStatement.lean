@@ -12,8 +12,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.DepthColumn.scaled_column_mem | exact GlobalTheory.AscFin.DepthColumn.scaled_column_mem | (intros; apply GlobalTheory.AscFin.DepthColumn.scaled_column_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.DepthColumn.scaled_column_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitFrameOddLatticeLeft.lean&line=229#L229)
 -/
 theorem _root_.GlobalTheory.T.split_frame_odd_lattice_left : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0, ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.FinPl.SplitPt D k) (β : GlobalTheory.FinPl.Frame p (G.V (.grid (2 * (σ + 1) + 1) 0)) (Fin (G.V (.grid (2 * (σ + 1) + 1) 0)).rank)) (ϖ : 𝒪[k])

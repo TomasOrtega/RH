@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.HodgeGapBounds.evidence | exact GlobalTheory.CovTop.HodgeGapBounds.evidence | (intros; apply GlobalTheory.CovTop.HodgeGapBounds.evidence <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.HodgeGapBounds.evidence` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightConditionsAtIndex.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.weight_conditions_at_index : Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → LawsJ p.T ∧ 1 ≤ (dat p i).p ∧ 1 ≤ (dat p i).q ∧ 2 < Module.finrank ℚ (Fm.D x ι).host.E / 2 ∧ InR (Fm.D x ι) ((i : ℕ) + 1) ∧ Even (p.κ i).n ∧ (∀ τ, Antitone (uM p i τ)) ∧ (∀ τ, 1 ≤ gap (uM p i τ) ((dat p i).p - 1)) ∧ ∀ s : ℤ, (s = -(cZero (Fm.D x ι) ((i : ℕ) + 1)) ∨ s = 0 ∨ s = cZero (Fm.D x ι) ((i : ℕ) + 1)) → (∀ τ, Antitone ((laOf (dat p i) (wtA (p.κ i)) (p.κ i).n + s • hodgeWt (dat p i)) τ)) ∧ ∀ τ, 1 ≤ gap ((laOf (dat p i) (wtA (p.κ i)) (p.κ i).n + s • hodgeWt (dat p i)) τ) ((dat p i).p - 1) := by
   first | exact @GlobalTheory.CovTop.HodgeGapBounds.evidence | exact GlobalTheory.CovTop.HodgeGapBounds.evidence | (intros; apply GlobalTheory.CovTop.HodgeGapBounds.evidence <;> assumption)

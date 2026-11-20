@@ -12,8 +12,10 @@ open GlobalTheory.Core.Rk.IP
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum | exact GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum | (intros; apply GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIdeleCharacterEqOneIntegralUnitsUnramifiedAdelic.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.ideleCharacter_eq_one_integral_units_unramified_adelic : ∀ (D : D7) (μ : (AE D)ˣ →* Circle) (v : FinPl D) (y : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ), (y : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intLoc D.host.F D.host.E v → ((y⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intLoc D.host.F D.host.E v → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt μ w) → charAt μ v y = 1 := by
   first | exact @GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum | exact GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum | (intros; apply GlobalTheory.LFun.charAt_eq_one_of_unrAt_datum <;> assumption)

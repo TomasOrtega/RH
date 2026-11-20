@@ -9,8 +9,10 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves | exact GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves | (intros; apply GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemSecondModelStabilizerIffCarriesRowLattice.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.mem_secondModelStabilizer_iff_carriesRowLattice : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (v : GlobalTheory.FinPl.Pl D) (κ : GA D (D.sp.Y 0)), κ ∈ grpAt (D.sp.Y 0) (· = v) → ((iotaX X h κ).2 ∈ X.B.I.Kset ↔ Moves (D.sp.Y 0) κ (latS D) (latS D) (· = v)) := by
   first | exact @GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves | exact GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves | (intros; apply GlobalTheory.Core.Mi.KsetAt.mem_Kset_iff_moves <;> assumption)

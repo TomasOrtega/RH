@@ -14,8 +14,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers | exact GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers | (intros; apply GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentStabilizerRelativelyCompact.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.unipotent_stabilizer_relatively_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (Y : Spc F E n) (v : Pl F) (x : Fin n → E) (q : stabAt σ Y (evFin F v) x), (mat q.1.1 - 1) ^ 3 = 0 →

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
 open AlgebraicGeometry CategoryTheory Limits IsLocalRing
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormSheaf.normDescentSheaf | exact GlobalTheory.NormSheaf.normDescentSheaf | (intros; apply GlobalTheory.NormSheaf.normDescentSheaf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormSheaf.normDescentSheaf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormDescentIdealSheafFiniteOpenClosedImage.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.norm_descent_idealSheaf_finite_open_closed_image : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z), IsFinite π → IsIntegral Y → IsLocallyNoetherian Y →
     GlobalTheory.IsNormalScheme Y → GlobalTheory.IsNormalScheme Z → IsOpen (Set.range π) →

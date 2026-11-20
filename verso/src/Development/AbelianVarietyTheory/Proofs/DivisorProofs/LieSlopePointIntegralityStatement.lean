@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightParts.stepInt_of_lieSlope | exact GlobalTheory.HeightParts.stepInt_of_lieSlope | (intros; apply GlobalTheory.HeightParts.stepInt_of_lieSlope <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightParts.stepInt_of_lieSlope` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLieSlopePointIntegrality.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.lie_slope_point_integrality : LieSlope → PtInt → StepInt := by
   first | exact @GlobalTheory.HeightParts.stepInt_of_lieSlope | exact GlobalTheory.HeightParts.stepInt_of_lieSlope | (intros; apply GlobalTheory.HeightParts.stepInt_of_lieSlope <;> assumption)

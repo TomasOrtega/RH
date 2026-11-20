@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.cotVal_pull | exact GlobalTheory.PtExt.cotVal_pull | (intros; apply GlobalTheory.PtExt.cotVal_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.cotVal_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCrystallineCocycleCotangentValueBaseChangeNatura.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.crystallineCocycleCotangentValue_baseChange_natural : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X : Over (Sp R)) (X' : Over (Sp R')) (φ : X'.left ⟶ X.left) (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R') (X'.hom ≫ 𝟙 _) σ φ) (D D' : Type) [CommRing D] [Bialgebra R D] [CommRing D'] [Bialgebra R' D'] (s : SemiBialgHom σ D D') (y : Pt X D) (y' : Pt X' D') (a : trivAt y ⟶ m.obj (trivAt y')) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), (∀ r, a.φ r = s r) → cotVal (m.coef.pullbackOneCocycle f) y' = s.cot (cotVal f y) + dUnit R' (show D' from ev f a) := by
   first | exact @GlobalTheory.PtExt.cotVal_pull | exact GlobalTheory.PtExt.cotVal_pull | (intros; apply GlobalTheory.PtExt.cotVal_pull <;> assumption)

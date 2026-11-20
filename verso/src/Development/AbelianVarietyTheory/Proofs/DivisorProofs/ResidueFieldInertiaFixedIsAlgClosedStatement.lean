@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed | exact GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed | (intros; apply GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FResidueFieldInertiaFixedIsAlgClosed.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.residueField_inertiaFixed_isAlgClosed_alt : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → IsAlgClosed (IsLocalRing.ResidueField (V.comap (algebraMap (IntermediateField.fixedField (inertia K V)) Ω))) := by
   first | exact @GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed | exact GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed | (intros; apply GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed <;> assumption)

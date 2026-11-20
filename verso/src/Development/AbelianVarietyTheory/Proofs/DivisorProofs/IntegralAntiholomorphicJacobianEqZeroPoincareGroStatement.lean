@@ -5,8 +5,10 @@ open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheor
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare | exact GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare | (intros; apply GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralAntiholomorphicJacobianEqZeroPoincareGro.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.integral_antiholomorphicJacobian_eq_zero_poincareGrowth : ∀ {n : ℕ} (S : Finset (Fin n)) (U K : Set (V n)) (f : Fin n → V n → ℂ) (j : Fin n) (u : Equiv.Perm (Fin n)) (c : ℝ), IsOpen U → IsCompact K → K ⊆ U → (∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2) → (∀ i, ContDiffOn ℝ 2 (f i) (offHyp S U)) → (∀ v ∈ offHyp S U, v ∉ K → f j v = 0) → (∀ v ∈ offHyp S U, v ∈ K → ‖f j v‖ * poinWt S v (u j) ≤ c) → (∀ v ∈ offHyp S U, v ∈ K → ∀ i b, ‖dbar (f i) v (coordVec b)‖ * (poinWt S v (u i) * poinWt S v b) ≤ c) → IntegrableOn (fun v => (Matrix.of fun i b => dbar (f i) v (coordVec b)).det) (offHyp S U) ∧ ∫ v in offHyp S U, (Matrix.of fun i b => dbar (f i) v (coordVec b)).det = 0 := by
   first | exact @GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare | exact GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare | (intros; apply GlobalTheory.GoodTop.integral_det_dbar_eq_zero_of_poincare <;> assumption)

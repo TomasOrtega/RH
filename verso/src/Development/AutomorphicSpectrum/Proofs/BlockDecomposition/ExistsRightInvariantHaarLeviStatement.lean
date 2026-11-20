@@ -8,8 +8,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.CompanionTheory.QKAvg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar | exact GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar | (intros; apply GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsRightInvariantHaarLevi.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.exists_right_invariant_haar_levi : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) [LocallyCompactSpace (levM d)], ∃ νM : Measure (levM d), νM.IsHaarMeasure ∧ νM.IsMulRightInvariant := by
   first | exact @GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar | exact GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar | (intros; apply GlobalTheory.CompanionTheory.QKAvg.exists_levM_haar <;> assumption)

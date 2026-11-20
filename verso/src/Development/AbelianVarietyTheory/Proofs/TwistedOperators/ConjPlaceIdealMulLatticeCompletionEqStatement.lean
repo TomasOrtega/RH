@@ -17,8 +17,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjPlaceLat.cA_mul_mem_latV_smul | exact GlobalTheory.ConjPlaceLat.cA_mul_mem_latV_smul | (intros; apply GlobalTheory.ConjPlaceLat.cA_mul_mem_latV_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjPlaceLat.cA_mul_mem_latV_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjPlaceIdealMulLatticeCompletionEq.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.cA_smul_mem_latV_ideal_smul_of_conj_place : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : GlobalTheory.FinPl.SplitPt D k) (w : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e w →

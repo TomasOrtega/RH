@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLatOf)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjTransport.exists_conj_point | exact GlobalTheory.ConjTransport.exists_conj_point | (intros; apply GlobalTheory.ConjTransport.exists_conj_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjTransport.exists_conj_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FComplexPointGaloisConjugate.lean&line=309#L309)
 -/
 theorem _root_.GlobalTheory.T.complex_point_galois_conjugate : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔠 : FracId (FR E)) (φ : I → E →+* ℂ)
     (L L' : Set E) (T : CxPt 𝔠 φ L) (R : Type) [CommRing R] (σ : R →+* ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (δ₀ : X₀.DetGen)

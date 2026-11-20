@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.cell_points_existsUnique | exact GlobalTheory.FlagCell2.cell_points_existsUnique | (intros; apply GlobalTheory.FlagCell2.cell_points_existsUnique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.cell_points_existsUnique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagCellPointsExistsUniqueUnitriangular.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.flag_cell_points_existsUnique_unitriangular : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (A : Mat m X.Fn) (u : Cell m → Y.Fn), InCell E E' φ f A u (genericPoint Y.X) → ∀ (K : Type) [Field K] (x : Sp K ⟶ X.X), A ∈ E.S (x (IsLocalRing.closedPoint K)) → ∀ y₀ : Cell m → K, ∃! p : Sp K ⟶ Y.X, p ≫ f = x ∧ InCell E E' φ f A u (p (IsLocalRing.closedPoint K)) ∧ ∀ j, (ratOf Y).val p (u j) = y₀ j := by
   first | exact @GlobalTheory.FlagCell2.cell_points_existsUnique | exact GlobalTheory.FlagCell2.cell_points_existsUnique | (intros; apply GlobalTheory.FlagCell2.cell_points_existsUnique <;> assumption)

@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UBalA.exists_balTau | exact GlobalTheory.UBalA.exists_balTau | (intros; apply GlobalTheory.UBalA.exists_balTau <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UBalA.exists_balTau` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBalancedBimultiplicativeGeneratorLambdaInv.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.exists_balanced_bimultiplicative_generator_lambda_inv : ∀ (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B →
     ∀ (M : RigLB B) (cub : CubicalStr B M) (O : Type) [CommRing O] [StarRing O] (act : RingAct B O),

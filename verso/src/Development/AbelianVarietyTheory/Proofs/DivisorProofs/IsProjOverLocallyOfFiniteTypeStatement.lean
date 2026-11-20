@@ -19,8 +19,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isProjOver_locallyOfFiniteType | exact GlobalTheory.isProjOver_locallyOfFiniteType | (intros; apply GlobalTheory.isProjOver_locallyOfFiniteType <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isProjOver_locallyOfFiniteType` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProjOverLocallyOfFiniteType.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.locallyOfFiniteType_of_isProjOver : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsProjOver s → LocallyOfFiniteType s := by
   first | exact @GlobalTheory.isProjOver_locallyOfFiniteType | exact GlobalTheory.isProjOver_locallyOfFiniteType | (intros; apply GlobalTheory.isProjOver_locallyOfFiniteType <;> assumption)

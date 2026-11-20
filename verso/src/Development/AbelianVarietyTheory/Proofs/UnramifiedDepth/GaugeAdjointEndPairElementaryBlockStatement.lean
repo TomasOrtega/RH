@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowLaw.EndBlock.isEnd_block | exact GlobalTheory.RowLaw.EndBlock.isEnd_block | (intros; apply GlobalTheory.RowLaw.EndBlock.isEnd_block <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowLaw.EndBlock.isEnd_block` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FGaugeAdjointEndPairElementaryBlock.lean&line=206#L206)
 -/
 theorem _root_.GlobalTheory.T.gaugeAdjointEndPair_elementaryBlock : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) (I0 : Type) [Fintype I0] (p : SelfData Y d I0) (d' : ℕ) (I : Fin 2 → Type) (X : RawChart C d' I (Fin dd)), (X.lg = fun i => un1 (Y.lg i)) → (X.ex = fun i => un1 (Y.ex i)) → X.h = Y.h → ∀ (r s : Fin 2) (M M' : Matrix (Fin dd) (Fin dd) C), IsEnd X V M M' → IsEnd (Y.rawSelf p) V (Matrix.of fun x y : Fin 2 × Fin dd => if x.1 = r ∧ y.1 = s then M x.2 y.2 else 0) (Matrix.of fun x y : Fin 2 × Fin dd => if x.1 = s ∧ y.1 = r then M' x.2 y.2 else 0) := by
   first | exact @GlobalTheory.RowLaw.EndBlock.isEnd_block | exact GlobalTheory.RowLaw.EndBlock.isEnd_block | (intros; apply GlobalTheory.RowLaw.EndBlock.isEnd_block <;> assumption)

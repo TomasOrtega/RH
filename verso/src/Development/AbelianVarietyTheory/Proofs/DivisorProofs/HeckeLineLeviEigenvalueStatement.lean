@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLine.hasDerivAt_chi_abs_levi | exact GlobalTheory.IndLine.hasDerivAt_chi_abs_levi | (intros; apply GlobalTheory.IndLine.hasDerivAt_chi_abs_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLine.hasDerivAt_chi_abs_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeLineLeviEigenvalue.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.hecke_line_levi_eigenvalue : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

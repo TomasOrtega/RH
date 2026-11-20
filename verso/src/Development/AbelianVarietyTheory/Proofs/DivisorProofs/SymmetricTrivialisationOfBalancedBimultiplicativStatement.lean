@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymTau.symm_of_bal | exact GlobalTheory.SymTau.symm_of_bal | (intros; apply GlobalTheory.SymTau.symm_of_bal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymTau.symm_of_bal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricTrivialisationOfBalancedBimultiplicativ.lean&line=200#L200)
 -/
 theorem _root_.GlobalTheory.T.symmetric_trivialisation_of_balanced_bimultiplicative : ∀ (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B →
     ∀ (M : RigLB B) (cub : CubicalStr B M) (O : Type) [CommRing O] [StarRing O] (act : RingAct B O),

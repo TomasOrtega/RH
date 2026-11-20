@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.CellTorus.cellFunctor_torusPt | exact GlobalTheory.IndLineGL.CellTorus.cellFunctor_torusPt | (intros; apply GlobalTheory.IndLineGL.CellTorus.cellFunctor_torusPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.CellTorus.cellFunctor_torusPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellFunctorTorusCharacter.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.cell_functor_torus_character : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (b : SizeMatrix (Two (Fin a) (Fin a')) fun j : Fin 3 => Fin (blk3 m j))

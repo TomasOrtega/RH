@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dieu.le_colength_of_htOne | exact GlobalTheory.Dieu.le_colength_of_htOne | (intros; apply GlobalTheory.Dieu.le_colength_of_htOne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dieu.le_colength_of_htOne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelDegreeLeDieudonneColengthOfHeightOne.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.kernelDegree_le_dieudonneColength_of_heightOne : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H) (q' : H ⟶ G) (e : ℕ), q ≫ q' = (p : ℤ_[p]) • 𝟙 G → q' ≫ q = (p : ℤ_[p]) • 𝟙 H → frobKerIdeal p k (G.A 1) ≤ kerIdeal (q.app 1) → HasLogDeg q e → (e : ℕ∞) ≤ Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q)) ∧ (e : ℕ∞) ≤ Module.length (WittVector p k) (T.M H.dual ⧸ LinearMap.range (T.map (dualHom G H q))) ∧ e ≤ Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G H q)) := by
   first | exact @GlobalTheory.Dieu.le_colength_of_htOne | exact GlobalTheory.Dieu.le_colength_of_htOne | (intros; apply GlobalTheory.Dieu.le_colength_of_htOne <;> assumption)

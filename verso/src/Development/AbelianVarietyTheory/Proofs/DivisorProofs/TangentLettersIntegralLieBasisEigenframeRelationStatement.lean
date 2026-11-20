@@ -30,8 +30,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open MonObj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamT.TanRel.tangent_letter_model_relation | exact GlobalTheory.LamT.TanRel.tangent_letter_model_relation | (intros; apply GlobalTheory.LamT.TanRel.tangent_letter_model_relation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamT.TanRel.tangent_letter_model_relation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentLettersIntegralLieBasisEigenframeRelation.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.tangent_letters_integralLieBasis_eigenframe_relation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

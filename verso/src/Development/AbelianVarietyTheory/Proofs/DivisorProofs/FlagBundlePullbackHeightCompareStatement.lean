@@ -12,8 +12,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogSinChern.archInt_logSin_eq_chernNumber | exact GlobalTheory.LogSinChern.archInt_logSin_eq_chernNumber | (intros; apply GlobalTheory.LogSinChern.archInt_logSin_eq_chernNumber <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogSinChern.archInt_logSin_eq_chernNumber` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundlePullbackHeightCompare.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_pullback_height_compare : ArCalc → ∃ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, Homog G ∧
     ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),

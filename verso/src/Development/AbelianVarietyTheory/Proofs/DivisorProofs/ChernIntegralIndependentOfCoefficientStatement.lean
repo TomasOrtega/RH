@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatMass.chernInt_comb_update_of_norms | exact GlobalTheory.FlatMass.chernInt_comb_update_of_norms | (intros; apply GlobalTheory.FlatMass.chernInt_comb_update_of_norms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatMass.chernInt_comb_update_of_norms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernIntegralIndependentOfCoefficient.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.chern_integral_independent_of_coefficient : Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (D : ℕ), Y.dim = D → ∀ (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (L : ι → HermLB V.p) (i : ι), L i = M → ∀ (n : ι → ℤ) (σ : 𝓞 F →+* ℂ), ((comb L n).φ σ).chernInt D Set.univ (fun _ => 1) = ((comb L (Function.update n i 0)).φ σ).chernInt D Set.univ (fun _ => 1) := by
   first | exact @GlobalTheory.FlatMass.chernInt_comb_update_of_norms | exact GlobalTheory.FlatMass.chernInt_comb_update_of_norms | (intros; apply GlobalTheory.FlatMass.chernInt_comb_update_of_norms <;> assumption)

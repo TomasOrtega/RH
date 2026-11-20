@@ -11,8 +11,10 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdjMix.compare_of_adjacent | exact GlobalTheory.AdjMix.compare_of_adjacent | (intros; apply GlobalTheory.AdjMix.compare_of_adjacent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdjMix.compare_of_adjacent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdjacentFlagsHeightComparison.lean&line=808#L808)
 -/
 theorem _root_.GlobalTheory.T.adjacent_flags_height_comparison : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (d : ℕ), IsArithVar p (d + 1) → GenSmooth p (d + 1) → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl fl' : Vert.Flag E r), fl.Adjacent fl' → Compare H d fl fl' := by
   first | exact @GlobalTheory.AdjMix.compare_of_adjacent | exact GlobalTheory.AdjMix.compare_of_adjacent | (intros; apply GlobalTheory.AdjMix.compare_of_adjacent <;> assumption)

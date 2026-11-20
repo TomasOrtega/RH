@@ -8,8 +8,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitCosetCount.card_cosets | exact GlobalTheory.SplitCosetCount.card_cosets | (intros; apply GlobalTheory.SplitCosetCount.card_cosets <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitCosetCount.card_cosets` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitPlaceHeckeDoubleCosetCardGaussBinom.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_hecke_doubleCoset_card_gaussBinom : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),

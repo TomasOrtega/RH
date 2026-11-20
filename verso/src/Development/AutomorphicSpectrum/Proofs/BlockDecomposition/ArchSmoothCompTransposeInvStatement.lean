@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti | exact GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti | (intros; apply GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FArchSmoothCompTransposeInv.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.archSmooth_comp_transposeInv : ∀ (F : G3 → ℂ), IsArchSmooth F → ∀ c : G3, IsArchSmooth (fun g : G3 => F (c * ti g)) := by
   first | exact @GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti | exact GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti | (intros; apply GlobalTheory.CompanionTheory.TiArch.isArchSmooth_comp_ti <;> assumption)

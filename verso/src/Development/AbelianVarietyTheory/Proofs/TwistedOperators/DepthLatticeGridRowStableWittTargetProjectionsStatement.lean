@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.latRow_proj_tgt | exact GlobalTheory.AscFin.latRow_proj_tgt | (intros; apply GlobalTheory.AscFin.latRow_proj_tgt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.latRow_proj_tgt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDepthLatticeGridRowStableWittTargetProjections.lean&line=250#L250)
 -/
 theorem _root_.GlobalTheory.T.depthLatticeGridRow_stable_wittTargetProjections : OnStd fun {D} _ _ {sc} {G} _ F => ∀ σ (_ : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * σ + 2), ((F.dB σ h').jX * (F.dB σ h').pX) * u ∈ latRow G (2 * σ + 2) ∧ ((F.dB σ h').jY * (F.dB σ h').pY) * u ∈ latRow G (2 * σ + 2) := by
   first | exact @GlobalTheory.AscFin.latRow_proj_tgt | exact GlobalTheory.AscFin.latRow_proj_tgt | (intros; apply GlobalTheory.AscFin.latRow_proj_tgt <;> assumption)

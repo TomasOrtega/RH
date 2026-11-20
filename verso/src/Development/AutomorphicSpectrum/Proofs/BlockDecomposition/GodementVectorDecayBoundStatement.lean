@@ -7,8 +7,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2LocalData.GL2GodementVector.godement_vector_growth_support | exact GlobalTheory.CompanionTheory.GL2LocalData.GL2GodementVector.godement_vector_growth_support | (intros; apply GlobalTheory.CompanionTheory.GL2LocalData.GL2GodementVecto …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2LocalData.GL2GodementVector.godement_vector_growth_support` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGodementVectorDecayBound.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.godement_vector_decay_bound : ForS fun F _ _ _ _ _ _ ψ => ∀ ν : Fˣ →* ℂˣ, IsUnit1 ν → ∀ W₀ ∈ V2 ψ ν ν⁻¹,
   (∀ x g, W₀ (uni2 x * g) = (ψ x : ℂ) * W₀ g) ∧ (∀ (a : Fˣ) g, W₀ (dg2 a a * g) = W₀ g) ∧ Continuous W₀ ∧

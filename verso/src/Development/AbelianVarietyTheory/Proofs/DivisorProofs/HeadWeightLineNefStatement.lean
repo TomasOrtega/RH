@@ -11,8 +11,10 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CompHS GlobalTheory.CovTop
 open GlobalTheory.AllWt (Psi)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefHodge.isNef_headWt | exact GlobalTheory.NefHodge.isNef_headWt | (intros; apply GlobalTheory.NefHodge.isNef_headWt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefHodge.isNef_headWt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeadWeightLineNef.lean&line=222#L222)
 -/
 theorem _root_.GlobalTheory.T.head_weight_line_nef : GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (τ : Psi H) (k : ℕ), k < Dw.p → letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.headWt τ k)) := by
   first | exact @GlobalTheory.NefHodge.isNef_headWt | exact GlobalTheory.NefHodge.isNef_headWt | (intros; apply GlobalTheory.NefHodge.isNef_headWt <;> assumption)

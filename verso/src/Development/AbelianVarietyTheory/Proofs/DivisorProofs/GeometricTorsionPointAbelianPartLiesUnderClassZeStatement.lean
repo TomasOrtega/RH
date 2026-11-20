@@ -9,8 +9,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.IntTerm.torsion_lies_under | exact GlobalTheory.Poinc.IntTerm.torsion_lies_under | (intros; apply GlobalTheory.Poinc.IntTerm.torsion_lies_under <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.IntTerm.torsion_lies_under` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricTorsionPointAbelianPartLiesUnderClassZe.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.geometricTorsionPoint_abelianPart_lies_under_classZero : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G) (N : ℕ), 1 ≤ N → ∀ β : TF (R := V) (AlgebraicClosure (FractionRing V)) ⟶ D.toPre.P.A, β ^ N = 1 → ∃ xb : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A.A, xb ^ N = 1 ∧ (∃ p : QkPt D.toPre (AlgebraicClosure (FractionRing V)) N, p.y = 0 ∧ QkToAkU U.toUnifPre (AlgebraicClosure (FractionRing V)) N p xb) ∧ ∀ p : QkPt D.toPre (AlgebraicClosure (FractionRing V)) N, p.y = 0 → QkToAkU U.toUnifPre (AlgebraicClosure (FractionRing V)) N p xb → p.g.b = β := by
   first | exact @GlobalTheory.Poinc.IntTerm.torsion_lies_under | exact GlobalTheory.Poinc.IntTerm.torsion_lies_under | (intros; apply GlobalTheory.Poinc.IntTerm.torsion_lies_under <;> assumption)

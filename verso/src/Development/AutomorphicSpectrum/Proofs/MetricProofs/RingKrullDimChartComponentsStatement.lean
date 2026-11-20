@@ -19,8 +19,10 @@ open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chart
 open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chartDens chartAbsDens)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim | exact GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FRingKrullDimChartComponents.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.ringKrullDim_chartComponents : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k),

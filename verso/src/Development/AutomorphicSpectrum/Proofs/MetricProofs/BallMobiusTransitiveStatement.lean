@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FBallMobiusTransitive.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.ball_mobius_transitive : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ), t ∈ ballDom q → ∃ u : Ψ → Matrix (Sg j j') (Sg j j') ℂ, (∀ τ, IsSgU (u τ)) ∧ moebBall q u 0 = t := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.moebBall_transitive <;> assumption)

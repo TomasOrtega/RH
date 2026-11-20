@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FilCx.fil_eq_iSup_eigenspace_bar | exact GlobalTheory.FilCx.fil_eq_iSup_eigenspace_bar | (intros; apply GlobalTheory.FilCx.fil_eq_iSup_eigenspace_bar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FilCx.fil_eq_iSup_eigenspace_bar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmOrderUniformizationEndomorphisms.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.cm_order_uniformization_endomorphisms : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

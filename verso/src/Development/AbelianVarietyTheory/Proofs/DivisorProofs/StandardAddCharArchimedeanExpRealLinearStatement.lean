@@ -10,8 +10,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdCharLin.stdChar_mixed_linear | exact GlobalTheory.StdCharLin.stdChar_mixed_linear | (intros; apply GlobalTheory.StdCharLin.stdChar_mixed_linear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdCharLin.stdChar_mixed_linear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardAddCharArchimedeanExpRealLinear.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.standardAddChar_archimedean_exp_realLinear : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsStdChar D ψ (-1) → IsInfFam θ →

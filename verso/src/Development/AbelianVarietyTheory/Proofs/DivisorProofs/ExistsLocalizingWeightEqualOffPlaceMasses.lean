@@ -91,8 +91,10 @@ theorem exists_box_nhds : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [
     isOpen_prod_iff.1 (hO.preimage hp) (fun i => (y i).1) (fun i => (y i).2) (by exact hy)
   exact ⟨U, V, hU, hV, hyU, hyV, fun x hx1 hx2 => hUV (Set.mk_mem_prod hx1 hx2)⟩
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace | exact GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace`.
+/- English proof (citation)
+Apply `GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTrigPolynomialIndicatorAwayFromPlaceStatement.lean&line=25#L25)
 -/
 theorem exists_finite_indicator_poly : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → (∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1) →
@@ -107,8 +109,10 @@ theorem exists_finite_indicator_poly : ∀ {F : Type} [Field F] [NumberField F] 
         ∑ b ∈ s, c b * ψ (x ⬝ᵥ b) = A.indicator (fun _ => (1 : ℂ)) (fun i => (x i).2) := by
   first | exact @GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace | exact GlobalTheory.T.exists_trigPolynomial_indicator_awayFromPlace
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion | exact GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion`.
+/- English proof (citation)
+Apply `GlobalTheory.T.archimedean_smooth_bump_with_trigonometric_expansion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanSmoothBumpWithTrigonometricExpansionStatement.lean&line=25#L25)
 -/
 theorem exists_arch_bump_poly : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ (U : Set (κ → Ainf F)) (y : κ → AF F), IsOpen U → (fun i => (y i).1) ∈ U →

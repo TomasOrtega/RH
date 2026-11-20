@@ -7,8 +7,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagLineDim.topologicalKrullDim_eq_add_one | exact GlobalTheory.FlagLineDim.topologicalKrullDim_eq_add_one | (intros; apply GlobalTheory.FlagLineDim.topologicalKrullDim_eq_add_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagLineDim.topologicalKrullDim_eq_add_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundleDimPlusOne.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_dim_plus_one : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (Y Y₁ : Scheme.{0}) (p : Y ⟶ Sp k) (ρ : Y ⟶ Y₁) (E₁ : Y₁.Modules)
     (fl₁ : Vert.Flag ((Scheme.Modules.pullback ρ).obj E₁) 2), IsProjOver p → GlobalTheory.VB.IsVB E₁ 2 →

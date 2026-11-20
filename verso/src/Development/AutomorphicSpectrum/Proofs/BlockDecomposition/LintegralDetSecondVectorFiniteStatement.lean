@@ -7,8 +7,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SingInt.lintegral_det_mx_lt_top | exact GlobalTheory.CompanionTheory.SingInt.lintegral_det_mx_lt_top | (intros; apply GlobalTheory.CompanionTheory.SingInt.lintegral_det_mx_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SingInt.lintegral_det_mx_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLintegralDetSecondVectorFinite.lean&line=198#L198)
 -/
 theorem _root_.GlobalTheory.T.lintegral_det_second_vector_finite : ForS fun F _ _ _ _ _ _ ψ => ∀ R c t : ℝ, 1 < c → 0 ≤ t → t < c →
   ∫⁻ g, Set.indicator {g : GL (Fin 2) F | ∀ i j, (modulus (g.val i j) : ℝ) ≤ R}

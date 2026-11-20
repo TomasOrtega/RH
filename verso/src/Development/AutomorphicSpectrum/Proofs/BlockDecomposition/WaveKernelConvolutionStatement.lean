@@ -9,8 +9,10 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.WaveMult
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer | exact GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer | (intros; apply GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWaveKernelConvolution.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.wave_kernel_convolution : LgFacts → Unimod → RCalc → WaveSpeed → WaveEx → KerUniq → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (w w' : List (Bool × ℕ)) (g g' : ℝ → ℝ) (T T' : ℝ) (k k' K : Mat n → (E.V →L[ℂ] E.V)), IsBump g T → IsBump g' T' → IsKer μ E w g k → IsKer μ E w' g' k' → IsKer μ E (w ++ w') (gconv g g') K → ∀ y ∈ GLs n, conv μ E k k' y = K y := by
   first | exact @GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer | exact GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer | (intros; apply GlobalTheory.CompanionTheory.WaveMult.conv_eq_of_isKer <;> assumption)

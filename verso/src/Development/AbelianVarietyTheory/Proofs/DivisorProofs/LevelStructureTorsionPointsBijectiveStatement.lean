@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.GroupBpl
 open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | exact GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | (intros; apply GlobalTheory.GroupBplus.Aff.LevBij.level_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Aff.LevBij.level_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelStructureTorsionPointsBijective.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.level_structure_torsion_points_bijective : ∀ (R K : Type) [CommRing R] [Field K] [IsAlgClosed K] [Algebra R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (A : Type) [CommRing A] [HopfAlgebra R A] [Module.Finite R A] (θ : TorsPt G N A), IsLevel K θ → ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra K B] [IsScalarTower R K B], Function.Bijective (θ.pt B) := by
   first | exact @GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | exact GlobalTheory.GroupBplus.Aff.LevBij.level_bijective | (intros; apply GlobalTheory.GroupBplus.Aff.LevBij.level_bijective <;> assumption)

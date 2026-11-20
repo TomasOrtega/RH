@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow | exact GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow | (intros; apply GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqUnitMulZpowRegularLocalModelDimTwo.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.eq_unit_mul_zpow_regularLocalModel_dimTwo : ∀ {L : Type} [Field L] (cL : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel cL Q) (t u : Q),
   Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) → ringKrullDim Q = 2 →

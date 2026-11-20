@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.IntFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntFam.intGen | exact GlobalTheory.IntFam.intGen | (intros; apply GlobalTheory.IntFam.intGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntFam.intGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsGeneratorMultiplierPower.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_generator_multiplier_power : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsIntegrallyClosed R → ∀ (D : DegPre R) (k : ℕ), 1 ≤ k →
     ∀ (α mu : D.X) (s : R),

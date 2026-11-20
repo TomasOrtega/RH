@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPotentialPosit
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory GlobalTheory.ShFam GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PshTrans.isPsh_of_levi_algChart | exact GlobalTheory.PshTrans.isPsh_of_levi_algChart | (intros; apply GlobalTheory.PshTrans.isPsh_of_levi_algChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PshTrans.isPsh_of_levi_algChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPotentialSmoothBoundKappa.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.potential_smooth_bound_kappa : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y),
     Y.dim = e → ∀ (a : Fin (M.n + 1)) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv}

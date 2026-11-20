@@ -23,8 +23,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolPoint.exists_field_point_polarised | exact GlobalTheory.PolPoint.exists_field_point_polarised | (intros; apply GlobalTheory.PolPoint.exists_field_point_polarised <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolPoint.exists_field_point_polarised` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFieldPointPolarisedFibreUniformised.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.exists_fieldPoint_polarised_fibre_uniformised : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ W : (Sp R).Opens, IsProper (G.hom ∣_ W) → ∀ y : PrimeSpectrum R, y ∈ W → y.asIdeal ≠ ⊥ → ∃ (K₁ : Type) (_ : Field K₁) (z : Sp K₁ ⟶ Sp R), z (closedPoint K₁) = y ∧ IsProper (pullback.snd G.hom z) ∧ RelAmple ((Over.pullback z).obj G) (U.LG.L.pull (pullback.fst G.hom z)) ∧ KTriv ((Over.pullback z).obj G) (U.LG.L.pull (pullback.fst G.hom z)) := by
   first | exact @GlobalTheory.PolPoint.exists_field_point_polarised | exact GlobalTheory.PolPoint.exists_field_point_polarised | (intros; apply GlobalTheory.PolPoint.exists_field_point_polarised <;> assumption)

@@ -8,8 +8,10 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalTwist.twist_aut | exact GlobalTheory.GalTwist.twist_aut | (intros; apply GlobalTheory.GalTwist.twist_aut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalTwist.twist_aut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGaloisTwistCompatibleModel.lean&line=436#L436)
 -/
 theorem _root_.GlobalTheory.T.exists_galois_twist_compatible_model : Hypotheses2 → ∀ (D : D7) (O : Setup D), O.Core → ∀ h ∈ D.R.Psi,
     ∃ (σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E) (r : (O.S.Xo O.κ.l).XF O.κ.c ≅ (O.S.Xo O.κ.l).XF O.κ.c),

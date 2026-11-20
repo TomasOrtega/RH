@@ -9,8 +9,10 @@ open GlobalTheory.RootEx GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Spl
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts | exact GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts | (intros; apply GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPlaceMemLatticeCompletionIffParts.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_mem_latticeCompletion_iff_parts : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (y : Fin S.rank → AE D), (∀ r, y r ∈ GlobalTheory.FinPl.idAt D (· = q.v)) → (y ∈ GlobalTheory.FinPl.latV S L (· = q.v) ↔ (fun r => q.e * y r) ∈ GlobalTheory.FinPl.latV S L (· = q.v) ∧ (fun r => cA D q.e * y r) ∈ GlobalTheory.FinPl.latV S L (· = q.v)) := by
   first | exact @GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts | exact GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts | (intros; apply GlobalTheory.FinPl.SplitParts.mem_latV_iff_parts <;> assumption)

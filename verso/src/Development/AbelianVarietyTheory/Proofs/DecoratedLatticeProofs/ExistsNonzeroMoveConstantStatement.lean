@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTh
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.VacBase.vacuum_reads_base | exact GlobalTheory.AdForm.VacBase.vacuum_reads_base | (intros; apply GlobalTheory.AdForm.VacBase.vacuum_reads_base <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.VacBase.vacuum_reads_base` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsNonzeroMoveConstant.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_move_constant : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∃ c₀ : ℂ, c₀ ≠ 0 ∧ A.MoveAt θ i hi c₀ 1 1 := by
   first | exact @GlobalTheory.AdForm.VacBase.vacuum_reads_base | exact GlobalTheory.AdForm.VacBase.vacuum_reads_base | (intros; apply GlobalTheory.AdForm.VacBase.vacuum_reads_base <;> assumption)

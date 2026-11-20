@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.DoubleSpan.main | exact GlobalTheory.Core.Rk.DoubleSpan.main | (intros; apply GlobalTheory.Core.Rk.DoubleSpan.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.DoubleSpan.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingMapSpanDenseHeisenbergStable.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.doublingMap_span_dense_heisenbergStable : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A W : HSp D), IsStdChar D ψ (-1) → let M : Submodule ℂ (WO (dblSp A) W → ℂ) := Submodule.span ℂ {φ | ∃ f₁ f₂, IsThetaFunO ψ A W f₁ ∧ IsThetaFunO ψ A W f₂ ∧ φ = delta A W f₁ f₂}; (∀ g ∈ M, IsThetaFunO ψ (dblSp A) W g) ∧ (∀ g ∈ M, ∀ w, heisO ψ (dblSp A) W w g ∈ M) ∧ ∀ f, IsThetaFunO ψ (dblSp A) W f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit M f := by
   first | exact @GlobalTheory.Core.Rk.DoubleSpan.main | exact GlobalTheory.Core.Rk.DoubleSpan.main | (intros; apply GlobalTheory.Core.Rk.DoubleSpan.main <;> assumption)

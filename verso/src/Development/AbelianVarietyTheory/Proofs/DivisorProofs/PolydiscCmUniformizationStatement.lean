@@ -15,8 +15,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum polyd
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatSumCmp.defSum_eq_eis | exact GlobalTheory.LatSumCmp.defSum_eq_eis | (intros; apply GlobalTheory.LatSumCmp.defSum_eq_eis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatSumCmp.defSum_eq_eis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolydiscCmUniformization.lean&line=230#L230)
 -/
 theorem _root_.GlobalTheory.T.polydisc_cm_uniformization : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔞 𝔟 : FracId (FR E))
     (φ : I → E →+* ℂ) (c : Ideal (OF E)) (y : (Af E)ˣ), IsCMType φ → c ≠ ⊥ → ∀ s : ℕ, 1 ≤ s →

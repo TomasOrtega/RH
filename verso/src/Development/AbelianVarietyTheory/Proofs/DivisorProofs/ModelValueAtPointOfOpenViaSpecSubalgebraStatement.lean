@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap | exact GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap | (intros; apply GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelValueAtPointOfOpenViaSpecSubalgebra.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.modelValue_at_point_of_open_via_spec_subalgebra : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U₀ : M.Z.Opens) (Rs : Subalgebra o Ω) (u₀ : U₀.toScheme ⟶ Sp Rs), (U₀ : Set M.Z).Nonempty → (∀ x : Sp Ω ⟶ U₀.toScheme, x ≫ U₀.ι = M.pt → x ≫ u₀ = spMap Rs.val.toRingHom) → ∀ (K : Type) [Field K] (q : Sp K ⟶ U₀.toScheme) (f : Rs →+* K), spMap f = q ≫ u₀ → ∀ a : Rs, M.val (q ≫ U₀.ι) (a : Ω) = f a := by
   first | exact @GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap | exact GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap | (intros; apply GlobalTheory.Poinc.TestAtPt.val_eq_of_spMap <;> assumption)

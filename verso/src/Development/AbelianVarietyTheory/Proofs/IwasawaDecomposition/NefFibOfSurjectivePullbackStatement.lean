@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibOfSurj
 import Development.AbelianVarietyTheory.Definitions.Divisors.NefFibOfIsNef
 open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CechPic
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefDescent.nefFib_of_pull | exact GlobalTheory.NefDescent.nefFib_of_pull | (intros; apply GlobalTheory.NefDescent.nefFib_of_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefDescent.nefFib_of_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNefFibOfSurjectivePullback.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.nefFib_of_surjective_pullback : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), Function.Surjective π → ∀ (L : HermLB p), ArInt.NefFib (L.pull π hπ) → ArInt.NefFib L := by
   first | exact @GlobalTheory.NefDescent.nefFib_of_pull | exact GlobalTheory.NefDescent.nefFib_of_pull | (intros; apply GlobalTheory.NefDescent.nefFib_of_pull <;> assumption)

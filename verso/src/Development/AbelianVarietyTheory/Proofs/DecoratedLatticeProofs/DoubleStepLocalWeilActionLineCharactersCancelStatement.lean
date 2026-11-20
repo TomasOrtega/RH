@@ -10,8 +10,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QPl.LineCancel.val_om_loc | exact GlobalTheory.QPl.LineCancel.val_om_loc | (intros; apply GlobalTheory.QPl.LineCancel.val_om_loc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QPl.LineCancel.val_om_loc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoubleStepLocalWeilActionLineCharactersCancel.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.doubleStep_local_weil_action_line_characters_cancel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S)
     (T₁ : SB (Matrix (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.k) →ₗ[ℂ] (WO S.B.V S.J.W → ℂ))

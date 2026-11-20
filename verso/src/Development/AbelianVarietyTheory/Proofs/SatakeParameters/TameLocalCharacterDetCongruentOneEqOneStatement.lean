@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FirstCoupledK
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwV.AwayCpl.RhoOne.rhoS_det_one | exact GlobalTheory.TwV.AwayCpl.RhoOne.rhoS_det_one | (intros; apply GlobalTheory.TwV.AwayCpl.RhoOne.rhoS_det_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwV.AwayCpl.RhoOne.rhoS_det_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTameLocalCharacterDetCongruentOneEqOne.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.tameLocalCharacter_det_congruent_one_eq_one : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)), cst.Ok → ∀ (i n : ℕ) (P : rowSG Pr sel mu) (k : GLint X.E n P.1),

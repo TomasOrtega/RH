@@ -5,8 +5,10 @@ import Formalism.SatakeDualWeyl.Statement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMatLat
 open Polynomial Matrix GlobalTheory.LatOrb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitAdj.exists_unitary_mul_integral | exact GlobalTheory.UnitAdj.exists_unitary_mul_integral | (intros; apply GlobalTheory.UnitAdj.exists_unitary_mul_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitAdj.exists_unitary_mul_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryMulIntegralOfNormMaximalOrderUnit.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_mul_integral_of_norm_maximalOrder_unit : ∀ {O K A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K] [Algebra O K] [IsFractionRing O K]

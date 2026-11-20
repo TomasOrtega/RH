@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichm
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.BKGal
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eps_sub_one_dvd_coeff_zero | exact GlobalTheory.eps_sub_one_dvd_coeff_zero | (intros; apply GlobalTheory.eps_sub_one_dvd_coeff_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eps_sub_one_dvd_coeff_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEpsilonSubOneDvdAinfCoeffZeroOfThetaVanishing.lean&line=197#L197)
 -/
 theorem _root_.GlobalTheory.T.epsilon_sub_one_dvd_ainf_coeff_zero_of_theta_vanishing : ∀ (l : ℕ) [Fact l.Prime] (ε : OCb l), IsEps ε → ∀ a : Ainf l, (∀ n : ℕ, Per.θ l (WittVector.frobenius^[n] a) = 0) → (ε - 1) ∣ a.coeff 0 := by
   first | exact @GlobalTheory.eps_sub_one_dvd_coeff_zero | exact GlobalTheory.eps_sub_one_dvd_coeff_zero | (intros; apply GlobalTheory.eps_sub_one_dvd_coeff_zero <;> assumption)

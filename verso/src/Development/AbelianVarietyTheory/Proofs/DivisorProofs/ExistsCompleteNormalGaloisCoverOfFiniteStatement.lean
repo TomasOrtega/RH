@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalCover.exists_isCN_galois_of_finite | exact GlobalTheory.GalCover.exists_isCN_galois_of_finite | (intros; apply GlobalTheory.GalCover.exists_isCN_galois_of_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalCover.exists_isCN_galois_of_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCompleteNormalGaloisCoverOfFinite.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_completeNormal_galois_cover_of_finite : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [CommRing R] [IsDomain R] (b : A →+* R), IsCN A → b.Finite → Function.Injective b → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (θ : R →+* R'), IsCN R' ∧ IsLocalHom θ ∧ Function.Injective θ ∧ θ.Finite ∧ ∀ r : R, (∀ σ : R' ≃+* R', IsOfFinOrder σ → (∀ a, σ (θ (b a)) = θ (b a)) → σ (θ r) = θ r) → r ∈ b.range := by
   first | exact @GlobalTheory.GalCover.exists_isCN_galois_of_finite | exact GlobalTheory.GalCover.exists_isCN_galois_of_finite | (intros; apply GlobalTheory.GalCover.exists_isCN_galois_of_finite <;> assumption)

@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT GlobalTheory.UPel.HT.LieType
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover | exact GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover | (intros; apply GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenspaceDimensionOfUniformization.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.eigenspace_dimension_of_uniformization : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ)) h hL (D' : PLat D.O D.inv) t Q e, UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e → ∀ τ : Fin D.a → (D.F →+* ℂ), (∀ i (c : 𝓞 D.F), τ i (c : D.F) = σ (b.t i c)) → (∀ i, Module.finrank ℂ (eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) (τ i)) = D.m) ∧ ∀ u : Fin D.g → ℂ, ρ (algebraMap (𝓞 D.F) D.O D.ω) *ᵥ u = σ b.ρ • u → u ∈ ⨆ i, eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) (τ i) := by
   first | exact @GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover | exact GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover | (intros; apply GlobalTheory.UPel.HT.LieType.lieEigen_rank_cover <;> assumption)

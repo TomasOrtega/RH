@@ -13,8 +13,10 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeatSym.VS.mul | exact GlobalTheory.HeatSym.VS.mul | (intros; apply GlobalTheory.HeatSym.VS.mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeatSym.VS.mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMulOfScaledSectionValues.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.mul_of_scaled_section_values : ∀ {R Ω : Type} [CommRing R] [IsDomain R] [CommRing Ω] (φ : R →+* Ω) {Y : Scheme.{0}} (L : LB Y), L.IsLB → ∀ (x : Sp Ω ⟶ Y) (g : GlobalTheory.RayEv.Transport.Frame L (x ≫ 𝟙 Y)) (k l : ℕ) (s s' : FractionRing Ω), GlobalTheory.HeatSym.VS φ L x g k s → GlobalTheory.HeatSym.VS φ L x g l s' → GlobalTheory.HeatSym.VS φ L x g (k + l) (s * s') := by
   first | exact @GlobalTheory.HeatSym.VS.mul | exact GlobalTheory.HeatSym.VS.mul | (intros; apply GlobalTheory.HeatSym.VS.mul <;> assumption)

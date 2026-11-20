@@ -8,8 +8,10 @@ open GlobalTheory.FinPl
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBUnif.uniform | exact GlobalTheory.SBUnif.uniform | (intros; apply GlobalTheory.SBUnif.uniform <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBUnif.uniform` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchwartzBruhatMatrixUniformlyLocallyConstantBoun.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.schwartzBruhat_matrix_uniformly_locallyConstant_bounded : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (Ψ : Matrix n n' k → ℂ), Ψ ∈ SB (Matrix n n' k) → ∃ N : ℕ, 0 < N ∧ (∀ X Y : Matrix n n' k, (∀ i j, Y i j ∈ 𝒪[k]) → Ψ (X + (N : k) • Y) = Ψ X) ∧ ∀ X, Ψ X ≠ 0 → ∀ i j, (N : k) * X i j ∈ 𝒪[k] := by
   first | exact @GlobalTheory.SBUnif.uniform | exact GlobalTheory.SBUnif.uniform | (intros; apply GlobalTheory.SBUnif.uniform <;> assumption)

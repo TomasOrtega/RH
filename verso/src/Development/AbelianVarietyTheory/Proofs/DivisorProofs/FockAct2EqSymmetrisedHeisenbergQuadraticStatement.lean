@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open scoped TensorProduct Matrix
 open MeasureTheory Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.RealWeil
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockHeisQuad.fockAct2_eq_heisOp_quad | exact GlobalTheory.FockHeisQuad.fockAct2_eq_heisOp_quad | (intros; apply GlobalTheory.FockHeisQuad.fockAct2_eq_heisOp_quad <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockHeisQuad.fockAct2_eq_heisOp_quad` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockAct2EqSymmetrisedHeisenbergQuadratic.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.fockAct2_eq_symmetrised_heisenbergQuadratic : ∀ (P Q R S : ℕ) (Y : Mat R S), Y ∈ upq R S →
     fockAct2 P Q R S Y = (4 * Real.pi * Complex.I : ℂ)⁻¹ • ∑ a : Ix P Q, ∑ b : Ix R S, (lineSign a b / 4) •

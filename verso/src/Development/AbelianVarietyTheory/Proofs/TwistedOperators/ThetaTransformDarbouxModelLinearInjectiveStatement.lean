@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTransformInj.linear_injective | exact GlobalTheory.ThetaTransformInj.linear_injective | (intros; apply GlobalTheory.ThetaTransformInj.linear_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTransformInj.linear_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaTransformDarbouxModelLinearInjective.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.thetaTransform_darbouxModel_linear_injective : ∀ (D : D7) {m k d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E m} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k}
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Y Z) (ψ : AddChar (AF D.host.F) ℂ) (G : Matrix (Fin m) (Fin m) D.host.E)

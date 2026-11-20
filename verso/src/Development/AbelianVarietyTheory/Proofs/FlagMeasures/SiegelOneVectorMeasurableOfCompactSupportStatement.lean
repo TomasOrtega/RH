@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SiegelMeanCc
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice
 open scoped TensorProduct ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneVecMeas.sw1b2_of_cc | exact GlobalTheory.OneVecMeas.sw1b2_of_cc | (intros; apply GlobalTheory.OneVecMeas.sw1b2_of_cc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneVecMeas.sw1b2_of_cc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FSiegelOneVectorMeasurableOfCompactSupport.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.siegel_one_vector_measurable_of_compactSupport : GlobalTheory.GaussMean.OneVectorCc → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → SW1b2 F E σ M J := by
   first | exact @GlobalTheory.OneVecMeas.sw1b2_of_cc | exact GlobalTheory.OneVecMeas.sw1b2_of_cc | (intros; apply GlobalTheory.OneVecMeas.sw1b2_of_cc <;> assumption)

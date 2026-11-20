@@ -16,15 +16,13 @@ open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData
 
 namespace SZ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For x > 0, write the power as the exponential of the exponent times log(x). Adding exponents then multiplies their exponentials.
 -/
 lemma rp {x : ℝ} (hx0 : 0 < x) (u v : ℝ) : x ^ (u + v) = x ^ u * x ^ v := Real.rpow_add hx0 u v
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Multiply the assumed inequality by the positive power of x with exponent ε/8. It cancels the reciprocal power on the left, leaving n/2. Multiply by two.
 -/
 lemma nT_bound {x ε : ℝ} {n nT : ℝ} (hx0 : 0 < x) (hnT : x ^ (-(ε / 8)) * n / 2 ≤ nT) :
     n ≤ 2 * nT * x ^ (ε / 8) := by
@@ -36,10 +34,8 @@ lemma nT_bound {x ε : ℝ} {n nT : ℝ} (hx0 : 0 < x) (hnT : x ^ (-(ε / 8)) * 
       _ = n / 2 := by rw [hinv]; ring
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Since m is nonnegative, the inequalities x ≤ Xm and X ≤ Y give x ≤ Ym. Use this in the bound a_E ≤ 2xb and multiply by the nonnegative n_T.
 -/
 lemma T1 {x X Y m nT aE b : ℝ} (hxX : x ≤ X * m) (hXY : X ≤ Y) (hnT0 : 0 ≤ nT) (hm0 : 0 ≤ m) (hb : 0 ≤ b)
     (haE : aE ≤ 2 * x * b) : nT * aE ≤ 2 * Y * (nT * m * b) := by
@@ -51,10 +47,8 @@ lemma T1 {x X Y m nT aE b : ℝ} (hxX : x ≤ X * m) (hXY : X ≤ Y) (hnT0 : 0 �
   calc nT * aE ≤ nT * (2 * (Y * m) * b) := le_trans h1 h3
     _ = 2 * Y * (nT * m * b) := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The inequality xm ≤ k and positivity of the denominators give m²/k ≤ m/x. Use a_E ≤ 2xb and these two bounds in the product with n_T. Cancelling x leaves 2n_Tmb, which is at most 2Y times n_Tmb because Y ≥ 1.
 -/
 lemma T2 {x Y m nT aE b k : ℝ} (hx0 : 0 < x) (hY1 : 1 ≤ Y) (hnT0 : 0 ≤ nT) (hm0 : 0 ≤ m) (hb : 0 ≤ b)
     (hk0 : 0 < k) (hk1 : x * m ≤ k) (haE : aE ≤ 2 * x * b) :
@@ -68,12 +62,8 @@ lemma T2 {x Y m nT aE b k : ℝ} (hx0 : 0 < x) (hY1 : 1 ≤ Y) (hnT0 : 0 ≤ nT)
   have h3 : 2 * (nT * m * b) ≤ 2 * Y * (nT * m * b) := by nlinarith
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The lower bound on n_T gives n ≤ 2n_T times x to the power ε/8. Also m times the powers of x with exponents ε and ε/8 is at most Y because the three exponents add to 1/2 + 13ε/8. Substitute these into 2nm times x to the power ε and then multiply by the nonnegative mb.
 -/
 lemma T3 {x ε Y m n nT b : ℝ} (hx0 : 0 < x) (hm0 : 0 ≤ m) (hb : 0 ≤ b)
     (hY : Y = x ^ ((1 : ℝ) / 2 + 13 * ε / 8)) (hm2 : m ≤ x ^ ((1 : ℝ) / 2 + ε / 2))
@@ -99,18 +89,8 @@ lemma T3 {x ε Y m n nT b : ℝ} (hx0 : 0 < x) (hm0 : 0 ≤ m) (hb : 0 ≤ b)
     _ ≤ (4 * Y * nT) * (m * b) := mul_le_mul_of_nonneg_right key hmb
     _ = 4 * Y * (nT * m * b) := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Rewrite the reciprocal power in the denominator to combine the two ε factors in the numerator. Using n_T₂ ≤ n and the bound on k gives the remaining coefficient at most n times x to the power 1/2 + ε after cancellation of n². The lower bound on n_T replaces n by 2n_T times x to the power ε/8. Since x ≥ 1, the resulting power is at most Y. Multiply by the nonnegative mb.
 -/
 lemma T4 {x ε Y m n nT nT2 b k : ℝ} (hx0 : 0 < x) (hx1 : 1 ≤ x) (hm0 : 0 ≤ m) (hb : 0 ≤ b) (hε : 0 < ε)
     (hY : Y = x ^ ((1 : ℝ) / 2 + 13 * ε / 8)) (hnT : x ^ (-(ε / 8)) * n / 2 ≤ nT) (hn : 0 < n)
@@ -157,10 +137,8 @@ namespace CR
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For the trivial character each inertia coset average is one. Its numerator counts the subgroup, which contains zero and has positive cardinality, so it cancels its denominator. The product is therefore one.
 -/
 lemma primVal_zero (D : ArithData H) (n : ℕ) : primVal D 0 n = 1 := by
   classical
@@ -175,22 +153,22 @@ lemma primVal_zero (D : ArithData H) (n : ℕ) : primVal D 0 n = 1 := by
   have := Finset.card_pos.2 ⟨0, h0⟩
   exact_mod_cast this.ne'
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+The character and the real sign function both take value one when the first binary coordinate is zero and minus one when it is one. Embedding the real value into the complex numbers gives equality.
 -/
 lemma chC_apply' (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g = ((sgn2 g.1.1 : ℝ) : ℂ) := by
   show (if g.1.1 = 0 then (1 : ℂ) else -1) = _
   unfold sgn2; split_ifs <;> simp
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+The character and the real sign function both take one on second coordinate zero and minus one on second coordinate one. Their values agree after the real-to-complex embedding.
 -/
 lemma psC_apply' (g : E0 × H) : (psC : AddChar (E0 × H) ℂ) g = ((sgn2 g.1.2 : ℝ) : ℂ) := by
   show (if g.1.2 = 0 then (1 : ℂ) else -1) = _
   unfold sgn2; split_ifs <;> simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The product character multiplies the two sign values at the given element. Multiplication commutes with the real-to-complex embedding.
 -/
 lemma chpsC_apply' (g : E0 × H) :
     (chpsC : AddChar (E0 × H) ℂ) g = ((sgn2 g.1.1 * sgn2 g.1.2 : ℝ) : ℂ) := by
@@ -207,16 +185,14 @@ def host (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) : CycHost H whe
   psC_apply := psC_apply'
   chpsC_apply := chpsC_apply'
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The constructed host uses exactly the supplied arithmetic data and the supplied linear correction. Its character smoothing function is therefore the same defining expression.
 -/
 lemma GC_host (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (y : ℝ) :
     GC (host D ell) ψ y = GPsi D ell ψ y := rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Adding a top-place element leaves the first binary coordinate fixed, so the two complementary indexing sets coincide. Then replace each conjugated character value at g by the character value at −g. The complex sums agree term by term, so their real parts agree.
 -/
 lemma De_re (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (a : ℝ) (t : H) (w : E0 × H → ℝ) :
     (De D ell a t w).re = balTop (host D ell) a t w := by
@@ -227,8 +203,8 @@ lemma De_re (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (a : ℝ) (t
   refine congrArg Complex.re (congrArg _ (Finset.sum_congr rfl fun g _ => Finset.sum_congr rfl fun ψ _ => ?_))
   rw [AddChar.map_neg_eq_conj]; rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The complex character group of the finite abelian group has the same size as the group. The ambient group is twice the selected place set in size, so this gives the stated equality.
 -/
 lemma card_char : (Fintype.card (AddChar (E0 × H) ℂ) : ℝ) = 2 * fPl H := by
   rw [AddChar.card_eq]
@@ -236,8 +212,8 @@ lemma card_char : (Fintype.card (AddChar (E0 × H) ℂ) : ℝ) = 2 * fPl H := by
   unfold fPl
   exact_mod_cast this
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The selected place set is nonempty, as witnessed by the identity. Its cardinality is therefore positive.
 -/
 lemma fPl_pos : 0 < fPl H := by
   unfold fPl
@@ -245,8 +221,8 @@ lemma fPl_pos : 0 < fPl H := by
   have h : (PhiSet (H := H)).card ≠ 0 := by exact_mod_cast this
   exact_mod_cast Nat.pos_of_ne_zero h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The containing complementary set has the same cardinality as the selected place set. The cardinality of its subset S is at most that cardinality.
 -/
 lemma card_S_le (t : H) (S : Finset (E0 × H)) (hS : S ⊆ univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t))) :
     (S.card : ℝ) ≤ fPl H := by
@@ -254,16 +230,8 @@ lemma card_S_le (t : H) (S : Finset (E0 × H)) (hS : S ⊆ univ.filter (fun g : 
   rw [Formalism.D5.Bal.card_S t] at this
   unfold fPl; exact_mod_cast this
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
-
-Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Each character value has modulus one, so the norm of each weighted term is at most K. The triangle inequality bounds the inner sum by the number of characters times K, and the outer sum multiplies this bound by the size of S. The number of characters is twice the place count, and S has at most the place count. Divide by the positive place count to obtain the result.
 -/
 lemma norm_avg_le (S : Finset (E0 × H)) (hS : (S.card : ℝ) ≤ fPl H) (F : E0 × H → AddChar (E0 × H) ℂ → ℂ)
     (K : ℝ) (hK0 : 0 ≤ K) (hK : ∀ g ∈ S, ∀ ψ, ‖F g ψ‖ ≤ K) :
@@ -291,8 +259,8 @@ lemma norm_avg_le (S : Finset (E0 × H)) (hS : (S.card : ℝ) ≤ fPl H) (F : E0
         gcongr
     _ = 2 * fPl H * K := by field_simp
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the decidable proposition. A detailed English derivation is pending.
+/- English proof (authored)
+Translating by the top-place element leaves the first coordinate unchanged, so the hypothesis gives first coordinate one. Adding conjugation adds one to this coordinate. The partner therefore has first coordinate zero modulo two.
 -/
 lemma partner_inPhi {g : E0 × H} (t : H) (hg : ¬ InPhi (g + topPl t)) : InPhi (cconj + g + topPl t) := by
   rw [Formalism.D5.Bal.inPhi_add_topPl] at hg
@@ -306,10 +274,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Sum the given inequality over the units, top indices and factor indices. Each contributes the same additive error K. There are as many copies of K as the product of the three cardinalities. Dividing by the positive group cardinality cancels the unit count and leaves the stated error.
 -/
 lemma mean_le {m : ℕ} (TT : Finset H) (F G : H → H → Fin m → ℝ) (K : ℝ)
     (h : ∀ u0, ∀ t ∈ TT, ∀ j, F u0 t j ≤ G u0 t j + K) :
@@ -329,8 +295,8 @@ lemma mean_le {m : ℕ} (TT : Finset H) (F G : H → H → Fin m → ℝ) (K : �
         rw [← h2]; exact mul_le_mul_of_nonneg_left h1 (by positivity)
     _ = _ := by field_simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+/- English proof (authored)
+Evaluate at the element with second binary coordinate one and all other coordinates zero. The second sign character takes minus one there, whereas the trivial character takes one.
 -/
 lemma psC_ne_zero : (psC : AddChar (E0 × H) ℂ) ≠ 0 := by
   intro h
@@ -338,8 +304,8 @@ lemma psC_ne_zero : (psC : AddChar (E0 × H) ℂ) ≠ 0 := by
   simp only [AddChar.zero_apply, psC_apply'] at this
   norm_num [sgn2] at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+/- English proof (authored)
+Evaluate at the element with first binary coordinate one and all other coordinates zero. The first sign character takes minus one there, while the trivial character takes one.
 -/
 lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   intro h
@@ -347,8 +313,8 @@ lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   simp only [AddChar.zero_apply, chC_apply'] at this
   norm_num [sgn2] at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+/- English proof (authored)
+At the element with first coordinate one and second coordinate zero, the two sign values multiply to minus one. The trivial character's value is one, so the product character is nontrivial.
 -/
 lemma chpsC_ne_zero : (chpsC : AddChar (E0 × H) ℂ) ≠ 0 := by
   intro h
@@ -356,14 +322,8 @@ lemma chpsC_ne_zero : (chpsC : AddChar (E0 × H) ℂ) ≠ 0 := by
   simp only [AddChar.zero_apply, chpsC_apply'] at this
   norm_num [sgn2] at this
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Each listed character is nontrivial. Compare the value at y with the value at x using the assumed difference bound and the triangle inequality. The distance is at most one and the larger argument is at most x + 1. The assumed estimates at x bound the value and the linear correction coefficient. Substituting them gives the stated norm bound.
 -/
 lemma three_bound (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) {x ε Cd CL y : ℝ} (hx : 3 ≤ x) (hCd : 0 ≤ Cd)
     (hy : |y - x| ≤ 1) (hDer : DerivInt D ell Cd) (hVal : ValuesAtX D ell x ε CL)
@@ -391,12 +351,8 @@ lemma three_bound (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) {x ε 
     simpa using this
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The trivial character contributes the zeta error evaluated at y. Its difference from the error at x is at most the difference constant since the distance is at most one. Bound the real parts of the other three character contributions in absolute value by their norm estimates. Adding the four lower bounds gives the displayed signal and movement error.
 -/
 lemma signal_term (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) {x ε Cd CL y : ℝ} (hx : 3 ≤ x) (hCd : 0 ≤ Cd)
     (hy : |y - x| ≤ 1) (hDer : DerivInt D ell Cd) (hVal : ValuesAtX D ell x ε CL) :
@@ -420,8 +376,8 @@ lemma signal_term (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) {x ε 
   unfold moveCost
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Expand the difference of the two real averages. Linearity puts the difference of the weighted character terms inside the same complex double sum. Its real part is bounded in absolute value by its complex norm. Apply the normalized sum bound with the given pointwise norm estimate and the cardinality of the complementary set.
 -/
 lemma balTop_diff (Hs : CycHost H) (a : ℝ) (t : H) (w w' : E0 × H → ℝ) (K : ℝ) (hK0 : 0 ≤ K)
     (hK : ∀ g, ¬ InPhi (g + topPl t) → ∀ ψ : AddChar (E0 × H) ℂ,
@@ -454,21 +410,21 @@ def wR {m : ℕ} (T2 : Finset H) (b : ℝ) (w : H → Fin m → E0 × H → ℝ)
 
 def aR (TT : Finset H) (a : H → ℝ) : H → ℝ := fun t => if t ∈ TT then a t else 1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a thick place, the rounded weight is defined to be b.
 -/
 lemma wR_thick {m : ℕ} (T2 : Finset H) (b : ℝ) (w : H → Fin m → E0 × H → ℝ) (u0 : H) (j : Fin m) (ρ : E0 × H)
     (h : IsThickAt T2 u0 ρ) : wR T2 b w u0 j ρ = b := by unfold wR; rw [if_pos h]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a selected place outside the thick set, the rounded definition keeps the original weight.
 -/
 lemma wR_thin {m : ℕ} (T2 : Finset H) (b : ℝ) (w : H → Fin m → E0 × H → ℝ) (u0 : H) (j : Fin m) (ρ : E0 × H)
     (h : ¬ IsThickAt T2 u0 ρ) (hρ : InPhi ρ) : wR T2 b w u0 j ρ = w u0 j ρ := by
   unfold wR; rw [if_neg h, if_pos hρ]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The restricted weight equals the given weight on each element of the top set.
 -/
 lemma aR_mem (TT : Finset H) (a : H → ℝ) {t : H} (ht : t ∈ TT) : aR TT a t = a t := by
   unfold aR; rw [if_pos ht]
@@ -495,42 +451,8 @@ end
 
 end CR
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The top-weight condition puts each a between (x − 1)b and (x + 1)b, so the character balance identity applies to each term of the averaged excess. Round each thick weight to b. Its difference is at most η + 1, and the weighted Lipschitz estimate bounds the induced change before averaging by 3(x + 1)(η + 1). Thin weights stay fixed. The character-average bound and summation give the resulting rounding error. The thick and thin average identity splits the rounded expression. On each thin node, its weight is at most 2b′, so the argument of the character error is at least the specified large-window threshold. The thin estimate bounds the weighted norm by (x + 1)bθ, and averaging gives a lower bound on the thin contribution. The thick signal uses a/b within one of x. Apply the signal lower bound term by term and multiply by the nonnegative thick fraction divided by two. Combining both parts with the rounding error yields the inequality.
 -/
 theorem proposition_finite_group {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] : GrowthInequalityExplicit (H := H) := by
   intro hBal D hD ell N m TT T2 a w x ε b b' η X' θ Cd CL Err hH
@@ -666,38 +588,8 @@ theorem proposition_finite_group {H : Type} [AddCommGroup H] [Fintype H] [Decida
   rw [e2] at hrest
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Set Y to the power of x with exponent 1/2 + 13ε/8 and Q = n_Tmb. The size assumptions make Q positive and give the four bracket bounds with coefficients 2, 2, 4 and 2 times YQ. Thus the error is at most 10 times that size with the extra factor x to the power Cε. Divide the growth inequality by Q and use 2/x ≤ 1, which is absorbed by one copy of the power bound. After multiplying by two, the thick fraction times the shifted zeta error is at most 22 times x to the power Cε times Y. The thick fraction is at least x to the power −ε. If the shifted error is positive, dividing by the thick fraction costs at most x to the power ε. If it is nonpositive, the same upper bound is automatic. Adding back four times the original power gives at most 26 times x to the power 1/2 + (C + 21/8)ε. The large-x condition absorbs 26 in the remaining power with exponent 3ε/8.
 -/
 theorem proposition_size_bound : GrowthSizeBound := by
   intro C ε x n nT nT2 m b k aE Err Gx hW hT
@@ -786,14 +678,8 @@ theorem proposition_size_bound : GrowthSizeBound := by
   calc Gx ≤ 26 * x ^ ((1 : ℝ) / 2 + (C + 21 / 8) * ε) := hG26
     _ ≤ x ^ (3 * ε / 8) * x ^ ((1 : ℝ) / 2 + (C + 21 / 8) * ε) := mul_le_mul_of_nonneg_right hbig hZ0.le
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The movement assumption makes the signal with four copies of the power a lower bound for the explicit signal with three copies and the movement cost. Use the two size assumptions to bound the thin contribution and the rounding error by one copy each of the common size divided by x. Add these to the explicit finite-group bound.
 -/
 theorem growthInequality {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] : GrowthInequalityForm (H := H) := by
   intro hBal D hD ell N m TT T2 a w x ε b b' η X' θ Cd CL Err hH hS
@@ -816,10 +702,8 @@ theorem growthInequality {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
     ring
   rw [e]; linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For each required ε, take the threshold furnished by the growth data. Above it, apply the finite-group inequality and the size estimate to get the zeta error power bound with coefficient exponent C + 3. The conditional criterion converts this family of power bounds into the Riemann hypothesis.
 -/
 theorem proposition_joint : RiemannHypothesisOfBalanceAndGrowthData := by
   intro hBal C ε₁ hε₁ hIn
@@ -831,18 +715,8 @@ theorem proposition_joint : RiemannHypothesisOfBalanceAndGrowthData := by
   have ht := growthInequality (hBal H) D hD ell N m TT T2 a w x ε b b' η X' θ Cd CL Err hH hS
   exact proposition_size_bound C ε x (Fintype.card H) TT.card T2.card m b k aE Err (Gz x) hW ht
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Reindex the top weights and selected places using the supplied bijections. The logarithmic average uses the selected-place cardinality, which equals the index count by the second bijection. Substituting the given constant and weight identifications makes the data's main term the sum of the real main contributions. Replace the requested amount by its given arithmetic sum, then split the uniform mean of the difference. The resulting inequality is the bound on the top excess.
 -/
 theorem top_from_weighted_mean {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] : LeadingTermTranslateMean (H := H) := by
   intro W _ _ Top _ m f Dd D N ell TT a w eT eP E haT hw hgam hLpL hASK hle
@@ -875,8 +749,8 @@ theorem top_from_weighted_mean {H : Type} [AddCommGroup H] [Fintype H] [Decidabl
   rw [mul_sub, one_div, inv_mul_eq_div, inv_mul_eq_div]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use the growth hypotheses at the chosen point. The character balance theorem supplies the balance input to the growth inequality, and the size estimate converts that inequality into the stated pointwise zeta error bound.
 -/
 theorem proposition_at_point : GrowthBoundAtPoint := by
   intro C ε x hI
@@ -885,24 +759,16 @@ theorem proposition_at_point : GrowthBoundAtPoint := by
     Err hH hS
   exact proposition_size_bound C ε x (Fintype.card H) TT.card T2.card m b k aE Err (Gz x) hW ht
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The finite-group character balance theorem is available for each admissible group. Supply it to the conditional growth theorem to obtain the implication from the growth data to the Riemann hypothesis.
 -/
 theorem proposition_final : GrowthBoundGivesRiemannHypothesis :=
   proposition_joint (fun H _ _ _ => Formalism.LFunctionChainParameters.characterSumData.colour_balance (H := H))
 
 namespace AN
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+For y < 1 the Chebyshev sum is zero because no positive prime power is below two. For y ≥ 1, apply the Chebyshev estimate. Writing log(y) as twice log(√y) and using log(t) ≤ t/e at t = √y bounds its square-root error term by 4y/e. The remaining coefficient is log(4). The numerical bounds on log(2) and 1/e make log(4) + 4/e less than three.
 -/
 lemma psi_le_three {y : ℝ} (hy : 0 ≤ y) : Chebyshev.psi y ≤ 3 * y := by
   by_cases h1 : y < 1
@@ -928,22 +794,14 @@ lemma psi_le_three {y : ℝ} (hy : 0 ≤ y) : Chebyshev.psi y ≤ 3 * y := by
       nlinarith
     nlinarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The indices from 1 to the natural floor of Y are exactly the positive indices up to that floor. Their von Mangoldt sum is the Chebyshev function at Y, to which the bound applies.
 -/
 lemma sum_vM_le {Y : ℝ} (hY : 0 ≤ Y) : ∑ n ∈ Icc 1 ⌊Y⌋₊, Λ n ≤ 3 * Y := by
   rw [Formalism.LogFactorialMertensBounds.Icc_one_eq_Ioc]; exact psi_le_three hY
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At positive integer indices up to the floor of y, the weight y/n − 1 is nonnegative and equals its positive part. Above the floor it is negative and its positive part vanishes. Extending the complex sum to M with the positive part therefore changes no term of the sum.
 -/
 lemma truncC (c : ℕ → ℂ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
     ∑ n ∈ Icc 1 ⌊y⌋₊, c n * ((y / n - 1 : ℝ) : ℂ) = ∑ n ∈ Icc 1 M, c n * ((max (y / n - 1) 0 : ℝ) : ℂ) := by
@@ -969,16 +827,8 @@ lemma truncC (c : ℕ → ℂ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
     have := (one_le_div hn0).2 hy; linarith
   rw [max_eq_left this]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The same real weight is nonnegative up to the natural floor of y and negative above it. Replace it by its positive part below the floor and append the zero terms up to M.
 -/
 lemma truncR (c : ℕ → ℝ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
     ∑ n ∈ Icc 1 ⌊y⌋₊, c n * (y / n - 1) = ∑ n ∈ Icc 1 M, c n * (max (y / n - 1) 0) := by
@@ -1006,10 +856,8 @@ lemma truncR (c : ℕ → ℝ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Each character value in the coset has modulus one. The triangle inequality bounds the norm of the numerator by the subgroup cardinality. The subgroup contains zero, so divide by its positive cardinality.
 -/
 lemma norm_cosetMean_le (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddChar (E0 × H) ℂ) :
     ‖cosetMean I h ψ‖ ≤ 1 := by
@@ -1025,16 +873,16 @@ lemma norm_cosetMean_le (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddChar 
   refine le_trans (norm_sum_le _ _) ?_
   simp [AddChar.norm_apply]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The norm of the product is the product of the coset-mean norms. Each factor is nonnegative and at most one, so the product is at most one.
 -/
 lemma norm_primVal_le (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (n : ℕ) : ‖primVal D ψ n‖ ≤ 1 := by
   unfold primVal
   rw [norm_prod]
   exact Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun p _ => norm_cosetMean_le _ _ _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt function is nonnegative, so the norm of its complex value is the function itself. Multiply by the primitive-value norm, which is at most one.
 -/
 lemma norm_coef_le (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (n : ℕ) :
     ‖(Λ n : ℂ) * primVal D ψ n‖ ≤ Λ n := by
@@ -1050,22 +898,8 @@ namespace AN
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Extend both smoothing sums to the same finite cutoff at the floor of the larger argument using their positive parts. The positive-part map is Lipschitz with constant one. At index n the weight difference is therefore at most |y − z|/n. Multiply by the coefficient bound and sum to get |y − z| times the weighted von Mangoldt sum. The Mertens upper bound and monotonicity of the logarithm bound it by log(max(y,z)) + log(4) + 4. The linear correction contributes at most |y − z| times the modulus of its coefficient.
 -/
 lemma deriv_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (hψ : ψ ≠ 0)
     (y z : ℝ) (hy : 1 ≤ y) (_hz : 1 ≤ z) :
@@ -1117,14 +951,8 @@ lemma deriv_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : A
     mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
   nlinarith
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extend the smoothing sum to the common cutoff using the positive part. The positive factor w can be moved inside each positive part, changing the expression to the positive part of A/n − w. The linear correction scales by w times A/w, which equals A.
 -/
 lemma wG_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (hψ : ψ ≠ 0)
     (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
@@ -1147,18 +975,14 @@ lemma wG_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddC
     rw [this]; push_cast; ring
   · rw [← mul_assoc, ← Complex.ofReal_mul, mul_div_cancel₀ _ hw.ne']
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since A is nonnegative and w ≥ μ > 0, division by w gives at most division by μ. The natural floor is monotone.
 -/
 lemma floor_div_le {A w μ : ℝ} (hA : 0 ≤ A) (hμ : 0 < μ) (h : μ ≤ w) : ⌊A / w⌋₊ ≤ ⌊A / μ⌋₊ :=
   Nat.floor_le_floor (div_le_div_of_nonneg_left hA hμ h)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Use the weighted smoothing formula with the common cutoff at the floor of A divided by the smaller weight. The linear correction is the same in both sums and cancels. The positive-part weights differ by at most the difference of the weights, and the coefficient modulus is at most the von Mangoldt value. Sum these bounds and apply the Chebyshev estimate at that cutoff.
 -/
 lemma lip_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (hψ : ψ ≠ 0)
     (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hw' : 0 < w') :
@@ -1187,14 +1011,8 @@ lemma lip_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : Add
 
 end
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+Write the zeta error as the weighted von Mangoldt sum and its logarithmic and linear corrections. Extend the sum to M using positive parts and move the positive factor w inside each positive part. The same factor changes each A/w in the two coefficients into A, giving the stated formula.
 -/
 lemma wGz (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
     w * Gz (A / w) = ∑ n ∈ Icc 1 M, Λ n * max (A / n - w) 0 - A * Real.log (A / w)
@@ -1218,8 +1036,8 @@ lemma wGz (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
   rw [← hs]
   field_simp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the weighted zeta formula at both weights with a common cutoff. The linear terms cancel. The difference of the two prime sums is nonnegative because the positive parts decrease as the weight grows. Their difference is at most w′ − w per term, so the Chebyshev bound gives an upper bound of 3A(w′ − w)/w for the sum. The logarithmic difference is A log(w′/w), which is also nonnegative and at most A(w′ − w)/w. The total difference is the difference of these two nonnegative quantities, so its absolute value is at most the common upper bound.
 -/
 lemma lip_triv_le (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hww : w ≤ w') :
     |w * Gz (A / w) - w' * Gz (A / w')| ≤ 3 * A / w * (w' - w) := by
@@ -1267,8 +1085,8 @@ lemma lip_triv_le (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hww : w ≤ w') :
   rw [abs_le]
   constructor <;> linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Order the two positive weights. Apply the one-sided estimate with the smaller weight first. Absolute values make the estimate invariant under swapping the weights, and the ordered difference equals the absolute weight difference.
 -/
 lemma lip_triv (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hw' : 0 < w') :
     |w * Gz (A / w) - w' * Gz (A / w')| ≤ 3 * A / min w w' * |w - w'| := by
@@ -1280,10 +1098,8 @@ lemma lip_triv (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hw' : 0 < w') :
 
 end AN
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For the trivial character the complex error is the real zeta error embedded in the complex numbers, so its norm difference equals the corresponding real absolute difference. Use the trivial-weight estimate in that case and the character-weight estimate in the other.
 -/
 theorem lipschitz_weight_all : LipWAll := by
   intro H _ _ _ D ell ψ A w w' hA hw hw'
@@ -1294,12 +1110,8 @@ theorem lipschitz_weight_all : LipWAll := by
     exact AN.lip_triv A w w' hA hw hw'
   · exact AN.lip_char D ell ψ hψ A w w' hA hw hw'
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Choose the universal constant as the absolute value of the zeta Lipschitz constant plus log(4) + 4. This is nonnegative and dominates both the character constant and the zeta constant. Apply the two separate estimates for arguments at least one and enlarge their constants accordingly.
 -/
 theorem derivative_integral_all : DerivIntAll := by
   obtain ⟨K, hK⟩ := Formalism.zetaPrimeSumErrorLipschitz
@@ -1318,10 +1130,8 @@ theorem derivative_integral_all : DerivIntAll := by
     have := le_abs_self K
     linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Choose the universal nonnegative difference constant supplied by the preceding estimate. At every point furnished by the reduced data, insert that universal difference bound and the universal weight Lipschitz estimate. The other hypotheses are already present. The full conditional growth theorem now applies with these completed data.
 -/
 theorem proposition_final_minimum : RiemannHypothesisOfReducedGrowthData := by
   obtain ⟨Cd, hCd, hDer⟩ := derivative_integral_all

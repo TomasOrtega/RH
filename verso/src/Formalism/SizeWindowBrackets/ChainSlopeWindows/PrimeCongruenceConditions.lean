@@ -11,27 +11,23 @@ namespace Formalism.LFunctionChainParameters.LBr2
 open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LHost Formalism.LFunctionChainParameters.LErr Formalism.LFunctionChainParameters.LChain
   Formalism.LFunctionChainParameters.LChain2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
+/- English proof (authored)
+The coefficient for each character is defined to be the logarithmic derivative of its primitive L-function at one.
 -/
 theorem ell_is_log_derivative : EllIsLD1 := by
   intro e q d _ _ ψ
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the two smoothed sums for the trivial character. They have the same von Mangoldt terms and the same logarithmic and Euler constant corrections. Rearranging the real arithmetic gives equality.
 -/
 theorem g_zeta_eq_g_one : GrowthFunctionEqTrivial := by
   intro y
   unfold Gz Sz G1
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+For a nontrivial character, expand the smoothing error and substitute the assumed logarithmic derivative coefficient. Every summation index is positive, so its primitive value equals the value of the induced primitive Dirichlet character. Substitution makes the summands and the correction agree.
 -/
 theorem g_psi_eq_g_chi : GPsiIsGchi := by
   intro e q d _ _ ell ψ hψ hell y
@@ -47,8 +43,8 @@ theorem g_psi_eq_g_chi : GPsiIsGchi := by
   rw [show primVal (hostData e q d) ψ n = _ from h]
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For nontrivial characters use the smoothing identity with the defining logarithmic derivative. For the trivial character the host error is the zeta error, which is the stated real trivial-character function.
 -/
 theorem g_psi_at_modulus : GPsiHost := by
   intro e q d _ _
@@ -56,8 +52,8 @@ theorem g_psi_at_modulus : GPsiHost := by
   unfold GPsi
   rw [if_pos rfl, g_zeta_eq_g_one y]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+On every unit the zero additive character evaluates to one on the reciprocity image. The induced multiplicative character therefore agrees with the trivial Dirichlet character on units, which determines it.
 -/
 lemma dirChar_zero (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] :
     dirChar (recMap e q d) (0 : AddChar (E0 × HA e) ℂ) = 1 := by
@@ -66,10 +62,8 @@ lemma dirChar_zero (e q d : ℕ) [Fact q.Prime] [Fact d.Prime] :
   rw [dirChar_unit, MulChar.one_apply_coe]
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The primitive representative is primitive and lifts back to the original character at the host modulus. Its conductor divides that modulus. If the original character of the group is nontrivial, injectivity of the induction map prevents the induced character from being trivial. Hence its conductor is different from one. Its primitive representative cannot be trivial either, since a lift of the trivial character would again be trivial.
 -/
 theorem character_of_facts : ChiOfFacts := by
   intro e q d _ _ h ψ
@@ -84,12 +78,8 @@ theorem character_of_facts : ChiOfFacts := by
   rw [show (dirChar (recMap e q d) ψ).primitiveCharacter = 1 from h1, changeLevel_one] at h2
   exact h2.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For every nontrivial character replace the host error by its primitive smoothing error. For the trivial character replace it by the real zeta error, whose complex norm is its real absolute value. The combined bound implies both resulting bounds, and those two bounds recover the combined one by the same cases.
 -/
 theorem thin_iff : ThinIff := by
   intro e q d _ _ X' θ
@@ -109,8 +99,8 @@ theorem thin_iff : ThinIff := by
     · rw [h1 ψ hψ y]
       exact hA ψ hψ y hy
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+For any residue, take its canonical natural representative. The assumed agreement on natural inputs at the common level gives equality at this representative, and hence at the residue. Thus the characters agree pointwise.
 -/
 lemma sameChar_eq {N : ℕ} [NeZero N] {χ χ' : DirichletCharacter ℂ N} (h : SameChar χ χ') : χ = χ' := by
   apply DFunLike.ext
@@ -118,8 +108,8 @@ lemma sameChar_eq {N : ℕ} [NeZero N] {χ χ' : DirichletCharacter ℂ N} (h : 
   have := h.2 a.val
   rwa [ZMod.natCast_zmod_val] at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Identify the moduli using the level equality and identify the characters using their agreement on representatives. Every coefficient, smoothing function, L-function and primitivity condition in the conclusion then agrees.
 -/
 theorem same_character_g : SameCharG := by
   intro N M _ _ χ χ' h
@@ -127,10 +117,8 @@ theorem same_character_g : SameCharG := by
   obtain rfl := sameChar_eq h
   exact ⟨rfl, fun _ => rfl, fun _ => rfl, rfl, Iff.rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
-
-Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Lifting a primitive character preserves its conductor, so the conductor of the given lift is M. At this common level the primitive representative and the proposed character both lift to the same character. Injectivity of change of level identifies them, giving agreement on every natural input.
 -/
 lemma sameChar_prim {N M : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hM : M ∣ N) (χ' : DirichletCharacter ℂ M)
     (hp : χ'.IsPrimitive) (hχ : χ = changeLevel hM χ') : SameChar χ.primitiveCharacter χ' := by
@@ -146,8 +134,8 @@ lemma sameChar_prim {N M : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hM :
     exact ⟨rfl, fun _ => rfl⟩
   exact key _ _ (conductor_dvd_level χ) (changeLevel_primitiveCharacter χ) hc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+The odd finite prime field has a nonzero quadratic nonresidue. The quadratic character takes minus one there. The trivial character takes one at this unit, so the two characters differ.
 -/
 lemma qc_ne_one (q : ℕ) [Fact q.Prime] (h2 : q ≠ 2) : qc q ≠ 1 := by
   intro h
@@ -156,8 +144,8 @@ lemma qc_ne_one (q : ℕ) [Fact q.Prime] (h2 : q ≠ 2) : qc q ≠ 1 := by
   rw [qc, MulChar.ringHomComp_apply, ha, MulChar.one_apply_coe] at h1
   norm_num at h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+The conductor divides the prime modulus and is therefore either one or the prime itself. A conductor of one would make the character trivial, contradicting its value on a nonresidue. Thus its conductor is the full modulus.
 -/
 lemma qc_prim (q : ℕ) [Fact q.Prime] (h2 : q ≠ 2) : (qc q).IsPrimitive := by
   rw [isPrimitive_def]
@@ -166,20 +154,14 @@ lemma qc_prim (q : ℕ) [Fact q.Prime] (h2 : q ≠ 2) : (qc q).IsPrimitive := by
   · exact absurd (eq_one_iff_conductor_eq_one.2 h) (qc_ne_one q h2)
   · exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The quadratic character has square equal to the trivial character. Embedding its integer values into the complex numbers preserves this identity.
 -/
 lemma qc_sq (q : ℕ) [Fact q.Prime] : qc q ^ 2 = 1 :=
   ((quadraticChar_isQuadratic (ZMod q)).comp (Int.castRingHom ℂ)).sq_eq_one
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The two lifted primitive characters have conductors m and n. Let c be the conductor of their product. Multiplying the product by the inverse of the second character recovers the first, so m divides the least common multiple of c and n. Since m and n are coprime, m divides c. Interchanging the roles gives n dividing c. Their coprime product therefore divides c, and c divides the full modulus mn. Hence c = mn.
 -/
 lemma prim_mul {N m n : ℕ} [NeZero N] (hm : m ∣ N) (hn : n ∣ N) (hco : m.Coprime n) (hN : N = m * n)
     (χ₁ : DirichletCharacter ℂ m) (χ₂ : DirichletCharacter ℂ n) (h1 : χ₁.IsPrimitive) (h2 : χ₂.IsPrimitive) :
@@ -204,20 +186,14 @@ lemma prim_mul {N m n : ℕ} [NeZero N] (hm : m ∣ N) (hn : n ∣ N) (hco : m.C
     rwa [← hN] at h
   exact Nat.dvd_antisymm (conductor_dvd_level _) e3
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The character modulo eight is quadratic, so squaring it gives the trivial character. This relation is preserved by the embedding of its integer values.
 -/
 lemma chi_eight_sq : chi8 ^ 2 = 1 :=
   (ZMod.isQuadratic_χ₈.comp (Int.castRingHom ℂ)).sq_eq_one
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A proper conductor dividing eight would divide four, so the character would factor through reduction modulo four. The unit five reduces to one modulo four, and any character at that level takes value one there. But the character modulo eight takes minus one at five. This contradiction forces conductor eight.
 -/
 lemma chi_eight_primitive : chi8.IsPrimitive := by
   rw [isPrimitive_def]
@@ -238,14 +214,8 @@ lemma chi_eight_primitive : chi8.IsPrimitive := by
   rw [h6, map_one, chi8, MulChar.ringHomComp_apply, h7] at h5
   norm_num at h5
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The character modulo eight is primitive and quadratic by the preceding results. In the twist, the odd-prime quadratic character and the starting primitive character have coprime conductors, so their lifted product is primitive at the product modulus. That modulus is greater than one, so the primitive product cannot be trivial. If the starting character is quadratic, squaring the product gives the product of the two lifted trivial squares, hence the trivial character.
 -/
 theorem twist_primitive : TwPrimitive := by
   refine ⟨⟨chi_eight_primitive, chi_eight_sq⟩, ?_⟩
@@ -270,8 +240,8 @@ theorem twist_primitive : TwPrimitive := by
 section Host
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On a unit the lifted character is evaluated on its reduction to the prime modulus. The quadratic unit character at that reduction has the same underlying value as the quadratic residue character. Embed that value into the complex numbers.
 -/
 lemma qcLift_apply {N l : ℕ} [Fact l.Prime] (h : l ∣ N) (u : (ZMod N)ˣ) :
     changeLevel h (qc l) (u : ZMod N)
@@ -281,8 +251,8 @@ lemma qcLift_apply {N l : ℕ} [Fact l.Prime] (h : l ∣ N) (u : (ZMod N)ˣ) :
   rw [MulChar.ringHomComp_apply]
   simp [ZMod.unitsMap_val]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The twist is the product of two characters lifted to the intermediate product level. Lifting the product to N preserves multiplication. Transitivity of change of level identifies each resulting factor with its direct lift to N.
 -/
 lemma tw_lift {N t l : ℕ} [Fact l.Prime] (θ : DirichletCharacter ℂ t) (h : t * l ∣ N) :
     changeLevel h (tw θ l) = changeLevel ((Dvd.intro l rfl).trans h) θ
@@ -290,8 +260,8 @@ lemma tw_lift {N t l : ℕ} [Fact l.Prime] (θ : DirichletCharacter ℂ t) (h : 
   unfold tw
   rw [map_mul, ← changeLevel_trans, ← changeLevel_trans]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The group element is the sum of its quotient component and the two single sign components. An additive character sends this sum to the product of their values.
 -/
 lemma psi_split (ψ : AddChar (E0 × HA e) ℂ) (a b : ZMod 2) (t : HA e) :
     ψ ((a, b), t) = ψ ((0, 0), t) * ψ ((0, b), 0) * ψ ((a, 0), 0) := by
@@ -299,15 +269,15 @@ lemma psi_split (ψ : AddChar (E0 × HA e) ℂ) (a b : ZMod 2) (t : HA e) :
   congr 1
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Since twice g is zero, the square of its character value is the character value at zero, which is one. The only complex roots of this equation are one and minus one.
 -/
 lemma psi_pm (ψ : AddChar (E0 × HA e) ℂ) (g : E0 × HA e) (hg : g + g = 0) : ψ g = 1 ∨ ψ g = -1 := by
   have : ψ g * ψ g = 1 := by rw [← AddChar.map_add_eq_mul, hg, AddChar.map_zero_eq_one]
   exact mul_self_eq_one_iff.1 this
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every binary residue is zero or one. At zero the input is the group identity and the character is one. At one the asserted value is one by hypothesis.
 -/
 lemma comp_one (ψ : AddChar (E0 × HA e) ℂ) (f : ZMod 2 → E0 × HA e) (f0 : f 0 = 0) (h1 : ψ (f 1) = 1) (a : ZMod 2) :
     ψ (f a) = 1 := by
@@ -315,10 +285,8 @@ lemma comp_one (ψ : AddChar (E0 × HA e) ℂ) (f : ZMod 2 → E0 × HA e) (f0 :
   · rw [f0, AddChar.map_zero_eq_one]
   · exact h1
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The integer unit is one or minus one. In the first case its binary sign is zero and the character evaluates at the identity. In the second case the binary sign is one and the character value is minus one by assumption. These are exactly the original unit values.
 -/
 lemma comp_neg (ψ : AddChar (E0 × HA e) ℂ) (f : ZMod 2 → E0 × HA e) (f0 : f 0 = 0) (h1 : ψ (f 1) = -1) (s : ℤˣ) :
     ψ (f (Multiplicative.toAdd (LHost.sgn2 s))) = ((s : ℤ) : ℂ) := by
@@ -329,8 +297,8 @@ lemma comp_neg (ψ : AddChar (E0 × HA e) ℂ) (f : ZMod 2 → E0 × HA e) (f0 :
     rw [this, h1]
     simp
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Evaluate the induced character at any unit and expand the three coordinates of reciprocity. The character factorization writes its value as the product of their three character values. By hypothesis these are the values of the three indicated Dirichlet factors. Agreement on units proves equality.
 -/
 lemma dirChar_prod (ψ : AddChar (E0 × HA e) ℂ) (D2 Dq Dd : DirichletCharacter ℂ (hostN e q d))
     (h2 : ∀ u : (ZMod (hostN e q d))ˣ, D2 (u : ZMod _)
@@ -342,24 +310,24 @@ lemma dirChar_prod (ψ : AddChar (E0 × HA e) ℂ) (D2 Dq Dd : DirichletCharacte
   intro u
   rw [dirChar_unit, recMap_apply, psi_split, MulChar.mul_apply, MulChar.mul_apply, h2, hq, hd]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+If the character is one on the q-coordinate generator, it is one on both elements of that binary component. This agrees with the trivial Dirichlet value on every unit.
 -/
 lemma compQ_one (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((0, 1), 0) = 1) (u : (ZMod (hostN e q d))ˣ) :
     (1 : DirichletCharacter ℂ (hostN e q d)) (u : ZMod _)
       = ψ ((0, sQ q (ZMod.unitsMap (q_dvd_hostN e q d) u)), 0) := by
   rw [MulChar.one_apply_coe, comp_one ψ (fun a => ((0, a), 0)) rfl h1]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The d-coordinate generator and the identity both have character value one. Thus the d-component value agrees with the trivial Dirichlet value on units.
 -/
 lemma compD_one (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((1, 0), 0) = 1) (u : (ZMod (hostN e q d))ˣ) :
     (1 : DirichletCharacter ℂ (hostN e q d)) (u : ZMod _)
       = ψ ((sQ d (ZMod.unitsMap (d_dvd_hostN e q d) u), 0), 0) := by
   rw [MulChar.one_apply_coe, comp_one ψ (fun a => ((a, 0), 0)) rfl h1]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The lifted quadratic character at a unit is its quadratic sign modulo q. The group character takes minus one on the nonzero q-coordinate. Evaluating it on the binary form of a sign therefore returns that same sign.
 -/
 lemma compQ_neg (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((0, 1), 0) = -1) (u : (ZMod (hostN e q d))ˣ) :
     changeLevel (q_dvd_hostN e q d) (qc q) (u : ZMod _)
@@ -367,8 +335,8 @@ lemma compQ_neg (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((0, 1), 0) = -1) (u : 
   rw [qcLift_apply]
   exact (comp_neg ψ (fun a => ((0, a), 0)) rfl h1 _).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The lifted quadratic character at a unit is its quadratic sign modulo d. The group character takes minus one on the nonzero d-coordinate, so the binary sign evaluation agrees with that quadratic value.
 -/
 lemma compD_neg (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((1, 0), 0) = -1) (u : (ZMod (hostN e q d))ˣ) :
     changeLevel (d_dvd_hostN e q d) (qc d) (u : ZMod _)
@@ -376,8 +344,8 @@ lemma compD_neg (ψ : AddChar (E0 × HA e) ℂ) (h1 : ψ ((1, 0), 0) = -1) (u : 
   rw [qcLift_apply]
   exact (comp_neg ψ (fun a => ((a, 0), 0)) rfl h1 _).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The assumed triviality on the quotient component gives character value one at the reduction of every unit. This is also the trivial Dirichlet value at such units.
 -/
 lemma component_two_one (ψ : AddChar (E0 × HA e) ℂ) (h1 : ∀ t : HA e, ψ ((0, 0), t) = 1) (u : (ZMod (hostN e q d))ˣ) :
     (1 : DirichletCharacter ℂ (hostN e q d)) (u : ZMod _)
@@ -386,40 +354,36 @@ lemma component_two_one (ψ : AddChar (E0 × HA e) ℂ) (h1 : ∀ t : HA e, ψ (
 
 end Host
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The second sign character is one when its second binary coordinate is zero and minus one otherwise, by its definition.
 -/
 lemma psC_apply {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (g : E0 × H) :
     (psC : AddChar (E0 × H) ℂ) g = if g.1.2 = 0 then 1 else -1 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The first sign character is one when its first binary coordinate is zero and minus one otherwise.
 -/
 lemma chC_apply {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (g : E0 × H) :
     (chC : AddChar (E0 × H) ℂ) g = if g.1.1 = 0 then 1 else -1 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The combined character is the pointwise product of the two sign characters, so substitute their respective coordinate values.
 -/
 lemma chpsC_apply {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (g : E0 × H) :
     (chpsC : AddChar (E0 × H) ℂ) g = (if g.1.1 = 0 then 1 else -1) * (if g.1.2 = 0 then 1 else -1) := rfl
 
-/- English proof (translation)
-Evaluate the decidable proposition.
+/- English proof (authored)
+The residues of one and zero are distinct modulo two.
 -/
 lemma one_ne_zero2 : (1 : ZMod 2) ≠ 0 := by decide
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Lifting the level-one trivial character gives value one at every unit and zero at every nonunit, which is the trivial character at the new level.
 -/
 lemma change_level_one {N : ℕ} (h : 1 ∣ N) : changeLevel h one1 = 1 := changeLevel_one h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Start with the primitive trivial character at level one, then twist by the quadratic character at q, at d, or at both primes. Each twist remains primitive because its new prime is coprime to the previous modulus. The three resulting levels divide the host modulus. At that modulus evaluate on units using the component factorization. The power-of-two factor is trivial in all three cases, and each sign character introduces exactly the corresponding prime's quadratic factor. The lifted characters therefore agree. Uniqueness of the primitive representative gives the three identifications.
 -/
 theorem quadratic_characters_input : HostQuadChars := by
   intro e q d _ _ h
@@ -444,10 +408,8 @@ theorem quadratic_characters_input : HostQuadChars := by
       (component_two_one _ (fun t => by simp [chpsC_apply])) (compQ_neg _ (by simp [chpsC_apply]))
       (compD_neg _ (by simp [chpsC_apply]))]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+The second sign character takes minus one at the element with only second coordinate one. The first sign and the product both take minus one at the element with only first coordinate one. The trivial character takes one in all cases, so all three are nontrivial.
 -/
 lemma quad_ne_zero (e : ℕ) : (psC : AddChar (E0 × HA e) ℂ) ≠ 0 ∧ (chC : AddChar (E0 × HA e) ℂ) ≠ 0 ∧
     (chpsC : AddChar (E0 × HA e) ℂ) ≠ 0 := by
@@ -462,16 +424,8 @@ lemma quad_ne_zero (e : ℕ) : (psC : AddChar (E0 × HA e) ℂ) ≠ 0 ∧ (chC :
     rw [chpsC_apply, AddChar.zero_apply] at this
     norm_num [one_ne_zero2] at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the three nontrivial host sign characters with their corresponding primitive Dirichlet characters. The smoothing identities and the agreement of the logarithmic derivatives transfer each pair of bounds in both directions. The three sign characters exhaust the cases in the host value condition.
 -/
 theorem valuesIff_valid : ValuesIff := by
   intro e q d _ _ h x ε C
@@ -496,20 +450,8 @@ theorem valuesIff_valid : ValuesIff := by
     · rw [hG _ n2, hL, g2, l2]; exact v2
     · rw [hG _ n3, hL, g3, l3]; exact v3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+For either root t of the given quadratic polynomial modulo q, completing the square gives (2t − 1)² = −d. If −d were zero, both roots would satisfy 2t − 1 = 0. Since q is odd, this would force the two roots to coincide, contrary to the assumption. Thus −d is a nonzero square modulo q, so its Legendre symbol, and hence its Jacobi symbol, is one. The remaining host conditions are the assumed primality and congruences.
 -/
 theorem prime_congruence_conditions : PrimeCongruenceHypotheses := by
   intro q d hq hd h8 h16 hs
@@ -555,8 +497,8 @@ theorem prime_congruence_conditions : PrimeCongruenceHypotheses := by
 section Real
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The quotient group is identified with a cyclic residue group in which the given class corresponds to the additive generator one. Write the inverse image of t by its natural representative. It is that many multiples of the generator, so t is the corresponding power of the given class.
 -/
 lemma H_gen (e : ℕ) (t : FrobeniusOrbits.HGrp e) : ∃ k : ℕ, t = (FrobeniusOrbits.hcl e (TwoAdicCyclotomicDecomposition.u5 (e + 2))) ^ k := by
   obtain ⟨-, -, -, -, -, -, -, -, ι, hι⟩ := FrobeniusOrbits.hostGroup e
@@ -564,8 +506,8 @@ lemma H_gen (e : ℕ) (t : FrobeniusOrbits.HGrp e) : ∃ k : ℕ, t = (Frobenius
   rw [← hι, ← map_pow, ← ofAdd_nsmul, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val, ofAdd_toAdd,
     MulEquiv.apply_symm_apply]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Writing a power in the quotient group additively makes it a repeated sum of the class. Evaluating by the character turns that sum into the corresponding power of the value.
 -/
 lemma psi_H_pow (ψ : AddChar (E0 × HA e) ℂ) (g : FrobeniusOrbits.HGrp e) (k : ℕ) :
     ψ ((0, 0), Additive.ofMul (g ^ k)) = ψ ((0, 0), Additive.ofMul g) ^ k := by
@@ -573,16 +515,8 @@ lemma psi_H_pow (ψ : AddChar (E0 × HA e) ℂ) (g : FrobeniusOrbits.HGrp e) (k 
   congr 1
   simp [Prod.smul_mk, ofMul_pow]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The two units reduce modulo eight to −1 and 5. The modulo-eight quadratic character takes one at −1 and minus one at 5. Its lift has these same values at the original units.
 -/
 lemma chi_eight_lift_values (e : ℕ) (h8 : 8 ∣ 2 ^ (e + 2)) :
     changeLevel h8 chi8 ((-1 : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))) = 1 ∧
@@ -612,12 +546,8 @@ lemma chi_eight_lift_values (e : ℕ) (h8 : 8 ∣ 2 ^ (e + 2)) :
     rw [this]
     simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Equal quotient classes say that the ratio of the unit to the indicated power of five belongs to the subgroup generated by −1. The lifted character is one on that subgroup. Its value on the unit thus equals its value on the power of five, which is the indicated power of minus one.
 -/
 lemma chi_eight_lift_class (e : ℕ) (h8 : 8 ∣ 2 ^ (e + 2)) (v : (ZMod (2 ^ (e + 2)))ˣ) (k : ℕ)
     (hk : FrobeniusOrbits.hcl e v = (FrobeniusOrbits.hcl e (TwoAdicCyclotomicDecomposition.u5 (e + 2))) ^ k) :
@@ -639,8 +569,8 @@ lemma chi_eight_lift_class (e : ℕ) (h8 : 8 ∣ 2 ^ (e + 2)) (v : (ZMod (2 ^ (e
   rw [map_mul, map_inv, map_pow, inv_mul_eq_one] at h1
   rw [← MulChar.coe_toUnitHom, ← hF, h1, Units.val_pow_eq_pow_val, hF5]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The quotient class of the reduced unit is some power of the class of five. The given character sends this power to the same power of minus one. By the lifted-character formula, the character modulo eight takes exactly this value on the reduced unit. Composing the two level changes proves the equality at the host level.
 -/
 lemma component_two_neg (ψ : AddChar (E0 × HA e) ℂ) (h8 : 8 ∣ 2 ^ (e + 2))
     (h1 : ψ ((0, 0), Additive.ofMul (FrobeniusOrbits.hcl e (TwoAdicCyclotomicDecomposition.u5 (e + 2)))) = -1) (u : (ZMod (hostN e q d))ˣ) :
@@ -654,16 +584,8 @@ end Real
 section Real2
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The odd primes are coprime to the power-of-two level and to one another, so all three possible twists of the supplied primitive character remain primitive. The two sign generators each have order two, so the values at them are independently one or minus one. Factor the host character into its power-of-two component and both prime components. A value of one gives a trivial factor at that prime, and a value of minus one gives its quadratic twist. The four cases give the original lift and the three possible lifts of primitive twists. Uniqueness of primitive representatives gives the identifications asserted in the twist cases.
 -/
 lemma real_cases (h : FrobeniusOrbits.HostHyp q d) (ψ : AddChar (E0 × HA e) ℂ) {t : ℕ} (θ : DirichletCharacter ℂ t)
     (ht : t ∣ 2 ^ (e + 2)) (hθ : θ.IsPrimitive)
@@ -704,22 +626,8 @@ lemma real_cases (h : FrobeniusOrbits.HostHyp q d) (ψ : AddChar (E0 × HA e) �
 
 end Real2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative.
-
-Prove the second alternative. Prove the second alternative. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
-
-Prove the second alternative. Prove the second alternative. Prove the second alternative. A detailed English derivation is pending.
+/- English proof (authored)
+Lift the quadratic identity to the host level and use surjectivity of reciprocity on units to deduce that every group character value is one or minus one. If the value on the power-of-two generator is one, the whole quotient component is trivial, and the four prime-component cases start from the level-one character. With both prime factors trivial the group character itself is trivial by injectivity. If the generator value is minus one, the quotient is nontrivial and the power-of-two modulus is divisible by eight. The quotient component then equals the lift of the character modulo eight. The same four prime-component cases give that character or its three quadratic twists. This gives all eight possibilities.
 -/
 theorem real_characters_input : HostRealChars := by
   intro e q d _ _ h ψ hsq
@@ -768,16 +676,16 @@ theorem real_characters_input : HostRealChars := by
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl c)))))
     · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr c))))))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The defining host modulus is the product of the power of two and the two prime factors. Rearrange the factors to obtain the stated expression.
 -/
 theorem modulus_formula : HostNIs := by
   intro e q d
   unfold hostN
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The character identification gives equality of the two L-functions. Substitute this equality in the nonvanishing assertion at each point of the box.
 -/
 lemma zeroFreeBox_same {N M : ℕ} [NeZero N] [NeZero M] {χ : DirichletCharacter ℂ N} {χ' : DirichletCharacter ℂ M}
     (hs : SameChar χ χ') {Q : ℝ} (h : ZeroFreeBox Q χ') : ZeroFreeBox Q χ := by
@@ -785,24 +693,8 @@ lemma zeroFreeBox_same {N M : ℕ} [NeZero N] [NeZero M] {χ : DirichletCharacte
   rw [(same_character_g _ _ _ _ hs).2.2.2.1]
   exact h s h1 h2
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+For y at least one third of exp(x to the power ε/3), taking logs bounds log(y) below by one quarter of x to that power for sufficiently large x. This also gives y ≥ 2. Thus the prime-number-theorem error factor is at most a constant times exp of minus c times half the power of x with exponent ε/6. Split that power into factors with exponents ε/8 and ε/24. The second grows without bound, so the decay eventually absorbs the fixed prefactor and leaves the desired exponential with coefficient c′ and exponent ε/8.
 -/
 theorem thin_one_of : ThinOneOf := by
   rintro ⟨c, K, hc, hK⟩ ε c' hε
@@ -860,8 +752,8 @@ theorem thin_one_of : ThinOneOf := by
         rw [hsplit]
         ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The n-th term of the exponential series at bt ≥ 0 is at most the whole positive series. Multiply by n! and divide by the positive factors b to the power n and exp(bt). This gives the asserted bound.
 -/
 lemma pow_mul_exp_neg_le (n : ℕ) (b t : ℝ) (hb : 0 < b) (ht : 0 ≤ t) :
     t ^ n * Real.exp (-(b * t)) ≤ (n.factorial : ℝ) / b ^ n := by
@@ -872,14 +764,8 @@ lemma pow_mul_exp_neg_le (n : ℕ) (b t : ℝ) (hb : 0 < b) (ht : 0 ≤ t) :
   calc t ^ n * b ^ n = (b * t) ^ n := by rw [mul_pow]; ring
     _ ≤ _ := h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Since μ ≤ s and s ≥ 2, the polynomial factor is at most 8s⁶ and the exponent is at most −as/2. Use s ≥ R/2 to split that exponent into an upper bound −as/4 − aR/8. Bound the factor s⁶ exp(−as/4) by the exponential-series estimate at degree six. The remaining factor is the required decay.
 -/
 lemma thin_caseA (a A μ s R : ℝ) (ha : 0 < a) (hA : 0 ≤ A) (hμ2 : 2 ≤ μ) (hμs : μ ≤ s) (hsR : R / 2 ≤ s) :
     A * (μ + s + s ^ 2) ^ 3 * Real.exp (-a * s ^ 2 / (μ + s))
@@ -909,16 +795,8 @@ lemma thin_caseA (a A μ s R : ℝ) (ha : 0 < a) (hA : 0 ≤ A) (hμ2 : 2 ≤ μ
     _ ≤ 8 * A * (((6 : ℕ).factorial : ℝ) / (a / 4) ^ 6) * Real.exp (-(a / 8 * R)) :=
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hK (by positivity)) (Real.exp_pos _).le
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Since s < μ ≤ L_b, their sum is at most 2L_b, so the bound on s² makes the exponent at most −aR/4. Also μ ≥ 2 and s < μ give μ + s + s² ≤ 2L_b², so the cube is at most 8L_b⁶ = 8R¹⁰. Split the exponential into two factors exp(−aR/8). Use the degree-ten polynomial bound with one of them and keep the other as the claimed decay.
 -/
 lemma thin_caseB (a A μ s R Lb : ℝ) (ha : 0 < a) (hA : 0 ≤ A) (hμ2 : 2 ≤ μ) (hs0 : 0 ≤ s) (hsμ : s < μ)
     (hμL : μ ≤ Lb) (hv : Lb * R / 2 ≤ s ^ 2) (hL6 : Lb ^ 6 = R ^ 10) (hR0 : 0 ≤ R) :
@@ -954,32 +832,8 @@ lemma thin_caseB (a A μ s R Lb : ℝ) (ha : 0 < a) (hA : 0 ≤ A) (hμ2 : 2 ≤
     _ ≤ 8 * A * (((10 : ℕ).factorial : ℝ) / (a / 8) ^ 10) * Real.exp (-(a / 8 * R)) :=
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hK (by positivity)) (Real.exp_pos _).le
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For large x set R to the power with exponent ε/8 and L_b to the power with exponent 5ε/24. Their product is the power with exponent ε/3, and L_b⁶ = R¹⁰. The slow growth of log(x) makes the upper bound for μ at most L_b. Set s = √v. Then s² ≥ L_bR/2 and s ≥ 2. If μ ≤ s, the bound on s² and L_b ≥ R give s ≥ R/2, so the first exponential case applies. Otherwise the second case applies with μ ≤ L_b. The prefactors from both cases are bounded by exp(aR/16) for sufficiently large x. Combining this with their decay exp(−aR/8) gives the result.
 -/
 lemma thin_num (ε a A : ℝ) (hε : 0 < ε) (ha : 0 < a) (hA : 0 ≤ A) :
     ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ μ v : ℝ, 2 ≤ μ → μ ≤ 2 * x ^ (ε / 5) * Real.log x ^ 2 + 2 → x ^ (ε / 3) / 2 ≤ v →
@@ -1061,8 +915,8 @@ lemma thin_num (ε a A : ℝ) (hε : 0 < ε) (ha : 0 < a) (hA : 0 ≤ A) :
     exact (thin_caseB a A μ s R Lb ha hA hμ2 (by linarith) hcase hμL hvL hL6 (by linarith)).trans
       (hfin K10 (le_trans (le_max_right _ _) h5))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the character error and the negative logarithmic derivative. Their smoothed von Mangoldt sums are identical. The two descriptions of the linear correction agree because the negative logarithmic derivative is subtracted in the second expression.
 -/
 lemma gchi_eq_schi {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (y : ℝ) :
     Gchi χ y = Formalism.ZeroFreeDirichlet.Schi χ y - Formalism.ZeroFreeDirichlet.negLD χ 1 * y := by
@@ -1070,42 +924,8 @@ lemma gchi_eq_schi {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (y : ℝ
   ring
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the logarithmic derivative bound with the empty exceptional set and enlarge its constant to be nonnegative. Put v = log(y), s = √v and M = log(q) + 2 + s. Choose contour height T = exp(τ) with τ = c₁v/(16M). Then τ ≤ s, and the contour logarithm log(q(T + 2)) is at most M. Apply the explicit smoothed character estimate and the sum bound for the contour errors. Its polynomial and logarithmic factors are bounded by (M + v)³. If σ₁ is the real coordinate of the shifted contour, then v(1 − σ₁) ≥ 4τ. Thus the left-edge contribution T times y to that coordinate is at most y exp(−τ), the same scale as the other contribution. Adding them gives the stated uniform estimate with twice the error constant.
 -/
 theorem smooth_weight_general : SmoothGen := by
   intro hP hRS hD hRight c₁ hc₁ hc₁'
@@ -1206,16 +1026,8 @@ theorem smooth_weight_general : SmoothGen := by
   rw [← hv, ← hsdef, ← hM, ← eX]
   exact hfinal
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the smooth character estimate with no exceptional zeros. The lower bound on y gives y ≥ 2 and log(y) at least half of x to the power ε/3 for sufficiently large x. The conductor bound puts μ = log(q) + 2 within the range of the numerical decay estimate. Apply it with a = c₁/16 and v = log(y), then multiply by y. The resulting exponent coefficient is c₁/256.
 -/
 theorem thin_of_no_exceptional_zero : ThinOfNoExc := by
   intro hP hRS hD hR ε c₁ hε hc₁ hc₁'
@@ -1250,18 +1062,8 @@ theorem thin_of_no_exceptional_zero : ThinOfNoExc := by
         congr 2
         ring
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Shrink the zero-free constant to the smaller of c and 1/1000. The logarithmic denominator is positive and at least log(2) > 1/2, so this narrower region lies in the original region and its real parts exceed 1 − 1/400. A zero there would be real and come from a quadratic character by the original zero-free statement. The assumed real nonvanishing rules it out. Hence the exceptional set can be empty.
 -/
 theorem no_exceptional_zero_of_real : NoExcOfReal := by
   rintro ⟨c, hc, hZ⟩
@@ -1294,13 +1096,13 @@ theorem no_exceptional_zero_of_real : NoExcOfReal := by
   rw [← hsre] at this
   exact this hz.2
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The prime-pair existence proposition is defined by exactly the stated parameter conditions, so the equivalence follows by expanding the definition.
 -/
 theorem proposition_at_iff : PrimePairExistsIffConditions := fun _ _ _ => Iff.rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+The character modulo eight is primitive, so its conductor is eight. The trivial character has conductor one, so the two cannot agree.
 -/
 lemma chi_eight_ne_one : chi8 ≠ 1 := by
   intro h
@@ -1308,25 +1110,15 @@ lemma chi_eight_ne_one : chi8 ≠ 1 := by
   rw [isPrimitive_def, h, conductor_one] at hp
   norm_num at hp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A real input has imaginary part zero. The nonnegative box height therefore contains this input, and the real lower bound is the other box condition. Apply the assumed nonvanishing there.
 -/
 lemma box_real {N : ℕ} [NeZero N] {Q : ℝ} (hQ : 0 ≤ Q) {χ : DirichletCharacter ℂ N} (h : ZeroFreeBox Q χ) (σ : ℝ)
     (hσ : 1 - 1 / 400 < σ) : LFunction χ (σ : ℂ) ≠ 0 :=
   h σ (by simpa using hσ) (by simpa using hQ)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the positive constant from the no-exceptional-zero estimate and use a common threshold for the nontrivial thin estimate, the modulus bound and the trivial thin estimate. The prime congruences give the host conditions, and the three pointwise character estimates transfer directly. Each nontrivial host character has a nontrivial primitive representative whose conductor divides the host modulus. The modulus bound thus gives the logarithmic conductor bound for the thin estimate. To exclude an exceptional zero, classify any quadratic representative. The trivial case contradicts nontriviality. For the character modulo eight use the assumed real nonvanishing below one and the usual nonvanishing at and above one. For the six odd-prime twists, transfer the given zero-free boxes to the identified representatives and restrict them to real arguments. The resulting absence of exceptional zeros lets the nontrivial thin estimate apply. Combine it with the trivial bound to obtain the host analytic inputs.
 -/
 theorem analytic_input_of_proposition : AnalyticInputsFromPNT := by
   intro hG hZ hP hRS hD hR hNR hNE
@@ -1369,8 +1161,8 @@ theorem analytic_input_of_proposition : AnalyticInputsFromPNT := by
   · exact box_real hQ2 (zeroFreeBox_same c g5.2.2.2) σ hσ
   · exact box_real hQ2 (zeroFreeBox_same c g6.2.2.2) σ hσ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the analytic-input theorem using the zeta prime-number theorem estimate, the Dirichlet zero-free region, the character Perron formula, the contour shift and the established logarithmic derivative bounds. The remaining assumptions are exactly the conditional inputs of this statement.
 -/
 theorem analytic_input_conditional : AnalyticInputsOfNoSmallRealZero :=
   analytic_input_of_proposition Formalism.ZF.gzPNT Formalism.ZeroFreeDirichlet.zFRDirichlet Formalism.ZeroFreeDirichlet.perron_formula_character Formalism.ZeroFreeDirichlet.rectangle_contour_shift_character

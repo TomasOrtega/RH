@@ -83,8 +83,8 @@ def ValidPullbackAlongSmooth : Prop :=
       [AlgebraicGeometry.Smooth h] [AlgebraicGeometry.QuasiCompact q],
       h ≫ T.structMap = q → (T.pullbackAlong Y q h).IsAdmissible
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+Expand the named property. It asserts that an admissible marked triple remains admissible after the indicated smooth pullback, with quasi-compact structural map upstairs and the stated compatibility of structural maps. This is exactly the quantified condition.
 -/
 theorem validPullbackAlongSmooth_iff :
     ValidPullbackAlongSmooth.{u} ↔
@@ -98,10 +98,8 @@ end OrderReduction
 
 namespace MaxContactCoverData
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a point outside the original support, the ideal has unit stalk. Its power then also has unit stalk, so the point lies outside the support of the power. This proves the inclusion for every exponent.
 -/
 private theorem support_pow_subset {X : Scheme.{u}} (I : X.IdealSheafData) (s : ℕ) :
     ((I ^ s).support : Set ↥X) ⊆ (I.support : Set ↥X) := by
@@ -112,10 +110,8 @@ private theorem support_pow_subset {X : Scheme.{u}} (I : X.IdealSheafData) (s : 
   apply hx
   rw [stalkIdeal_pow, hI, Ideal.top_pow]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Split the product at its final index n. All earlier indices are distinct from n and have exponent zero, giving unit factors. The factor at n has exponent s, so the whole product is that power.
 -/
 private theorem prod_map_range_pow_ite_eq_pow {X : Scheme.{u}} (A : ℕ → X.IdealSheafData) (n s : ℕ) :
     (List.map (fun j => A j ^ (if j = n then s else 0)) (List.range (n + 1))).prod = A n ^ s := by
@@ -128,10 +124,8 @@ private theorem prod_map_range_pow_ite_eq_pow {X : Scheme.{u}} (A : ℕ → X.Id
   rw [List.range_succ, List.map_append, List.prod_append, h1, one_mul]
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The positive mark can be written as n + 1. Take the n-th derivative iterate as the auxiliary ideal. It contains the original ideal. In the defining weighted products for the tuned ideal, choose exponent s at index n and zero at all other indices. The weight of index n is one, so the weighted sum is exactly s. This gives an admitted product for tuning, and the product is the s-th power of the auxiliary ideal.
 -/
 private theorem exists_le_and_pow_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -150,20 +144,16 @@ private theorem exists_le_and_pow_le_tunedSheaf (k : Type u) [Field k] [IsNoethe
   rw [prod_map_range_pow_ite_eq_pow] at h
   exact h
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The cover's balanced tuned ideal is defined by the balanced tuning construction for the original field, structural map, ideal and mark. Substituting those data gives the asserted equality.
 -/
 theorem balancedTunedIdeal_eq_balancedTunedSheaf (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     [AlgebraicGeometry.LocallyOfFiniteType T.structMap] :
     balancedTunedIdeal T hv = FunctorialResolution.EmbeddedResolution.balancedTunedSheaf T.base T.structMap T.ideal T.mult :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the auxiliary derivative ideal containing the original ideal and whose power at the tuning exponent is contained in the balanced tuned ideal. The support of the balanced tuned ideal is contained in the support of that power. The latter lies in the auxiliary ideal's support, which in turn lies in the original support by ideal inclusion. Since the original ideal vanishes identically on no component, the balanced tuned ideal cannot vanish identically on a component either.
 -/
 theorem nonzeroOnComponents_balancedTunedIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     NonzeroOnComponents (balancedTunedIdeal T hv) := by
@@ -183,12 +173,8 @@ theorem nonzeroOnComponents_balancedTunedIdeal (T : MarkedIdealWithBoundary.{u})
   have h3 := support_pow_subset J (tuningExponent T.mult) h2
   exact SetLike.coe_subset_coe.2 (Scheme.IdealSheafData.support_antitone hIJ) h3
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the original order locus is empty, its balanced tuned ideal is the unit ideal and has order zero. Otherwise the pointwise original bound and nonempty locus give maximal order equal to the mark. The tuning theorem bounds the order of the tuned ideal by the chosen tuning exponent. The balanced tuned ideal uses that exponent and the tuned mark equals it, giving the bound.
 -/
 theorem orderAt_balancedTunedIdeal_le_tunedMult (htf : TunedSheafProperties.{u}) (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) (x : ↥T.scheme) :
@@ -212,8 +198,8 @@ theorem orderAt_balancedTunedIdeal_le_tunedMult (htf : TunedSheafProperties.{u})
     rw [h2]
     exact hLE x
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Balanced tuning is nonzero on components, so the tuned triple is admissible by the admissibility result for tuning. The cover triple is its pullback along the smooth cover map. The cover's structural map is quasi-compact by the good-cover condition. The given preservation of admissibility under smooth pullback therefore applies.
 -/
 theorem isAdmissible_coverTriple_of_validPullbackAlongSmooth (hpb : OrderReduction.ValidPullbackAlongSmooth.{u})
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
@@ -226,10 +212,8 @@ theorem isAdmissible_coverTriple_of_validPullbackAlongSmooth (hpb : OrderReducti
   exact @hpb (MaxContactOpenCover.tunedTriple T hv) hvt (chosenCoverData T hv).disjointUnion
     (coverMap T hv ≫ T.structMap) (coverMap T hv) (MaxContactCoverData.instSmoothCoverMap T hv) hqc rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Prove the first alternative. Prove the second alternative.
+/- English proof (authored)
+At each point the good-cover normal-crossings result supplies an étale chart for the singleton ideal. If no coordinate is assigned to its only entry, the restriction is the unit ideal. If a coordinate is assigned, the restriction is the ideal of that coordinate. This local description is the criterion for a smooth divisor.
 -/
 theorem isSmoothDivisor_coverMaxContactIdeal (_hpb : OrderReduction.ValidPullbackAlongSmooth.{u})
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
@@ -249,12 +233,10 @@ end MaxContactCoverData
 
 namespace OrderReduction
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Use the one-step strict-transform theorem for maximal contact and the order-locus inclusion under blowup. The assumed dimension inequality gives the bound at every stage. The tuned ideal order bound gives existence of a good cover, and the normal-crossings lemma allows a hypersurface contained in the center to be included with the other divisors. The stage transform and order-bound theorems give stage admissibility and preservation of the mark bound.
 
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+For the cover itself, the disjoint union of the chosen opens has dimension at most the original scheme, and smooth pullback of the tuned triple makes the cover admissible. The cover ideal restricts to the local maximal-contact ideals. It therefore has maximal contact and, using the smooth-divisor criterion, satisfies strict normal-crossing position. Together with the assumed tuning properties these verify all the cover properties.
 -/
 theorem maxContactCoverProperties_of_tunedSheafProperties (htf : TunedSheafProperties.{u}) (hdim : DimensionNonincreasingAlongBlowups.{u})
     (hpb : ValidPullbackAlongSmooth.{u}) : MaxContactCoverProperties.{u} := by

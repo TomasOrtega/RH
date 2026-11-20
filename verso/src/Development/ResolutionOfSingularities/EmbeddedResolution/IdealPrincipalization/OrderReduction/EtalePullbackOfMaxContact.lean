@@ -41,32 +41,30 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactCoverDescent
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection of the self-pullback is a base change of the given morphism, using the pullback square with the two sides interchanged. The property is stable under base change, so it holds for this projection.
 -/
 private theorem morphismProperty_pullback_fst_self {X Y : Scheme.{u}} (g : Y ⟶ X) (Q : MorphismProperty Scheme.{u})
     (hQ : Q.IsStableUnderBaseChange) (hg : Q g) : Q (pullback.fst g g) :=
   hQ.of_isPullback (IsPullback.of_hasPullback g g).flip hg
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second projection of the self-pullback is a base change of the given morphism. Apply stability under base change to the canonical square.
 -/
 private theorem morphismProperty_pullback_snd_self {X Y : Scheme.{u}} (g : Y ⟶ X) (Q : MorphismProperty Scheme.{u})
     (hQ : Q.IsStableUnderBaseChange) (hg : Q g) : Q (pullback.snd g g) :=
   hQ.of_isPullback (IsPullback.of_hasPullback g g) hg
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both morphisms have the property, which is assumed to be closed under composition. Thus their composite has it.
 -/
 private theorem morphismProperty_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (p : Y ⟶ Z)
     (Q : MorphismProperty Scheme.{u}) (hQ : Q.IsStableUnderComposition) (hf : Q f) (hp : Q p) :
     Q (f ≫ p) :=
   hQ.comp_mem f p hf hp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+For each list entry, the two successive pullbacks equal pullback along the corresponding composite. Since the composites agree, the two transported entries agree. Applying this at every position gives the list equality.
 -/
 private theorem map_comap_map_comap_eq_of_comp_eq {W X Y : Scheme.{u}} (a b : W ⟶ X) (g : X ⟶ Y)
     (hab : a ≫ g = b ≫ g) (L : List Y.IdealSheafData) :
@@ -82,8 +80,8 @@ private theorem map_comap_map_comap_eq_of_comp_eq {W X Y : Scheme.{u}} (a b : W 
       have hD : D.comap (a ≫ g) = D.comap (b ≫ g) := by rw [hab]
       simpa using hD
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+First identify the two marked triples. Their schemes agree, so the given equality of the hypersurface ideals is now equality of ideals on the same scheme. The two reductions apply the same family to the same triple and hypersurface. Their resulting blowup sequences agree.
 -/
 private theorem heq_reduceAlongHypersurface_of_eq (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups)
@@ -96,10 +94,8 @@ private theorem heq_reduceAlongHypersurface_of_eq (hinv : ComapIsoInvariance.{u}
   subst hEq
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the pullback triple follows from the assumed smooth-pullback property, using quasi-compactness of its structural map. The structural morphism of that triple is the composite through the given map and its boundary is the list of pulled-back ideals. Its normal-crossings condition is therefore the one requested.
 -/
 private theorem inStrictNormalCrossingPosition_comap_boundary (hin : OrderReduction.OrderReductionHypotheses.{u})
     (S' : MarkedIdealWithBoundary.{u})
@@ -120,12 +116,8 @@ private theorem inStrictNormalCrossingPosition_comap_boundary (hin : OrderReduct
   rw [hs, hb] at hsnc
   exact hsnc
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the pulled-back triple follows from smooth pullback. Its dimension successor is at most that of the old triple by the étale dimension bound, hence within the reference bound. The chosen upper hypersurface has the required maximal-contact and normal-crossings properties by hypothesis. The strict pullback theorem for hypersurface reduction applies with these data and the given properties of the comparison map.
 -/
 private theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -168,32 +160,10 @@ private theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface_pullback (hsta
     exact hadm'
   · exact hsnc'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Form the self-pullback of the étale surjection. Its projections are étale, smooth, flat and surjective by base change. The given source is Noetherian, so the surjection is quasi-compact. The projections are then quasi-compact as well, and their composites with the structural map are quasi-compact and locally of finite type.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+The source structural morphism, marked ideal and boundary all come from downstairs. The two pullbacks of the marked triple to the self-pullback consequently agree, because the two projections have equal composite with the surjection. Use the hypersurface pulled back along the first projection for both triples. It has maximal contact and strict normal crossings for the first triple by smooth pullback and for the second by the equality of triples. The strict comparison theorem identifies the reduction with this common triple and hypersurface as a strict pullback along each projection of the original source reduction. Each such strict pullback is isomorphic to the corresponding canonical base change. Thus the two canonical base changes of the source sequence are isomorphic. The descent theorem for the étale surjection gives a sequence downstairs whose strict pullback is the source sequence. Passing to blowup data and reconstructing preserves this comparison up to isomorphism.
 -/
 private theorem exists_isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -369,10 +339,8 @@ private theorem exists_isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar 
     (e1.trans e2.symm)
   exact ⟨BlowupSequenceData.ofSequenceOfBlowups s, hs.of_isomorphic_base (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic s).symm⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The cover triple is admissible, has order bounded by its mark and has dimension at most the original reference dimension. The cover map is étale, smooth, flat and surjective, and the cover's structural map, ideal and boundary are pullbacks of the corresponding original data, using the tuned ideal. The cover hypersurface has maximal contact and strict normal crossings. Apply the étale descent theorem for reduction along this hypersurface. That reduction is the defined cover sequence, so the descended data give the required strict comparison.
 -/
 theorem exists_isStrictPullback_coverMarkedSequence
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})

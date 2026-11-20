@@ -43,8 +43,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BlowupSequenceData
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Write the starting boundary as its list of original components followed by the empty list. The boundary formula for concatenated lists transforms those original components one by one and appends the new exceptional divisors to the second list. The strict transforms of the empty list contribute no entries.
 -/
 theorem boundary_eq_map_iteratedStrictTransform_append {X : Scheme.{u}} (d : BlowupSequenceData X)
     (L : List X.IdealSheafData) (i : ℕ) :
@@ -52,14 +52,8 @@ theorem boundary_eq_map_iteratedStrictTransform_append {X : Scheme.{u}} (d : Blo
   have h := d.boundary_append L ([] : List X.IdealSheafData) i
   rwa [List.append_nil] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the length of the sequence. At stage zero both ideals pull back along the same isomorphism, so support inclusion is preserved. At a successor stage, the induction hypothesis compares the two ideals on the previous stage. If both undergo strict transform, use the assumed monotonicity. If the comparison ideal undergoes total transform, the support of the strict transform lies in the inverse image of the old support, which lies in the inverse image of the comparison support. That last inverse image is the support of the total transform.
 -/
 private theorem support_iteratedStrictTransform_subset_of_strictTransform_mono {X : Scheme.{u}} (d : BlowupSequenceData X)
     (D : X.IdealSheafData)
@@ -99,10 +93,8 @@ private theorem support_iteratedStrictTransform_subset_of_strictTransform_mono {
               (orderAt_le_orderAt_comap (d.map n) (K n) y))
   exact key t ht
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each blowup the support of a strict transform is the closure of the inverse image of the old support with the center removed. Difference with the same center, inverse image, and closure each preserve inclusion. The locally Noetherian stage hypotheses allow this support formula at every blowup. Apply the iterated support comparison with this monotonicity.
 -/
 theorem support_iteratedStrictTransform_subset_support {X : Scheme.{u}} (d : BlowupSequenceData X)
     (hN : ∀ i ≤ d.length, AlgebraicGeometry.IsLocallyNoetherian (d.obj i))
@@ -125,12 +117,8 @@ end BlowupSequenceData
 
 namespace BoundarySeparationByMaxContact
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact ideal is the derivative ideal at index one less than the mark. Its order-at-least-one locus equals the original marked order locus. This is also its support. If that locus is empty, every stalk is the unit ideal, so the sheaf itself is the unit ideal.
 -/
 private theorem maxContactIdeal_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -150,8 +138,8 @@ private theorem maxContactIdeal_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u
   rw [h] at hy'
   exact hy'
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The balanced tuned ideal is the sum of all products of derivative ideals whose weighted exponent sum reaches the tuning threshold. The stated exponent condition puts this product among those summands, so the tuned ideal contains it.
 -/
 private theorem prod_derivIdealSheafIter_pow_le_balancedTunedSheaf (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -164,12 +152,8 @@ private theorem prod_derivIdealSheafIter_pow_le_balancedTunedSheaf (k : Type u) 
     (fun d : {e : ℕ → ℕ // tuningExponent μ ≤ ∑ j ∈ Finset.range μ, (μ - j) * e j} =>
       (List.map (fun j => derivIdealSheafIterate k p j A ^ d.1 j) (List.range μ)).prod) ⟨c, hc⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Take the stalk at the chosen point. The empty product is the unit ideal, and taking a stalk commutes with each ideal multiplication. If every factor has unit stalk, the product has unit stalk as well.
 -/
 private theorem stalkIdeal_prod_eq_top {X : Scheme.{u}} (x : ↥X) :
     ∀ L : List X.IdealSheafData, (∀ I ∈ L, stalkIdeal I x = ⊤) → stalkIdeal L.prod x = ⊤ := by
@@ -186,18 +170,8 @@ private theorem stalkIdeal_prod_eq_top {X : Scheme.{u}} (x : ↥X) :
         ih (fun J hJ => h J (by simp [hJ]))]
       simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Since the old marked order locus is empty, the derivative ideal at index one less than the mark is the unit ideal. Give that factor the tuning exponent and all other factors exponent zero. Its weight is one, so the product occurs in the tuned sum. The product has unit stalk everywhere, forcing the tuned ideal to have unit stalk everywhere. The tuned mark is positive, so its order locus is empty.
 -/
 private theorem orderAtLeastLocus_balancedTunedSheaf_eq_empty (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -245,18 +219,8 @@ private theorem orderAtLeastLocus_balancedTunedSheaf_eq_empty (k : Type u) [Fiel
   have hxs : x ∈ (balancedTunedSheaf k p A μ).support := (mem_orderAtLeastLocus_one_iff _ x).1 hx1
   exact ((mem_support_iff_stalkIdeal_ne_top _ x).1 hxs) htop
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the old marked order locus is nonempty, the order bound makes the original mark the maximum order. Tuning then preserves both the marked order locus and the maximal-contact ideal. The given local hypersurface data work for the tuned ideal. If the locus is empty, it stays empty after tuning, and both maximal-contact ideals are the unit ideal. The same local data give the required hypersurface in this case as well.
 -/
 theorem isMaxContactHypersurface_balancedTunedSheaf (hstar : MaxContactCoverProperties.{u}) (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -303,8 +267,8 @@ theorem isMaxContactHypersurface_balancedTunedSheaf (hstar : MaxContactCoverProp
       rw [h2, ← h1]
       exact hmcc i
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Reconstruct the marked blowup sequence from the given data and its validity certificate. The structural map of a stage is the projection to the initial scheme followed by its structural map. The finite-type property for the reconstructed stage supplies the result.
 -/
 theorem locallyOfFiniteType_projectionToBase_comp (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (i : ℕ) (hi : i ≤ s.length) :
@@ -313,8 +277,8 @@ theorem locallyOfFiniteType_projectionToBase_comp (hstar : MaxContactCoverProper
   simp at h
   with_unfolding_all exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Reconstruct the marked blowup sequence using the validity certificate. Its stages have smooth structural maps. The stage structural map is the stated projection to the initial scheme followed by the original structural map, giving smoothness of this composite.
 -/
 theorem smooth_projectionToBase_comp (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (i : ℕ) (hi : i ≤ s.length) :
@@ -323,8 +287,8 @@ theorem smooth_projectionToBase_comp (hstar : MaxContactCoverProperties.{u}) (S 
   simp at h
   with_unfolding_all exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
+/- English proof (authored)
+Induct on the stage. At stage zero both descriptions pull back along the same initial isomorphism. At a successor, the reconstructed sequence has the same center and blowup morphism. Apply their common strict-transform operation to the equality from the preceding stage.
 -/
 theorem iteratedStrictTransform_eq_toBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -338,8 +302,8 @@ theorem iteratedStrictTransform_eq_toBlowupSequenceData {k : Type u} [Field k] {
       rewrite [MaxContactReduction.iteratedStrictTransform_succ, BlowupSequenceData.iteratedStrictTransform_succ, ih]
       rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the transform is pullback along the initial isomorphism. Pullback along an isomorphism preserves strict normal crossing position, so the condition on the singleton boundary persists.
 -/
 theorem inStrictNormalCrossingPosition_iteratedStrictTransform_zero (S : MarkedIdealWithBoundary.{u})
     (u : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (H : S.scheme.IdealSheafData)
@@ -350,8 +314,8 @@ theorem inStrictNormalCrossingPosition_iteratedStrictTransform_zero (S : MarkedI
   rw [MaxContactReduction.iteratedStrictTransform_zero u H, hproj]
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The range contains index zero exactly once. Every other indexed factor is the unit, so removing those factors leaves precisely the factor at zero.
 -/
 private theorem prod_map_range_succ_eq_apply_zero {X : Scheme.{u}} (f : ℕ → X.IdealSheafData)
     (hf : ∀ j, j ≠ 0 → f j = 1) (n : ℕ) :
@@ -362,8 +326,8 @@ private theorem prod_map_range_succ_eq_apply_zero {X : Scheme.{u}} (f : ℕ → 
       rw [List.range_succ, List.map_append, List.prod_append, ih]
       simp [hf (m + 1) (Nat.succ_ne_zero m)]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At a point outside the support the stalk is the unit ideal. Taking a power commutes with passing to the stalk, and every power of the unit ideal is again the unit ideal. The point therefore remains outside the support of the power.
 -/
 private theorem support_pow_subset_support {X : Scheme.{u}} (A : X.IdealSheafData) (e : ℕ) :
     ((A ^ e).support : Set ↥X) ⊆ (A.support : Set ↥X) := by
@@ -373,14 +337,8 @@ private theorem support_pow_subset_support {X : Scheme.{u}} (A : X.IdealSheafDat
   intro htop
   exact hx' (by rw [stalkIdeal_pow, htop, ← Ideal.one_eq_top, one_pow])
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+In the tuning formula put the entire tuning exponent on the derivative ideal at index zero, which is the original ideal. The weight at index zero is the positive mark, so the weighted degree is at least the tuning exponent. The resulting product is the claimed power and is a summand of the tuned ideal.
 -/
 private theorem pow_tuningExponent_le_balancedTunedSheaf (k : Type u) [Field k] [CharZero k] {P : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -416,18 +374,8 @@ private theorem pow_tuningExponent_le_balancedTunedSheaf (k : Type u) [Field k] 
     simp [hd0]
   exact le_trans hA hle
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Validity of the original sequence gives smoothness and quasi-compactness of the stage. Its structural map is locally of finite type, the base field has characteristic zero, and the tuned mark is positive. The given condition supplies strict normal crossings for the new boundary. The tuned ideal contains a power of the old ideal, and the support of that power lies in the old support. Thus the tuned support lies in the old support and contains no component on which the old ideal was generically nonzero.
 -/
 theorem isAdmissible_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -473,8 +421,8 @@ theorem isAdmissible_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : 
     intro T hT hsub
     exact hNZ T hT (Set.Subset.trans hsub hsupp)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The derived triple is admissible, so the stage theorem for marked blowup sequences makes each stage locally Noetherian. The underlying sequence data specify those same stage schemes.
 -/
 theorem isLocallyNoetherian_tunedMarkedBlowupSeq_schemeAt (_hMaxContact : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (_hV : S.IsAdmissible) (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -500,8 +448,8 @@ abbrev continuationMarkedData (S : MarkedIdealWithBoundary.{u})
   (BlowupSequenceData.ofSequenceOfBlowups u.toSequenceOfBlowups).toMarkedBlowupSequenceData (s.proj s.length ≫ S.structMap)
     (s.ideal s.length) S.mult (s.boundary s.length) hmk
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order bound provides the data for the chosen good cover of the derived triple. Its admissibility clause is exactly the admissibility of the triple on this cover.
 -/
 theorem isAdmissible_coverTriple (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop) (T : MarkedIdealWithBoundary.{u})
     (h : MaxContactFunctoriality.OrderReductionHypotheses P T) :
@@ -510,10 +458,8 @@ theorem isAdmissible_coverTriple (hstar : MaxContactCoverProperties.{u}) (P : �
     (MaxContactCoverData.isMaxContactCover_chosenCoverData T h.valid
       (hstar.exists_goodCover T h.valid h.orderLE))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the given nonempty marked order locus attains the mark, since the mark is also an upper bound everywhere. The tuning theorem then bounds the order of the tuned ideal by the tuned mark. The cover map is smooth and preserves the order of the pulled-back ideal, so the same bound holds on the cover.
 -/
 theorem orderAt_coverTriple_ideal_le_mult (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop) (T : MarkedIdealWithBoundary.{u})
     (h : MaxContactFunctoriality.OrderReductionHypotheses P T) :
@@ -532,8 +478,8 @@ theorem orderAt_coverTriple_ideal_le_mult (hstar : MaxContactCoverProperties.{u}
   exact (orderAt_comap T.base T.structMap (MaxContactCoverData.coverMap T h.valid)
     (MaxContactCoverData.balancedTunedIdeal T h.valid) x).trans_le (H.2 _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the chosen good cover, with its cover scheme locally of finite type over the base. Its hypersurface clause gives maximal contact with the pulled-back tuned ideal at the tuned mark. This is the ideal and mark of the cover triple.
 -/
 theorem isMaxContactHypersurface_coverMaxContactIdeal (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop)
     (T : MarkedIdealWithBoundary.{u}) (h : MaxContactFunctoriality.OrderReductionHypotheses P T) :
@@ -553,8 +499,8 @@ theorem isMaxContactHypersurface_coverMaxContactIdeal (hstar : MaxContactCoverPr
   rw [MaxContactCoverData.coverTriple_mult]
   exact key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The good cover supplies strict normal crossing position of its maximal-contact hypersurface relative to the pulled-back boundary. The ideal and boundary in that clause are the ones used in the cover triple.
 -/
 theorem inStrictNormalCrossingPosition_coverMaxContactIdeal (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop) (T : MarkedIdealWithBoundary.{u})
     (h : MaxContactFunctoriality.OrderReductionHypotheses P T) :

@@ -31,8 +31,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map on points of a composite is the composite of the two maps on points. Evaluate it at the given point.
 -/
 private theorem comp_base_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A) :
     (f ≫ g).base x = g.base (f.base x) := by simp
@@ -48,13 +48,13 @@ def AvoidsCenters (S : EmbeddedBlowupSequence k Y pY) : ∀ (i : ℕ), ↥(S.sch
       (S.blowdown i).base x ∉ ((S.ambientCenter i).support : Set ↥(S.schemeAt i)) ∧
         AvoidsCenters S i ((S.blowdown i).base x)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+There are no earlier centers at stage zero, so every point satisfies the avoidance condition.
 -/
 @[simp] theorem avoidsCenters_zero (S : EmbeddedBlowupSequence k Y pY) (x : ↥(S.schemeAt 0)) : S.AvoidsCenters 0 x := trivial
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+By definition, avoidance at the successor means that the image under blowdown lies outside the current center and that the same image avoids all earlier centers.
 -/
 @[simp] theorem avoidsCenters_succ_iff (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (x : ↥(S.schemeAt (i + 1))) :
     S.AvoidsCenters (i + 1) x ↔
@@ -62,14 +62,8 @@ Unfold both sides to obtain the same proposition, which implies itself.
         S.AvoidsCenters i ((S.blowdown i).base x)) :=
   Iff.rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. The stage-zero assertion is vacuous. At a successor, the generic point of a component maps to the generic point of a surviving preceding component. That generic point lies outside the current center, and the induction hypothesis says its ambient image avoids all earlier centers. The strict-transform square commutes, so this ambient image is the blowdown of the new generic point. The two facts give successor avoidance.
 -/
 private theorem forall_avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY)
@@ -99,8 +93,8 @@ private theorem forall_avoidsCenters_strictTransformι_of_isGenericPoint [Algebr
     · rw [← key]
       exact ih (Nat.le_of_succ_le hi) C' hC' _ hη'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the stage-by-stage avoidance result to the specified stage, component, and generic point.
 -/
 theorem avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsReduced Y] (S : EmbeddedBlowupSequence k Y pY)
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i ≤ S.length)
@@ -109,10 +103,8 @@ theorem avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsR
     S.AvoidsCenters i ((S.strictTransformι i).base ξ) :=
   forall_avoidsCenters_strictTransformι_of_isGenericPoint S hN i hi C hC ξ hξ
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Over the complement of the center the blowdown is an isomorphism. The given open lies in its source there. The composite from the given open to the previous ambient scheme factors through an open inclusion, this isomorphism, and the inclusion of the center complement. Each factor is an open immersion.
 -/
 theorem isOpenImmersion_ι_comp_blowdown (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i < S.length)
     (U : (S.schemeAt (i + 1)).Opens)
@@ -132,14 +124,8 @@ theorem isOpenImmersion_ι_comp_blowdown (S : EmbeddedBlowupSequence k Y pY) (i 
   rw [← key]
   infer_instance
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The next component is the closure of its generic point. The component downstairs is closed and contains the image of that generic point, so continuity puts the image of the entire next component inside the component downstairs. The strict-transform square commutes, giving the required statement for the ambient images.
 -/
 theorem mem_image_strictTransformι_of_mem_image_succ (S : EmbeddedBlowupSequence k Y pY) (i : ℕ)
     (C : Set ↥(S.strictTransform (i + 1))) (η : ↥(S.strictTransform (i + 1))) (hη : IsGenericPoint η C)
@@ -167,10 +153,8 @@ theorem mem_image_strictTransformι_of_mem_image_succ (S : EmbeddedBlowupSequenc
     rw [S.strictTransformMap_comp_strictTransformι i]
   simpa using key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The specialization between the two images is reflected by the open embedding from the given open into the target. Thus the corresponding points specialize in the open. The inclusion of the open is continuous and preserves this specialization in the original source, which gives the asserted closure membership.
 -/
 private theorem mem_closure_singleton_of_base_mem {X₀ X₁ : Scheme.{u}}
     (π : X₁ ⟶ X₀) (V : X₁.Opens)
@@ -188,16 +172,8 @@ private theorem mem_closure_singleton_of_base_mem {X₀ X₁ : Scheme.{u}}
   rw [hvx, hvy] at hfin
   exact specializes_iff_mem_closure.mp hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two ambient component images are the closures of their embedded generic points, and blowdown sends the upper generic point to the lower one. The image of the given point is in the closure of the lower generic point. If that generic point belonged to the center, this closure would be contained in the closed center, contrary to the hypothesis. Thus both upper points lie over the complement of the center, where blowdown is an open immersion. It reflects the specialization between their images, so the given point lies in the closure of the upper generic point and hence in the new component image.
 -/
 private theorem mem_image_strictTransformι_succ_of_mem_image [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i < S.length)
@@ -252,8 +228,8 @@ private theorem mem_image_strictTransformι_succ_of_mem_image [AlgebraicGeometry
   rw [← hclA]
   exact hmain
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+In one direction the open immersion away from the center lifts membership in the previous component to membership in the next. In the other direction continuity and the commuting strict-transform square send the next component into the previous one.
 -/
 theorem mem_image_strictTransformι_iff_of_notMem_ambientCenter [AlgebraicGeometry.IsReduced Y]
     (S : EmbeddedBlowupSequence k Y pY)
@@ -270,8 +246,8 @@ end EmbeddedBlowupSequence
 
 namespace OpenImmersionRestriction
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of a pulled-back ideal is the inverse image of the original support. Membership in this inverse image gives membership of the image point in the original support.
 -/
 theorem mem_support_of_mem_support_comap {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealSheafData)
     (x : ↥X) (hx : x ∈ ((I.comap f).support : Set ↥X)) :
@@ -282,10 +258,8 @@ theorem mem_support_of_mem_support_comap {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z
 def reducedVanishingAssignment : VanishingAssignment.{u} :=
   fun _ T => Scheme.IdealSheafData.vanishingIdeal T
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every value of the map lies in the open. Consequently a value belongs to either closed set exactly when it belongs to that set’s intersection with the open. The two intersections are equal, so the inverse images are equal point by point.
 -/
 private theorem preimage_congr_of_inter_eq {W : Scheme.{u}} {Z₁ Z₂ : TopologicalSpace.Closeds ↥W}
     {U : W.Opens} (h : (Z₁ : Set ↥W) ∩ (U : Set ↥W) = (Z₂ : Set ↥W) ∩ (U : Set ↥W))
@@ -302,8 +276,8 @@ private theorem preimage_congr_of_inter_eq {W : Scheme.{u}} {Z₁ Z₂ : Topolog
     rw [← h] at h2
     exact h2.1
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The spectrum of the affine open maps into the given open. Since the two closed sets have the same intersection with that open, their inverse images in the spectrum coincide. The section ideals are the vanishing ideals of these inverse images, hence are equal.
 -/
 private theorem vanishingIdeal_ideal_eq_of_inter_eq {W : Scheme.{u}}
     (Z₁ Z₂ : TopologicalSpace.Closeds ↥W) (U : W.Opens)
@@ -320,10 +294,8 @@ private theorem vanishingIdeal_ideal_eq_of_inter_eq {W : Scheme.{u}}
   exact congrArg PrimeSpectrum.vanishingIdeal
     (preimage_congr_of_inter_eq h (fun a => (V.2.fromSpec).base a) hg)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Use the given open as the agreement neighborhood. On each affine open inside it, the restricted section ideals are obtained from those on the corresponding affine open in the ambient scheme. The equality of intersections gives equality of those ambient section ideals. Thus the restricted ideal sheaves agree on every affine open and are equal.
 -/
 theorem agreeNear_vanishingIdeal_of_inter_eq {W : Scheme.{u}}
     (Z₁ Z₂ : TopologicalSpace.Closeds ↥W) (U : W.Opens) (x : ↥W) (hx : x ∈ (U : Set ↥W))
@@ -340,10 +312,8 @@ theorem agreeNear_vanishingIdeal_of_inter_eq {W : Scheme.{u}}
   obtain ⟨z, -, rfl⟩ := hy
   exact z.2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first ideal has unit inverse image, so the image of the source unit belongs to it. That image is the target unit, making the first ideal the unit ideal. Multiplication by it leaves the second ideal unchanged, and the inverse images agree.
 -/
 private theorem comap_eq_comap_mul_of_comap_eq_top {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (P Q : Ideal B) (hP : Ideal.comap φ P = ⊤) :
@@ -357,10 +327,8 @@ private theorem comap_eq_comap_mul_of_comap_eq_top {A B : Type u} [CommRing A] [
     simpa using Ideal.mul_mem_left P x h2
   rw [hPtop, ← Ideal.one_eq_top, one_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback along the composite equals successive pullback. Substitute the product for the pullback of the target ideal. On each affine chart of the open restriction the first factor pulls back to the unit ideal, so the ring-level calculation removes it from the inverse image of the product. The resulting chart equalities identify the two ideal sheaves.
 -/
 theorem comap_eq_comap_comp_of_mul_eq {X Z : Scheme.{u}} (f : X ⟶ Z) (U : X.Opens)
     (I J : X.IdealSheafData) (K : Z.IdealSheafData)
@@ -382,22 +350,16 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   [AlgebraicGeometry.QuasiCompact pY]
 
 omit [AlgebraicGeometry.QuasiCompact pY] in
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The finite-stage Noetherianity theorem for embedded blowup sequences applies to the sequence attached to the embedding datum and algorithm. Evaluate it at the given stage within the length.
 -/
 theorem isNoetherian_schemeAt_toEmbeddedBlowupSequence (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     ∀ i ≤ (D.toEmbeddedBlowupSequence A).length,
       AlgebraicGeometry.IsNoetherian ((D.toEmbeddedBlowupSequence A).schemeAt i) :=
   fun i hi => (D.toEmbeddedBlowupSequence A).isNoetherian_schemeAt i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. The initial boundary is empty. At a successor every boundary member is either the newest exceptional divisor or the strict transform of a previous member. In the first case its support is the inverse image of the current center, contradicting the first condition for successor avoidance. In the second case its support is contained in the inverse image of the previous member’s support, since the pulled-back ideal is contained in the strict-transform ideal. The image point then lies on the previous boundary, and the induction hypothesis contradicts the second condition for successor avoidance.
 -/
 private theorem forall_not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY)
     (A : PrincipalizationAlgorithm.{u}) :
@@ -440,8 +402,8 @@ private theorem forall_not_avoidsCenters_of_mem_boundary_support (D : EmbeddingD
             ((principalizationOfEmbedding k Y pY D A).center i) x hx
         exact hcl'.1 hmem2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the inductive result on boundary support at the indicated stage to the given boundary member and point.
 -/
 theorem not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u})
     (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length)
@@ -452,8 +414,8 @@ theorem not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY) (A
     ¬ (D.toEmbeddedBlowupSequence A).AvoidsCenters i x :=
   forall_not_avoidsCenters_of_mem_boundary_support D A i hi E hE x hx
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Equal morphisms induce the same maps on sections, so their kernel ideal sheaves are equal.
 -/
 private theorem ker_congr {A B : Scheme.{u}} {f g : A ⟶ B}
     [AlgebraicGeometry.QuasiCompact f] [AlgebraicGeometry.QuasiCompact g] (h : f = g) :
@@ -461,10 +423,8 @@ private theorem ker_congr {A B : Scheme.{u}} {f g : A ⟶ B}
   subst h
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Factor the original morphism by first composing with the inverse isomorphism and then with the forward isomorphism. The forward isomorphism is an open immersion, so pulling the kernel of that composite back along it gives the kernel of the first factor.
 -/
 private theorem ker_comap_iso_hom_eq_ker_comp_inv {W B X : Scheme.{u}} (j : W ⟶ B) (e : X ≅ B)
     [AlgebraicGeometry.QuasiCompact j] [AlgebraicGeometry.QuasiCompact (j ≫ e.inv)] :
@@ -479,10 +439,8 @@ private theorem ker_comap_iso_hom_eq_ker_comp_inv {W B X : Scheme.{u}} (j : W �
   rw [h3]
   exact FunctorialResolution.Blowup.comap_ker_comp_of_isOpenImmersion (j ≫ e.inv) e.hom
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each affine open of the target, the ring of sections over its inverse image is reduced. The corresponding section map has radical kernel. The affine ideals of the kernel sheaf are contained in these radical kernels, and their radicals remain contained there. The maximality defining the kernel sheaf then gives containment of its radical in the kernel sheaf itself. The opposite containment is automatic.
 -/
 private theorem radical_ker_eq_of_isReduced {W Z : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     (f : W ⟶ Z) :
@@ -505,8 +463,8 @@ private theorem radical_ker_eq_of_isReduced {W Z : Scheme.{u}} [AlgebraicGeometr
     exact le_trans (Ideal.radical_mono h1) hrad
   exact le_antisymm hle (AlgebraicGeometry.Scheme.IdealSheafData.le_radical _)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+By the stated equality the ideal is the kernel ideal sheaf of a morphism from a reduced scheme. Such a kernel is radical by the preceding sectionwise argument.
 -/
 private theorem radical_eq_of_eq_ker {Z W : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     (I : Z.IdealSheafData) (f : W ⟶ Z)
@@ -514,10 +472,8 @@ private theorem radical_eq_of_eq_ker {Z W : Scheme.{u}} [AlgebraicGeometry.IsRed
   subst h
   exact radical_ker_eq_of_isReduced f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the principalization ideal is the pullback of the original embedding kernel along the stage-zero isomorphism. This is the kernel of the original embedding followed by the inverse isomorphism, also the stage-zero strict-transform ideal. Its support is the image of the strict-transform immersion. The source is reduced, so the kernel is radical and equals the vanishing ideal of that support.
 -/
 theorem principalizationOfEmbedding_ideal_zero_eq_vanishingIdeal [AlgebraicGeometry.IsReduced Y]
     (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u})
@@ -563,12 +519,8 @@ def AgreesWithComponentsOrderOne (D : EmbeddingDatum k Y pY) (A : Principalizati
       orderAt ((principalizationOfEmbedding k Y pY D A).ideal i)
         (((D.toEmbeddedBlowupSequence A).strictTransformι i).base ξ) = 1
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the spectrum of the local ring at the point consists of all its generizations. A field has a one-point spectrum. The point and its given generization both lie in that image, so they coincide.
 -/
 private theorem eq_of_specializes_of_isField_stalk {X : Scheme.{u}} (x : ↥X)
     (hfield : IsField ↑(X.presheaf.stalk x)) (y : ↥X) (hy : y ⤳ x) : y = x := by
@@ -587,12 +539,8 @@ private theorem eq_of_specializes_of_isField_stalk {X : Scheme.{u}} (x : ↥X)
     exact key a b
   exact ha.symm.trans ((congrArg (fun t => (X.fromSpecStalk x).base t) hab).trans hb)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The closure of a point is irreducible. If an irreducible set contains this closure, choose a generic point of its closure. That generic point specializes to the given point, so the hypothesis makes them equal. The larger set is therefore contained in the original point closure, proving maximality.
 -/
 private theorem closure_singleton_mem_irreducibleComponents {X : Scheme.{u}} (x : ↥X)
     (h : ∀ y : ↥X, y ⤳ x → y = x) :
@@ -610,12 +558,8 @@ private theorem closure_singleton_mem_irreducibleComponents {X : Scheme.{u}} (x 
   rw [hy2]
   exact subset_closure
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the continuous inverse isomorphism to the specialization. Its target becomes the original point, and the hypothesis makes the inverse image of the source equal to that point. Applying the forward isomorphism gives the stated equality.
 -/
 private theorem eq_of_specializes_iso_hom {X B : Scheme.{u}} (e : X ≅ B) (x : ↥X)
     (h : ∀ y : ↥X, y ⤳ x → y = x) (w : ↥B) (hw : w ⤳ e.hom.base x) :
@@ -632,12 +576,8 @@ private theorem eq_of_specializes_iso_hom {X B : Scheme.{u}} (e : X ≅ B) (x : 
     simp
   rw [← h4, h3]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the chosen strict-transform point belongs to the support of the stage-zero ideal. Under the initial isomorphism it therefore belongs to the support of the original embedding kernel. If its stage-zero local ring were a field, it would admit no distinct generization. The initial isomorphism preserves that property, so the closure of the transported point would be an ambient irreducible component. The support of the kernel is closed and contains the point, and hence would contain this component, contrary to the nonvanishing hypothesis.
 -/
 private theorem not_isField_stalk_strictTransformι_zero {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -678,26 +618,8 @@ private theorem not_isField_stalk_strictTransformι_zero {k : Type u} [Field k] 
     (closure_minimal (Set.singleton_subset_iff.mpr hz)
       (AlgebraicGeometry.Scheme.Hom.ker D.emb).support.2)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero ideal is the vanishing ideal of the whole strict-transform image. Remove the finite union of the images of the other components. The chosen generic point remains, since membership in another closed component would put the entire chosen component inside it. On the resulting open the full image equals the chosen component image, giving local agreement of their vanishing ideals. The closed embedding identifies the chosen component image with an irreducible component of the full image and identifies its generic point. The ambient local ring at that point is not a field, so the vanishing-ideal order formula for a maximal irreducible subset gives order one.
 -/
 private theorem agreesWithComponentsOrderOne_zero {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -774,32 +696,8 @@ private theorem agreesWithComponentsOrderOne_zero {k : Type u} [Field k] [CharZe
   · rw [hid0]
     exact FunctorialResolution.EmbeddedResolution.orderAt_vanishingIdeal_eq_one_of_not_isField _ _ _ hmax hgen hfield
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
-
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Follow the successor component’s generic point to the generic point of its surviving predecessor. By induction, on a neighborhood of that point the preceding ideal agrees with the predecessor’s vanishing ideal and has order one there. Intersect the neighborhood with the center complement and pull it back. The new generic point lies in this open because the predecessor survives. The exceptional ideal is the unit ideal on the open, so the transform formula identifies the restricted new ideal with the previous ideal pulled back. The blowdown is an open immersion there, and the preceding component image pulls back to the successor component image. Thus their vanishing ideals agree with the transformed ideal on this open. The open immersions identify the corresponding local rings and ideals, so the order remains one.
 -/
 private theorem agreesWithComponentsOrderOne_succ {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -949,8 +847,8 @@ private theorem agreesWithComponentsOrderOne_succ {k : Type u} [Field k] [CharZe
               (((D.toEmbeddedBlowupSequence A).strictTransformMap i).base η)) := by rw [hφp]
       _ = 1 := hord
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage using the stage-zero agreement and order calculation. If a successor lies within the sequence, its predecessor does as well. Apply the successor preservation result to the induction hypothesis.
 -/
 private theorem forall_agreesWithComponentsOrderOne {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -962,16 +860,16 @@ private theorem forall_agreesWithComponentsOrderOne {k : Type u} [Field k] [Char
   | zero => intro _; exact agreesWithComponentsOrderOne_zero D A
   | succ i ih => intro hi; exact agreesWithComponentsOrderOne_succ D A i hi (ih (Nat.le_of_succ_le hi))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Specialize the induction establishing componentwise agreement and order one at every stage within the sequence to the given stage.
 -/
 theorem agreesWithComponentsOrderOne_of_le [AlgebraicGeometry.IsReduced Y] (D : EmbeddingDatum k Y pY)
     (A : PrincipalizationAlgorithm.{u}) (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length) :
     AgreesWithComponentsOrderOne D A i :=
   forall_agreesWithComponentsOrderOne D A i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient scheme at each stage within the sequence is Noetherian. Its strict transform is a closed subscheme, whose underlying closed subspace is therefore Noetherian.
 -/
 theorem noetherianSpace_strictTransform (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -983,8 +881,8 @@ theorem noetherianSpace_strictTransform (A : PrincipalizationAlgorithm.{u}) :
   intro k _ _ Y _ _ pY _ _ D i hi
   exact (D.toEmbeddedBlowupSequence A).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is defined as a closed subscheme of the ambient stage. Its defining closed immersion induces a closed embedding on the underlying spaces.
 -/
 theorem isClosedEmbedding_strictTransformι (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -996,8 +894,8 @@ theorem isClosedEmbedding_strictTransformι (A : PrincipalizationAlgorithm.{u}) 
   intro k _ _ Y _ _ pY _ _ D i _
   exact (D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι i
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient image of the generic point of a strict-transform component avoids all preceding centers. If it lay on the indicated boundary member, the boundary-support result would force it to meet a preceding center. This contradiction excludes the generic point from the support.
 -/
 theorem genericPoint_notMem_boundary_support (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1015,8 +913,8 @@ theorem genericPoint_notMem_boundary_support (A : PrincipalizationAlgorithm.{u})
     (EmbeddedBlowupSequence.avoidsCenters_strictTransformι_of_isGenericPoint (D.toEmbeddedBlowupSequence A)
       (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) i hi C hC ξ hξ)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At the given stage, componentwise agreement and order one apply to the chosen component and its generic point. The reduced vanishing assignment is exactly the vanishing ideal used in that result, so both statements carry over directly.
 -/
 theorem agreeNear_and_orderAt_eq_one_reducedVanishingAssignment (A : PrincipalizationAlgorithm.{u}) :
     ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -1036,8 +934,8 @@ theorem agreeNear_and_orderAt_eq_one_reducedVanishingAssignment (A : Principaliz
   intro k _ _ Y _ _ pY _ _ D i hi C hC ξ hξ hCcl
   exact agreesWithComponentsOrderOne_of_le D A i hi C hC ξ hξ hCcl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each strict-transform space in range is Noetherian and its ambient inclusion is a closed embedding. Its generic points avoid all boundary supports. Near each such generic point the principalization ideal agrees with the reduced vanishing ideal of the component image and has order one. These four results supply all the chart isolation hypotheses.
 -/
 theorem chartIsolationHypotheses_reducedVanishingAssignment (A : PrincipalizationAlgorithm.{u}) :
     ChartIsolationHypotheses reducedVanishingAssignment A :=
@@ -1046,8 +944,8 @@ theorem chartIsolationHypotheses_reducedVanishingAssignment (A : Principalizatio
     generic_not_mem_member := genericPoint_notMem_boundary_support A
     agreeNear_orderAt_eq_one := agreeNear_and_orderAt_eq_one_reducedVanishingAssignment A }
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+An irreducible component of a scheme has a generic point. If the whole component image lay in the boundary support, the image of its generic point would lie there. This contradicts generic-point boundary avoidance.
 -/
 theorem not_image_irreducibleComponent_subset_boundary_support [AlgebraicGeometry.IsReduced Y]
     (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length)

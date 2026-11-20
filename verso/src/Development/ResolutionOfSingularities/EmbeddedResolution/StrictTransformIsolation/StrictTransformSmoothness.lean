@@ -72,8 +72,8 @@ def chartLevelStructureMorphism (k : Type u) [Field k] [CharZero k] (Y : Scheme.
     (principalizationOfEmbedding k Y pY D A).schemeAt t ⟶ Spec (CommRingCat.of k) :=
   (principalizationOfEmbedding k Y pY D A).structureMorphism t
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart-level structural map is defined as the principalization sequence’s structural morphism at the chosen stage.
 -/
 theorem chartLevelStructureMorphism_eq_structureMorphism (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
     [AlgebraicGeometry.IsAffine Y] (pY : Y ⟶ Spec (CommRingCat.of k))
@@ -82,8 +82,8 @@ theorem chartLevelStructureMorphism_eq_structureMorphism (k : Type u) [Field k] 
     chartLevelStructureMorphism k Y pY D A t = (principalizationOfEmbedding k Y pY D A).structureMorphism t :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The detached locus is the union of the detached irreducible components. In particular, it contains each component in that family.
 -/
 theorem subset_detachedLocus_of_mem_detachedComponents {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -93,12 +93,8 @@ theorem subset_detachedLocus_of_mem_detachedComponents {k : Type u} [Field k] [C
   rw [EmbeddedBlowupSequence.detachedLocus_eq_sUnion]
   exact Set.subset_sUnion_of_mem hC
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+Equality of the kernels lets each closed immersion factor through the other. Compose the two factorizations and then the corresponding closed immersion. The result is the closed immersion itself, so cancellation shows that the composite is the identity. Applying the same argument in the other order gives an isomorphism over the ambient scheme.
 -/
 theorem exists_iso_of_ker_eq {X X' W : Scheme.{u}} (f : X ⟶ W) (g : X' ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -124,8 +120,8 @@ theorem exists_iso_of_ker_eq {X X' W : Scheme.{u}} (f : X ⟶ W) (g : X' ⟶ W)
     rw [Category.assoc, hψg, hφf, Category.id_comp]
   exact ⟨⟨ψ, φ, h1, h2⟩, hψg⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion is flat, and the pullback of a quasi-compact morphism is quasi-compact. The flat base-change formula for the kernel ideal sheaf applies to the square, identifying the new kernel with the pullback of the old one.
 -/
 theorem ker_eq_comap_ker_of_isPullback_isOpenImmersion {X₁ Y₁ U V : Scheme.{u}}
     (f : X₁ ⟶ Y₁) [AlgebraicGeometry.QuasiCompact f] (g : V ⟶ Y₁)
@@ -136,8 +132,8 @@ theorem ker_eq_comap_ker_of_isPullback_isOpenImmersion {X₁ Y₁ U V : Scheme.{
   have : AlgebraicGeometry.QuasiCompact f' := FunctorialResolution.EmbeddedResolution.quasiCompact_of_isPullback H
   exact FunctorialResolution.EmbeddedResolution.ker_eq_comap_ker_of_isPullback_of_flat H
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Precompose the smooth composite with the inverse isomorphism, which is smooth. The two isomorphisms cancel and leave the morphism whose smoothness was required.
 -/
 private theorem smooth_of_smooth_iso_hom_comp {X X' Sc : Scheme.{u}} (e : X ≅ X') (g : X' ⟶ Sc)
     (h : AlgebraicGeometry.Smooth (e.hom ≫ g)) : AlgebraicGeometry.Smooth g := by
@@ -145,8 +141,8 @@ private theorem smooth_of_smooth_iso_hom_comp {X X' Sc : Scheme.{u}} (e : X ≅ 
   have hg : AlgebraicGeometry.Smooth (e.inv ≫ (e.hom ≫ g)) := inferInstance
   rwa [← Category.assoc, e.inv_hom_id, Category.id_comp] at hg
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose the given equality with the final morphism. This identifies the desired morphism precomposed with the isomorphism with the smooth composite in the hypothesis. Transport smoothness across the isomorphism.
 -/
 theorem smooth_comp_of_iso_hom_eq {A B V W Sc : Scheme.{u}} (e : A ≅ B)
     (ι₀ : A ⟶ V) (a : V ⟶ W) (g : B ⟶ W) (q : W ⟶ Sc)
@@ -159,10 +155,8 @@ theorem smooth_comp_of_iso_hom_eq {A B V W Sc : Scheme.{u}} (e : A ≅ B)
   rw [key]
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On any affine open of the target, the ring of sections over its inverse image is reduced. The kernel of the section map to that ring is therefore radical. The kernel ideal sheaf lies inside those section kernels, so each section ideal of its radical still lies inside the corresponding section kernel. The defining maximality of the kernel ideal sheaf gives containment of its radical in the original ideal sheaf. The reverse containment holds for every ideal.
 -/
 theorem radical_ker_eq_ker {W Z : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     (f : W ⟶ Z) :
@@ -182,12 +176,8 @@ theorem radical_ker_eq_ker {W Z : Scheme.{u}} [AlgebraicGeometry.IsReduced W]
     exact Ideal.isRadical_bot.comap _
   exact le_antisymm hle (AlgebraicGeometry.Scheme.IdealSheafData.le_radical _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the ideal is transported from the input by an isomorphism, which preserves the component condition. At a successor, multiplying the new ideal by the exceptional ideal gives the pullback of the preceding ideal. The exceptional Cartier divisor contains no irreducible component. The componentwise nonvanishing result for this factorization therefore transfers the induction hypothesis to the new ideal.
 -/
 theorem nonzeroOnComponents_ideal {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {E : List X.IdealSheafData}
@@ -215,10 +205,8 @@ theorem nonzeroOnComponents_ideal {k : Type u} [Field k] {X : Scheme.{u}}
       (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism i hi') 1 (s.ideal i) (s.ideal (i + 1)) htr
       (ih (Nat.le_of_succ_le hi))
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the order-one certificate to the whole ambient scheme viewed as an open. It yields the smooth order-one center isolation property for the vanishing-ideal assignment. Apply it to the indicated closed irreducible set, which has smooth reduced structure, contains no ambient component, avoids the old boundary, and has the prescribed local ideal agreement. Since its generic point lies outside the center, isolation excludes the given point from the center as well, a contradiction.
 -/
 theorem false_of_mem_support_center {k : Type u} [Field k] [CharZero k] {W : Scheme.{u}}
     (p : W ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p)
@@ -246,12 +234,8 @@ theorem false_of_mem_support_center {k : Type u} [Field k] [CharZero k] {W : Sch
     rw [vanishingIdealAssignment_apply]
     exact hagree z hz
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero ideal is the kernel of the original embedding transported to the stage-zero scheme. Its closed immersion therefore has the same kernel as the transported embedding, giving an isomorphism between their sources over the stage. Under this isomorphism the structural morphism is the original smooth map to the field.
 -/
 private theorem smooth_strictTransformι_comp_schemeAtToSpec_zero {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -275,32 +259,8 @@ private theorem smooth_strictTransformι_comp_schemeAtToSpec_zero {k : Type u} [
   rw [← key]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Work on the inverse image of the complement of the current center, which contains the next strict transform by hypothesis. The blowdown is an open immersion there. The commuting strict-transform maps put the next support inside the inverse image of the previous support. Conversely, the closure defining the new strict transform contains every point of that inverse image on this open. Since both strict transforms are reduced, the restricted next transform is the closed subscheme defined by the pullback of the preceding vanishing ideal. It is thus the base change of the previous transform to an open subscheme of the previous ambient stage. Its structural map is smooth by restriction and the compatibility of the stage structural maps.
 -/
 private theorem smooth_strictTransformι_comp_schemeAtToSpec_succ {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -440,44 +400,8 @@ private theorem smooth_strictTransformι_comp_schemeAtToSpec_succ {k : Type u} [
   have := hsm2
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the ideal is the vanishing ideal of the entire strict-transform image. Remove the images of all other components, a finite union of closed sets which omits the chosen point by disjointness. On the remaining open the full image and the chosen component image coincide. For a successor, track the generic point of the chosen component to a preceding component. By induction the preceding ideal agrees with that component’s vanishing ideal near the image of the point. Pull back this neighborhood intersected with the complement of the center. It still contains the point by avoidance. There the exceptional ideal is the unit ideal, so the successor ideal is the pullback of the preceding ideal. On this open immersion, component tracking identifies the pulled-back component image with the chosen successor component image, and the vanishing ideals restrict accordingly.
 -/
 private theorem agreeNear_vanishingIdeal_image_of_avoidsCenters_le_of_disjoint_zero
     {k : Type u} [Field k] [CharZero k]
@@ -663,12 +587,8 @@ private theorem agreeNear_vanishingIdeal_image_of_avoidsCenters_le_of_disjoint_z
         (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C, hCcl⟩ :
           TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)))).symm))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is smooth over the field and locally of finite type. Its chosen irreducible component is therefore open and closed. Its reduced vanishing subscheme inside the strict transform is smooth over the field. The composite immersion of this reduced subscheme into the ambient stage and the ambient vanishing subscheme of its image have the same support. They are isomorphic over the ambient stage by uniqueness of the reduced closed structure, so the ambient vanishing subscheme is smooth as well.
 -/
 private theorem smooth_vanishingIdeal_image_of_smooth_strictTransformι
     {k : Type u} [Field k] [CharZero k]
@@ -725,16 +645,8 @@ private theorem smooth_vanishingIdeal_image_of_smooth_strictTransformι
   obtain ⟨e, he⟩ := FunctorialResolution.EmbeddedResolution.exists_iso_of_range_base_eq _ _ hrange
   exact smooth_comp_of_iso_hom_eq e _ _ _ _ he hsub
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the chosen component under the closed immersion is closed and irreducible with the image of its generic point as generic point. Because the component survives, that generic point lies outside the center. Its ambient vanishing subscheme is smooth, and previous center avoidance gives local agreement of its vanishing ideal with the principalization ideal throughout the image. This puts the image in the support of the principalization ideal, which contains no ambient component. Previous center avoidance also makes the image disjoint from the boundary. The canonical reduction supplies the smooth ambient structure and order-one certificate. Center isolation now excludes every point of the image from the current center.
 -/
 private theorem notMem_ambientCenter_support_of_notMem_detachedComponents
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -851,26 +763,8 @@ private theorem notMem_ambientCenter_support_of_notMem_detachedComponents
     (((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base z)
     hgen ⟨z, hz, rfl⟩ hsmV hcomp hxi hdisj hagree hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Induct simultaneously on smoothness of the current strict transform and avoidance of all earlier centers through that stage. At stage zero the transform is isomorphic to the original smooth scheme, its components are disjoint, and there are no earlier centers. At a successor, choose a component through a given point and track its generic point to a surviving preceding component. Continuity sends the entire chosen component into that preceding component because it sends the closure of the generic point into the closure of its image. The isolation result for surviving components, applied using smoothness and avoidance through the preceding stage, excludes the image point from the current center. The commuting maps and the successor criterion give avoidance through the new stage. The open-immersion argument away from the center then gives smoothness of the new transform, completing the simultaneous induction.
 -/
 theorem avoidsCenters_strictTransformι_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -992,8 +886,8 @@ theorem avoidsCenters_strictTransformι_of_smooth
           exact hclear w
   exact (main t ht).2 t le_rfl y
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth-source avoidance theorem shows that the image of the given strict-transform point avoids all preceding centers. Membership in the support of a current boundary ideal would force that point to meet a preceding center. Hence it lies outside that boundary support.
 -/
 theorem strictTransformι_notMem_support_of_mem_boundary
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)

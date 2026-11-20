@@ -38,8 +38,8 @@ noncomputable abbrev MarkedIdealWithBoundary.pullbackWithBoundary (T : MarkedIde
     (E' : List Y.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   (T.pullbackOverField Y k' q g).withBoundary E'
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The unit ideal has empty support. Membership of the given point in that support is therefore impossible.
 -/
 private theorem false_of_mem_support_top {X : Scheme.{u}} (y : ↥X)
     (h : y ∈ (⊤ : X.IdealSheafData).support) : False := by
@@ -50,8 +50,8 @@ private theorem false_of_mem_support_top {X : Scheme.{u}} (y : ↥X)
   rw [TopologicalSpace.Closeds.coe_bot] at h'
   simp at h'
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the image point is in the support, the given point is in the support of the pulled-back ideal by the inverse-image formula for support. That ideal is the unit ideal and has empty support, a contradiction.
 -/
 private theorem false_of_mem_support_of_comap_eq_top {A B : Scheme.{u}} (u : B ⟶ A)
     (I : A.IdealSheafData) (htop : I.comap u = ⊤) (y : ↥B) (hz : u.base y ∈ I.support) : False := by
@@ -59,18 +59,16 @@ private theorem false_of_mem_support_of_comap_eq_top {A B : Scheme.{u}} (u : B �
   rw [htop] at hmem
   exact false_of_mem_support_top y hmem
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison square at the last stages is a pullback of the original base morphism. The last-stage map is therefore flat by stability of flatness under base change.
 -/
 private theorem flat_lastMap {X X' : Scheme.{u}} {φ : X' ⟶ X}
     [AlgebraicGeometry.Flat φ] {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) : AlgebraicGeometry.Flat c.lastMap :=
   MorphismProperty.of_isPullback c.isPullback_lastMap.flip inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage number. The zero stage is isomorphic to the given Noetherian base scheme. At a successor stage within the length, the preceding stage is Noetherian by induction and its blowup is again Noetherian.
 -/
 private theorem isNoetherian_schemeAt_of_le_length {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -87,25 +85,21 @@ private theorem isNoetherian_schemeAt_of_le_length {k : Type u} [Field k] {X : S
       have : AlgebraicGeometry.IsNoetherian (d.obj n) := ih (le_of_lt hn)
       exact isNoetherian_of_isBlowupAlongIdealSheaf (d.toBlowupSequenceData.isBlowup n hn)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the last center includes the condition that its ideal is proper. Hence this ideal differs from the unit ideal.
 -/
 private theorem centerAtLast_ne_top_of_isAdmissibleCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (h : MarkedBlowupSequenceData.IsAdmissibleCenter s) : s.centerAtLast ≠ ⊤ := h.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The iteration begins with the empty blowup sequence. At iteration zero this is still the sequence, so the length is zero.
 -/
 private theorem length_monomialIterateFromEmpty_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) :
     (monomialIterateFromEmpty hinv T 0).length = 0 := emptyMarkedBlowupSequenceData_length _ _ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both single steps are blowups of their initial centers. The upper initial center is the pullback of the lower one along the flat stage-zero comparison. Flat base change of blowups gives a pullback square for the blowup morphisms. The initial identifications express the stage-zero comparison by the original base map, and the upper center is proper. These data give the comparison of the length-one sequences.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_one {A B : Scheme.{u}} (φ : B ⟶ A)
     (t : BlowupSequenceData A) (t' : BlowupSequenceData B) (ht : t.length = 1) (ht' : t'.length = 1)
@@ -127,14 +121,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_one {A B : Schem
   · rw [hψ]
     exact hcen
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The admissible lower center appends a single blowup. Its pullback to the upper last stage is the unit ideal. Thus no upper point maps into the support of the lower center. The omitted-center construction compares the empty upper extension with this single lower step over the last-stage map. Concatenate that comparison with the existing one. Identifying the upper append of the empty sequence with the original upper sequence gives the required comparison.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter_of_comap_eq_top {k₁ k₂ : Type u}
     [Field k₁] [Field k₂] {X₁ X₂ : Scheme.{u}}
@@ -179,10 +167,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter_of_comap_eq_to
     (emptyMarkedBlowupSequenceData (S'.proj S'.length ≫ p₂) (S'.ideal S'.length) m₂
       (S'.boundary S'.length)).toBlowupSequenceData hE0 c2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both last centers are admissible, so each appended step is a single blowup with a proper center. The last-stage map is flat by base change. The new stage-zero identifications are identities, so the given equality of the center ideals is the comparison required for the length-one pullback construction. Append the resulting comparison of single steps to the comparison of the given sequences to get the two extended sequences.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter {k₁ k₂ : Type u} [Field k₁] [Field k₂]
     {X₁ X₂ : Scheme.{u}}
@@ -217,16 +203,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_blowupAtCenter {k₁ k₂ : T
   exact SequenceOfBlowupsPullback.concat S.toBlowupSequenceData (S.monomialBlowupStep hS).toBlowupSequenceData
     S'.toBlowupSequenceData (S'.monomialBlowupStep hS').toBlowupSequenceData c e
 
-/- English proof (translation)
-Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the upper boundary by the directly pulled-back boundary. Admissibility and local monomiality survive this replacement, and the minimum size and center are unchanged because the nonunit entries are the same in order. Flatness and order preservation supply the component-compatible comparison. A positive upper minimum forces a positive lower minimum. For a positive lower minimum, either the upper minimum is zero or the lower invariant is weakly below the upper one. The lower center pulls back to the unit ideal if the upper minimum is zero or the invariant comparison is strict. If all entries agree, the chosen indices agree under the boundary index map. Then the upper minimum is positive and the upper center is the pullback of the lower one. Transfer these conclusions back to the given upper boundary.
 -/
 private theorem minIndexCard_ne_zero_and_monomialCenter_comap_of_flat (hGeom : MonomialGeometryHypotheses.{u})
     (Tn : MarkedIdealWithBoundary.{u})
@@ -287,14 +265,8 @@ private theorem minIndexCard_ne_zero_and_monomialCenter_comap_of_flat (hGeom : M
             hm.symm hx.symm
             (MonomialCenter.lexMaxIndices_pullbackOverField_eq_image Tn Yj k' qj φ hs)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
-
-Establish an intermediate fact. Prove the second alternative. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison of the existing sequences is a pullback square, with a flat last-stage map. The transformed upper ideal is the pullback of the lower one, and its boundary has the same nonunit ideals in order as the pulled-back lower boundary. This follows from the comparison of marked transforms on the Noetherian stages. The assumed preservation of order applies to the final square. Use the flat center comparison on the final triples. Admissibility upstairs implies a positive upper minimum, hence a positive lower one. If the lower center is admissible, it has positive minimum. The center comparison either makes its pullback the unit ideal, allowing the single lower step to be omitted upstairs, or identifies it with the upper center at a positive upper minimum. In the latter case the upper center is admissible and the single steps on both sides extend the comparison.
 -/
 private theorem sequenceOfBlowupsPullback_blowupAtCenter_cases
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -361,14 +333,8 @@ private theorem sequenceOfBlowupsPullback_blowupAtCenter_cases
         hTj hne'
     exact Or.inr ⟨hok', nonempty_sequenceOfBlowupsPullback_blowupAtCenter g hg hinv S S' hok hok' c hcenEq⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of lower steps up to the first stationary index. At zero take the two empty sequences, which compare over the base map and have no centers. At a successor, compare the preceding lower iterate with an upper iterate by induction. All earlier upper centers are admissible, and the preceding lower center is admissible since it occurs before the lower stationary index. Both final triples are locally monomial. The one-step comparison either extends only the lower sequence, keeping the upper index and its admissibility history, or extends both sequences by one admissible blowup. In the latter case add the new upper center to its history. This gives the claimed comparison and upper index.
 -/
 private theorem exists_sequenceOfBlowupsPullback_monomialIterateFromEmpty
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -422,10 +388,8 @@ private theorem exists_sequenceOfBlowupsPullback_monomialIterateFromEmpty
       · rw [h1]
         exact hok'
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the iterative comparison at the lower first stationary index, obtaining a comparable upper iterate whose earlier centers were all admissible. At the lower stationary index the minimum candidate size is zero. If the current upper center were admissible, the one-step comparison would force the lower minimum to be positive. Thus the current upper center is inadmissible, and this is the first stationary upper index. The two principalizations are the sequences at these stationary indices. The constructed comparison of the iterates therefore supplies the pullback relation for the principalizations.
 -/
 theorem monomialPrincipalization_isPullbackBlowupSequence_of_flat
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -473,18 +437,16 @@ theorem monomialPrincipalization_isPullbackBlowupSequence_of_flat
     monomialBlowupSeq_eq_monomialBlowupIterate, hjeq]
   exact SequenceOfBlowupsPullback.isPullbackSequenceOfBlowups c
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The indicated projection to the lower scheme is obtained by base change of the given smooth morphism. Smoothness is preserved by base change.
 -/
 private theorem smooth_fst_of_isPullback {X Y B Q : Scheme.{u}} {hm : Y ⟶ X}
     [AlgebraicGeometry.Smooth hm] {b : B ⟶ X} {a : Q ⟶ B} {b' : Q ⟶ Y}
     (hsq : IsPullback a b' b hm) : AlgebraicGeometry.Smooth a :=
   MorphismProperty.of_isPullback hsq.flip inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given smooth morphism is flat, and at the original field its pullback triple agrees with the specified same-field construction. The boundary equality can be read in either direction. In every comparison square required by the flat theorem the map on the lower stage is a base change of the original smooth morphism, hence smooth. The lower structural morphism is smooth over a characteristic-zero field by admissibility. Order is preserved under such smooth pullback, which supplies the remaining hypothesis of the flat comparison theorem.
 -/
 theorem monomialPrincipalization_isPullbackBlowupSequence_of_smooth
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})

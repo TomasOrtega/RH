@@ -29,66 +29,66 @@ def pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : T
   mult := T.mult
   boundary := T.boundary.map fun D => D.comap h
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction stores the field supplied for the source scheme as its base field. This is the stated field.
 -/
 theorem pullbackOverField_baseField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).base = k' := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction uses the source scheme of the given morphism as its underlying scheme.
 -/
 @[simp] theorem pullbackOverField_scheme (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).scheme = Y := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The structural morphism of the constructed marked object is the supplied map from the source scheme to the spectrum of its field.
 -/
 theorem pullbackOverField_structureMorphism (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).structMap = q := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction sets the ideal of the new marked object to the pullback of the original ideal along the given scheme morphism.
 -/
 @[simp] theorem pullbackOverField_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).ideal = T.ideal.comap h := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pullback construction copies the mark of the original object. The multiplicities therefore agree.
 -/
 @[simp] theorem pullbackOverField_mult (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).mult = T.mult := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new boundary is defined by pulling back each ideal in the original list along the given morphism, keeping the list order.
 -/
 @[simp] theorem pullbackOverField_boundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).boundary = T.boundary.map fun D => D.comap h := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+When the field is the original one, both constructions use the same source scheme and structural morphism. They pull back the same ideal and boundary along the given morphism and carry over the same mark. Their data coincide.
 -/
 theorem pullbackOverField_eq_pullbackAlong (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     T.pullbackOverField Y T.base q h = T.pullbackAlong Y q h :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pullback boundary is obtained by replacing each entry with its pullback, so there is one entry for each original position and the lengths agree.
 -/
 theorem pullbackOverField_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
     (T.pullbackOverField Y k' q h).boundary.length = T.boundary.length :=
   List.length_map _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pulling back along the morphism applies ideal pullback at every position of the old list. This keeps the original list length.
 -/
 theorem pullbackAlong_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
@@ -102,8 +102,8 @@ def pullbackOverFieldIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k
     Fin T.boundary.length → Fin (T.pullbackOverField Y k' q h).boundary.length :=
   Fin.cast (MarkedIdealWithBoundary.pullbackOverField_boundary_length T Y k' q h).symm
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The boundary lengths agree, so the corresponding new index has the original numeric position, now regarded as an index in the pulled-back list.
 -/
 theorem pullbackOverFieldIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -115,8 +115,8 @@ def pullbackAlongIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     Fin T.boundary.length → Fin (T.pullbackAlong Y q h).boundary.length :=
   Fin.cast (MarkedIdealWithBoundary.pullbackAlong_boundary_length T Y q h).symm
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two index bounds using equality of the boundary lengths. This changes only the bound, leaving the numeric position unchanged.
 -/
 theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -126,8 +126,8 @@ theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}
 def IsIrreducibleComponentOf {Y : Scheme.{u}} (C S : Set ↥Y) : Prop :=
   IsIrreducible C ∧ C ⊆ S ∧ ∀ C' : Set ↥Y, IsIrreducible C' → C ⊆ C' → C' ⊆ S → C' = C
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+Membership means that the set is irreducible, lies in the support of the intersection ideal and is maximal with these properties. These are the defining conditions for an irreducible component of the support.
 -/
 theorem mem_intersectionComponents_iff {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (C : Set ↥Y) :
@@ -138,8 +138,8 @@ abbrev transformedBoundary {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheaf
     (L : List X.IdealSheafData) : List X'.IdealSheafData :=
   L.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The strictly transformed ideals have one entry at each old boundary position. The exceptional ideal adds one entry at the end, giving the stated length.
 -/
 theorem transformedBoundary_length {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) :
@@ -151,8 +151,8 @@ def strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafDa
     Fin (transformedBoundary π Z L).length :=
   Fin.cast (transformedBoundary_length π Z L).symm j.castSucc
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The strict transforms occupy the old positions in the enlarged list. The new index for a strict transform is the old position with the larger bound, so its numeric value is unchanged.
 -/
 theorem strictTransformIndex_val {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) (j : Fin L.length) :
@@ -162,8 +162,8 @@ def exceptionalIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) : Fin (transformedBoundary π Z L).length :=
   Fin.cast (transformedBoundary_length π Z L).symm (Fin.last L.length)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The list has one more position than the original boundary. Its last position, numbered from zero, equals the length of the old list, and this is the exceptional index.
 -/
 theorem exceptionalIndex_val {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) :
@@ -174,8 +174,8 @@ def preimageStrictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.Idea
     (J' : Finset (Fin (transformedBoundary π Z L).length)) : Finset (Fin L.length) :=
   Finset.univ.filter fun j => strictTransformIndex π Z L j ∈ J'
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The preimage set is formed by keeping exactly those original indices whose strict-transform indices belong to the given set. This filter is the membership condition on the right.
 -/
 theorem mem_preimageStrictTransformIndex_iff {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData)
@@ -193,8 +193,8 @@ def componentUnionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData) (J : Finset
     Y.IdealSheafData :=
   Scheme.Hom.ker ((componentUnionOpens L J 𝒞 hop).ι ≫ (intersectionIdeal L J).subschemeι)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+First include the open union of components into the intersection subscheme. Then include the intersection into the ambient scheme. The component-union ideal is defined as the kernel of this composite.
 -/
 theorem componentUnionIdeal_eq_ker {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (𝒞 : Set (Set ↥Y))

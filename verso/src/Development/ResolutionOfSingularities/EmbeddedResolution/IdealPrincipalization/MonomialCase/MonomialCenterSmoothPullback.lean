@@ -34,8 +34,8 @@ def pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type 
   pullbackOverFieldIndex T Y k' q g
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pulling back the boundary preserves list positions. The new index has the same natural-number value as the original index.
 -/
 theorem pullbackIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -48,8 +48,8 @@ def pullbackIndexSymm (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : T
   Fin.cast (MarkedIdealWithBoundary.pullbackOverField_boundary_length T Y k' q g)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inverse index map uses equality of the boundary lengths to reinterpret an upper position in the lower list. Its natural-number value stays the same.
 -/
 theorem pullbackIndexSymm_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -58,8 +58,8 @@ theorem pullbackIndexSymm_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
   rfl
 
 @[simp]
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both index maps preserve the numeric position. Their composite has the original numeric value and therefore equals the original finite index.
 -/
 theorem pullbackIndexSymm_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -68,8 +68,8 @@ theorem pullbackIndexSymm_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : S
   rw [pullbackIndexSymm_val, pullbackIndex_val]
 
 @[simp]
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Sending a pulled-back index downstairs and then upstairs leaves its numeric value fixed. Equality of these values identifies the original index with the result.
 -/
 theorem pullbackIndex_pullbackIndexSymm (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -84,8 +84,8 @@ def pullbackAlongIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
   EmbeddedResolution.pullbackAlongIndex T Y q g
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison at the original base field uses the index map for pullback over that field. It keeps the numeric position in the list.
 -/
 theorem pullbackAlongIndex_val (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (g : Y ⟶ T.scheme) (j : Fin T.boundary.length) :
@@ -117,8 +117,8 @@ structure IsComponentCompatiblePullback (T : MarkedIdealWithBoundary.{u}) (Y : S
           ∀ (ξ' : ↥Y) (ξ : ↥T.scheme), IsGenericPoint ξ' C' → IsGenericPoint ξ C → g ξ' = ξ
   orderAtComap : ∀ (I : T.scheme.IdealSheafData) (y : ↥Y), orderAt (I.comap g) y = orderAt I (g y)
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The weak comparison holds when the first invariant is strictly smaller or all its comparison entries coincide with those of the second. Substituting the minimum size, maximum order and sorted chosen indices into these entries gives the right-hand condition.
 -/
 theorem centerInvariant_le_iff {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ) (L : List Y.IdealSheafData)
     (I' : Y'.IdealSheafData) (m' : ℕ) (L' : List Y'.IdealSheafData) :
@@ -128,20 +128,8 @@ theorem centerInvariant_le_iff {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : �
           sortedIndices (lexMaxIndices I m L) = sortedIndices (lexMaxIndices I' m' L'))) :=
   Iff.rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Since the upper minimum size is positive, choose an upper component attaining it. Send its selected indices to their counterparts in the lower boundary. This preserves cardinality and recovers the original selection after pulling back the indices. The component comparison gives a lower component whose generic point is the image of the upper generic point. Order preservation at that point gives the same order downstairs, so the lower component is a candidate of the same positive size. The lower minimum is therefore positive and at most the upper one.
 -/
 theorem minIndexCard_ne_zero_and_le_pullbackOverField (_hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -216,20 +204,8 @@ theorem minIndexCard_ne_zero_and_le_pullbackOverField (_hGeom : MonomialGeometry
   have h1 := hspec.1
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The common minimum size is positive. Choose an upper component attaining the maximum order at that size. Send its indices downstairs without changing their number and use the component comparison to send its generic point to a lower component's generic point. Order preservation gives the same order there. This is a lower candidate at the common minimum size, so the lower maximum is at least its order, which is the upper maximum.
 -/
 theorem maxCandidateOrder_le_of_minIndexCard_eq (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -300,8 +276,8 @@ theorem maxCandidateOrder_le_of_minIndexCard_eq (hGeom : MonomialGeometryHypothe
   rw [← hord', hord]
   exact hmaxOrd
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+Expand the strict comparison of the invariant entries. A smaller minimum size gives the comparison first. At equal size a larger maximum order gives the comparison, and at equal order the increasing lists of chosen indices are compared lexicographically. These are the stated cases.
 -/
 private theorem centerInvariant_lt_iff_lex {Y Y' : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (I' : Y'.IdealSheafData) (m' : ℕ)
@@ -315,8 +291,8 @@ private theorem centerInvariant_lt_iff_lex {Y Y' : Scheme.{u}} (I : Y.IdealSheaf
                 (sortedIndices (lexMaxIndices I' m' L')))))) :=
   Iff.rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Equal images under the inverse index map have equal numeric positions. The map preserves positions, so the two original upper indices have equal positions and are equal.
 -/
 private theorem pullbackIndexSymm_injective (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) :
@@ -325,8 +301,8 @@ private theorem pullbackIndexSymm_injective (T : MarkedIdealWithBoundary.{u}) (Y
   apply Fin.val_injective
   rw [← pullbackIndexSymm_val T Y k' q g a, ← pullbackIndexSymm_val T Y k' q g b, h]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The order on finite indices is the order of their numeric values. Since the pullback index map preserves these values, it preserves strict inequality.
 -/
 private theorem pullbackIndex_strictMono (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) :
@@ -336,8 +312,8 @@ private theorem pullbackIndex_strictMono (T : MarkedIdealWithBoundary.{u}) (Y : 
   rw [Fin.lt_def, pullbackIndex_val, pullbackIndex_val]
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+A strictly increasing map commutes with sorting the index set. Taking numeric positions after applying the pullback index map gives the same entries as taking them before, so the two sorted lists coincide.
 -/
 private theorem sortedIndices_image_pullbackIndex (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -348,8 +324,8 @@ private theorem sortedIndices_image_pullbackIndex (T : MarkedIdealWithBoundary.{
   simp only [pullbackIndex_val]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Order along each component is order at its generic point. By the generic-point comparison, the upper generic point maps to the lower one. The assumed preservation of order under pullback equates these two values.
 -/
 private theorem orderAlong_pullbackOverField_eq_orderAlong (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -369,24 +345,8 @@ private theorem orderAlong_pullbackOverField_eq_orderAlong (T : MarkedIdealWithB
   have h3 := hP.orderAtComap T.ideal (isIrreducible_of_mem_intersectionComponents hC').genericPoint
   exact h1.trans (h3.trans ((congrArg (orderAt T.ideal) hg).trans h2.symm))
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A zero upper minimum gives the first outcome. Otherwise the lower minimum is positive and at most the upper one. Strict inequality gives the strict invariant comparison by size. If sizes agree, the upper maximum order is at most the lower one, and strict inequality gives the comparison by the reversed order entry. If these orders also agree, transport a component attaining the upper choice to the lower selection with the same positions. It remains of maximum order and the same size. The lower choice is lexicographically at most that selection by its optimality, and the sorted positions of that selection equal the upper choice's positions. This gives strict comparison by the index list or equality of all entries.
 -/
 theorem minIndexCard_pullbackOverField_eq_zero_or_centerInvariant_le (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -476,14 +436,8 @@ theorem minIndexCard_pullbackOverField_eq_zero_or_centerInvariant_le (hGeom : Mo
   · rw [hsp] at hlex
     exact absurd hlex hnotlex
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+An index belongs to either chosen set exactly when its position occurs in the corresponding sorted list. The lists agree by hypothesis. Each position in the upper set is therefore the position of a lower chosen index, and the pullback map carries that lower index to the given upper one. Conversely, pulling back a chosen lower index gives the same position in the upper list and hence an upper chosen index.
 -/
 theorem lexMaxIndices_pullbackOverField_eq_image (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -518,8 +472,8 @@ theorem lexMaxIndices_pullbackOverField_eq_image (T : MarkedIdealWithBoundary.{u
       exact hval
     rwa [hj2eq] at hj2
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the two index sets and the two component families by their common values. The open parts of the intersection and their inclusions then agree, so their defining kernels coincide.
 -/
 private theorem componentUnionIdeal_congr {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J J' : Finset (Fin L.length)) (𝒞 𝒞' : Set (Set ↥Y)) (hJ : J = J') (h𝒞 : 𝒞 = 𝒞')
@@ -530,20 +484,8 @@ private theorem componentUnionIdeal_congr {Y : Scheme.{u}} (L : List Y.IdealShea
   subst h𝒞
   rfl
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the common minimum size is zero, both centers are unit ideals, and pullback preserves the unit ideal. Otherwise write the centers as ideals of the selected component unions. Under the given index identification, an upper selected component maps into a lower intersection component with the same generic order. Equality of the maxima and minima makes this lower component selected. Conversely, an upper intersection component mapping into a selected lower one has the same generic order as the component supplied by the comparison. That lower component equals the selected one, since their intersection contains the image of an upper point and distinct lower components are disjoint. The upper component therefore also has the required order and is selected. This identifies the two component families used by the pullback property of the union ideal, which gives the center equality.
 -/
 theorem monomialCenter_pullbackOverField_eq_comap (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -621,22 +563,8 @@ theorem monomialCenter_pullbackOverField_eq_comap (hGeom : MonomialGeometryHypot
       monomialCenter_eq_componentUnionIdeal hGeom hT h0, heq]
     exact componentUnionIdeal_congr _ _ _ _ _ hch hSet _ _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose an upper point maps into the lower center. Its image lies in a selected lower component. Lift this component through the upper point using the component comparison and pull back its chosen index set. This keeps the size, generic order and numeric index positions. The resulting positive-size upper candidate rules out a zero upper minimum and bounds the upper minimum by the lower one. Thus a strict invariant comparison cannot arise from a larger upper minimum. If sizes agree, the lifted candidate bounds the upper maximum order below by the lower maximum, ruling out strict comparison by a smaller upper order. If orders agree as well, the lifted selection maximizes the upper order and has the same sorted positions as the lower choice. Optimality of the upper choice then rules out strict comparison by the index list. This contradiction excludes all upper points from the inverse image of the lower center support. The pullback center has empty support and hence is the unit ideal.
 -/
 theorem comap_monomialCenter_eq_top (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))

@@ -50,8 +50,8 @@ def transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchi
     (J : Finset (Fin L.length)) : Finset (Fin L'.length) :=
   Finset.image h.toSecond (h.preimage J)
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+All matching positions belong to the finite set before filtering. The filter keeps a position exactly when its first index belongs to the selected set.
 -/
 theorem mem_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchingOfNonTop L L')
     (J : Finset (Fin L.length)) (a : Fin h.size) :
@@ -62,10 +62,8 @@ theorem mem_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : Ordere
   · intro ha
     exact Finset.mem_filter.2 ⟨Finset.mem_univ a, ha⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A second index lies in the transported set exactly when it is the image of a matching position retained by the filter. The filter retains exactly the positions whose first index belongs to the original set, giving the stated witness in both directions.
 -/
 theorem mem_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchingOfNonTop L L')
     (J : Finset (Fin L.length)) (i : Fin L'.length) :
@@ -77,8 +75,8 @@ theorem mem_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : Order
   · rintro ⟨a, hai, haJ⟩
     exact Finset.mem_image.2 ⟨a, (h.mem_preimage J a).2 haJ, hai⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Reversing the matching exchanges its two index maps and reverses the equality of corresponding entries. Doing it twice restores both maps and their matching conditions.
 -/
 theorem symm_symm {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchingOfNonTop L L') :
     h.symm.symm = h := rfl
@@ -171,32 +169,8 @@ private def orderedMatchingOfNonTopCons {Y : Scheme.{u}} {L L' : List Y.IdealShe
       simp only [Fin.cases_succ]
       rw [ha]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
-
-Simplify using the standard rewrite rules. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
-
-Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Induct on the bound for the sum of the lengths. At zero both lists are empty and have the empty matching. When a list begins with the unit ideal, remove that entry. Its removal does not change the filtered list of nonunit ideals. The induction matching extends to the original lists by increasing all indices in the shortened list by one. If neither head is a unit, equality of the filtered lists forces both lists to be nonempty and the two heads to agree. Apply induction to their tails, then match the two heads and shift the remaining positions. An empty list against a nonunit head is excluded by equality of the filtered lists. In every extension the matched positions stay strictly increasing and cover all nonunit entries.
 -/
 private theorem nonempty_orderedMatchingOfNonTop_of_length_add_le {Y : Scheme.{u}} (n : ℕ) :
     ∀ L L' : List Y.IdealSheafData, L.length + L'.length ≤ n →
@@ -269,39 +243,39 @@ private theorem nonempty_orderedMatchingOfNonTop_of_length_add_le {Y : Scheme.{u
                   obtain ⟨r⟩ := ih t t' hlen' hfil'
                   exact ⟨orderedMatchingOfNonTopCons _ r⟩
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary relation asserts equality after removing unit entries. Apply the matching construction with the sum of the two lengths as its bound.
 -/
 theorem nonempty_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') : Nonempty (OrderedMatchingOfNonTop L L') := by
   rw [MarkedIdealWithBoundary.sameNontrivialBoundary_iff] at h
   exact nonempty_orderedMatchingOfNonTop_of_length_add_le (L.length + L'.length) L L' le_rfl h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Removing the unit entries from either occurrence of the same list gives identical filtered lists, so the relation holds.
 -/
 theorem sameNontrivialBoundary_refl {Y : Scheme.{u}} (L : List Y.IdealSheafData) :
     MarkedIdealWithBoundary.SameNontrivialBoundary L L :=
   MarkedIdealWithBoundary.SameNontrivialBoundary.refl L
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Filtering unit entries commutes with concatenation. The filtered lists for each pair of factors agree, so concatenating the first factors' filtered lists with the second factors' filtered lists gives equality for the two concatenations.
 -/
 theorem sameNontrivialBoundary_append {Y : Scheme.{u}} {L₁ L₁' L₂ L₂' : List Y.IdealSheafData}
     (h₁ : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₁') (h₂ : MarkedIdealWithBoundary.SameNontrivialBoundary L₂ L₂') :
     MarkedIdealWithBoundary.SameNontrivialBoundary (L₁ ++ L₂) (L₁' ++ L₂') :=
   h₁.append h₂
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal has a unit stalk at every point. Its support therefore has no points.
 -/
 private theorem support_top_eq_empty {Y : Scheme.{u}} :
     (↑(⊤ : Y.IdealSheafData).support : Set ↥Y) = ∅ :=
   (AlgebraicGeometry.Scheme.IdealSheafData.eq_top_iff_support_eq_empty
     (⊤ : Y.IdealSheafData)).1 rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection ideal is the sum of the selected ideals. It contains the selected unit ideal, so it is itself the unit ideal.
 -/
 private theorem intersectionIdeal_eq_top {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) {j : Fin L.length} (hj : j ∈ J) (hg : L.get j = ⊤) :
@@ -313,10 +287,8 @@ private theorem intersectionIdeal_eq_top {Y : Scheme.{u}} (L : List Y.IdealSheaf
   rw [hg] at h2
   exact h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If a selected ideal were the unit ideal, the intersection ideal would be the unit ideal and its support would be empty. An irreducible component is nonempty and lies in that support, which is impossible.
 -/
 private theorem get_ne_top_of_mem_intersectionComponents {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) :
@@ -329,8 +301,8 @@ private theorem get_ne_top_of_mem_intersectionComponents {Y : Scheme.{u}} {L : L
   rw [h1, support_top_eq_empty] at h2
   exact (isIrreducible_of_mem_intersectionComponents hC).1.ne_empty (Set.subset_empty_iff.1 h2)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Equal intersection ideals have equal supports. Maximal irreducible subsets of those supports therefore form the same family.
 -/
 private theorem intersectionComponents_congr {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (J : Finset (Fin L.length)) (J' : Finset (Fin L'.length))
@@ -338,12 +310,8 @@ private theorem intersectionComponents_congr {Y : Scheme.{u}} {L L' : List Y.Ide
   unfold intersectionComponents
   rw [hEq]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every original selected index is nonunit and hence occurs in the matching. The corresponding second index is selected after transport and has the same ideal. Conversely, every transported index comes from an original selected index with equal ideal. The two sums of selected ideals thus have the same summands.
 -/
 private theorem intersectionIdeal_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -366,10 +334,8 @@ private theorem intersectionIdeal_transport {Y : Scheme.{u}} {L L' : List Y.Idea
     rw [h1]
     exact le_iSup₂ (f := fun (j : Fin L.length) (_ : j ∈ J) => L.get j) (rel.toFirst a) haJ
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The first image of a retained matching position belongs to the selected set by the filter condition. Conversely, every index of the selected set is nonunit, so the matching provides a position for it. That position belongs to the filter. This proves equality with the selected set.
 -/
 private theorem image_toFirst_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -384,8 +350,8 @@ private theorem image_toFirst_preimage {Y : Scheme.{u}} {L L' : List Y.IdealShea
     refine Finset.mem_image.2 ⟨a, ?_, ha⟩
     exact (rel.mem_preimage J a).2 (by rw [ha]; exact hj)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The filter set maps injectively to both lists because the two index maps are strictly increasing. Its first image is the original selected set, since all those indices are matched, and its second image is the transported set. Both images have the cardinality of the filter set.
 -/
 private theorem card_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -397,10 +363,8 @@ private theorem card_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
   rw [image_toFirst_preimage rel J hgood] at h2
   rw [h1, ← h2]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A candidate has a nonempty intersection component, so all selected boundary entries are nonunit. Transport preserves their number and the intersection ideal. The same component lies in the transported intersection, and its order for the original marked ideal is unchanged. The transported selection therefore satisfies each candidate condition.
 -/
 private theorem isCandidateComponent_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') {I : Y.IdealSheafData} {m r : ℕ} {J : Finset (Fin L.length)}
@@ -414,10 +378,8 @@ private theorem isCandidateComponent_transport {Y : Scheme.{u}} {L L' : List Y.I
   · rw [← intersectionComponents_congr J (rel.transport J) (intersectionIdeal_transport rel J hgood)]
     exact hC
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+A positive size is realized by a candidate in the first list exactly when it is realized in the second. In one direction transport the candidate through the matching, and in the other use the reversed matching. Both constructions preserve size. The sets of possible positive sizes agree, so their infima agree.
 -/
 private theorem minIndexCard_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -436,8 +398,8 @@ private theorem minIndexCard_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L
   unfold minIndexCard
   exact congrArg sInf hsets
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Every term in the first supremum comes from a candidate component for a set of the specified size. Transport the set and keep the component. The same value is a term in the second supremum, which therefore bounds the first.
 -/
 private theorem iSup_orderAlong_le_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m r : ℕ) :
@@ -448,8 +410,8 @@ private theorem iSup_orderAlong_le_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {
   exact le_iSup_of_le (rel.transport J)
     (le_iSup_of_le C (le_iSup_of_le (isCandidateComponent_transport rel hc) le_rfl))
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The minimum candidate sizes coincide under the matching. At this size the order supremum in the first list is at most the one in the second by candidate transport. Reversing the matching gives the reverse inequality.
 -/
 private theorem maxCandidateOrder_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -459,8 +421,8 @@ private theorem maxCandidateOrder_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}}
   rw [hmin]
   exact le_antisymm (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel I m _) (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel.symm I m _)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+A maximizing index set is witnessed by a candidate component. That component belongs to the selected intersection, so none of the selected ideals is a unit.
 -/
 private theorem get_ne_top_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -470,8 +432,8 @@ private theorem get_ne_top_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSh
   unfold IsCandidateComponent at hc
   exact get_ne_top_of_mem_intersectionComponents hc.2.1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The witness for a maximizing index set is a candidate at the minimum size. The size condition for this candidate is the stated equality.
 -/
 private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -481,10 +443,8 @@ private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I :
   unfold IsCandidateComponent at hc
   exact hc.1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Transport the candidate witness to the other list. Its size remains the minimum, since the minimum sizes agree, and its component keeps the same order, which is still maximal because the maximum orders agree. The transported set is therefore maximizing.
 -/
 private theorem isMaxOrderIndexSet_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) {J : Finset (Fin L.length)}
@@ -497,14 +457,8 @@ private theorem isMaxOrderIndexSet_transport {Y : Scheme.{u}} {L L' : List Y.Ide
   · rw [hord]
     exact maxCandidateOrder_eq_of_orderedMatchingOfNonTop rel I m
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+There is at least one code from a set of maximum order. The codes are bounded by the sum of the powers of two for all boundary indices, so the supremum of these natural numbers is attained. The chosen index set is a witness attaining it, hence has maximum order and has code at least the code of every other maximum-order set.
 -/
 private theorem isMaxOrderIndexSet_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (hex : ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J) :
@@ -538,8 +492,8 @@ private theorem isMaxOrderIndexSet_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSh
   unfold maxBinaryCode
   exact le_csSup hbdd ⟨K, hK, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+If no set of maximum order exists, there can be no such set attaining the maximum code. The definition takes its empty-set branch.
 -/
 private theorem lexMaxIndices_eq_empty {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (hex : ¬ ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J) :
@@ -550,8 +504,8 @@ private theorem lexMaxIndices_eq_empty {Y : Scheme.{u}} (I : Y.IdealSheafData) (
   unfold lexMaxIndices
   exact dif_neg hno
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given set and the chosen set are both of maximum order. Each has code at least that of the other by their maximal-code properties. Equal codes imply equal sets because the binary encoding is injective.
 -/
 private theorem lexMaxIndices_eq_of_binaryEncode_le {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J)
@@ -562,8 +516,8 @@ private theorem lexMaxIndices_eq_of_binaryEncode_le {Y : Scheme.{u}} (I : Y.Idea
     le_antisymm (hmax _ hb) (hub J hJ)
   exact binaryEncode_injective h1
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If there is a set of maximum order, the chosen set is also of maximum order, so each of its selected ideals is nonunit. Otherwise the chosen set is empty and there are no entries to check.
 -/
 private theorem get_ne_top_of_mem_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) : ∀ j ∈ lexMaxIndices I m L, L.get j ≠ ⊤ := by
@@ -573,12 +527,8 @@ private theorem get_ne_top_of_mem_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealShe
     intro j hj
     exact absurd hj (by simp)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The two sets have the same cardinality, and transport preserves both cardinalities. The strict code comparison is therefore equivalent to comparison of the sorted index lists in lexicographic order. The original lists and their transports are obtained from the same two filtered sets of matching positions by applying the first and second strictly increasing index maps. Each map preserves and reflects the lexicographic comparison, yielding the equivalence.
 -/
 private theorem binaryEncode_transport_lt_iff {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J K : Finset (Fin L.length))
@@ -599,12 +549,8 @@ private theorem binaryEncode_transport_lt_iff {Y : Scheme.{u}} {L L' : List Y.Id
   rw [image_toFirst_preimage rel J hJ, image_toFirst_preimage rel K hK] at hB
   rw [e1, e2, htJ, htK, hA, hB]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An index carried back and then forward comes from two occurrences of a common first-list position. The first index map is injective, so these occurrences correspond to the same matching position and recover the original second index. Conversely, every selected second index is nonunit and hence appears in the matching. Its matching position carries it back and then returns it to the selected set.
 -/
 private theorem transport_symm_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (K : Finset (Fin L'.length)) (hK : ∀ i ∈ K, L'.get i ≠ ⊤) :
@@ -626,16 +572,8 @@ private theorem transport_symm_transport {Y : Scheme.{u}} {L L' : List Y.IdealSh
     rw [ha]
     exact hi
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Use symmetry to reverse the relation. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If a maximum-order set exists, transport the chosen one. It remains of maximum order. Any competing maximum-order set in the second list can be transported back to the first, where its code is bounded by that of the first choice. Both sets have the minimum size and contain only nonunit entries. Transport preserves their strict code comparison and sending the competitor back and forth recovers it. Thus the transported choice has maximal code in the new list and equals the new choice by injectivity. If there is no maximum-order set in the first list, there is none in the second by reverse transport. Both choices are empty, and the transport of the empty set is empty.
 -/
 private theorem lexMaxIndices_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -670,14 +608,8 @@ private theorem lexMaxIndices_transport {Y : Scheme.{u}} {L L' : List Y.IdealShe
     · intro hi
       exact absurd hi (by simp)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The two lists give the same minimum size and maximum candidate order. Their chosen index sets correspond by transport. Transport a component with the required order to the new chosen set, keeping the component and its order. Conversely, transporting back recovers the old index set because all its selected entries are nonunit. The two selections therefore give the same family of components, and their unions agree.
 -/
 private theorem monomialCenterSet_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -705,8 +637,8 @@ private theorem monomialCenterSet_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}}
   unfold monomialCenterSet
   exact congrArg Set.sUnion hsets
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the ideal sheaves and the ambient subsets using the given equalities. The intersection subschemes coincide, and the open preimages define the same open. Their inclusion morphisms and hence their kernels agree.
 -/
 private theorem openSublocusIdeal_congr {Y : Scheme.{u}} {M M' : Y.IdealSheafData} {S S' : Set ↥Y}
     (hM : M = M') (hS : S = S')
@@ -717,12 +649,8 @@ private theorem openSublocusIdeal_congr {Y : Scheme.{u}} {M M' : Y.IdealSheafDat
   subst hS
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The matching preserves the minimum size, the union of selected components and the ideal of the intersection at the chosen indices. Thus the two center definitions have the same conditions of positive size and openness. If those conditions hold, both centers are the kernel for the same open in the same intersection. If the conditions fail, both centers are the unit ideal.
 -/
 private theorem monomialCenter_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -744,8 +672,8 @@ private theorem monomialCenter_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L
     exact openSublocusIdeal_congr hint hcen _ _
   · rw [dif_neg hc, dif_neg (fun hx => hc (hiff.2 hx))]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The common list of nonunit entries gives an ordered matching of their indices. The minimum-size invariance for such a matching gives the equality.
 -/
 theorem minIndexCard_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     {L L' : List Y.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :
@@ -753,8 +681,8 @@ theorem minIndexCard_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealS
   obtain ⟨rel⟩ := nonempty_orderedMatchingOfNonTop h
   exact minIndexCard_eq_of_orderedMatchingOfNonTop rel I m
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Use equality of the filtered boundaries to construct an ordered matching of all nonunit positions. The center ideal is invariant under that matching, giving the result.
 -/
 theorem monomialCenter_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     {L L' : List Y.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :

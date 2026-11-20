@@ -22,16 +22,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of ideal sheaves is left adjoint to the corresponding map on ideals and therefore preserves suprema. The finite sum is such a supremum, so it pulls back to the sum of the pulled-back terms.
 -/
 private theorem comap_biSup_finset_fin {X Y : Scheme.{u}} (f : X ⟶ Y) {n : ℕ}
     (s : Finset (Fin n)) (F : Fin n → Y.IdealSheafData) :
     (⨆ i ∈ s, F i).comap f = ⨆ i ∈ s, (F i).comap f :=
   (Scheme.IdealSheafData.map_gc f).l_iSup₂
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+The pulled-back boundary is obtained by applying pullback to each entry of the original list. The corresponding index has the same numeric position, so its entry is the pullback of the old entry.
 -/
 private theorem pullbackOverField_boundary_get (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -45,10 +45,8 @@ private theorem pullbackOverField_boundary_get (T : MarkedIdealWithBoundary.{u})
   simp only [List.get_eq_getElem, List.getElem_map]
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both intersection ideals are sums over their selected boundary positions. Pullback preserves this sum. Every new selected index is the image of an old selected index and carries the pullback of that old ideal. Conversely, each old selected index contributes its corresponding new entry. Thus the sums agree.
 -/
 theorem intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -66,8 +64,8 @@ theorem intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y
     exact le_iSup_of_le (pullbackOverFieldIndex T Y k' q g j)
       (le_iSup_of_le (Finset.mem_image_of_mem _ hj) le_rfl)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal of the pulled-back intersection is the pullback of the original intersection ideal. The support of a pulled-back ideal is the set-theoretic inverse image of the original support.
 -/
 theorem support_intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -84,8 +82,8 @@ theorem support_intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary
   rw [h]
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A member of the intersection-component family is a maximal irreducible subset of the support of the intersection ideal. For the new boundary this support is the inverse image of the old intersection support, giving the equivalence.
 -/
 theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -97,8 +95,8 @@ theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBou
   rw [support_intersectionIdeal_pullbackOverField T Y k' q g J] at h1
   exact h1
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closure of the component is irreducible and stays in the given closed set. Maximality therefore makes the closure equal to the component. An irreducible closed subset of a scheme has a generic point.
 -/
 theorem IsIrreducibleComponentOf.exists_isGenericPoint {Y : Scheme.{u}} {C S : Set ↥Y}
     (h : IsIrreducibleComponentOf C S) (hS : IsClosed S) :
@@ -109,12 +107,8 @@ theorem IsIrreducibleComponentOf.exists_isGenericPoint {Y : Scheme.{u}} {C S : S
   have hCclosed : IsClosed C := closure_eq_iff_isClosed.mp hcl
   exact QuasiSober.sober hirr hCclosed
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Suppose two opens meet the union. Choose a point of each intersection and a member of the chain containing that point. The larger of the two members contains both points, so each open meets it. Preirreducibility of that member gives a point of the intersection of the opens in the union.
 -/
 private theorem isPreirreducible_sUnion_of_isChain {α : Type u} [TopologicalSpace α]
     (c : Set (Set α)) (hcc : IsChain (· ⊆ ·) c)
@@ -133,12 +127,8 @@ private theorem isPreirreducible_sUnion_of_isChain {α : Type u} [TopologicalSpa
     · obtain ⟨z, hzt, hzuv⟩ := hirr t₁ ht₁c u v hu hv ⟨x, hxt₁, hxu⟩ ⟨y, h hyt₂, hyv⟩
       exact ⟨z, Set.mem_sUnion.mpr ⟨t₁, ht₁c, hzt⟩, hzuv⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Order the irreducible subsets of the specified set by inclusion, starting with the given irreducible subset. A nonempty chain has an upper bound given by its union. The union is nonempty, stays in the set, and is preirreducible by the chain property. The supplied initial subset handles the empty chain. Zorn's lemma gives a maximal irreducible set containing the initial one, which is a component.
 -/
 theorem exists_isIrreducibleComponentOf {Y : Scheme.{u}} (S A : Set ↥Y) (hA : IsIrreducible A)
     (hAS : A ⊆ S) :
@@ -160,26 +150,8 @@ theorem exists_isIrreducibleComponentOf {Y : Scheme.{u}} (S A : Set ↥Y) (hA : 
   intro C' hC' hCle hC'S
   exact subset_antisymm (hmax.2 ⟨hC', hC'S⟩ hCle) hCle
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take the closure of the image of the upper generic point. It is irreducible, lies in the closed target set, and contains the image of the upper component by continuity. Suppose it is contained in a larger irreducible subset of the target set. A generic point of the larger subset's closure generalizes the image of the upper generic point. Lift this generalization upstairs using the generalizing property. Its closure lies in the inverse image of the target set and contains the upper component, so it equals that component by maximality. The image of the lift then belongs to the original image closure. Thus the larger subset is contained in that closure, proving maximality downstairs.
 -/
 theorem IsIrreducibleComponentOf.closure_image_genericPoint {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hg : GeneralizingMap (fun y : ↥Y => g y)) {S : Set ↥X} (hS : IsClosed S) {C' : Set ↥Y}
@@ -248,24 +220,8 @@ theorem IsIrreducibleComponentOf.closure_image_genericPoint {X Y : Scheme.{u}} (
     exact Set.Subset.antisymm (Set.Subset.trans subset_closure hZsub) hsubE
   exact ⟨hirred, hmaps⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the generic point of the given downstairs component. It generalizes the image of the specified upper point, so lift it to a generalization of that upper point. The closure of the lift lies in the preimage of the closed set. Choose a component containing this closure and thus the specified point. The image closure of a generic point of the chosen upper component is a downstairs component and contains the original downstairs generic point, since the lift lies in the upper component. By maximality it equals the given downstairs component. The upper component maps into it and its generic point maps to the downstairs generic point by uniqueness.
 -/
 theorem exists_isIrreducibleComponentOf_preimage {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hg : GeneralizingMap (fun y : ↥Y => g y)) {S : Set ↥X} (hS : IsClosed S) {C : Set ↥X}
@@ -329,10 +285,8 @@ theorem exists_isIrreducibleComponentOf_preimage {X Y : Scheme.{u}} (g : Y ⟶ X
   exact ((specializes_iff_mem_closure.mpr hm2).antisymm
     (specializes_iff_mem_closure.mpr hm1)).eq
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The closed subscheme defined by the pulled-back ideal is canonically isomorphic to the scheme pullback of the original inclusion. Its map to the original subscheme is the isomorphism followed by the corresponding pullback projection. The other projection is the inclusion of the new subscheme. These are the arrows of the pullback square.
 -/
 private theorem exists_isPullback_comapSubscheme {X Y : Scheme.{u}} (W : X.IdealSheafData)
     (g : Y ⟶ X) :
@@ -352,26 +306,22 @@ def comapSubschemeHom {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
     (W.comap g).subscheme ⟶ W.subscheme :=
   (exists_isPullback_comapSubscheme W g).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison morphism is chosen from the existence of a map that makes the square of closed subschemes a pullback. It therefore has the required pullback property.
 -/
 theorem isPullback_comapSubschemeHom {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
     IsPullback (comapSubschemeHom W g) (W.comap g).subschemeι W.subschemeι g :=
   (exists_isPullback_comapSubscheme W g).choose_spec
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The square of the two closed subschemes over the ambient morphism is a pullback and therefore commutes. The two routes to the original ambient scheme are the stated composites.
 -/
 theorem comapSubschemeHom_comp_subschemeι {X Y : Scheme.{u}} (W : X.IdealSheafData) (g : Y ⟶ X) :
     comapSubschemeHom W g ≫ W.subschemeι = (W.comap g).subschemeι ≫ g :=
   (isPullback_comapSubschemeHom W g).w
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the new intersection is the inverse image of the closed original intersection support. The upper component has a generic point there. Flatness makes the underlying map generalizing, so the closure of the image of that point is a component of the original support and contains the upper component's image. The image point is generic in this closure, and the generic point of each component is unique.
 -/
 theorem exists_intersectionComponents_mapsTo_of_flat (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -402,10 +352,8 @@ theorem exists_intersectionComponents_mapsTo_of_flat (T : MarkedIdealWithBoundar
   rw [h1]
   exact h2.eq hξ
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Flatness gives a generalizing map. View the given downstairs component as a component of the closed original intersection support. The component-lifting result gives a component of its inverse-image support containing the specified upper point and carrying its generic point to the downstairs one. The inverse-image support is exactly that of the pulled-back intersection ideal.
 -/
 theorem exists_mem_intersectionComponents_pullbackOverField_of_flat (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -432,8 +380,8 @@ private def subschemePreimageOpens {X : Scheme.{u}} (W : X.IdealSheafData) (A : 
     (h : IsOpen (⇑W.subschemeι ⁻¹' A)) : W.subscheme.Opens :=
   ⟨⇑W.subschemeι ⁻¹' A, h⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite of the open immersion and the closed immersion is a topological embedding, so the source is a subspace of the Noetherian target and is itself Noetherian. Every subset of the source is quasi-compact, in particular the inverse image of each quasi-compact open of the target. The composite is therefore quasi-compact.
 -/
 private theorem quasiCompact_comp_of_noetherianSpace {Z₁ Z₂ Z₃ : Scheme.{u}} (a : Z₁ ⟶ Z₂)
     (b : Z₂ ⟶ Z₃) [AlgebraicGeometry.IsOpenImmersion a] [AlgebraicGeometry.IsClosedImmersion b]
@@ -445,14 +393,8 @@ private theorem quasiCompact_comp_of_noetherianSpace {Z₁ Z₂ Z₃ : Scheme.{u
       a.isOpenEmbedding.toIsEmbedding.toIsInducing).noetherianSpace
   ⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the new ideal and the new set by their given pullback descriptions. The square of closed subschemes commutes, so the part over the inverse image of the ambient set is the inverse image of the original open part under the comparison of closed subschemes. It is open by continuity. Base change of that open immersion, pasted with the closed-subscheme square, gives the pullback square for the composite inclusion into the ambient scheme. This inclusion is quasi-compact by base change of the original inclusion. Flat base change then identifies the kernel of the new composite with the pullback of the original kernel.
 -/
 private theorem exists_isOpen_comap_ker_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g]
@@ -489,18 +431,8 @@ private theorem exists_isOpen_comap_ker_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
   have := quasiCompact_of_isPullback hsq2
   exact (ker_eq_comap_ker_of_isPullback_of_flat hsq2).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The union of upper components mapping into selected lower components lies in the inverse image of the selected union. For the reverse inclusion, start with an upper point mapping to a selected lower component. Flatness lifts it into an upper component whose generic point maps to the generic point of the selected component. This upper component maps into a lower component with that same generic point, so its image lies in the selected component. The two unions therefore have the required inverse-image relation. The intersection ideal also pulls back, since it is a sum of selected boundary ideals. The inclusion of the selected open into the lower intersection and then the ambient scheme is quasi-compact by Noetherianity. Apply flat base change to its kernel and the two inverse-image descriptions. This gives the upper open and identifies its component-union ideal with the pulled-back ideal.
 -/
 theorem comap_componentUnionIdeal_of_flat (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (Y : Scheme.{u}) (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))

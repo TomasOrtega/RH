@@ -315,35 +315,32 @@ theorem det_diagHermitian_ne_zero : H3.det ≠ 0 := by simp [H3, Fin.prod_univ_t
 theorem gramMatrix_diagHermitian (τ : QI →+* ℂ) : gramAt H3 τ = Matrix.diagonal ![1, -1, -1] := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [gramAt, H3]
 
+private theorem count_diagonal_eigenvalues {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {A : Matrix ι ι ℂ} (hA : A.IsHermitian) {d : ι → ℂ} (hdiag : A = diagonal d)
+    (P : ℝ → Prop) [DecidablePred P] :
+    Fintype.card {i // P (hA.eigenvalues i)} = Fintype.card {i // P (d i).re} := by
+  have hs : Multiset.map hA.eigenvalues Finset.univ.val =
+      Multiset.map (Complex.re ∘ d) Finset.univ.val := calc
+    _ = A.charpoly.roots.map Complex.re := by
+      rw [hA.roots_charpoly_eq_eigenvalues, Multiset.map_map]
+      rfl
+    _ = _ := by
+      rw [hdiag, Matrix.charpoly_diagonal, Polynomial.roots_prod]
+      · simp [Multiset.map_map]
+      · exact Finset.prod_ne_zero_iff.mpr fun i _ => Polynomial.X_sub_C_ne_zero _
+  rw [Fintype.card_subtype, Fintype.card_subtype]
+  have h := congrArg (Multiset.countP P) hs
+  rw [Multiset.countP_map, Multiset.countP_map] at h
+  exact h
+
 theorem signature_diagHermitian (τ : QI →+* ℂ) : sigPos isHermitian_diagHermitian τ = 1 ∧ sigNeg isHermitian_diagHermitian τ = 2 := by
   have hA := isHermitian_gramAt isHermitian_diagHermitian τ
-  have hsq : ∀ i, hA.eigenvalues i = 1 ∨ hA.eigenvalues i = -1 := by
-    intro i
-    have h := hA.eigenvalues_mem_spectrum_real i
-    rw [← spectrum.algebraMap_mem_iff ℂ] at h
-    have hsp : spectrum ℂ (gramAt H3 τ) = Set.range ![(1 : ℂ), -1, -1] := by
-      rw [gramMatrix_diagHermitian, spectrum_diagonal]
-    rw [hsp] at h
-    obtain ⟨j, hj⟩ := h
-    fin_cases j
-    · left; have : ((1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-    · right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-    · right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj
-      exact_mod_cast this.symm
-  have ht := hA.trace_eq_sum_eigenvalues
-  have htr : (gramAt H3 τ).trace = -1 := by rw [gramMatrix_diagHermitian]; simp [Matrix.trace_fin_three, Fin.sum_univ_three]
-  rw [htr, Fin.sum_univ_three] at ht
-  have ht' : hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 = -1 := by
-    have : (((-1 : ℝ)) : ℂ) = ((hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 : ℝ) : ℂ) := by
-      push_cast; exact ht
-    exact_mod_cast this.symm
   show Fintype.card {i : Fin 3 // 0 < hA.eigenvalues i} = 1 ∧ Fintype.card {i : Fin 3 // hA.eigenvalues i < 0} = 2
-  rw [Fintype.card_subtype, Fintype.card_subtype, Finset.card_filter, Finset.card_filter, Fin.sum_univ_three,
-    Fin.sum_univ_three]
-  rcases hsq 0 with h0 | h0 <;> rcases hsq 1 with h1 | h1 <;> rcases hsq 2 with h2 | h2 <;>
-    rw [h0, h1, h2] at ht' ⊢ <;> first | (exfalso; linarith) | norm_num
+  rw [count_diagonal_eigenvalues hA (gramMatrix_diagHermitian τ) (0 < ·),
+    count_diagonal_eigenvalues hA (gramMatrix_diagHermitian τ) (· < 0)]
+  rw [Fintype.card_subtype, Fintype.card_subtype, Finset.card_filter, Finset.card_filter,
+    Fin.sum_univ_three, Fin.sum_univ_three]
+  norm_num [show (![(1 : ℂ), -1, -1] : Fin 3 → ℂ) 2 = -1 by rfl]
 
 theorem not_cube (b : QI) : b ^ 3 ≠ 5 * (2 + gi) := by
   intro h

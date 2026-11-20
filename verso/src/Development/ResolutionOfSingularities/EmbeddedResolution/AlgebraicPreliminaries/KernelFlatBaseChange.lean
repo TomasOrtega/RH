@@ -6,10 +6,8 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A pure tensor of k in K with a in A′ maps to the product of the image of k and a in A′. This lies in the extended ideal because the image of k is one of its generators. Every tensor is a finite sum of pure tensors, and the extended ideal is closed under addition.
 -/
 private theorem lid_rTensor_subtype_mem_map {R A' : Type*} [CommRing R] [CommRing A'] [Algebra R A']
     (K : Ideal R) (y : K ⊗[R] A') :
@@ -27,8 +25,8 @@ private theorem lid_rTensor_subtype_mem_map {R A' : Type*} [CommRing R] [CommRin
       rw [map_add, map_add]
       exact Submodule.add_mem _ hy hz
 
-/- English proof (translation)
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In either algebra the image of a is its scalar action on one. The balancing relation moves that scalar action across the tensor sign, giving the stated equality.
 -/
 private theorem algebraMap_tmul_one_eq_one_tmul_algebraMap {A B A' : Type*} [CommRing A] [CommRing B] [CommRing A']
     [Algebra A B] [Algebra A A'] (a : A) :
@@ -39,16 +37,8 @@ private theorem algebraMap_tmul_one_eq_one_tmul_algebraMap {A B A' : Type*} [Com
     _ = (1 : B) ⊗ₜ[A] (a • (1 : A')) := (TensorProduct.tmul_smul a (1 : B) (1 : A')).symm
     _ = (1 : B) ⊗ₜ[A] (algebraMap A A' a) := by rw [Algebra.algebraMap_eq_smul_one]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let K be the kernel of the map from R to B. The sequence from K into R and then into B is exact at R. Tensoring with A′ preserves exactness because A′ is flat. If x maps to zero under the map to B ⊗ A′, then 1 ⊗ x in R ⊗ A′ comes from K ⊗ A′. Identifying R ⊗ A′ with A′ sends this image into the extended ideal of K, since pure tensors map to products with images of elements of K. Conversely each generator from K maps to zero because its image in B vanishes. Hence the extension of K is exactly the kernel.
 -/
 theorem ker_includeRight_eq_map_ker (R B A' : Type*) [CommRing R] [CommRing B] [CommRing A']
     [Algebra R B] [Algebra R A'] [Module.Flat R A'] :
@@ -87,22 +77,16 @@ theorem ker_includeRight_eq_map_ker (R B A' : Type*) [CommRing R] [CommRing B] [
         TensorProduct.zero_tmul]
     exact e1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the pullback square, h′ is the base change of h. Quasi-compactness is preserved by base change, so h′ is quasi-compact.
 -/
 theorem quasiCompact_of_isPullback {Z X X' Z' : Scheme.{u}} {h : Z ⟶ X} {g : X' ⟶ X}
     {g' : Z' ⟶ Z} {h' : Z' ⟶ X'} (H : IsPullback g' h' h g) [QuasiCompact h] :
     QuasiCompact h' :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @QuasiCompact) H ‹QuasiCompact h›
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The image of x belongs to the extended ideal of J in the localization. Write it as a fraction whose numerator lies in J and whose denominator is a power of f. Equality with the image of x means the cross-multiplied equality holds after multiplying by some further power of f. Multiplying the powers together gives a power of f times x in J.
 -/
 private theorem exists_pow_mul_mem_of_map_le {A Af : Type*} [CommRing A] [CommRing Af]
     [Algebra A Af] (f : A) [IsLocalization.Away f Af] {I J : Ideal A}
@@ -125,12 +109,8 @@ private theorem exists_pow_mul_mem_of_map_le {A Af : Type*} [CommRing A] [CommRi
   rw [key, hc']
   exact Ideal.mul_mem_left _ _ hy
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Fix x in I. For each f in the generating set, the class of x in the quotient by J is killed by a power of f. The ideal generated by those powers is the unit ideal because its radical contains the original generating set. A finite combination of those powers equals one, so the class of x is zero. This gives I contained in J, and the reverse follows by the same argument with the ideals interchanged.
 -/
 private theorem ideal_eq_of_span_eq_top {A : Type*} [CommRing A] {I J : Ideal A} {s : Set A}
     (hspan : Ideal.span s = ⊤)
@@ -148,10 +128,8 @@ private theorem ideal_eq_of_span_eq_top {A : Type*} [CommRing A] {I J : Ideal A}
     obtain ⟨n, hn⟩ := hJI f hf x hx
     exact ⟨n, by simpa [smul_eq_mul] using hn⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On each specified principal open the section ideals are extensions of the original section ideals by localization. Their equality lets us clear a power of its defining element for every element of either ideal to land in the other. Since the defining elements generate the unit ideal, the local membership criterion gives equality of the original ideals.
 -/
 private theorem ideal_eq_of_ideal_affineBasicOpen_eq {X : Scheme.{u}} (I J : X.IdealSheafData) (V : X.affineOpens)
     (s : Set Γ(X, (V : X.Opens))) (hspan : Ideal.span s = ⊤)
@@ -168,8 +146,8 @@ private theorem ideal_eq_of_ideal_affineBasicOpen_eq {X : Scheme.{u}} (I J : X.I
     exact exists_pow_mul_mem_of_map_le (Af := ↑Γ(X, X.basicOpen f)) f (le_of_eq hmap) hx
   exact ideal_eq_of_span_eq_top hspan (key I J hs) (key J I fun f hf => (hs f hf).symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the affine open with the spectrum of its section ring. A prime containing all the defining sections would belong to none of their basic opens, contradicting the cover. Thus the ideal they generate is contained in no prime and must be the unit ideal.
 -/
 private theorem span_eq_top_of_le_iSup_basicOpen {X : Scheme.{u}} (V : X.affineOpens)
     (s : Set ↑Γ(X, (V : X.Opens)))
@@ -177,18 +155,16 @@ private theorem span_eq_top_of_le_iSup_basicOpen {X : Scheme.{u}} (V : X.affineO
     Ideal.span s = ⊤ :=
   (V.2.self_le_iSup_basicOpen_iff (s := s)).mp hcov
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Use the equality of scheme morphisms to identify their pullbacks to the same opens. The maps on sections then agree because they are defined by the same pullback and restriction.
 -/
 private theorem appLE_congr_of_eq {X Y : Scheme.{u}} {f f' : X ⟶ Y} (hf : f = f')
     (U : Y.Opens) (W : X.Opens) (e : W ≤ f ⁻¹ᵁ U) (e' : W ≤ f' ⁻¹ᵁ U) :
     f.appLE U W e = f'.appLE U W e' := by
   subst hf; rfl
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Write one in the finite product ring as the sum of the elements supported at just one factor, with value one there. Distribute the tensor over this sum. Each term is the image of the corresponding factor tensor under the linear inclusion of that factor. All such tensors vanish by hypothesis, hence so does their sum.
 -/
 private theorem pi_one_tmul_eq_zero_of_forall {R A' : Type*} [CommRing R] [CommRing A'] [Algebra R A']
     {ι : Type*} [Fintype ι] [DecidableEq ι] (B : ι → Type*) [∀ j, CommRing (B j)]
@@ -205,10 +181,8 @@ private theorem pi_one_tmul_eq_zero_of_forall {R A' : Type*} [CommRing R] [CommR
     simp
   rw [h2, hs j, map_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Combine the vanishing tensors to obtain vanishing in the tensor product with the finite product of the B factors. The kernel of the map from R to this product is the intersection of the component kernels. The flat tensor kernel formula for the product ring puts s in the extension of this intersection.
 -/
 private theorem mem_map_iInf_ker_of_forall_one_tmul_eq_zero {R A' : Type*} [CommRing R] [CommRing A']
     [Algebra R A'] [Module.Flat R A'] {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -222,8 +196,8 @@ private theorem mem_map_iInf_ker_of_forall_one_tmul_eq_zero {R A' : Type*} [Comm
   rw [← hk, ← ker_includeRight_eq_map_ker R (∀ j, B j) A']
   simpa [RingHom.mem_ker] using h0
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Take an affine chart around z. Inside that chart use the principal-open basis to find a neighborhood of z contained in K. A principal open in an affine chart is affine and gives the desired open.
 -/
 private theorem exists_affineOpen_le_of_mem {Z : Scheme.{u}} (K : Z.Opens) (z : Z) (hz : z ∈ K) :
     ∃ W : Z.affineOpens, (W : Z.Opens) ≤ K ∧ z ∈ (W : Z.Opens) := by
@@ -234,10 +208,8 @@ private theorem exists_affineOpen_le_of_mem {Z : Scheme.{u}} (K : Z.Opens) (z : 
   obtain ⟨f, hfle, hzf⟩ := hWaff.exists_basicOpen_le (V := K) ⟨z, hz⟩ hz1
   exact ⟨⟨Z.basicOpen f, hWaff.basicOpen f⟩, hfle, hzf⟩
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+By assumption q factors through the affine open V via the spectrum map of ρ. On affine spectra, pullback on global sections corresponds to the original ring homomorphism under the natural isomorphism between global sections and the coordinate ring. Thus pulling back along q and using that identification yields ρ.
 -/
 private theorem appLE_top_comp_ΓSpecIso_hom {Y : Scheme.{u}} {V : Y.Opens} (hV : IsAffineOpen V)
     {S : CommRingCat.{u}} (ρ : Γ(Y, V) ⟶ S) (q : Spec S ⟶ Y)
@@ -255,20 +227,8 @@ private theorem appLE_top_comp_ΓSpecIso_hom {Y : Scheme.{u}} {V : Y.Opens} (hV 
   have h4 := Spec.map_injective h3
   rw [h4, Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Form the spectrum of the tensor product of the section rings of W and V over the section ring of U. It maps to Z and X′ through W and V by the two tensor inclusions. The composites to X agree because the two inclusions agree on the base ring, so the maps factor through the scheme pullback. The projection to X′ factors through V. A section s that vanishes under pullback to the preimage of V in the scheme pullback also vanishes upon further pullback to the tensor product spectrum. Its pullback there corresponds to 1 ⊗ s, so this tensor is zero.
 -/
 private theorem one_tmul_eq_zero_of_app_eq_zero {Z X X' Z' : Scheme.{u}} {h : Z ⟶ X} {g : X' ⟶ X}
     {g' : Z' ⟶ Z} {h' : Z' ⟶ X'} (H : IsPullback g' h' h g)
@@ -341,22 +301,8 @@ private theorem one_tmul_eq_zero_of_app_eq_zero {Z X X' Z' : Scheme.{u}} {h : Z 
     rw [hA, map_zero]
   exact step
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The prescribed square commutes, so each section killed by pullback along h maps to a section killed by pullback along h′. This gives one inclusion for the extension of the kernel. Conversely take a section s on V killed by h′. The inverse image of U under h is quasi-compact, so cover it by finitely many affine opens W. On each W the tensor of one with s vanishes by the pullback calculation. The section ring on V is flat over the section ring on U because g is flat. The finite product kernel lemma therefore puts s in the extension of the intersection of the kernels of the maps to the section rings of W. A section in this intersection pulls back to zero on the whole inverse image of U by the sheaf property. Thus the intersection is contained in the kernel of the original pullback, giving the other inclusion.
 -/
 private theorem ker_app_eq_map_ker_of_isPullback_of_flat {Z X X' Z' : Scheme.{u}} {h : Z ⟶ X} {g : X' ⟶ X}
     {g' : Z' ⟶ Z} {h' : Z' ⟶ X'} (H : IsPullback g' h' h g) [QuasiCompact h]
@@ -439,14 +385,8 @@ private theorem ker_app_eq_map_ker_of_isPullback_of_flat {Z X X' Z' : Scheme.{u}
       exact RingHom.mem_ker.mp ha
     rw [Scheme.Hom.app_eq_appLE h' (U := (V : X'.Opens)), ← h1, hzero, map_zero]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Fix an affine open V in X′. Cover it by principal opens each mapping into an affine open of X. Such opens exist around every point by the affine basis of X and the principal-open basis of V. On each principal open the section ideal of the pulled-back kernel is the extension of the original kernel by the corresponding section map. The affine calculation for flat pullbacks identifies it with the kernel for h′ there. Since these principal opens cover V, the defining sections generate the unit ideal. The local equality criterion for ideals gives equality on V. The two ideal sheaves therefore agree on every affine open.
 -/
 theorem ker_eq_comap_ker_of_isPullback_of_flat {Z X X' Z' : Scheme.{u}} {h : Z ⟶ X} {g : X' ⟶ X}
     {g' : Z' ⟶ Z} {h' : Z' ⟶ X'} (H : IsPullback g' h' h g)

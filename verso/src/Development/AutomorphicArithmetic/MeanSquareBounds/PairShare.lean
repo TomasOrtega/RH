@@ -6,8 +6,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The zero-free condition is independent of the two altered parameters. Increasing the constant enlarges the logarithmic bound because log Y is nonnegative. Lowering the upper endpoint restricts the range for the pointwise estimate.
 -/
 private theorem boxAll_mono {Q C C' τ Y X X' : ℝ} {f : ℕ → ℂ} {M : ℕ} (hC : C ≤ C') (hY : 1 ≤ Y) (hX : X' ≤ X)
     (h : BoxAll Q C τ Y X f M) : BoxAll Q C' τ Y X' f M := by
@@ -16,8 +16,8 @@ private theorem boxAll_mono {Q C C' τ Y X X' : ℝ} {f : ℕ → ℂ} {M : ℕ}
   exact ⟨h1, le_trans h2 (mul_le_mul_of_nonneg_right hC (Real.log_nonneg hY)),
     fun y hy => h3 y ⟨hy.1, le_trans hy.2 hX⟩⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Take the subset of P satisfying the predicate. Its complement consists of bad elements and hence has size at most η times the size of P. Subtract that bound from the size of P to get the claimed lower bound.
 -/
 private theorem share_of_bad {P : Finset ℕ} {η : ℝ} (p : ℕ → Prop)
     (h : ∀ B ⊆ P, (∀ q ∈ B, ¬ p q) → (B.card : ℝ) ≤ η * P.card) :
@@ -29,14 +29,8 @@ private theorem share_of_bad {P : Finset ℕ} {η : ℝ} (p : ℕ → Prop)
     exact_mod_cast Finset.card_filter_add_card_filter_not (s := P) p
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the larger constant and threshold from the first-prime and second-prime estimates, also requiring Y ≥ 1. In the nonempty first prime set, the subset of bad primes has relative size at most η, so the good subset occupies at least the complementary share. For each q in it apply the second estimate to the nonempty second prime set and take its good subset in the same way. Increase the constants and restrict from upper endpoint Yᴷ to X to obtain the asserted estimates.
 -/
 theorem pair_share :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,

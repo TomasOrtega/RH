@@ -10,16 +10,16 @@ private noncomputable def bsD (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) : ℂ :=
   ∑ m ∈ Icc 1 ⌊Z⌋₊,
     if v < (m : ℝ) then ((Λ m : ℝ) : ℂ) * κ m * ((jacobiSym (m : ℤ) q : ℤ) : ℂ) / m else 0
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For each positive index the weight min(1, y/m) is the minimum of two continuous functions of y. The other factors are constant, and the sum is finite, so it is continuous.
 -/
 private theorem bs_continuous_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) : Continuous (fun y => S Z y q κ) := by
   unfold S cN
   refine continuous_finsetSum _ (fun m _ => ?_)
   fun_prop
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Each term is constant on the interval v < m and zero on its complement. These sets are measurable, so the terms and their finite sum are measurable.
 -/
 private theorem bs_measurable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     Measurable (fun v => bsD Z v q κ) := by
@@ -27,8 +27,8 @@ private theorem bs_measurable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
   refine Finset.measurable_sum _ (fun m _ => ?_)
   exact Measurable.ite measurableSet_Iio measurable_const measurable_const
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the triangle inequality to the finite sum. The norm of each term is either the norm of the displayed coefficient or zero, so it is bounded by that coefficient norm.
 -/
 private theorem bs_norm_D_le (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     ‖bsD Z v q κ‖ ≤
@@ -39,10 +39,8 @@ private theorem bs_norm_D_le (Z v : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
   · exact le_rfl
   · simp only [norm_zero]; exact norm_nonneg _
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The derivative sum is measurable and its norm is bounded by the constant sum of the coefficient norms. Its squared norm is also measurable and is bounded by the square of that constant. Both constant bounds are integrable on any finite interval.
 -/
 private theorem bs_intervalIntegrable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     IntervalIntegrable (fun v => bsD Z v q κ) volume a b ∧
@@ -59,8 +57,8 @@ private theorem bs_intervalIntegrable_D (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (
     simp only [norm_pow, norm_norm]
     exact pow_le_pow_left₀ (norm_nonneg _) this 2
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+If x < m, a neighborhood of x lies on the linear branch y/m, whose derivative is 1/m. If x ≥ m, the function is the constant one at x and to its right, so its right derivative is zero.
 -/
 private theorem bs_hasDeriv_min (m x : ℝ) (hm : 0 < m) :
     HasDerivWithinAt (fun y : ℝ => min 1 (y / m)) (if x < m then 1 / m else 0) (Set.Ioi x) x := by
@@ -76,10 +74,8 @@ private theorem bs_hasDeriv_min (m x : ℝ) (hm : 0 < m) :
     · exact min_eq_left ((one_le_div hm).2 (h.trans (le_of_lt hy)))
     · exact min_eq_left ((one_le_div hm).2 h)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Differentiate the finite sum from the right. At each positive index, the derivative of its weight is 1/m when x < m and zero otherwise. Multiplying by the remaining coefficient gives exactly the corresponding term of the derivative sum.
 -/
 private theorem bs_hasDeriv_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (x : ℝ) :
     HasDerivWithinAt (fun y => S Z y q κ) (bsD Z x q κ) (Set.Ioi x) x := by
@@ -95,8 +91,8 @@ private theorem bs_hasDeriv_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (x : ℝ) :
   · push_cast; ring
   · simp
 
-/- English proof (translation)
-Use symmetry to reverse the relation. A detailed English derivation is pending.
+/- English proof (authored)
+The finite sum is continuous, has the given right derivative, and this derivative is integrable on the interval. The fundamental theorem of calculus for right derivatives gives the endpoint difference.
 -/
 private theorem bs_S_sub_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     S Z b q κ - S Z a q κ = ∫ v in a..b, bsD Z v q κ := by
@@ -105,12 +101,8 @@ private theorem bs_S_sub_S (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) (a b : ℝ) :
     (bs_continuous_S Z q κ).continuousOn (fun x _ => bs_hasDeriv_S Z q κ x)
     (bs_intervalIntegrable_D Z q κ a b).1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the two sums term by term. If y < m, the minimum weight is y/m, and multiplication of the derivative term by y gives this weight. Otherwise the truncated coefficient and the derivative term both vanish.
 -/
 private theorem bs_mul_D_eq_S (Z : ℝ) (y : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     (y : ℂ) * bsD Z y q κ = S Z y q (fun m => if y < (m : ℝ) then κ m else 0) := by
@@ -127,10 +119,8 @@ private theorem bs_mul_D_eq_S (Z : ℝ) (y : ℝ) (q : ℕ) (κ : ℕ → ℂ) :
     ring
   · simp [h]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If a = b, both sides vanish. Otherwise let L = b − a and I be the integral of f. Integrate the nonnegative square (Lf − I)² and expand. The result is L² times the integral of f² minus LI², which is nonnegative. Divide by L.
 -/
 private theorem bs_sq_integral_le {f : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
     (h1 : IntervalIntegrable f volume a b)
@@ -152,14 +142,8 @@ private theorem bs_sq_integral_le {f : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
   have h3 : (b - a) * I ^ 2 ≤ (b - a) * ((b - a) * A) := by nlinarith
   exact le_of_mul_le_mul_left h3 hL
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the value at y as the value at Y plus the integral of the derivative. Bound the norm of that integral by the integral of its norm. The square-integral estimate bounds the square of this last integral by (y − Y) times the integral of the squared norm. Use y − Y ≤ Y and extend the nonnegative integral to W. Finally bound the square of a sum by twice the sum of squares.
 -/
 private theorem bs_normSq_S_le (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) {Y W y : ℝ} (hW : W ≤ 2 * Y)
     (hY : 0 ≤ Y) (hy : y ∈ Set.Icc Y W) :
@@ -189,12 +173,8 @@ private theorem bs_normSq_S_le (Z : ℝ) (q : ℕ) (κ : ℕ → ℂ) {Y W y : �
   have h5 : 0 ≤ Y * B := mul_nonneg hY hB
   nlinarith [sq_nonneg (‖S Z Y q κ‖ - I)]
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Truncate the coefficients to indices m > y. Their norms remain bounded by one, so the mean-square estimate applies. The truncated weighted sum is y times the derivative sum. Substitute that identity and divide the resulting estimate by y².
 -/
 private theorem bs_sum_D_le {C Z : ℝ} {P : Finset ℕ} {A : Set ℝ} (h : MeanSq C Z P A) {y : ℝ}
     (hy : y ∈ A) (hy0 : 0 < y) {κ : ℕ → ℂ} (hκ : ∀ m, ‖κ m‖ ≤ 1) :
@@ -213,20 +193,8 @@ private theorem bs_sum_D_le {C Z : ℝ} {P : Finset ℕ} {A : Set ℝ} (h : Mean
   refine le_of_mul_le_mul_left ?_ hy0
   nlinarith [h1]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the pointwise squared-norm estimate at the chosen location for each q and sum it. The fixed endpoint contribution is bounded by twice the mean square at Y. For the other term, interchange the finite sum and the integral. The sum of derivative squares is at most C log(2Y) times the prime count divided by Y throughout [Y, W]. The interval has length at most Y, so after multiplication by 2Y this yields the other half of the asserted bound.
 -/
 private theorem bs_block {C Z Y W : ℝ} {P : Finset ℕ} (hC : 0 ≤ C) (hY : 1 ≤ Y) (hYW : Y ≤ W)
     (hW2 : W ≤ 2 * Y) (h : MeanSq C Z P (Set.Icc Y W)) {κ : ℕ → ℂ} (hκ : ∀ m, ‖κ m‖ ≤ 1)
@@ -272,20 +240,8 @@ private theorem bs_block {C Z Y W : ℝ} {P : Finset ℕ} (hC : 0 ≤ C) (hY : 1
   have h9 : 2 * Y * K = 2 * (C * Y * Real.log (2 * Y) * P.card) := by rw [hK]; ring
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+For each bad prime choose a point where the bound fails, and use the left endpoint for all other primes. Each bad term has squared norm at least Y raised to 1 + 2τ divided by four. The block estimate bounds the sum of all these squares. Divide by the lower bound per bad term and use log(2Y) ≤ twice Y raised to τ divided by τ. This gives the claimed estimate for the number of bad primes.
 -/
 private theorem bs_markov {C τ Z Y W : ℝ} {P B : Finset ℕ} (hC : 0 ≤ C) (hτ : 0 < τ) (hY : 2 ≤ Y)
     (hYW : Y ≤ W) (hW2 : W ≤ 2 * Y) (h : MeanSq C Z P (Set.Icc Y W)) {κ : ℕ → ℂ}
@@ -331,24 +287,8 @@ private theorem bs_markov {C τ Z Y W : ℝ} {P B : Finset ℕ} (hC : 0 ≤ C) (
   field_simp
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each bad prime, choose a point of failure and put it in a dyadic interval with left endpoint 2ⁱY and right endpoint the smaller of 2ⁱ⁺¹Y and X. The block counting estimate bounds its group of bad primes by the bound at Y times the factor (2 raised to −τ)ⁱ. Sum the group sizes and bound the finite sum by the geometric series, which converges because τ > 0. The remaining factor Y raised to −τ tends to zero, so it is eventually at most the desired share after multiplication by the fixed constants.
 -/
 theorem bad_share :
     ∀ C τ η : ℝ, 0 ≤ C → 0 < τ → 0 < η → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (X Z : ℝ) (P B : Finset ℕ) (κ : ℕ → ℂ),

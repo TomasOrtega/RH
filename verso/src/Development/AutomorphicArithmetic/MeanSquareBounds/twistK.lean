@@ -8,52 +8,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The lower bounds on u and the upper bound on ℓ imply u/ℓ ≥ L²/8, and lm ≤ ℓ gives the same lower bound for u/lm. The upper bound on lm gives log(lm + 2) at most log(6 + A) + (ε/5 + 1)L. The threshold for L then gives the first comparison. For the second, use the bound for log u and absorb it and log 128 into c₀u/ℓ. For the two terms of the third comparison, both c₃u/lm and √(c₃u) are at least BL + log(32(|A₀| + 1)), by the ratio bound and the cubic lower bound respectively. Each exponential term then contributes at most exp(−BL)/16 after multiplication by 2|A₀|. The same cubic lower bound gives (2/5)u ≥ BL + log 4, which proves the final comparison.
 -/
 private theorem final_ineqK (A B ε c₀ c₃ A₀ C₀ L u lm ℓm ℓ : ℝ) (hA0 : 0 < A) (hB0 : 0 < B) (hε : 0 < ε) (hc₀ : 0 < c₀) (hc₃ : 0 < c₃)
     (hL1 : 2 ≤ L) (hL2 : 8 * (ε / 5 + 2 + B + Real.log 128) / c₀ ≤ L)
@@ -192,8 +148,8 @@ private theorem final_ineqK (A B ε c₀ c₃ A₀ C₀ L u lm ℓm ℓ : ℝ) (
       _ = _ := by rw [Real.exp_sub, Real.exp_log (by norm_num)]
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the relative prime-number theorem for progressions with its possible real exceptional term. Call an admissible squarefree s exceptional if the character at modulus m₀s agrees with its Jacobi symbol on the units congruent to one modulo m₀ and has a zero within the common exceptional width. Any two such moduli are bounded by m₀Yᴬ. The common zero-free result forces their characters to agree on common units, so separation of squarefree Jacobi symbols makes the two s equal. Choose this single value if it exists. For any other s, expand the twisted prime sum into the residue classes modulo m₀s. The ordinary main term cancels, and an exceptional term that contributes has its zero bounded away from one by the common width. The numerical estimates make both the relative progression error and the remaining exceptional term small compared with Y raised to −B. The lower count for the progression prime set likewise absorbs the error from removing primes up to the square-root endpoint. Combining these bounds gives the stated relative estimate.
 -/
 theorem twistK :
     ∀ ε A B : ℝ, 0 < ε → 0 < A → 0 < B → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (U : ℝ) (m₀ a₀ : ℕ), admitted ε Y U m₀ a₀ →

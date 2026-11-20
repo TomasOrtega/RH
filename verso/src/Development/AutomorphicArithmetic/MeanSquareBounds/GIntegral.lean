@@ -20,14 +20,8 @@ open Filter Topology ArithmeticFunction MeasureTheory
 
 private noncomputable def dom (t : ℝ) : ℝ := 1 / (t * Real.log t ^ 2)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On t > a > 1, the function 1/(t(log t)²) is nonnegative and is the derivative of −1/log t. This primitive is continuous at a and tends to zero at infinity. Its finite total increase gives the convergent integral.
 -/
 private lemma dom_integrableOn {a : ℝ} (ha : 1 < a) : IntegrableOn dom (Set.Ioi a) := by
   have key : ∀ x ∈ Set.Ioi a, HasDerivAt (fun t => -(Real.log t)⁻¹) (dom x) x := by
@@ -50,12 +44,8 @@ private lemma dom_integrableOn {a : ℝ} (ha : 1 < a) : IntegrableOn dom (Set.Io
   · have := Real.tendsto_log_atTop.inv_tendsto_atTop.neg
     simpa using this
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Put s = c√(log x) > 0. The fourth term of the exponential series gives exp s ≥ s⁴/24. Invert both positive sides and substitute s⁴ = c⁴(log x)².
 -/
 private lemma exp_sqrt_le {c : ℝ} (hc : 0 < c) {x : ℝ} (hx : 1 < x) :
     Real.exp (-c * Real.sqrt (Real.log x)) ≤ 24 / c ^ 4 / Real.log x ^ 2 := by
@@ -79,16 +69,8 @@ private noncomputable def RemBound (a : ℕ → ℂ) (m : ℂ) : Prop :=
 
 private noncomputable def aChi {N : ℕ} (χ : DirichletCharacter ℂ N) (n : ℕ) : ℂ := ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For t ≥ max(2, exp N), the conductor satisfies N ≤ log t. The Siegel–Walfisz estimate therefore bounds the centered prime sum by a constant times t exp(−c√(log t)). The exponential comparison bounds this by a constant times t/(log t)².
 -/
 private lemma psi0_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     ∃ K x₁ : ℝ, 1 < x₁ ∧ ∀ t : ℝ, x₁ ≤ t → ‖PI.psi0 χ t‖ ≤ K * t / Real.log t ^ 2 := by
@@ -117,28 +99,8 @@ private lemma psi0_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     _ ≤ C * t * (24 / c ^ 4 / Real.log t ^ 2) := mul_le_mul_of_nonneg_left he (mul_nonneg hC ht0.le)
     _ = C * (24 / c ^ 4) * t / Real.log t ^ 2 := by ring
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+The prime sum is measurable because it depends on the integer part of its argument, with a continuous centering term for the principal character. On the bounded interval from y to the eventual threshold, the integrand is bounded by the finite sum of coefficient norms plus the largest possible centering term, using u ≥ 1. Above the threshold the prime-sum estimate bounds its norm by a constant times 1/(u(log u)²), which is integrable. Together these two regions cover the ray.
 -/
 private lemma psi_zero_div_sq_integrable {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) (hy : 1 ≤ y) :
     IntegrableOn (fun u : ℝ => PI.psi0 χ u / (u : ℂ) ^ 2) (Set.Ioi y) := by
@@ -215,8 +177,8 @@ private lemma psi_zero_div_sq_integrable {N : ℕ} [NeZero N] (χ : DirichletCha
           show _ = K * (1 / (u * Real.log u ^ 2))
           field_simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+For a nonprincipal character the smoothed sum uses von Mangoldt coefficients multiplied by the character. With these coefficients, the linear term is y times the negative logarithmic derivative at one. These are exactly the terms of the stated remainder.
 -/
 private lemma gChi_ne {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ ≠ 1) (y : ℝ) :
     G0 χ y = Formalism.HermitianLattices.GL2PrimeSums.Gchi (aChi χ) (-(logDerivLAtOne χ)) y := by
@@ -225,8 +187,8 @@ private lemma gChi_ne {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : 
   unfold Formalism.HermitianLattices.ZeroFreeRegionGL2.Gchi Formalism.HermitianLattices.GL2PrimeSums.Gchi aChi
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+For the principal character, the definition selects the real smoothed von Mangoldt remainder. Viewing that real value in the complex plane gives the identity.
 -/
 private lemma gChi_one {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ = 1) (y : ℝ) :
     G0 χ y = ((Formalism.HermitianLattices.GL2PrimeSums.Gone (fun n => vonMangoldt n) y : ℝ) : ℂ) := by
@@ -234,17 +196,15 @@ private lemma gChi_one {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h :
   rw [if_pos h]
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The Dirichlet series for the negative logarithmic derivative at one converges for a nonprincipal character. Its nth coefficient divided by n is exactly the indicated von Mangoldt value times the character value divided by n.
 -/
 private lemma series_aChi {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ ≠ 1) :
     Tendsto (fun M : ℕ => ∑ n ∈ Icc 1 M, aChi χ n / (n : ℂ)) atTop (𝓝 (-(logDerivLAtOne χ))) :=
   Formalism.HermitianLattices.GL2a2.log_deriv_series N χ h
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
-
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The principal character has conductor one. If it is primitive, its modulus must equal its conductor, so the modulus is one. Every residue modulo one is the unit, on which the principal character takes value one.
 -/
 private lemma one_apply_of_primitive {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hp : χ.IsPrimitive) (h : χ = 1)
     (n : ℕ) : χ (n : ZMod N) = 1 := by
@@ -256,16 +216,8 @@ private lemma one_apply_of_primitive {N : ℕ} [NeZero N] {χ : DirichletCharact
     exact this.symm
   subst hN
   exact MulChar.one_apply (isUnit_of_subsingleton _)
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The centered prime sum divided by u² is integrable on the ray, so the integrals truncated at U converge to the ray integral. For the principal character, primitivity forces modulus one, and the real smoothed remainder formula applies to the von Mangoldt sum minus u. Including its real integral into the complex plane yields the same truncated integrals. For a nonprincipal character, the convergent logarithmic derivative series gives the complex smoothed remainder formula for its character coefficients. In each case uniqueness of the truncated integral limit identifies the remainder with minus y times the ray integral.
 -/
 private theorem l21a {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive) (y : ℝ) (hy : 1 ≤ y) :
     IntegrableOn (fun u : ℝ => PI.psi0 χ u / (u : ℂ) ^ 2) (Set.Ioi y) ∧
@@ -301,8 +253,8 @@ private theorem l21a {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : 
     rw [tendsto_nhds_unique hlim hI, gChi_ne h, hG]
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The smoothed remainder identity for a primitive character applies at every y ≥ 1. Its integral uses exactly the centered character prime sum divided by u², giving the displayed formula.
 -/
 theorem g_integral :
     ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ y : ℝ, 1 ≤ y →

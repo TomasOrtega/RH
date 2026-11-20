@@ -4,18 +4,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A unit in the kernel of reduction to M can be written as 1 + Mt in the residue ring modulo N. By hypothesis it is a square of some element, which is itself a unit because its square is. A quadratic character sends that square to one. Thus the character is trivial on the kernel and factors modulo M. Since it is primitive modulo N, its conductor is N and is at most M.
 -/
 private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hM : M ∣ N) (hM0 : M ≠ 0)
@@ -47,14 +37,8 @@ private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : D
   rw [DirichletCharacter.isPrimitive_def] at hp
   omega
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Suppose N = p²k with p odd and k positive. Write p = 2r + 1. Modulo N, squaring 1 + pkt(r + 1) gives 1 + pkt, because the quadratic term vanishes and 2(r + 1) is one modulo p. The factorization criterion gives N ≤ pk. This contradicts N = p²k with p > 1.
 -/
 private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hpp : p.Prime) (hodd : p ≠ 2) : ¬ p ^ 2 ∣ N := by
@@ -77,12 +61,8 @@ private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter �
   have : 0 < p * k := Nat.pos_of_ne_zero (mul_ne_zero hpp.ne_zero hk0)
   nlinarith
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Suppose N = 16k with k positive. In the residue ring modulo N, the square of 1 + 4kt is 1 + 8kt, since the remaining term is divisible by 16k. The factorization criterion gives N ≤ 8k, contradicting the value of N.
 -/
 private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) : ¬ 2 ^ 4 ∣ N := by
@@ -101,12 +81,8 @@ private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ 
     linear_combination (k * t ^ 2) * h0
   omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+Compare prime-power factors. The two-adic exponent of a primitive quadratic conductor is at most three, and eight divides N₀. Each odd prime in the conductor occurs to exponent at most one. By hypothesis such a prime either divides N₀ or is one of q and d. Thus every prime power in the conductor divides the proposed product.
 -/
 theorem real_cond :
     ∀ (N₀ q d : ℕ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → χ ^ 2 = 1 → 8 ∣ N₀ → q.Prime → d.Prime →

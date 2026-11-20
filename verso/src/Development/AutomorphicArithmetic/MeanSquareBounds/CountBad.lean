@@ -6,8 +6,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+For each bad prime, use its given product f q as the conductor parameter in the core counting estimate. Its primitive character meets the size and failure-of-nonvanishing conditions of that estimate, so the same power bound applies to the set of primes.
 -/
 theorem count_bad :
     ∃ C : ℝ, ∀ (Q F : ℝ) (B : Finset ℕ), 3 ≤ Q →

@@ -4,8 +4,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The modulus is q times a product of primes at least three. Each factor, including the odd prime q, is coprime to two. Their product is also coprime to two.
 -/
 private theorem oddM_odd (z : ℝ) (q : ℕ) (hq : q.Prime) (h2 : q ≠ 2) : Nat.Coprime 2 (oddM z q) := by
   have hq2 : Nat.Coprime 2 q := (Nat.coprime_primes Nat.prime_two hq).mpr (Ne.symm h2)
@@ -14,20 +14,8 @@ private theorem oddM_odd (z : ℝ) (q : ℕ) (hq : q.Prime) (h2 : q ≠ 2) : Nat
   have h3 : 3 ≤ p := (Finset.mem_Icc.mp hp'.1).1
   exact (Nat.coprime_primes Nat.prime_two hp'.2).mpr (by omega)
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since M is odd, it is coprime to sixteen. Choose a residue c that is seven modulo sixteen and minus one modulo M by the Chinese remainder theorem. Each of those residues is a unit, so c is coprime to the product. An integer d satisfies the two proposed conditions exactly when it is congruent to c modulo each factor, which is equivalent to a single congruence modulo their product.
 -/
 private theorem chineseRemainder_finiteCover (M : ℕ) (h : Nat.Coprime 2 M) : ∃ a : ℕ, a.Coprime (16 * M) ∧
     ∀ d : ℕ, (d % 16 = 7 ∧ M ∣ d + 1) ↔ d % (16 * M) = a % (16 * M) := by
@@ -71,10 +59,8 @@ private theorem chineseRemainder_finiteCover (M : ℕ) (h : Nat.Coprime 2 M) : �
   rw [key1 d, key2 d]
   exact Nat.modEq_and_modEq_iff_modEq_mul h16
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
+/- English proof (authored)
+The odd modulus is coprime to two, so the two second-prime congruences combine into one reduced residue class modulo sixteen times that modulus. Both sets impose the same primality and interval conditions. Their membership criteria are therefore identical.
 -/
 theorem exists_coprime_primePairSetSecond_eq_PPset :
     ∀ (z z' : ℝ) (q : ℕ), q.Prime → q ≠ 2 → ∃ a₀ : ℕ, a₀.Coprime (16 * oddM z q) ∧

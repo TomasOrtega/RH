@@ -5,8 +5,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Write c = k + 1, using that c is nonzero. The pair consisting of k and the original character has the same modulus, primitivity, and values.
 -/
 private theorem stage1_succ (c : ℕ) (hc : c ≠ 0) (χ : DirichletCharacter ℂ c) (hχ : χ.IsPrimitive) :
     ∃ ξ' : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), ξ'.2.IsPrimitive ∧ ξ'.1 + 1 = c ∧
@@ -14,10 +14,8 @@ private theorem stage1_succ (c : ℕ) (hc : c ≠ 0) (χ : DirichletCharacter �
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hc
   exact ⟨⟨k, χ⟩, hχ, rfl, fun _ => rfl⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the primitive character associated to ξ. Its nonzero conductor divides N₀ and is therefore at most N₀. Express that conductor as a successor to obtain the requested pair. On integers coprime to N₀, the primitive character agrees with ξ by the formula for extension of level.
 -/
 private theorem stage1_prim (N₀ : ℕ) (hN : 0 < N₀) (ξ : DirichletCharacter ℂ N₀) :
     ∃ ξ' : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), ξ'.2.IsPrimitive ∧ ξ'.1 + 1 ≤ N₀ ∧
@@ -32,8 +30,8 @@ private theorem stage1_prim (N₀ : ℕ) (hN : 0 < N₀) (ξ : DirichletCharacte
     ZMod.cast_natCast ξ.conductor_dvd_level] at h
   rw [h3, h]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The square of the logarithm grows more slowly than Y raised to any fixed positive power. Use the positive exponent ε/5 and take the eventual comparison constant to be one half.
 -/
 private theorem stage1_log {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ Y : ℝ in Filter.atTop, Real.log Y ^ 2 ≤ 1 / 2 * Y ^ (ε / 5) := by
@@ -44,26 +42,8 @@ private theorem stage1_log {ε : ℝ} (hε : 0 < ε) :
     Real.norm_of_nonneg (Real.rpow_nonneg hY0.le _)] at hY
   exact hY
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For each character modulo N₀ choose its primitive inducing character. These form a finite set of size at most the number of characters modulo N₀, with all conductors at most N₀. Apply the stage estimate with modulus eight, residue three, and box scale exp(Y raised to ε/5). For large Y the logarithmic power comparison gives the needed size conditions, the prime factor two satisfies the small-prime bound, and N₀ is at most the square root of the box scale. If a prime fails the first-prime requirement, choose a character witnessing the failure. On units its values agree with those of its primitive representative, so it also fails the corresponding estimate counted by the stage theorem. This bounds the bad set as claimed.
 -/
 theorem stage1 :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,

@@ -5,8 +5,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Write the positive conductor as k + 1 and use k together with the given primitive character. Failure of the zero-free box means that there is a zero with real part above the box boundary and height within its bound, which supplies the last witness.
 -/
 private theorem aux (Q : ℝ) (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ M) (hp : ψ.IsPrimitive) (hM : (M : ℝ) ≤ Q)
     (hz : ¬ ZeroFreeBox Q ψ) :
@@ -18,20 +18,8 @@ private theorem aux (Q : ℝ) (M : ℕ) [NeZero M] (ψ : DirichletCharacter ℂ 
   push Not at hz
   exact hz
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Assign to each bad prime q one primitive character of conductor fq witnessing failure of its zero box. This assignment is injective on S. If the same character were assigned to q and q′, its conductor would be both fq and f′q′. The prime q would have to divide f′ or q′. Since f′ ≤ F < q and f′ is positive, it cannot divide f′, hence it equals q′. Apply the zero-density bound to the image of S, whose cardinality is the same as that of S. Replacing the bound's constant by its maximum with zero keeps the estimate valid.
 -/
 theorem count_bad_core :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (Q F : ℝ) (S : Finset ℕ), 3 ≤ Q →

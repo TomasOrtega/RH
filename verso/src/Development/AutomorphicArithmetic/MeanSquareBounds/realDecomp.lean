@@ -4,18 +4,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The Chinese remainder theorem identifies the units of the product modulus with the product of the two unit groups. Restrict the character to each factor, keeping the other factor equal to one. Each restricted character still has square one. Every unit of the product is the product of its two factor components, so multiplicativity gives the value formula.
 -/
 private theorem real_split (M p : ℕ) (h : M.Coprime p) (χ : DirichletCharacter ℂ (M * p))
     (hχ : χ ^ 2 = 1) :
@@ -56,16 +46,8 @@ private theorem real_split (M p : ℕ) (h : M.Coprime p) (χ : DirichletCharacte
     rw [this]
     simp [φ]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The units modulo an odd prime form a cyclic group. A character with square one takes its generator to one or minus one. In the first case it is trivial. In the second case it agrees with the nontrivial quadratic character, which also sends the generator to minus one. Use the equality of the quadratic character and the Jacobi symbol at a prime modulus.
 -/
 private theorem real_prime (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (η : DirichletCharacter ℂ p)
     (hη : η ^ 2 = 1) :
@@ -95,8 +77,8 @@ private theorem real_prime (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (η : Dirichl
     rw [he, pow_one, J, ← jacobiSym.legendreSym.to_jacobiSym]
     simp [ψ, legendreSym]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Since p does not divide M, the moduli are coprime. Split the quadratic character by the Chinese remainder theorem. The factor modulo p is either principal or quadratic, so it gives the power of the Jacobi symbol with exponent zero or one.
 -/
 private theorem real_one_step (M p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (hM : ¬ p ∣ M)
     (χ : DirichletCharacter ℂ (M * p)) (hχ : χ ^ 2 = 1) :
@@ -108,12 +90,8 @@ private theorem real_one_step (M p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (hM : ¬
   exact ⟨ξ, a, h1, ha, fun n hn => by
     rw [h4 n hn, h5 n (Nat.Coprime.coprime_mul_left_right hn)]⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Extend the character to the product modulus, preserving its square-one property. Since d is distinct from q and divides neither factor N₀ nor q, split off the d-character first. Then split the remaining character at q, which is coprime to N₀. Each prime factor is a power of the corresponding quadratic symbol with exponent zero or one. On units the extension agrees with the original, giving the asserted factorization.
 -/
 theorem real_decomp :
     ∀ (N₀ q d : ℕ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ^ 2 = 1 → 0 < N₀ → q.Prime → d.Prime → q ≠ 2 → d ≠ 2 → q ≠ d → ¬ q ∣ N₀ → ¬ d ∣ N₀ →

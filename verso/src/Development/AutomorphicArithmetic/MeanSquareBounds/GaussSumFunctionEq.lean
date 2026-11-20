@@ -8,14 +8,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
-
-Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
-
-Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
+/- English proof (authored)
+In the finite summation range, n is positive and n ≤ y, so y/n − 1 is nonnegative. Replacing its maximum with zero by y/n − 1 gives the same weights. The principal definitions then coincide, and the nonprincipal definitions also agree term by term.
 -/
 private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) :
     Formalism.HC.An.gChi χ y = G0 χ y := by
@@ -39,12 +33,8 @@ private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharac
     congr 1
     exact Finset.sum_congr rfl fun n hn => by rw [key n hn]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+A nonunit has character value zero. At a unit the value has square one by hypothesis, so it is one or minus one. In either case its imaginary part is zero.
 -/
 private theorem isReal_of_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h2 : χ ^ 2 = 1) (a : ZMod N) :
     (χ a).im = 0 := by
@@ -60,8 +50,8 @@ private theorem isReal_of_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     rcases hz with hz | hz <;> simp [hz]
   · simp [MulChar.map_nonunit χ ha]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The host condition identifies χ with the primitive character associated to a host frame character. Its modulus is the conductor of the associated character at the host level, so it divides that level.
 -/
 private theorem level_dvd {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (h : H.IsCharE χ) : N ∣ H.condN := by
@@ -71,22 +61,8 @@ private theorem level_dvd {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ
   rw [hN]
   exact DirichletCharacter.conductor_dvd_level (H.dir θ)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the second alternative.
-
-Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Take the real-zero width to be the smaller of 1/400 and the uniform width for conductors at most 8⌊B⌋. Every primitive host character has conductor dividing the host conductor, so the logarithmic conductor bound passes to it. For a quadratic nonprincipal character, if the conductor includes either host prime the assumed box gives the required exclusion. Otherwise the quadratic conductor bound limits its two-part to eight and the remaining odd part to the odd part of the selected modulus, placing the conductor at most 8⌊B⌋. Apply the small-conductor exclusion in that case. The thin character estimate now applies, and the identity of the two smoothed sums transfers its bound.
 -/
 theorem thinH :
     UpperTheory.Top.ThinH := by

@@ -8,8 +8,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Write the positive integer N as M + 1. Use this M and the original primitive character, whose modulus and pointwise values stay the same.
 -/
 private theorem sig_of (N : ℕ) (hN : 0 < N) (ψ : DirichletCharacter ℂ N) (hψ : ψ.IsPrimitive) :
     ∃ χ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), χ.2.IsPrimitive ∧ χ.1 + 1 = N ∧
@@ -17,16 +17,8 @@ private theorem sig_of (N : ℕ) (hN : 0 < N) (ψ : DirichletCharacter ℂ N) (h
   obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := ⟨N - 1, by omega⟩
   exact ⟨⟨M, ψ⟩, hψ, rfl, fun _ => rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+For exponent zero use the primitive character underlying ξ, whose conductor divides N₀. For exponent one twist this primitive character at q, which exceeds N₀ and hence is coprime to its conductor. The twist has conductor at most N₀q, and its values agree with the required product on integers coprime to N₀. If the exponent exceeds one, the conditional value identity is vacuous, and the conductor-one primitive character serves as a witness.
 -/
 private theorem char_of (N₀ q : ℕ) (hN : 0 < N₀) (hq : q.Prime) (h2 : q ≠ 2) (hlt : N₀ < q)
     (ξ : DirichletCharacter ℂ N₀) (a : ℕ) :
@@ -61,8 +53,8 @@ private theorem char_of (N₀ q : ℕ) (hN : 0 < N₀) (hq : q.Prime) (h2 : q �
       · rw [h3, hψn, key n hn, pow_one]
   · exact ⟨⟨0, 1⟩, DirichletCharacter.isPrimitive_one_level_one, hNq, fun h => absurd h ha⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The ratio of log Y to Y raised to ε/5 tends to zero. For large Y it is at most 1/(800K), which gives the estimate after multiplication.
 -/
 private theorem ev_log {ε K : ℝ} (hε : 0 < ε) (hK : 1 ≤ K) :
     ∀ᶠ Y : ℝ in Filter.atTop, 800 * K * Real.log Y ≤ Y ^ (ε / 5) := by
@@ -75,56 +67,8 @@ private theorem ev_log {ε K : ℝ} (hε : 0 < ε) (hK : 1 ≤ K) :
         mul_le_mul_of_nonneg_left h1 (by positivity)
     _ = _ := by field_simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
-
-Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the general stage estimate with parameter 6ε/5 and a family of at most twice the number of characters modulo N₀. The first-prime range makes q exceed N₀ and the cutoff (Yᴷ)⁴⁰⁰ for large Y. The Chinese remainder theorem expresses the second-prime set as a reduced progression modulo sixteen times the odd modulus. Its prime factors are either at most the small-prime threshold or equal to q, and the logarithmic modulus bound and the range of z′ give admissibility. The primitive representatives of the two possible q-twists of each original character have conductor at most N₀ exp(Y raised to ε/5), which is at most the square root of exp z′. A failure of the second-prime condition is therefore a failure for a twist by d of one of these representatives. Apply the general stage estimate to get nonemptiness and the bound on failures.
 -/
 theorem stage2 :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,

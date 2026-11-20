@@ -8,8 +8,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Extending a character from a divisor of L preserves its value on a unit modulo L after reducing the unit to the original modulus. The coprimality of n makes its class a unit, so this gives the formula.
 -/
 private theorem pairEx_lift {N L : ℕ} [NeZero L] (h : N ∣ L) (ξ : DirichletCharacter ℂ N) (n : ℕ) (hn : n.Coprime L) :
     DirichletCharacter.changeLevel h ξ (n : ZMod L) = ξ (n : ZMod N) := by
@@ -17,20 +17,8 @@ private theorem pairEx_lift {N L : ℕ} [NeZero L] (h : N ∣ L) (ξ : Dirichlet
   have key := DirichletCharacter.changeLevel_eq_cast_of_dvd' ξ h ha
   simpa using key
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+If the d exponent is zero, the q exponent is one. On integers coprime to 2Mqd, the residual function then agrees with the character modulo 8M. Since q is odd and greater than 8M, primitive twist uniqueness allows the inducing modulus to drop to 8Mq. Apply the first-prime box. If the d exponent is one, the given inducing formula holds on units modulo 8Mqd and gives the second-prime box. In each case its height is the stated height after expanding the exponential factors.
 -/
 private theorem pairEx_box (M : ℕ) (hM : 0 < M) (C τ Y X z z' : ℝ) (q d : ℕ) (hR : Rows z z' q d) (hq : 8 * M < q)
     (hQ : GoodQ (8 * M) C τ Y X z q) (hD : GoodD (8 * M) C τ Y X z z' q d)
@@ -76,12 +64,8 @@ private theorem pairEx_box (M : ℕ) (hM : 0 < M) (C τ Y X z z' : ℝ) (q d : �
     refine (congrArg (fun Q => Box Q C τ Y X χ) ?_).mpr hB
     simp [Real.exp_add, mul_assoc]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For a nonprincipal character, both definitions use the same logarithmic derivative and the same finite sum up to the integer part of y. Every index in this range satisfies y/n ≥ 1, so the maximum in the weight equals y/n − 1, and the terms agree.
 -/
 private theorem pairEx_g {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h : χ ≠ 1) (y : ℝ) :
     Formalism.HC.An.gChi χ y = Gchi χ y := by
@@ -101,16 +85,8 @@ private theorem pairEx_g {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
     linarith
   rw [max_eq_left hnn]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Put w = Y raised to ε/5 and L = log Y. The logarithm of the product is log(8M) + w + jwL². All terms are nonnegative, and w ≥ Y raised to ε/6, giving the lower bound. The threshold gives L ≥ 1 + log(8M), while w ≥ 1 and j ≤ 1. Each of the three terms is at most wL², giving the upper bound.
 -/
 private theorem log_exp_product_bounds (M : ℕ) (hM : 0 < M) (ε Y : ℝ) (hε : 0 < ε)
     (hY : Real.exp (1 + Real.log (8 * M)) ≤ Y) (j : ℕ) (hj : j ≤ 1) :
@@ -145,24 +121,8 @@ private theorem log_exp_product_bounds (M : ℕ) (hM : 0 < M) (ε Y : ℝ) (hε 
     have a2 : (j : ℝ) * (w * L ^ 2) ≤ w * L ^ 2 := by nlinarith
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use prime-pair existence with τ = ε/2 and lower conductor cutoff 8M, and take Y above its threshold and the logarithmic derivative threshold. Choose the second window exponent to be Y raised to ε/5 times the square of log Y. The prime rows give the window conditions, and both primes exceed M, so their product is coprime to M. Extend a base character to modulus 8M and apply the inducing box theorem to each nonzero pair of twist exponents. Its weighted-sum bound gives the pointwise estimate. The logarithm of the box height lies in the range of the sharper logarithmic derivative estimate, giving 4 log Y ≤ 4 log y as the bound at y. For a real auxiliary character with conductor dividing 8M, extend it to the same modulus and use the zero-free part of its box.
 -/
 theorem pairEx :
     UpperTheory.Top.PairEx := by

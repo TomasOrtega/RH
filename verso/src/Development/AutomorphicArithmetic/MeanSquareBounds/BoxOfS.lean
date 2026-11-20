@@ -7,12 +7,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since ε ≤ 1/4 and Y ≥ 16, one has Yᵋ ≤ Y raised to one quarter and Y raised to one quarter is at least two. Thus twice Yᵋ is at most the square root of Y. This is at most the square root of y, which is at most y raised to 1/2 + τ.
 -/
 private lemma num_box {ε τ Y y : ℝ} (hε : ε ≤ 1 / 4) (hτ : 0 < τ) (hY : 16 ≤ Y) (hy : Y ≤ y) :
     Y ^ ε ≤ y ^ (1 / 2 + τ) / 2 := by
@@ -32,18 +28,8 @@ private lemma num_box {ε τ Y y : ℝ} (hε : ε ≤ 1 / 4) (hτ : 0 < τ) (hY 
     Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)
   nlinarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the uniform logarithmic derivative and tail estimates and choose Y beyond both thresholds and at least sixteen. For y in the desired interval, the finite splitting at cutoff (Yᴷ)⁴⁰⁰ writes the weighted character sum as a finite part and a tail. The character identity makes the finite part the supplied sum S, with norm at most half the target. The tail bound at the upper endpoint bounds its norm at y by Yᵋ, which is at most the other half by the numerical estimate. Add the bounds and keep the given conductor and nonvanishing data.
 -/
 theorem box_of_S :
     ∃ C : ℝ, 0 < C ∧ ∀ ε τ K : ℝ, 0 < ε → ε ≤ 1 / 4 → 0 < τ → 1 ≤ K → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (Q : ℝ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (q : ℕ) (κ : ℕ → ℂ),

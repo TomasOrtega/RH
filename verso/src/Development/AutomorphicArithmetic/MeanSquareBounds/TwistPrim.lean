@@ -6,10 +6,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Since q is prime and does not divide f, the two moduli are coprime. The primitive quadratic twist theorem then gives a primitive nonprincipal character at their product modulus. Its value formula multiplies the original character by the quadratic symbol at q.
 -/
 theorem twist_prim :
     ∀ (f q : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ f), ξ.IsPrimitive → q.Prime → q ≠ 2 → ¬ q ∣ f →

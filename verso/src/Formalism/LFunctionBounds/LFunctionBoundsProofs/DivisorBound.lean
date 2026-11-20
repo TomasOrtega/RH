@@ -4,8 +4,8 @@ namespace Formalism.FX
 
 open Finset
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Let M = max(1, 1/a). Then M ≥ 1 and Ma ≥ 1, so k + 1 ≤ M(1 + ak) for k ≥ 0. The inequality 1 + ak ≤ exp(ak) completes the estimate.
 -/
 theorem succ_le_max_mul_exp (a : ℝ) (ha : 0 < a) (k : ℕ) :
     ((k : ℝ) + 1) ≤ max 1 (1 / a) * Real.exp (a * k) := by
@@ -18,10 +18,8 @@ theorem succ_le_max_mul_exp (a : ℝ) (ha : 0 < a) (k : ℕ) :
     _ ≤ max 1 (1 / a) * Real.exp (a * k) :=
       mul_le_mul_of_nonneg_left (by linarith [Real.add_one_le_exp (a * k)]) (by linarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Apply the exponential estimate with a = e log 2, which is positive. Since p ≥ 2, the exponent e k log 2 is at most e k log p. Exponentiation gives the claimed power of p.
 -/
 theorem succ_le_max_mul_pow (e : ℝ) (he : 0 < e) (p k : ℕ) (hp : 2 ≤ p) :
     ((k : ℝ) + 1) ≤ max 1 (1 / (e * Real.log 2)) * ((p : ℝ) ^ e) ^ k := by
@@ -37,10 +35,8 @@ theorem succ_le_max_mul_pow (e : ℝ) (he : 0 < e) (p k : ℕ) (hp : 2 ≤ p) :
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hlog he.le) hk
     _ = k * (Real.log p * e) := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+At k = 0 both sides equal one. If the power with exponent k bounds k + 1, multiplying it by pᵉ gives at least 2(k + 1), which is at least k + 2. Induction proves the inequality.
 -/
 theorem succ_le_pow_of_two_le (e : ℝ) (p k : ℕ) (hp : 2 ≤ (p : ℝ) ^ e) :
     ((k : ℝ) + 1) ≤ ((p : ℝ) ^ e) ^ k := by
@@ -55,10 +51,8 @@ theorem succ_le_pow_of_two_le (e : ℝ) (p k : ℕ) (hp : 2 ≤ (p : ℝ) ^ e) :
     push_cast
     linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Factor the positive integer n into prime powers. A real power of a product of positive factors is the product of their real powers. For a prime with multiplicity k, the resulting factor is p raised to ke, equivalently the kth power of pᵉ.
 -/
 theorem rpow_eq_prod_primeFactors (e : ℝ) {n : ℕ} (hn0 : n ≠ 0) :
     (n : ℝ) ^ e = ∏ p ∈ n.primeFactors, ((p : ℝ) ^ e) ^ (n.factorization p) := by
@@ -71,16 +65,8 @@ theorem rpow_eq_prod_primeFactors (e : ℝ) {n : ℕ} (hn0 : n ≠ 0) :
   rw [← Real.rpow_natCast (p : ℝ) (n.factorization p), ← Real.rpow_mul hx,
     mul_comm ((n.factorization p : ℕ) : ℝ) e, Real.rpow_mul hx, Real.rpow_natCast]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Set M = max(1, 1/(e log 2)) and K = ⌈2^(1/e)⌉. A prime of multiplicity k contributes k + 1 to the divisor count. For p < K this is at most M times the kth power of pᵉ. For p ≥ K, one has pᵉ ≥ 2, so the same estimate holds with factor one in place of M. There are at most K primes below K. Multiply all the estimates and use the prime factorization of n to obtain the bound Mᴷ nᵉ.
 -/
 theorem divisor_weight_bound : DivisorBound := by
   intro e he

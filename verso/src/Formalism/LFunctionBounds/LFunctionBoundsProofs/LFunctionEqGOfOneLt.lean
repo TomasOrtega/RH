@@ -8,19 +8,15 @@ namespace Formalism.FX
 
 namespace LFunctionPartialSum
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The endpoints are ordered since x ≤ x + 1. Membership therefore gives t ≥ x, and x is positive.
 -/
 private lemma pos_of_mem_uIcc_self_add_one {x t : ℝ} (hx : 0 < x) (ht : t ∈ Set.uIcc x (x + 1)) : 0 < t := by
   rw [Set.uIcc_of_le (by linarith)] at ht
   exact lt_of_lt_of_le hx ht.1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On the positive interval the derivative of t raised to −s is −s times t raised to −s − 1. It is continuous there. Integrate the derivative, pull out the constant, and reverse the order of the endpoint values.
 -/
 lemma cpow_sub_eq_integral {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : s ≠ 0) :
     (x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s) = s * ∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1) := by
@@ -41,10 +37,8 @@ lemma cpow_sub_eq_integral {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : s ≠ 0) :
   rw [e, h]
   ring
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+For every positive t the absolute value of the complex power is the real power with exponent −Re(s) − 1. This nonnegative function is continuous on the interval. Apply the triangle inequality for integrals.
 -/
 lemma norm_integral_le {x : ℝ} (hx : 0 < x) (s : ℂ) :
     ‖∫ t in x..(x + 1), (t : ℂ) ^ (-s - 1)‖ ≤ ∫ t in x..(x + 1), t ^ (-s.re - 1) := by
@@ -56,8 +50,8 @@ lemma norm_integral_le {x : ℝ} (hx : 0 < x) (s : ℂ) :
     simp
   · exact (continuousOn_id.rpow_const fun t ht => Or.inl (pos_of_mem_uIcc_self_add_one hx ht).ne').intervalIntegrable
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Since σ > 0, a primitive on the positive interval is −t raised to −σ divided by σ. Evaluating at x and x + 1 gives the displayed difference.
 -/
 lemma integral_rpow_eq {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     ∫ t in x..(x + 1), t ^ (-σ - 1) = (x ^ (-σ) - (x + 1) ^ (-σ)) / σ := by
@@ -65,8 +59,8 @@ lemma integral_rpow_eq {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
   have e : -σ - 1 + 1 = -σ := by ring
   rw [e, div_neg, ← neg_div, neg_sub]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The exponent −σ − 1 is negative, so the integrand is at most its value at x throughout the interval. Integrating this constant over an interval of length one gives the bound.
 -/
 lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
     ∫ t in x..(x + 1), t ^ (-σ - 1) ≤ x ^ (-σ - 1) := by
@@ -78,8 +72,8 @@ lemma integral_rpow_le {x : ℝ} (hx : 0 < x) {σ : ℝ} (hσ : 0 < σ) :
       exact Real.rpow_le_rpow_of_nonpos hx ht.1 (by linarith)
   simpa using h1
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The positive real part of s ensures s is nonzero. Express the difference by integrating the complex-power derivative, take the norm, and bound it by |s| times the real-power integral. Evaluate that integral using σ = Re(s).
 -/
 lemma norm_cpow_sub_le {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤
@@ -90,8 +84,8 @@ lemma norm_cpow_sub_le {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
   rw [integral_rpow_eq hx hs]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Express the difference as s times the integral of the complex power, using that s is nonzero. Bound the norm by |s| times the real-power integral. The real integrand decreases, so its integral over the unit interval is at most its value at x.
 -/
 lemma norm_cpow_sub_le' {x : ℝ} (hx : 0 < x) {s : ℂ} (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((x + 1 : ℝ) : ℂ) ^ (-s)‖ ≤ ‖s‖ * x ^ (-s.re - 1) := by
@@ -107,36 +101,34 @@ def dterm (s : ℂ) (n : ℕ) : ℂ := Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) 
 
 def G (s : ℂ) : ℂ := ∑' n, dterm χ s n
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The index set of the character sum is empty at zero, which makes the sum zero.
 -/
 lemma Ap_zero : Ap χ 0 = 0 := by
   simp [Ap]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The indices from one to n + 1 consist of the indices from one to n together with the new endpoint. Splitting the sum gives the recurrence.
 -/
 lemma Ap_succ (n : ℕ) : Ap χ (n + 1) = Ap χ n + χ ((n + 1 : ℕ) : ZMod q) := by
   simp only [Ap]
   rw [Finset.sum_Icc_succ_top (by omega)]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The term at zero contains the partial character sum at zero as a factor. This partial sum is zero.
 -/
 lemma dterm_zero (s : ℂ) : dterm χ s 0 = 0 := by
   simp [dterm, Ap_zero]
 
-/- English proof (translation)
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The inclusions of the natural numbers into the reals and of the reals into the complex numbers preserve addition and one. Their composite is the natural-number inclusion into the complex numbers.
 -/
 lemma natCast_add_one_eq (n : ℕ) : ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : ℂ) := by
   push_cast
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The term at zero vanishes and the proposed bound is nonnegative. For n > 0, split the norm of the term into the norm of the partial character sum and that of the difference of powers. Bound the first by B and apply the unit-interval estimate to the second.
 -/
 lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
     ‖dterm χ s n‖ ≤ B * (‖s‖ * (n : ℝ) ^ (-s.re - 1)) := by
@@ -151,10 +143,8 @@ lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 
     rw [norm_mul]
     exact mul_le_mul (hB n) key (norm_nonneg _) hB0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Split the norm into the product of the norm of the partial character sum and the norm of the difference of powers. Use the bound B and the endpoint-difference estimate for the power on the positive interval [n, n + 1].
 -/
 lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) {n : ℕ}
     (hn : 1 ≤ n) :
@@ -167,24 +157,22 @@ lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs :
   rw [norm_mul]
   exact mul_le_mul (hB n) key (norm_nonneg _) hB0
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The norms are bounded by a constant multiple of n raised to −Re(s) − 1. The exponent is less than −1, so this is a convergent p-series on positive indices. The term at zero contributes nothing.
 -/
 lemma summable_norm_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (fun n => ‖dterm χ s n‖) := by
   refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) (norm_dterm_le χ hB hs) ?_
   exact ((Real.summable_nat_rpow.mpr (by linarith)).mul_left ‖s‖).mul_left B
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The series of norms converges by the preceding estimate. Absolute convergence implies convergence in the complete complex plane.
 -/
 lemma summable_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (dterm χ s) := (summable_norm_dterm χ hB hs).of_norm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At M = 0 both the sum and the boundary term vanish. When M increases by one, the difference between consecutive partial character sums is the new character value. In the new weighted term plus its boundary term, the two powers at M + 2 cancel. After subtracting the old boundary term, the remaining increment equals the new character value times (M + 1) raised to −s. Induction gives the identity.
 -/
 lemma partial_identity (s : ℂ) (M : ℕ) :
     ∑ n ∈ Finset.range (M + 1), dterm χ s n + Ap χ M * ((M : ℂ) + 1) ^ (-s) =
@@ -198,18 +186,8 @@ lemma partial_identity (s : ℂ) (M : ℕ) :
     push_cast
     ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Near any s₀ with positive real part, restrict to real parts above Re(s₀)/2 and absolute values below |s₀| + 1. Each summand is holomorphic in the exponent, and the term at zero vanishes. For n ≥ 1 the summand is bounded uniformly by B(|s₀| + 1) times n raised to −Re(s₀)/2 − 1. This gives a summable bound on the neighborhood, so the series is holomorphic there.
 -/
 lemma G_differentiableOn {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) :
     DifferentiableOn ℂ (G χ) {s : ℂ | 0 < s.re} := by
@@ -253,8 +231,8 @@ lemma G_differentiableOn {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) :
         exact Real.rpow_le_rpow_of_exponent_le (Nat.one_le_cast.mpr hn) (by linarith)
   exact (hdiff.differentiableAt (hUo.mem_nhds hs0U)).differentiableWithinAt
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sums have the same indices from one to M, and the second includes an extra term at zero. That term vanishes.
 -/
 lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
     ∑ n ∈ Finset.Icc 1 M, f n = ∑ n ∈ Finset.range (M + 1), f n := by
@@ -264,12 +242,8 @@ lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
     rw [Finset.sum_Icc_succ_top (by omega), ih]
     exact (Finset.sum_range_succ f (M + 1)).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the finite summation-by-parts identity. The sum of the transformed terms tends to G by absolute convergence. The remaining boundary term has absolute value at most B times (M + 1) raised to −Re(s), which tends to zero.
 -/
 lemma partial_tendsto_G {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Tendsto (fun M : ℕ => ∑ n ∈ Finset.Icc 1 M, χ (n : ZMod q) * (n : ℂ) ^ (-s)) atTop
@@ -293,12 +267,8 @@ lemma partial_tendsto_G {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (h
   rw [add_zero] at h3
   exact h3.congr (partial_identity χ s)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For real part greater than one the L-function equals its convergent Dirichlet series. Its partial sums start at one because the zero-index term is zero, and the terms agree with the weighted character terms. These same partial sums tend to G by the summation-by-parts limit. Uniqueness of the limit gives equality.
 -/
 lemma LFunction_eq_G_of_one_lt {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 1 < s.re) :
     DirichletCharacter.LFunction χ s = G χ s := by
@@ -315,10 +285,8 @@ lemma LFunction_eq_G_of_one_lt {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : 
     omega
   rw [LSeries.term_of_ne_zero hn0, Complex.cpow_neg, div_eq_mul_inv]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
+/- English proof (authored)
+For a nonprincipal character the L-function is holomorphic, and the transformed series G is holomorphic on the right half-plane. They agree on a neighborhood of two by the identity in the half-plane with real part greater than one. The identity theorem extends the equality across the connected right half-plane.
 -/
 lemma LFunction_eq_G (hχ : χ ≠ 1) {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     DirichletCharacter.LFunction χ s = G χ s := by

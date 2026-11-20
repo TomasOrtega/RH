@@ -6,8 +6,8 @@ noncomputable section
 
 namespace Formalism.FX
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The curve is continuous and stays in the slit plane on the interval. The chain rule gives d/γ(t) as the derivative of the principal logarithm of γ(t). This derivative is continuous on the interval, so integration gives the difference of the endpoint logarithms.
 -/
 theorem rectRes_ftc_log {γ : ℝ → ℂ} {d : ℂ} {a b : ℝ} (hγ : ∀ t, HasDerivAt γ d t)
     (hs : ∀ t ∈ Set.uIcc a b, γ t ∈ slitPlane) :
@@ -17,52 +17,40 @@ theorem rectRes_ftc_log {γ : ℝ → ℂ} {d : ℂ} {a b : ℝ} (hγ : ∀ t, H
   refine ContinuousOn.intervalIntegrable ?_
   exact continuousOn_const.div hc.continuousOn fun t ht => Complex.slitPlane_ne_zero (hs t ht)
 
-/- English proof (translation)
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The real parts of the two logarithms agree because |z| = |−z|. For z in the upper half-plane, the principal argument of −z is the argument of z minus π. Subtracting the logarithms gives πi.
 -/
 theorem rectRes_log_sub_log_neg_of_im_pos {z : ℂ} (h : 0 < z.im) :
     log z - log (-z) = (Real.pi : ℂ) * I := by
   have h1 := Complex.arg_neg_eq_arg_sub_pi_of_im_pos h
   apply Complex.ext <;> simp [Complex.log_re, Complex.log_im, h1]
 
-/- English proof (translation)
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The real parts of the two logarithms agree because the moduli agree. In the lower half-plane, negation adds π to the principal argument. Hence the difference of logarithms is −πi.
 -/
 theorem rectRes_log_sub_log_neg_of_im_neg {z : ℂ} (h : z.im < 0) :
     log z - log (-z) = -((Real.pi : ℂ) * I) := by
   have h1 := Complex.arg_neg_eq_arg_add_pi_of_im_neg h
   apply Complex.ext <;> simp [Complex.log_re, Complex.log_im, h1]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The inclusion of the real line into the complex plane has derivative one. Adding the constant c preserves that derivative.
 -/
 theorem rectRes_hasDerivAt_horiz (c : ℂ) (t : ℝ) :
     HasDerivAt (fun x : ℝ => (x : ℂ) + c) 1 t := by
   have h := (Complex.ofRealCLM.hasDerivAt (x := t)).add_const c
   simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The inclusion of the real line into the complex plane has derivative one. Multiplying by i and translating by c gives derivative i.
 -/
 theorem rectRes_hasDerivAt_vert (c : ℂ) (t : ℝ) :
     HasDerivAt (fun y : ℝ => c + (y : ℂ) * I) I t := by
   have h := ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const I).const_add c
   simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Translate the rectangle by −p. The lower and upper sides avoid the real axis, and the right side has positive real part, so the principal logarithm gives a primitive along these three sides. On the left side apply the logarithm to the negative of the translated coordinate, which then has positive real part. The right corner terms cancel when the four oriented differences are added. At the upper left corner the difference between the logarithms of the translated coordinate and its negative is πi, while at the lower left corner it is −πi. Their difference is 2πi.
 -/
 theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.re < x1)
     (h3 : y0 < p.im) (h4 : p.im < y1) :
@@ -116,12 +104,8 @@ theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.r
   rw [E1, E2, E3, E4]
   linear_combination P1 - P0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Along the curve all poles are avoided, so the integrand equals the continuous remainder plus a finite sum of continuous reciprocals multiplied by their coefficients. Each term is integrable on the parameter interval. Linearity of integration gives the stated formula.
 -/
 theorem rectRes_edge (g G : ℂ → ℂ) (P : Finset ℂ) (b : ℂ → ℂ) (γ : ℝ → ℂ) (a c : ℝ)
     (hγ : Continuous γ) (hG : ContinuousOn (fun t => G (γ t)) (Set.uIcc a c))
@@ -150,8 +134,8 @@ theorem rectRes_edge (g G : ℂ → ℂ) (P : Finset ℂ) (b : ℂ → ℂ) (γ 
         · intro p hp
           exact ((hcont p hp).intervalIntegrable).const_mul (b p)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Distribute each coefficient over the four terms, then apply linearity of the finite sum and pull out the factors of i.
 -/
 theorem rectRes_sum_combo (P : Finset ℂ) (b A B C D : ℂ → ℂ) :
     ∑ p ∈ P, b p * (A p - B p + I * C p - I * D p) =
@@ -160,20 +144,8 @@ theorem rectRes_sum_combo (P : Finset ℂ) (b A B C D : ℂ → ℂ) :
     ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun p _ => by ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Every side lies in the holomorphy region of the remainder and avoids every pole, because each pole is strictly inside the rectangle. Apply the edge decomposition on each side and collect the terms using the contour orientation. Cauchy's theorem gives zero for the integral of the holomorphic remainder. Each simple-pole integral is 2πi, so the total is 2πi times the sum of the coefficients.
 -/
 theorem rectangle_residue : RectResidue := by
   unfold RectResidue

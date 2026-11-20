@@ -109,16 +109,16 @@ def FixedLW3 : Prop :=
         chebyshevWeightedAverage m x (fun y => AS l S y + 2 * Al l y) ≤ chebyshevWeightedAverage m x (tripleMainTerm l S) + C * x ^ (θ + ε)) →
   ∀ s : ℂ, θ < s.re → riemannZeta s ≠ 0
 
-/- English proof (translation)
-Evaluate the decidable proposition.
+/- English proof (authored)
+A triple in this set has positive integer coordinates with sum three. Each coordinate must therefore be one, and the triple (1, 1, 1) meets the defining bounds.
 -/
 example : triples 3 = {(1, 1, 1)} := by decide
-/- English proof (translation)
-Evaluate the numerical expressions.
+/- English proof (authored)
+The fractional part of one half is one half, so the noninteger branch of the sawtooth subtracts one half and gives zero.
 -/
 example : saw (1 / 2) = 0 := by norm_num [saw]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Adding one preserves the fractional part, since it increases the floor by one. Thus the same branch of the sawtooth formula applies, with the same value.
 -/
 example (y : ℝ) : saw (y + 1) = saw y := by simp [saw]
 

@@ -15,10 +15,8 @@ namespace FunctorialResolution.EmbeddedResolution
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   {U : X.Opens} {m : ℕ}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The point determines a proper prime of the affine section ring. If zero and one were equal, then the prime would contain one and be the whole ring. Thus the section ring is nontrivial.
 -/
 private theorem nontrivial_sections_of_mem (hU : IsAffineOpen U) (x : X) (hx : x ∈ U) :
     Nontrivial Γ(X, U) := by
@@ -30,10 +28,8 @@ private theorem nontrivial_sections_of_mem (hU : IsAffineOpen U) (x : X) (hx : x
     exact Ideal.zero_mem _
   exact (hU.primeIdealOf ⟨x, hx⟩).isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the support every section in the ideal vanishes, meaning the point is outside its basic open. Equivalently the section’s germ is a nonunit in the local ring and lies in its maximal ideal. Contracting the maximal ideal to the affine section ring shows that every such section belongs to the point prime.
 -/
 private theorem ideal_le_primeIdealOf_of_mem_support (I : X.IdealSheafData)
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (hxI : x ∈ I.support) :
@@ -45,12 +41,8 @@ private theorem ideal_le_primeIdealOf_of_mem_support (I : X.IdealSheafData)
   intro hu
   exact h1 f hf ((X.mem_basicOpen f x hx).mpr hu)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring is nonzero because the affine open contains a point. It is flat over the polynomial ring by étaleness. A nonzero flat module over the polynomial domain is torsion-free and faithful, so the polynomial algebra map is injective. Distinct coordinate variables are distinct in the polynomial ring, and their images are the chart coordinates. These images are therefore distinct.
 -/
 private theorem coord_injective (hU : IsAffineOpen U) (c : EtaleChart p U m)
     (x : X) (hx : x ∈ U) : Function.Injective c.coord := by
@@ -71,14 +63,8 @@ private theorem coord_injective (hU : IsAffineOpen U) (c : EtaleChart p U m)
   have h2 : (ULift.up a : ULift.{u} (Fin m)) = ULift.up b := MvPolynomial.X_injective h1
   exact congrArg ULift.down h2
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen coordinates belong to the point prime, so their germs lie in the maximal ideal. The coordinate parameter theorem supplies a list of sections of length equal to the local Krull dimension, containing all the chosen coordinate sections, whose germs generate the maximal ideal. The coordinates are distinct as sections. Choosing a position for each coordinate gives an injection into the list positions, proving the bound. For an empty choice the bound follows from nonnegativity of the dimension.
 -/
 theorem card_le_ringKrullDim_stalk (hU : IsAffineOpen U) (c : EtaleChart p U m)
     (x : X) (hx : x ∈ U) (J : Finset (Fin m))
@@ -112,8 +98,8 @@ theorem card_le_ringKrullDim_stalk (hU : IsAffineOpen U) (c : EtaleChart p U m)
     rw [Finset.card_univ, Fintype.card_fin] at hcard
     exact_mod_cast hcard
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section ideal on the affine chart is generated by the specified coordinate, so it contains that coordinate. Since the point belongs to the support, its prime contains the whole section ideal. It therefore contains the coordinate.
 -/
 theorem coord_mem_primeIdealOf_of_restrictIdeal_eq_coordIdeal_singleton
     (hU : IsAffineOpen U) (c : EtaleChart p U m)

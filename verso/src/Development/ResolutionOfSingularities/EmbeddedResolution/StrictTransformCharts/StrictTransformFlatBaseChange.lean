@@ -17,16 +17,14 @@ namespace FunctorialResolution.EmbeddedResolution
 noncomputable def saturationByPowers {A : Type*} [CommRing A] (J : Ideal A) (a : A) : Ideal A :=
   _root_.UpperTheory.Reformulated.B.SaturationByPowers.saturationByPowers J a
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The saturation of an ideal by powers of an element consists precisely of the elements that can be multiplied into the ideal by some nonnegative power of that element. The membership equivalence is this definition.
 -/
 theorem mem_saturationByPowers_iff {A : Type*} [CommRing A] (J : Ideal A) (a x : A) :
     x ∈ saturationByPowers J a ↔ ∃ n : ℕ, a ^ n * x ∈ J := Iff.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+For an element of the original saturation, some power of the chosen element sends it into the original ideal. Applying the algebra map gives the same power relation in the extended ideal. Thus the image of each element of the original saturation belongs to the target saturation, and their generated ideal does too.
 -/
 private theorem map_saturationByPowers_le {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (J : Ideal A) (a : A) :
@@ -39,30 +37,8 @@ private theorem map_saturationByPowers_le {A B : Type*} [CommRing A] [CommRing B
   have h := Ideal.mem_map_of_mem (algebraMap A B) hn
   rwa [map_mul, map_pow] at h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+One inclusion follows by applying the algebra map to a witnessing power equation. For the other, take an element of the target saturation and fix a power that puts it in the extended ideal. Downstairs, the kernel of multiplication by this power followed by reduction modulo the ideal is the ideal quotient by the power. Tensor the sequence consisting of this kernel, the original ring, and the quotient ring with the flat algebra. The sequence stays exact. After identifying the tensored rings with the target and its quotient by the extended ideal, the chosen element lies in the kernel of the tensored multiplication map. It therefore belongs to the extension of the downstairs kernel. That kernel lies in the original saturation, so the element belongs to its extension.
 -/
 theorem map_saturationByPowers_of_flat {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Module.Flat A B] (J : Ideal A) (a : A) :
@@ -135,12 +111,8 @@ theorem map_saturationByPowers_of_flat {A B : Type*} [CommRing A] [CommRing B] [
   rw [hy2]
   exact main w
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the localization, membership in the extended ideal expresses the image of the element as a fraction with numerator in the ideal and denominator a power of the inverted element. Cross-multiply, then multiply by a further power to obtain equality in the original ring. The sum of the two exponents gives the required power.
 -/
 private theorem exists_pow_mul_mem_of_mem_map_away {A B : Type*} [CommRing A] [CommRing B]
     [Algebra A B] (f : A) [IsLocalization.Away f B] (I : Ideal A) (x : A)
@@ -161,8 +133,8 @@ private theorem exists_pow_mul_mem_of_mem_map_away {A B : Type*} [CommRing A] [C
   rw [h3, hcc]
   exact I.mul_mem_left _ i.2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring on the basic open is obtained by inverting its defining section in the affine section ring. Apply the denominator-clearing result for that localization to the given membership.
 -/
 private theorem exists_pow_mul_mem_of_mem_map_basicOpen {X : Scheme.{u}} (U : X.affineOpens)
     (f : Γ(X, U.1)) (I : Ideal Γ(X, U.1)) (x : Γ(X, U.1))
@@ -172,10 +144,8 @@ private theorem exists_pow_mul_mem_of_mem_map_basicOpen {X : Scheme.{u}} (U : X.
   have := U.2.isLocalization_basicOpen f
   exact exists_pow_mul_mem_of_mem_map_away (A := Γ(X, U.1)) (B := Γ(X, X.basicOpen f)) f I x hx
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the indicated sections generated a proper ideal, a maximal ideal would contain all of them. Its point lies in the affine open. The covering condition places that point in a basic open of one of those sections, so that section is outside the maximal ideal. This is a contradiction.
 -/
 private theorem span_eq_top_of_basicOpen_cover {X : Scheme.{u}} (U : X.Opens)
     (hU : IsAffineOpen U) (s : Set Γ(X, U))
@@ -194,10 +164,8 @@ private theorem span_eq_top_of_basicOpen_cover {X : Scheme.{u}} (U : X.Opens)
   rw [IsAffineOpen.fromSpec_preimage_basicOpen hU f] at h1
   exact ((PrimeSpectrum.mem_basicOpen f _).1 h1) (hsm (Ideal.subset_span hfs))
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take a section of the first ideal on the affine open. Its restriction belongs to the second ideal on every indicated basic open because the two restricted ideals agree. Clear denominators to obtain, for each basic open, a power of its defining section whose product with the original section belongs to the second ideal. The ideal generated by these powers is the unit ideal, since its radical contains the original generators of the unit ideal. A linear combination of these powers equal to one proves containment of the section in the second ideal. Reverse the roles of the two ideals to obtain equality.
 -/
 private theorem ideal_eq_of_ideal_basicOpen_eq_of_span_eq_top {X : Scheme.{u}} (I J : X.IdealSheafData)
     (U : X.affineOpens) (s : Set Γ(X, U.1)) (hs : Ideal.span s = ⊤)
@@ -218,14 +186,8 @@ private theorem ideal_eq_of_ideal_basicOpen_eq_of_span_eq_top {X : Scheme.{u}} (
     exact ⟨m, by simpa [smul_eq_mul] using hm⟩
   exact le_antisymm (key I J h) (key J I fun f hf => (h f hf).symm)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the chosen affine opens, the pullback ideals are extensions along the induced section map, which is flat. Downstairs the sections of the saturation are the saturation by powers of the chosen generator. Upstairs the pulled-back saturating ideal is generated by the image of that generator, so the sections there are obtained by saturation by powers of its image. The equality for flat extension of the ring-level saturation gives the desired equality.
 -/
 private theorem ideal_comap_saturation_of_ideal_eq_span_singleton {Y Y' : Scheme.{u}} (g : Y' ⟶ Y)
     [AlgebraicGeometry.Flat g] (F T : Y.IdealSheafData)
@@ -263,10 +225,8 @@ private theorem ideal_comap_saturation_of_ideal_eq_span_singleton {Y Y' : Scheme
   rw [h1, h2, h5, h3]
   exact map_saturationByPowers_of_flat (T.ideal U) t
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+To check equality on an affine open upstairs, cover it by basic opens whose points map into affine opens downstairs where the saturating ideal has a single generator. Such basic opens exist at every point. On each of them, flat extension commutes with saturation by powers of that generator. The basic-open equality criterion gives equality on the entire affine open, hence equality of the sheaves.
 -/
 theorem comap_saturation_of_flat {Y Y' : Scheme.{u}} (g : Y' ⟶ Y)
     [AlgebraicGeometry.Flat g] (F T : Y.IdealSheafData) (hF : Blowup.IsLocallyGeneratedByNonZeroDivisor F)
@@ -287,12 +247,8 @@ theorem comap_saturation_of_flat {Y Y' : Scheme.{u}} (g : Y' ⟶ Y)
   · rintro f ⟨U, t, ht, hle⟩
     exact ideal_comap_saturation_of_ideal_eq_span_singleton g F T U (Y'.affineBasicOpen f) hle t ht
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is the saturation of the total transform by the exceptional ideal. The map upstairs in the pullback square is flat because it is a base change of the flat map downstairs. The exceptional ideal is locally generated by a nonzerodivisor by the blowup property, so its saturation commutes with pullback along this flat map. Commutativity of the square identifies the pulled-back exceptional ideal and total transform with those for the new center and divisor. This gives the strict-transform identity.
 -/
 theorem comap_strictTransform_of_flat {X X₁ X' X₁' : Scheme.{u}}
     (π : X₁ ⟶ X) (g : X' ⟶ X) (π' : X₁' ⟶ X') (g₁ : X₁' ⟶ X₁)
@@ -318,8 +274,8 @@ theorem comap_strictTransform_of_flat {X X₁ X' X₁' : Scheme.{u}}
   simp only [strictTransform_eq_saturation]
   rw [h, hZ, hD]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On each locally Noetherian upstairs scheme, the strict-transform inclusion is quasi-compact. Thus the two quasi-compactness hypotheses in the flat base-change theorem are available, and that theorem gives the identity.
 -/
 theorem comap_strictTransform_of_flat_of_isLocallyNoetherian {X X₁ X' X₁' : Scheme.{u}}
     (π : X₁ ⟶ X) (g : X' ⟶ X) (π' : X₁' ⟶ X') (g₁ : X₁' ⟶ X₁)

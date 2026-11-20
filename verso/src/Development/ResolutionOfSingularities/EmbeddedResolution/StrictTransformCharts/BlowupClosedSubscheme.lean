@@ -20,8 +20,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open, the strict-transform ideal is the saturation of the total-transform ideal by powers of the exceptional generator. If the generator times the section lies in this saturation, multiply by its witnessing power. The next higher power then sends the original section into the total-transform ideal, so the section itself lies in the saturation.
 -/
 private theorem mem_strictTransform_of_mul_mem {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -34,8 +34,8 @@ private theorem mem_strictTransform_of_mul_mem {X X₁ : Scheme.{u}} (π : X₁ 
   rw [pow_succ, mul_assoc]
   exact hn
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On the smaller affine open the section ideal is the extension along restriction of the section ideal on the larger affine open. Extending a principal ideal sends its generator to its restriction. This restricted section generates the desired ideal.
 -/
 private theorem exists_ideal_eq_span_singleton_of_le {X : Scheme.{u}} (I : X.IdealSheafData)
     (U V : X.affineOpens) (e : (V : X.Opens) ≤ (U : X.Opens)) (t : Γ(X, (U : X.Opens)))
@@ -47,8 +47,8 @@ private theorem exists_ideal_eq_span_singleton_of_le {X : Scheme.{u}} (I : X.Ide
   refine ⟨(Scheme.Hom.appLE (𝟙 X) (U : X.Opens) (V : X.Opens) e').hom t, ?_⟩
   rw [h, ht, Ideal.map_span, Set.image_singleton]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Restriction to the basic open localizes the section ring at powers of the defining section. Localization is flat, so it preserves injectivity of multiplication by the nonzerodivisor. Multiplication by the image is therefore injective.
 -/
 private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} (P : W.affineOpens)
     (d : Γ(W, (P : W.Opens))) {u : Γ(W, (P : W.Opens))}
@@ -64,10 +64,8 @@ private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} (P : W.a
       (S := Γ(W, W.basicOpen d)) hu
   rwa [halg] at h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write the nonzerodivisor as the product of the divisor and another element. If multiplication by the divisor kills an element, multiplication by this product also kills it. Injectivity of multiplication by the product forces the element to be zero.
 -/
 private theorem mem_nonZeroDivisors_of_dvd {R : Type u} [CommRing R] {a b : R}
     (hb : b ∈ nonZeroDivisors R) (hab : a ∣ b) : a ∈ nonZeroDivisors R := by
@@ -78,8 +76,8 @@ private theorem mem_nonZeroDivisors_of_dvd {R : Type u} [CommRing R] {a b : R}
     rw [hc, mul_assoc, mul_comm c z, ← mul_assoc, hz, zero_mul]
   exact mem_nonZeroDivisors_iff.mpr ⟨key, fun z hz => key z (by rw [mul_comm]; exact hz)⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the chosen neighborhoods of all points of the open. They cover the open, and the restriction of the section is zero on each. The uniqueness part of the sheaf axiom identifies the original section with zero.
 -/
 private theorem eq_zero_of_locally_eq_zero {W : Scheme.{u}} (U : W.Opens) (x : Γ(W, U))
     (h : ∀ w ∈ U, ∃ (P : W.Opens) (hP : P ≤ U), w ∈ P ∧
@@ -94,8 +92,8 @@ private theorem eq_zero_of_locally_eq_zero {W : Scheme.{u}} (U : W.Opens) (x : �
     rw [map_zero]
     exact hzero w.1 w.2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel ideal of the closed subscheme inclusion is the strict-transform ideal. The kernel inclusion for the composite is equivalent to containment of the pulled-back original kernel ideal in this strict-transform ideal. This containment holds because the strict-transform ideal is the saturation of the total-transform ideal.
 -/
 theorem ker_le_ker_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}}
     (j : S ⟶ X) (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
@@ -104,8 +102,8 @@ theorem ker_le_ker_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}}
     Scheme.IdealSheafData.le_map_iff_comap_le]
   exact comap_le_strictTransform π Z j.ker
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The composite morphism from the strict transform to the original scheme kills the kernel ideal of the given closed immersion. The universal property of the closed subscheme therefore factors this composite through that immersion, with the indicated composition identity.
 -/
 theorem exists_comp_eq_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
@@ -120,56 +118,16 @@ def strictTransformLiftOfClosedImmersion {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     (Blowup.strictTransform π Z j.ker).subscheme ⟶ S :=
   (exists_comp_eq_strictTransform_subschemeι_comp j π Z).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform lift was chosen as the factorization of its composite to the original scheme through the given closed immersion. Its defining factorization identity gives the equality.
 -/
 theorem strictTransformLiftOfClosedImmersion_comp {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
     strictTransformLiftOfClosedImmersion j π Z ≫ j = (Blowup.strictTransform π Z j.ker).subschemeι ≫ π :=
   (exists_comp_eq_strictTransform_subschemeι_comp j π Z).choose_spec
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On affine opens of the original blowup the exceptional ideal is principal. Its image on the strict transform generates the pulled-back center. The strict-transform ideal is saturated by this generator, so multiplication by its image on the quotient is injective. This gives the local nonzerodivisor condition. For the universal property, start with a map to the closed subscheme whose pulled-back center is locally generated by a nonzerodivisor. Its composite to the original scheme factors through the original blowup. This factor kills the total-transform ideal of the closed subscheme. Locally, a section of the strict-transform ideal is sent into that total-transform ideal by a power of an exceptional generator. The image of the generator generates the pulled-back center on a sufficiently small basic open. It divides a nonzerodivisor generator of that ideal there, so it is a nonzerodivisor and its powers can be canceled. The section therefore vanishes locally and hence everywhere under the factor map. Thus the map factors through the strict transform. The composite is the required map to the closed subscheme by cancellation of the first closed immersion. Uniqueness follows from uniqueness of the lift to the original blowup and from the strict transform inclusion being a monomorphism.
 -/
 theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] [AlgebraicGeometry.IsLocallyNoetherian X₁]
@@ -369,8 +327,8 @@ theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S :
       have h3 := h.hom_ext_of_comp_eq hECg h1 h2
       exact (cancel_mono (Blowup.strictTransform π Z j.ker).subschemeι).mp h3
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup over a locally Noetherian scheme is proper and thus locally of finite type. A scheme locally of finite type over a locally Noetherian scheme is locally Noetherian.
 -/
 theorem isLocallyNoetherian_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] (π : X₁ ⟶ X) (Z : X.IdealSheafData)
@@ -378,8 +336,8 @@ theorem isLocallyNoetherian_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}}
   have : AlgebraicGeometry.IsProper π := Blowup.blowupIsProper X X₁ π Z h
   exact AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian π
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The ambient blowup is locally Noetherian because it lies over a locally Noetherian base. For the given closed immersion, take the morphism from its strict transform obtained by factorization through that immersion. Its composite with the immersion gives the ambient morphism, and the strict-transform universal property identifies it as the blowup of the pulled-back center.
 -/
 theorem strictTransformIsBlowupOfClosedSubscheme : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u} := by
   intro X X₁ S hX j hj π Z hπ _

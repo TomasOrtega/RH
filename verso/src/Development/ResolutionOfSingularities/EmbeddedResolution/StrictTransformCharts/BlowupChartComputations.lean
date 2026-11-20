@@ -26,29 +26,29 @@ variable {X X₁ : Scheme.{u}} {k : Type u} [Field k]
   {p : X ⟶ Spec (CommRingCat.of k)} {π : X₁ ⟶ X} {U : X.Opens} {m : ℕ}
   {c : EtaleChart p U m} {S : Finset (Fin m)} {s : Fin m}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying ring map of the composite is the ordinary composition of the two ring maps. Evaluation therefore applies the first map and then the second.
 -/
 private theorem comp_hom_apply {R₁ R₂ R₃ : CommRingCat.{u}} (a : R₁ ⟶ R₂)
     (b : R₂ ⟶ R₃) (x : R₁) : (a ≫ b).hom x = b.hom (a.hom x) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Global sections are contravariant in the scheme. Pullback along the composite applies the pullback of the second morphism followed by the pullback of the first.
 -/
 private theorem comp_appTop_apply {A B C : Scheme.{u}} (φ : A ⟶ B) (ψ : B ⟶ C)
     (t : Γ(C, ⊤)) :
     ((φ ≫ ψ).appTop).hom t = (φ.appTop).hom ((ψ.appTop).hom t) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Between any two objects of the opposite of the poset of opens there is at most one arrow. The two arrows coincide, so their images under the presheaf coincide.
 -/
 private theorem presheaf_map_eq {T : Type u} [TopologicalSpace T]
     (F : (TopologicalSpace.Opens T)ᵒᵖ ⥤ CommRingCat.{u})
     {A B : (TopologicalSpace.Opens T)ᵒᵖ} (α β : A ⟶ B) : F.map α = F.map β := by
   rw [Quiver.Hom.unop_inj (Subsingleton.elim α.unop β.unop)]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Functoriality identifies the composite of the two presheaf maps with the map of the composite arrow. This arrow and the indicated direct arrow have the same endpoints in a poset category, so they are equal.
 -/
 private theorem presheaf_map_comp_eq {T : Type u} [TopologicalSpace T]
     (F : (TopologicalSpace.Opens T)ᵒᵖ ⥤ CommRingCat.{u})
@@ -57,31 +57,31 @@ private theorem presheaf_map_comp_eq {T : Type u} [TopologicalSpace T]
   rw [← F.map_comp]
   exact presheaf_map_eq F _ c
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the open subscheme maps under its inclusion to a point of that open. Its inverse image therefore contains the whole open subscheme.
 -/
 private theorem top_le_ι_preimage {Y : Scheme.{u}} (W : Y.Opens) :
     (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W := by
   intro x _
   exact x.2
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse image of the whole target under any morphism is the whole source. The two opens in the comparison are therefore equal.
 -/
 private theorem top_le_preimage_top {Y Y₁ : Scheme.{u}} (g : Y₁ ⟶ Y) :
     (⊤ : Y₁.Opens) ≤ g ⁻¹ᵁ (⊤ : Y.Opens) := by
   simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Both maps send a section over the open in the ambient scheme to its section on the whole open subscheme. In the restricted presheaf the extra restriction maps compose to the direct restriction, since the arrows have the same endpoints. This identifies the two section maps.
 -/
 private theorem topIso_inv_eq_ι_appLE {Y : Scheme.{u}} (W : Y.Opens) :
     W.topIso.inv = W.ι.appLE W ⊤ (top_le_ι_preimage W) := by
   simp [Scheme.Hom.appLE]
   exact (presheaf_map_comp_eq Y.presheaf _ _ _).symm
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+After substituting the equality of morphisms, both section maps are induced by the same morphism and the same containment of opens. The choice of proof of that containment has no effect on the map.
 -/
 private theorem appLE_congr {Y Y₁ : Scheme.{u}} (g₁ g₂ : Y₁ ⟶ Y) (h : g₁ = g₂)
     (W : Y.Opens) (V : Y₁.Opens) (e₁ : V ≤ g₁ ⁻¹ᵁ W) (e₂ : V ≤ g₂ ⁻¹ᵁ W) :
@@ -89,8 +89,8 @@ private theorem appLE_congr {Y Y₁ : Scheme.{u}} (g₁ g₂ : Y₁ ⟶ Y) (h : 
   subst h
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace each inverse section identification by the map induced by the corresponding open inclusion. The resulting composites of section maps come from the two scheme composites around the restriction square. Those composites agree, so the resulting maps on sections agree.
 -/
 private theorem appLE_topIso_inv_comp {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) :
@@ -102,8 +102,8 @@ private theorem appLE_topIso_inv_comp {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]
   exact appLE_congr (V.ι ≫ f) (f.resLE W V hV ≫ W.ι) (by simp) W ⊤ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Start with the compatibility of pullback with the inverse section identifications of the two opens. Compose with the direct section identification on each end. The isomorphisms cancel their inverses, leaving the stated equality.
 -/
 private theorem topIso_hom_comp_appLE {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) :
@@ -116,8 +116,8 @@ private theorem topIso_hom_comp_appLE {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     _ = (f.resLE W V hV).appTop ≫ V.topIso.hom := by
         simp only [Category.assoc, Iso.hom_inv_id_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the compatibility of the direct open section identifications with the section maps of the morphism and its restriction. Evaluate the equality of ring homomorphisms on the indicated global section of the open subscheme.
 -/
 private theorem appLE_topIso_hom_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) (y : Γ(W.toScheme, ⊤)) :
@@ -129,8 +129,8 @@ private theorem appLE_topIso_hom_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
   rw [comp_hom_apply, comp_hom_apply] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse section identifications commute with pullback along the morphism on the chosen opens. Evaluating this equality of composites on the indicated ambient section gives the result.
 -/
 private theorem topIso_inv_appLE_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y) (W : Y.Opens)
     (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) (a : Γ(Y, W)) :
@@ -141,8 +141,8 @@ private theorem topIso_inv_appLE_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y) (W
   rw [comp_hom_apply, comp_hom_apply] at h2
   exact h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction is pullback along the open inclusion. The composite of the upstairs inclusion with the blowup equals the composite of the restricted blowup with the downstairs inclusion. Functoriality of ideal pullback gives the equality.
 -/
 theorem restrictIdeal_comap (B : BlowupChart π c S s) (D : X.IdealSheafData) :
     restrictIdeal (D.comap π) B.domain =
@@ -152,8 +152,8 @@ theorem restrictIdeal_comap (B : BlowupChart π c S s) (D : X.IdealSheafData) :
     ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     AlgebraicGeometry.Scheme.Hom.resLE_comp_ι]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pulled-back center ideal. Restrict the pullback to the chart by using the restriction square. The center is generated by the selected coordinates downstairs. Under the chart substitution all their pullbacks are multiples of the distinguished coordinate and that coordinate itself occurs, so the restricted exceptional ideal is its principal ideal.
 -/
 theorem restrictIdeal_exceptionalIdeal (B : BlowupChart π c S s)
     (Z : X.IdealSheafData) (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S) :
@@ -162,8 +162,8 @@ theorem restrictIdeal_exceptionalIdeal (B : BlowupChart π c S s)
   rw [Blowup.exceptionalIdeal_eq_comap, h1, hZ]
   exact comap_coordIdeal_center c B.chart (π.resLE U B.domain B.domain_le) B.comm hs
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the restriction square to work with the downstairs coordinate ideal. The chart substitution sends its generator to the product of the corresponding upstairs coordinate with the distinguished coordinate. The ideal generated by this product is the product of their principal ideals.
 -/
 theorem restrictIdeal_comap_coordIdeal_of_mem (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (j : Fin m) (hj : j ∈ S) (hjs : j ≠ s)
@@ -174,8 +174,8 @@ theorem restrictIdeal_comap_coordIdeal_of_mem (B : BlowupChart π c S s)
   exact comap_coordIdeal_singleton_of_mem c B.chart
     (π.resLE U B.domain B.domain_le) B.comm j hj hjs
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+After restricting to the two chart domains, pull back the ideal generated by the distinguished coordinate downstairs. The substitution preserves that coordinate, so the ideal is the distinguished coordinate ideal upstairs.
 -/
 theorem restrictIdeal_comap_coordIdeal_self (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (hD : restrictIdeal D U = c.coordIdeal {s}) :
@@ -184,8 +184,8 @@ theorem restrictIdeal_comap_coordIdeal_self (B : BlowupChart π c S s)
   exact comap_coordIdeal_singleton_self c B.chart
     (π.resLE U B.domain B.domain_le) B.comm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted pullback is the pullback of the coordinate ideal on the downstairs chart. This coordinate has index outside the center, so the substitution preserves it. The pulled-back ideal is the corresponding coordinate ideal upstairs.
 -/
 theorem restrictIdeal_comap_coordIdeal_of_not_mem (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (j : Fin m) (hj : j ∉ S)
@@ -195,16 +195,16 @@ theorem restrictIdeal_comap_coordIdeal_of_not_mem (B : BlowupChart π c S s)
   exact comap_coordIdeal_singleton_of_notMem c B.chart
     (π.resLE U B.domain B.domain_le) B.comm j hj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restricting the pullback is equivalent to pulling back the restricted downstairs ideal. The latter is the unit ideal by assumption, and extension of the unit ideal is the unit ideal.
 -/
 theorem restrictIdeal_comap_top (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (hD : restrictIdeal D U = ⊤) :
     restrictIdeal (D.comap π) B.domain = ⊤ := by
   rw [restrictIdeal_comap B D, hD, Scheme.IdealSheafData.comap_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the equality of the two maps around the chart square to this coordinate on affine space. Its image under substitution is the product of that coordinate with the distinguished one, and pullback preserves products. The identifications of global sections of the chart domains with sections on the ambient opens give the stated section formula.
 -/
 theorem appLE_coord_of_mem (B : BlowupChart π c S s) (i : Fin m)
     (hi : i ∈ S) (his : i ≠ s) :
@@ -223,10 +223,8 @@ theorem appLE_coord_of_mem (B : BlowupChart π c S s) (i : Fin m)
   rw [EtaleChart.coord_def c i, EtaleChart.coord_def B.chart i, EtaleChart.coord_def B.chart s,
     appLE_topIso_hom_apply π U B.domain B.domain_le, hkey, map_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart square makes the two pullbacks of the distinguished coordinate from affine space agree. The substitution preserves that coordinate. Using the section identifications of the open subschemes gives the upstairs coordinate as the image of the downstairs one.
 -/
 theorem appLE_coord_self (B : BlowupChart π c S s) :
     (π.appLE U B.domain B.domain_le).hom (c.coord s) = B.chart.coord s := by
@@ -250,10 +248,8 @@ theorem appLE_coord_self (B : BlowupChart π c S s) :
   rw [EtaleChart.coord_def c s, EtaleChart.coord_def B.chart s, h2]
   exact appLE_topIso_hom_apply π U B.domain B.domain_le _
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The commutative chart square identifies the pullback of the downstairs coordinate with the pullback along the substitution and then the upstairs chart. The substitution preserves coordinates outside the center, giving the matching upstairs coordinate under the open section identification.
 -/
 theorem appLE_coord_of_not_mem (B : BlowupChart π c S s) (i : Fin m) (hi : i ∉ S) :
     (π.appLE U B.domain B.domain_le).hom (c.coord i) = B.chart.coord i := by
@@ -279,10 +275,8 @@ theorem appLE_coord_of_not_mem (B : BlowupChart π c S s) (i : Fin m) (hi : i �
   rw [hx]
   exact appLE_topIso_hom_apply π U B.domain B.domain_le _
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the index lies in the center and differs from the distinguished index, the pullback includes one distinguished factor. If the index is the distinguished one, its pullback is unchanged. If it lies outside the center, it is likewise unchanged. The conditional formula records these cases.
 -/
 theorem appLE_coord (B : BlowupChart π c S s) (i : Fin m) :
     (π.appLE U B.domain B.domain_le).hom (c.coord i) =
@@ -304,22 +298,22 @@ def coordEvalHom (B : BlowupChart π c S s) :
   MvPolynomial.eval₂Hom (π.appLE U B.domain B.domain_le).hom
     (fun i : ULift.{u} (Fin m) => B.chart.coord i.down)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The evaluation homomorphism is defined by pulling back coefficients along the restricted blowup map and substituting the upstairs chart coordinate for each variable. These assignments are exactly the stated polynomial evaluation map.
 -/
 theorem coordEvalHom_def (B : BlowupChart π c S s) :
     B.coordEvalHom = MvPolynomial.eval₂Hom (π.appLE U B.domain B.domain_le).hom
       (fun i : ULift.{u} (Fin m) => B.chart.coord i.down) := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+A constant polynomial has no variable factors. Evaluating it applies only the coefficient map, which is the pullback on sections from the downstairs open.
 -/
 theorem coordEvalHom_C (B : BlowupChart π c S s) (a : Γ(X, U)) :
     B.coordEvalHom (MvPolynomial.C a) = (π.appLE U B.domain B.domain_le).hom a := by
   simp [coordEvalHom]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Under polynomial evaluation the indicated variable is assigned its corresponding upstairs chart coordinate. Evaluation of that variable gives the stated section.
 -/
 theorem coordEvalHom_X (B : BlowupChart π c S s) (i : Fin m) :
     B.coordEvalHom (MvPolynomial.X (ULift.up i : ULift.{u} (Fin m))) = B.chart.coord i := by
@@ -332,8 +326,8 @@ def coordRelation (_B : BlowupChart π c S s) (i : Fin m) :
         MvPolynomial.X (ULift.up s : ULift.{u} (Fin m))
     else MvPolynomial.X (ULift.up i : ULift.{u} (Fin m))) - MvPolynomial.C (c.coord i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The relation subtracts the coefficient given by the downstairs coordinate from its prescribed expression in chart variables. This expression is the variable times the distinguished variable for a center index distinct from the distinguished one, and is the variable itself in the other cases.
 -/
 theorem coordRelation_def (B : BlowupChart π c S s) (i : Fin m) :
     B.coordRelation i =
@@ -343,8 +337,8 @@ theorem coordRelation_def (B : BlowupChart π c S s) (i : Fin m) :
         else MvPolynomial.X (ULift.up i : ULift.{u} (Fin m))) -
         MvPolynomial.C (c.coord i) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Evaluate the relation by sending the variables to their upstairs coordinates and the coefficient to its pullback. The pullback formula gives precisely the variable expression in each case. Their difference is zero.
 -/
 theorem coordEvalHom_coordRelation (B : BlowupChart π c S s) (i : Fin m) :
     B.coordEvalHom (B.coordRelation i) = 0 := by
@@ -354,8 +348,8 @@ theorem coordEvalHom_coordRelation (B : BlowupChart π c S s) (i : Fin m) :
       if_pos h, sub_self]
   · rw [if_neg h, map_sub, coordEvalHom_X, coordEvalHom_C, B.appLE_coord i, if_neg h, sub_self]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Every relation evaluates to zero and hence lies in the kernel ideal of evaluation. The kernel is an ideal, so it also contains the span of the relations. Evaluation vanishes on every element of that span.
 -/
 theorem coordEvalHom_eq_zero_of_mem_span (B : BlowupChart π c S s)
     (a : MvPolynomial (ULift.{u} (Fin m)) Γ(X, U))
@@ -372,15 +366,15 @@ def coordEvalQuotientHom (B : BlowupChart π c S s) :
   Ideal.Quotient.lift (Ideal.span (Set.range B.coordRelation)) B.coordEvalHom
     B.coordEvalHom_eq_zero_of_mem_span
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Evaluation vanishes on the ideal of relations and therefore descends to the quotient. The descended map sends the class of a polynomial to the evaluation of that polynomial, by the defining property of the quotient.
 -/
 theorem coordEvalQuotientHom_mk (B : BlowupChart π c S s)
     (a : MvPolynomial (ULift.{u} (Fin m)) Γ(X, U)) :
     B.coordEvalQuotientHom (Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) a) = B.coordEvalHom a := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The inverse of the ring isomorphism composed after the forward map is the identity. Evaluating at the given element yields the formula.
 -/
 private theorem iso_inv_hom_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : R) :
     e.inv.hom (e.hom.hom x) = x := by
@@ -388,8 +382,8 @@ private theorem iso_inv_hom_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : R) 
   simpa only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_id,
     RingHom.id_apply] using h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The forward map composed after the inverse of the ring isomorphism is the identity on the target. Evaluating at the given target element gives the formula.
 -/
 private theorem iso_hom_inv_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : T) :
     e.hom.hom (e.inv.hom x) = x := by
@@ -402,17 +396,15 @@ private def mvPolynomialIsoGlobalSectionsAffineSpace (k : Type u) [Field k] (m :
   (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).symm ≪≫
     Scheme.Γ.mapIso (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).op
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both maps first identify the polynomial ring with global sections of its spectrum and then pull those sections back along the affine-space isomorphism. These identical constructions send the polynomial to the same section.
 -/
 private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_apply (k : Type u) [Field k] (m : ℕ)
     (x : MvPolynomial (ULift.{u} (Fin m)) k) :
     (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom x = affineSpaceGlobalSectionsHom k m x := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback from affine space to the polynomial spectrum sends the coordinate to the section represented by the corresponding variable. The inverse identification on sections takes that representative back to the original coordinate. This inverse is the map in the claim.
 -/
 private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_X (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u} (Fin m)) :
@@ -431,8 +423,8 @@ private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_X (k : Type u) [Fie
           (MvPolynomial.X i)) := rfl
   rw [h2, ← h, hcancel]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The structural morphism on the polynomial spectrum is induced by the inclusion of constant polynomials. Transport it along the canonical identification of affine space with that spectrum. The resulting morphism is the structural morphism of affine space.
 -/
 private theorem specIso_hom_comp_map_C (k : Type u) [Field k] (m : ℕ) :
     (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom ≫
@@ -446,10 +438,8 @@ private theorem specIso_hom_comp_map_C (k : Type u) [Field k] (m : ℕ) :
     simp
   rw [← h, Iso.hom_inv_id_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The polynomial constant comes from the ground field by the constant-polynomial map. Under the natural identification of a ring with global sections of its spectrum, this map is the pullback of the structural morphism of the polynomial spectrum. The canonical isomorphism with affine space identifies that morphism with the affine-space structure map, giving the formula.
 -/
 private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_C (k : Type u) [Field k] (m : ℕ) (a : k) :
     (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom (MvPolynomial.C a)
@@ -474,12 +464,8 @@ private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_C (k : Type u) [Fie
   rw [e1, key]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The global section ring of affine space is the polynomial ring under its canonical identification. The maps agree on constants because they agree on sections pulled back from the field. They agree on all polynomial variables because they agree on the coordinates. Ring homomorphisms agreeing on these generators agree on every polynomial and hence on all sections.
 -/
 private theorem affineSpaceFin_globalSections_hom_ext (k : Type u) [Field k] (m : ℕ) {T : CommRingCat.{u}}
     (u v : Γ(affineSpaceFin k m, ⊤) ⟶ T)
@@ -508,8 +494,8 @@ private theorem affineSpaceFin_globalSections_hom_ext (k : Type u) [Field k] (m 
   have h := key ((mvPolynomialIsoGlobalSectionsAffineSpace k m).inv.hom z)
   rwa [iso_hom_inv_apply] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The substitution morphism is over the field, so composing it with the affine-space structural morphism gives the same structural morphism. On global sections this means that pullback along the substitution fixes each section coming from the field.
 -/
 private theorem coordBlowupSubstMap_appTop_affineSpaceFinToSpec (t : Γ(Spec (CommRingCat.of k), ⊤)) :
     ((coordBlowupSubstMap k m S s).appTop).hom (((affineSpaceFinToSpec k m).appTop).hom t)
@@ -521,8 +507,8 @@ private theorem coordBlowupSubstMap_appTop_affineSpaceFinToSpec (t : Γ(Spec (Co
   rw [comp_appTop_apply] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply global sections to the commutative chart square. Contravariance identifies the two successive pullbacks of a section on the common target affine space. Evaluation at the given section is the asserted equality.
 -/
 private theorem chart_appTop_coordBlowupSubstMap_apply (B : BlowupChart π c S s) (z : Γ(affineSpaceFin k m, ⊤)) :
     (B.chart.map.appTop).hom (((coordBlowupSubstMap k m S s).appTop).hom z)
@@ -533,8 +519,8 @@ private theorem chart_appTop_coordBlowupSubstMap_apply (B : BlowupChart π c S s
   rw [comp_appTop_apply, comp_appTop_apply] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identifying a section of the spectrum of the field with its field element, the pullback to affine space is the constant polynomial of that element. The chart map is over the field, so pulling this section back to the chart and identifying sections on the ambient open gives its image under the section-ring structure map.
 -/
 private theorem etaleChart_appTop_affineSpaceFinToSpec_apply {Y : Scheme.{u}} {q : Y ⟶ Spec (CommRingCat.of k)}
     {W : Y.Opens} (d : EtaleChart q W m) (t : Γ(Spec (CommRingCat.of k), ⊤)) :
@@ -552,14 +538,14 @@ private def constToCoordRelationQuotient (B : BlowupChart π c S s) :
       (MvPolynomial (ULift.{u} (Fin m)) Γ(X, U) ⧸ Ideal.span (Set.range B.coordRelation)) :=
   (Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation))).comp MvPolynomial.C
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map sends a section to its constant polynomial and then takes its class modulo the ideal of chart relations. Applying the composite to the indicated section gives the claimed class.
 -/
 private theorem constToCoordRelationQuotient_apply (B : BlowupChart π c S s) (y : Γ(X, U)) :
     constToCoordRelationQuotient B y = Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) (MvPolynomial.C y) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The class in question is represented by the constant polynomial of the original section. The descended evaluation sends it to the pullback of its coefficient along the restricted blowup map.
 -/
 private theorem coordEvalQuotientHom_constToCoordRelationQuotient (B : BlowupChart π c S s) (y : Γ(X, U)) :
     B.coordEvalQuotientHom (constToCoordRelationQuotient B y) = (π.appLE U B.domain B.domain_le).hom y := by
@@ -581,16 +567,16 @@ private def openSectionsToCoordRelationQuotient (B : BlowupChart π c S s) :
         (MvPolynomial (ULift.{u} (Fin m)) Γ(X, U) ⧸ Ideal.span (Set.range B.coordRelation)) :=
   CommRingCat.ofHom ((constToCoordRelationQuotient B).comp (U.topIso.hom.hom))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the section of the open subscheme with its corresponding section over the ambient open. The map sends that section to its constant polynomial and then to its class modulo the coordinate relations.
 -/
 private theorem openSectionsToCoordRelationQuotient_apply (B : BlowupChart π c S s) (y : Γ(U.toScheme, ⊤)) :
     (openSectionsToCoordRelationQuotient B).hom y
       = Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation))
         (MvPolynomial.C (U.topIso.hom.hom y)) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The affine-space section identification sends the indicated coordinate to its polynomial variable. The evaluation defining the ring map assigns to this variable its class in the quotient by the relations. This gives the stated value.
 -/
 private theorem affineSectionsToCoordRelationQuotient_coord (B : BlowupChart π c S s) (j : Fin m) :
     (affineSectionsToCoordRelationQuotient B).hom
@@ -610,10 +596,8 @@ private theorem affineSectionsToCoordRelationQuotient_coord (B : BlowupChart π 
           (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j : ULift.{u} (Fin m)))) := rfl
   rw [h2, h, MvPolynomial.eval₂Hom_X']
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Under the polynomial presentation of affine-space sections, the section pulled back from the field is represented by a constant polynomial. Evaluating that polynomial uses only the coefficient map. This first sends the field element to the downstairs section ring and then takes the class of its constant polynomial in the quotient.
 -/
 private theorem affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec (B : BlowupChart π c S s)
     (t : Γ(Spec (CommRingCat.of k), ⊤)) :
@@ -635,8 +619,8 @@ private theorem affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec (B : 
   rw [h2, h, MvPolynomial.eval₂Hom_C]
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The pullback of the affine-space coordinate to the open subscheme becomes the downstairs chart coordinate under the section identification. The quotient map on open sections takes the class of the constant polynomial of that coordinate.
 -/
 private theorem openSectionsToCoordRelationQuotient_coord (B : BlowupChart π c S s) (j : Fin m) :
     (openSectionsToCoordRelationQuotient B).hom
@@ -646,8 +630,8 @@ private theorem openSectionsToCoordRelationQuotient_coord (B : BlowupChart π c 
         (MvPolynomial.C (c.coord j)) := by
   rw [openSectionsToCoordRelationQuotient_apply, ← EtaleChart.coord_def c j]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The difference between the substituted chart-variable expression and the constant polynomial of the downstairs coordinate is the relation for this index. Its class in the quotient is zero, so the two expressions have equal classes.
 -/
 private theorem mk_eq_mk_C_coord (B : BlowupChart π c S s) (j : Fin m) :
     Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation))
@@ -663,14 +647,8 @@ private theorem mk_eq_mk_C_coord (B : BlowupChart π c S s) (j : Fin m) :
   rw [coordRelation_def, map_sub, sub_eq_zero] at h
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the two maps on constants and coordinates, which generate the affine-space section ring. The substitution fixes constants from the field, and the two maps send these to the same coefficient classes because the downstairs chart is over the field. On a coordinate, the substitution gives its chart-variable expression, and the other map gives the class of the corresponding downstairs coordinate. The defining relation identifies these classes in every index case. Thus the maps agree.
 -/
 private theorem appTop_comp_affineSectionsToCoordRelationQuotient (B : BlowupChart π c S s) :
     (coordBlowupSubstMap k m S s).appTop ≫ affineSectionsToCoordRelationQuotient B = c.map.appTop ≫ openSectionsToCoordRelationQuotient B := by
@@ -696,24 +674,8 @@ private theorem appTop_comp_affineSectionsToCoordRelationQuotient (B : BlowupCha
       rw [if_neg (by tauto)] at hrel
       exact hrel
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart square is a pullback of affine schemes, so global sections form a pushout of rings. The ring maps from affine-space sections and downstairs chart sections to the coordinate quotient agree on the common ring by the defining relations. They induce a map from the pushout to the quotient. After identifying sections of the upstairs open subscheme with sections on the ambient open, this map is inverse to evaluation. To check evaluation after the induced map, compare the two composites on the rings entering the pushout. They agree on affine-space coordinates and field constants and on every downstairs section. To check the other composite, compare the quotient classes of constants from downstairs and of the polynomial variables. Both classes are fixed, and they generate the quotient. Hence evaluation is bijective.
 -/
 private theorem bijective_coordEvalQuotientHom_of_isPullback (B : BlowupChart π c S s)
     (hU : IsAffineOpen U)
@@ -785,8 +747,8 @@ private theorem bijective_coordEvalQuotientHom_of_isPullback (B : BlowupChart π
   · rw [← halpha x, ← halpha y, hxy]
   · rw [hbeta', iso_hom_inv_apply]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The induced evaluation on the coordinate quotient is bijective by the affine pullback calculation. Given an upstairs section, choose its preimage in the quotient and then choose a polynomial representing that class. The original evaluation of this representative is the section.
 -/
 theorem surjective_coordEvalHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
     (hB : IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map) :
@@ -796,8 +758,8 @@ theorem surjective_coordEvalHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective q
   exact ⟨a, hq⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The domain chart is affine because the given square makes it a pullback of affine schemes. The affine pullback computation identifies the coordinate quotient with the section ring via the evaluation homomorphism, so the map is bijective.
 -/
 theorem bijective_coordEvalQuotientHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
     (hB : IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map) :

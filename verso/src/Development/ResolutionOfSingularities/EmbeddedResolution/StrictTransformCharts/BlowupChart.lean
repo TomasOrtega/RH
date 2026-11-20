@@ -23,12 +23,8 @@ structure BlowupChart {X X₁ : Scheme.{u}} {k : Type u} [Field k]
   chart : EtaleChart (π ≫ p) domain m
   comm : chart.map ≫ coordBlowupSubstMap k m S s = π.resLE U domain domain_le ≫ c.map
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take the inverse image of the given open under the map from the open subscheme. Its composite inclusion into the ambient scheme is an open immersion, so identify its source with the open subscheme on its image. This image lies in the original open. Transport the inverse-image pullback square along the identification. The factorization of the inclusion and the point membership follow from the definition of this image.
 -/
 private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁.Opens)
     (q : V.toScheme ⟶ M) (W : M.Opens) :
@@ -59,22 +55,8 @@ private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁
   · intro y hy
     exact ⟨⟨y, hy⟩, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup restricted to the original chart is the blowup of its restricted center. That center is pulled back from the coordinate subspace of affine space. The chart is étale and hence flat, so the restricted blowup is the base change of the coordinate blowup of affine space. Pull each standard chart of the coordinate blowup back to an open of the restricted blowup. Identify the standard chart with affine space, where its map downstairs is the coordinate substitution. Pasting the pullback squares gives the required chart square. The chart map upstairs is étale by base change, and commutativity together with the substitution being a map over the field gives its structural equation. Since the standard chart opens cover the model blowup, the pulled-back opens cover the inverse image of the original chart.
 -/
 private theorem exists_blowupChart_family_isPullback_covering {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
@@ -163,8 +145,8 @@ def blowupChartOfIsBlowup {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (s : Fin m) (hs : s ∈ S) : BlowupChart π c S s :=
   (exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose s hs
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen chart is a member of the family obtained by pulling back the standard affine-space blowup charts along the étale chart downstairs. The family was constructed with a pullback square at each center index. Its square at the given index is the asserted one.
 -/
 theorem isPullback_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
@@ -177,8 +159,8 @@ theorem isPullback_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} 
       (coordBlowupSubstMap k m S s) c.map :=
   (exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose_spec.1 s hs
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen family covers the inverse image of the downstairs chart, because it is obtained by taking inverse images of the standard open cover of the coordinate blowup. The given point belongs to one of these open domains, indexed by a coordinate of the center.
 -/
 theorem exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}

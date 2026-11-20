@@ -16,8 +16,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion identifies the local ring at a point with the local ring at its image. The isomorphism identifies their prime spectra and chains of primes, so the Krull dimensions are equal.
 -/
 theorem ringKrullDim_stalk_eq_of_isOpenImmersion {Y W : Scheme.{u}} (g : Y ⟶ W)
     [AlgebraicGeometry.IsOpenImmersion g] (y : Y) :
@@ -26,8 +26,8 @@ theorem ringKrullDim_stalk_eq_of_isOpenImmersion {Y W : Scheme.{u}} (g : Y ⟶ W
   have e : (W.presheaf.stalk (g.base y)) ≅ (Y.presheaf.stalk y) := asIso (g.stalkMap y)
   exact (ringKrullDim_eq_of_ringEquiv e.commRingCatIsoToRingEquiv).symm
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk map of an open immersion is a ring isomorphism. The ascending chain condition on ideals transports along that isomorphism, so the source local ring is Noetherian.
 -/
 theorem isNoetherianRing_stalk_of_isOpenImmersion {Y W : Scheme.{u}} (g : Y ⟶ W)
     [AlgebraicGeometry.IsOpenImmersion g] (y : Y)
@@ -37,10 +37,8 @@ theorem isNoetherianRing_stalk_of_isOpenImmersion {Y W : Scheme.{u}} (g : Y ⟶ 
   exact isNoetherianRing_of_ringEquiv _
     (CategoryTheory.asIso (g.stalkMap y)).commRingCatIsoToRingEquiv
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the chart domain identifies its local ring at the point with the corresponding local ring of the scheme. The chart is étale over affine space of the stated dimension. The dimension bound for local rings of such an étale scheme applies to this local ring and gives the bound on the original scheme.
 -/
 theorem ringKrullDim_stalk_le_of_etaleChart {k : Type u} [Field k] {Y : Scheme.{u}}
     (p : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.IsLocallyNoetherian Y]
@@ -59,10 +57,8 @@ theorem ringKrullDim_stalk_le_of_etaleChart {k : Type u} [Field k] {Y : Scheme.{
   rw [← h3]
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Choose a nonempty affine open in the chart and a closed point in that affine open. Its composite map to affine space is étale. At a closed point of such an étale scheme the local ring has dimension equal to the dimension of the affine space. The affine open immerses into the original scheme, so the local ring there has the same dimension. The dimension of any local ring is bounded by the Krull dimension of the scheme’s underlying space.
 -/
 theorem le_topologicalKrullDim_of_etaleChart {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -88,12 +84,8 @@ theorem le_topologicalKrullDim_of_etaleChart {k : Type u} [Field k] {X : Scheme.
     _ ≤ topologicalKrullDim ↥X :=
         ringKrullDim_stalk_le_topologicalKrullDim X ((V.ι ≫ U.ι).base y)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the open complement of the center. The blowup is an isomorphism over that open. Its inverse image is open in the blowup, and its map to the original scheme factors as that isomorphism followed by an open immersion. Both open immersions identify the corresponding local rings, yielding equal dimensions.
 -/
 theorem ringKrullDim_stalk_eq_of_isBlowupAlongIdealSheaf_of_notMem {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (x₁ : X₁) (hx₁ : π.base x₁ ∉ Z.support) :
@@ -119,12 +111,8 @@ theorem ringKrullDim_stalk_eq_of_isBlowupAlongIdealSheaf_of_notMem {X X₁ : Sch
   rw [morphismRestrict_ι] at e2
   exact e1.symm.trans e2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both schemes are locally Noetherian, and it suffices to bound each local dimension upstairs by the topological dimension downstairs. Away from the center the local rings are identified by the blowup isomorphism. Over the center choose a downstairs étale coordinate chart and a blowup chart above it. The upstairs local dimension is bounded by the dimension of its chart’s affine space. This affine space has the same dimension as that of the nonempty downstairs chart, which is bounded by the topological dimension downstairs.
 -/
 theorem topologicalKrullDim_le_of_blowup_strictNormalCrossings {k : Type u} [Field k] {X X₁ : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -147,16 +135,8 @@ theorem topologicalKrullDim_le_of_blowup_strictNormalCrossings {k : Type u} [Fie
   · rw [ringKrullDim_stalk_eq_of_isBlowupAlongIdealSheaf_of_notMem π Z hπ x₁ hx]
     exact ringKrullDim_stalk_le_topologicalKrullDim X (π.base x₁)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The added bottom element maps to zero, which is at most every output. If the smaller input is above bottom, then so is the larger input. Since the larger input is below infinity, both are finite natural numbers, and their outputs are their successors. Taking successors preserves the given inequality.
 -/
 private theorem withBotSuccToNat_mono_of_lt_top {a b : WithBot ℕ∞} (hab : a ≤ b) (hb : b < ⊤) :
     withBotSuccToNat a ≤ withBotSuccToNat b := by
@@ -187,8 +167,8 @@ private theorem withBotSuccToNat_mono_of_lt_top {a b : WithBot ℕ∞} (hab : a 
           have h2 : ((n : ℕ) : ℕ∞).toNat = n := by simp
           omega
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The dimension of the blowup is bounded by that of the original scheme by the strict normal crossings dimension estimate. The structural map of the original scheme is of finite type, so its dimension is finite. On dimensions bounded by this finite value, the conversion to natural-number successors is monotone, giving the stated inequality.
 -/
 theorem krullDimSucc_le_of_blowup_strictNormalCrossings {k : Type u} [Field k] {X X₁ : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p]

@@ -16,10 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Write each open of the subspace meeting the subset as the inverse image of an ambient open. Their ambient opens both meet the image of the subset. Preirreducibility of the image gives a point of the image in their intersection. Its preimage lies in the subset and in both original opens.
 -/
 private theorem isPreirreducible_of_isPreirreducible_image_val {α : Type u} [TopologicalSpace α] {s : Set α}
     {T : Set s} (h : IsPreirreducible (Subtype.val '' T)) : IsPreirreducible T := by
@@ -32,8 +30,8 @@ private theorem isPreirreducible_of_isPreirreducible_image_val {α : Type u} [To
     h u' v' hu' hv' ⟨(a : α), ⟨a, haT, rfl⟩, hau⟩ ⟨(b : α), ⟨b, hbT, rfl⟩, hbv⟩
   exact ⟨t, htT, hwu, hwv⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The prime maps into the affine open because that open is the image of its section-ring spectrum. The point’s associated prime maps to the same point. The spectrum map is an open embedding, so injectivity identifies the associated prime with the given prime.
 -/
 private theorem exists_fromSpec_mem_and_primeIdealOf_eq {X : Scheme.{u}} {V : X.Opens} (hV : IsAffineOpen V)
     (P : PrimeSpectrum Γ(X, V)) :
@@ -44,10 +42,8 @@ private theorem exists_fromSpec_mem_and_primeIdealOf_eq {X : Scheme.{u}} {V : X.
   refine ⟨hz, hV.fromSpec.isOpenEmbedding.injective ?_⟩
   rw [hV.fromSpec_primeIdealOf]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A point lies in the support exactly when its stalk ideal is contained in the maximal ideal. The stalk ideal is obtained by extending the section ideal to the localization at the point’s prime. The maximal ideal contracts to that prime. The extension–contraction correspondence for containment gives the equivalence.
 -/
 private theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData)
     {V : X.Opens} (hV : IsAffineOpen V) {x : ↥X} (hx : x ∈ V) :
@@ -66,10 +62,8 @@ private theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.Id
     Ideal.map_le_iff_le_comap]
   exact iff_of_eq (congrArg (fun J => I.ideal ⟨V, hV⟩ ≤ J) hcomap)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open, the vanishing ideal consists of the sections that belong to every prime representing a point of the closed set. The given point belongs to that closed set, so its prime contains the vanishing ideal.
 -/
 private theorem vanishingIdeal_ideal_le_primeIdealOf {X : Scheme.{u}} (Z : Closeds ↥X)
     {V : X.Opens} (hV : IsAffineOpen V) {x : ↥X} (hx : x ∈ V) (hxZ : x ∈ (Z : Set ↥X)) :
@@ -85,10 +79,8 @@ private theorem vanishingIdeal_ideal_le_primeIdealOf {X : Scheme.{u}} (Z : Close
   rw [this]
   exact hxZ
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open, take a section of the ideal and a prime whose point lies in the closed subset. That point lies in the support, so the prime contains the entire section ideal. The chosen section therefore belongs to every prime over the closed subset, which means it belongs to the vanishing ideal there. This holds on all affine opens.
 -/
 private theorem le_vanishingIdeal_of_subset_support {X : Scheme.{u}} (I : X.IdealSheafData)
     (Z : Closeds ↥X) (h : (Z : Set ↥X) ⊆ (I.support : Set ↥X)) :
@@ -115,21 +107,21 @@ namespace IsIrreducibleComponentOfSupport
 
 variable {X : Scheme.{u}} {D : X.IdealSheafData} {C : Set X}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The closure of a component is irreducible and contained in the closed support. Maximality implies that the closure equals the component.
 -/
 theorem isClosed (hC : IsIrreducibleComponentOfSupport D C) : IsClosed C :=
   isClosed_of_maximal_irreducible_subset_support D hC.isIrreducible hC.subset_support hC.maximal
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A scheme has a generic point for every irreducible closed subset. The component is irreducible and closed, so the closure of its chosen generic point is the entire component.
 -/
 theorem closure_genericPoint (hC : IsIrreducibleComponentOfSupport D C) :
     closure {hC.isIrreducible.genericPoint} = C :=
   hC.isIrreducible.isGenericPoint_genericPoint hC.isClosed
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+A point belongs to its own closure. The closure of the generic point equals the component, giving the membership.
 -/
 theorem genericPoint_mem (hC : IsIrreducibleComponentOfSupport D C) :
     hC.isIrreducible.genericPoint ∈ C := by
@@ -137,8 +129,8 @@ theorem genericPoint_mem (hC : IsIrreducibleComponentOfSupport D C) :
     subset_closure (Set.mem_singleton _)
   rwa [hC.closure_genericPoint] at h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each point of the component belongs to the closure of its generic point. Membership in that closure means that the generic point specializes to the given point.
 -/
 theorem genericPoint_specializes (hC : IsIrreducibleComponentOfSupport D C) {x : X} (hx : x ∈ C) :
     hC.isIrreducible.genericPoint ⤳ x := by
@@ -146,8 +138,8 @@ theorem genericPoint_specializes (hC : IsIrreducibleComponentOfSupport D C) {x :
   rw [hC.closure_genericPoint]
   exact hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The generic point belongs to its component, and the component is contained in the support. Hence the generic point belongs to the support.
 -/
 theorem genericPoint_mem_support (hC : IsIrreducibleComponentOfSupport D C) :
     hC.isIrreducible.genericPoint ∈ (D.support : Set X) :=
@@ -155,12 +147,8 @@ theorem genericPoint_mem_support (hC : IsIrreducibleComponentOfSupport D C) :
 
 end IsIrreducibleComponentOfSupport
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Consider the irreducible subsets of the support ordered by inclusion. A nonempty chain has its union as an upper bound. The union is nonempty and stays in the support. If two opens meet it, the chain contains one member containing points from both intersections. Irreducibility of that member gives a point in both opens and hence establishes irreducibility of the union. Apply Zorn’s lemma starting from the singleton of the given point to obtain a maximal irreducible subset containing it.
 -/
 theorem exists_isIrreducibleComponentOfSupport {X : Scheme.{u}} (D : X.IdealSheafData) (x : X)
     (hx : x ∈ (D.support : Set X)) :
@@ -186,18 +174,8 @@ theorem exists_isIrreducibleComponentOfSupport {X : Scheme.{u}} (D : X.IdealShea
   exact ⟨m, ⟨hm.1.1, fun C' hC' hmC' hC'S =>
     Set.Subset.antisymm (hm.2 ⟨hC', hC'S⟩ hmC') hmC', hm.1.2⟩, hxm rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support with its subspace topology is Noetherian, so it has finitely many irreducible components. An ambient irreducible component of the support gives an irreducible subset of that subspace by taking its preimage under the inclusion. A larger irreducible subset in the subspace would have an irreducible image in the support containing the ambient component. Maximality rules out strict enlargement. The assignment is injective because taking the image recovers the ambient subset, giving finiteness.
 -/
 theorem finite_isIrreducibleComponentOfSupport {X : Scheme.{u}} [TopologicalSpace.NoetherianSpace ↥X]
     (D : X.IdealSheafData) :
@@ -249,16 +227,8 @@ theorem finite_isIrreducibleComponentOfSupport {X : Scheme.{u}} [TopologicalSpac
     exact congrArg (Set.image Subtype.val) heq
   exact Set.Finite.of_finite_image (hfin.subset hsub) hinj
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the stalk ideal is zero at the given point. Choose an irreducible component of the scheme through that point. On an affine neighborhood, the germ at the generic point of that component factors through the germ at the given point, since the generic point specializes to it. Extending the zero stalk ideal along this map gives zero at the generic point. The local ring is nonzero, so the zero ideal is proper and the generic point lies in the support. Closedness of the support puts the whole component in it, contrary to the hypothesis.
 -/
 theorem stalkIdeal_ne_bot_of_nonzeroOnComponents {X : Scheme.{u}} (I : X.IdealSheafData)
     (hI : NonzeroOnComponents I) (x : X) : stalkIdeal I x ≠ ⊥ := by
@@ -295,19 +265,15 @@ theorem stalkIdeal_ne_bot_of_nonzeroOnComponents {X : Scheme.{u}} (I : X.IdealSh
         closure_mono (Set.singleton_subset_iff.mpr hmem)
     _ = (I.support : Set ↥X) := I.support.isClosed.closure_eq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis ensures every stalk ideal is nonzero. In a Noetherian local ring, the intersection of all powers of the maximal ideal is zero by the Krull intersection theorem. Infinite order would place the stalk ideal in that intersection, so the order is finite.
 -/
 theorem orderAt_ne_top_of_nonzeroOnComponents {X : Scheme.{u}} [IsLocallyNoetherian X]
     (I : X.IdealSheafData) (hI : NonzeroOnComponents I) (x : X) : orderAt I x ≠ ⊤ :=
   orderAt_ne_top_of_stalkIdeal_ne_bot I x (stalkIdeal_ne_bot_of_nonzeroOnComponents I hI x)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section ideal of the coordinate subscheme is radical, so it is the intersection of the primes containing it. Each such prime corresponds to a point of the support in the affine open, and by hypothesis that point belongs to the closed subset. The vanishing ideal lies in all these primes, so it lies in their intersection. Conversely, the closed subset lies in the support, so the original ideal is contained in the vanishing ideal.
 -/
 private theorem vanishingIdeal_ideal_eq_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (D : X.IdealSheafData) {C : Set ↥X} (hCcl : IsClosed C)
@@ -341,8 +307,8 @@ namespace IsIrreducibleComponentOfSupport
 
 variable {X : Scheme.{u}} {D : X.IdealSheafData} {C : Set X}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In a locally Noetherian scheme, an ideal that is nonzero on every component has finite order at every point. Apply this fact at the generic point of the stated component of the support.
 -/
 theorem orderAt_genericPoint_ne_top [IsLocallyNoetherian X] (hC : IsIrreducibleComponentOfSupport D C)
     (I : X.IdealSheafData) (hI : NonzeroOnComponents I) :
@@ -351,24 +317,8 @@ theorem orderAt_genericPoint_ne_top [IsLocallyNoetherian X] (hC : IsIrreducibleC
 
 variable {k : Type u} [Field k]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the two components share a point. Choose an affine étale chart around it where the support is defined by one coordinate. Both generic points lie in the chart because both specialize to the common point. Their primes are minimal over the coordinate ideal. Indeed a smaller prime containing the coordinate would give a point of the support whose irreducible closure contains the corresponding component, and maximality gives equality. At the common point, the contraction of the ideal generated by the coordinate germ recovers either of these minimal primes by the contraction formula. Thus the two primes and their generic points agree. Their closures are the components, contradicting distinctness.
 -/
 theorem disjoint {C' : Set X} (hC : IsIrreducibleComponentOfSupport D C) (hC' : IsIrreducibleComponentOfSupport D C')
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -440,18 +390,8 @@ theorem disjoint {C' : Set X} (hC : IsIrreducibleComponentOfSupport D C) (hC' : 
     simpa only [hV.fromSpec_primeIdealOf] using h
   rw [← hC.closure_genericPoint, ← hC'.closure_genericPoint, hpts]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the given point choose a chart in which the support is defined by a coordinate. There are finitely many components of the support and each is closed. Since distinct components are disjoint, the union of the other components is closed and misses the point. Shrink the chart to an affine neighborhood avoiding this union. Every support point in it belongs to the given component. On this neighborhood and on each smaller affine open, the coordinate ideal is radical and has the same vanishing set as the component, so its section ideal equals the component’s vanishing ideal. Extending the equality along each germ map gives the stalk equalities.
 -/
 theorem exists_affineOpen_etaleChart_coordIdeal [TopologicalSpace.NoetherianSpace ↥X] (hC : IsIrreducibleComponentOfSupport D C)
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -520,8 +460,8 @@ theorem exists_affineOpen_etaleChart_coordIdeal [TopologicalSpace.NoetherianSpac
         (Scheme.IdealSheafData.vanishingIdeal (⟨C, hC.isClosed⟩ : Closeds ↥X)) y V hy,
       stalkIdeal_eq_map_germ D y V hy, key V le_rfl]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the affine coordinate neighborhood on which the ideal of the support and the vanishing ideal of this component agree on stalks. Apply the resulting equality at the given point.
 -/
 theorem stalkIdeal_vanishingIdeal_eq [TopologicalSpace.NoetherianSpace ↥X]
     (hC : IsIrreducibleComponentOfSupport D C) (p : X ⟶ Spec (CommRingCat.of k))

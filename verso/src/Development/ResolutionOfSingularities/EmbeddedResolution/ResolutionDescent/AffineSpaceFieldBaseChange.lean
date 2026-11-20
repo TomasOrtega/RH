@@ -17,8 +17,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The base change of the original affine space and the affine space with the same coordinates over the extended field both satisfy the pullback property for the original structural map and the map of fields. The unique isomorphism of those two pullbacks respects their second projections, so it is over the extension field.
 -/
 theorem exists_baseChangeAffineSpaceIso (k K : Type u) [Field k] [Field K] [Algebra k K]
     (n : Type u) :
@@ -37,8 +37,8 @@ def baseChangeAffineSpaceIso (k K : Type u) [Field k] [Field K] [Algebra k K] (n
   (exists_baseChangeAffineSpaceIso k K n).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen base-change isomorphism was selected with compatibility with the structural map to the extension field. Its composite with the target projection is therefore the second projection defining the base change.
 -/
 theorem baseChangeAffineSpaceIso_hom_comp_toSpec (k K : Type u) [Field k] [Field K] [Algebra k K]
     (n : Type u) :
@@ -46,8 +46,8 @@ theorem baseChangeAffineSpaceIso_hom_comp_toSpec (k K : Type u) [Field k] [Field
       baseChangeToSpec (affineSpaceIndexedByToSpec k n) K :=
   (exists_baseChangeAffineSpaceIso k K n).choose_spec
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The original datum takes affine space of the chosen dimension as its ambient scheme. Changing the field in the datum changes the ambient scheme by taking its fiber product over the original field, giving the stated base change of affine space.
 -/
 private theorem affineSpaceEmbeddingDatum_baseChange_ambient_eq
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -76,8 +76,8 @@ def affineSpaceChartBaseChangeAmbientIso
   eqToIso (affineSpaceEmbeddingDatum_baseChange_ambient_eq hemb hsnc hsm k K Y pY hker hsncK) ≪≫
     baseChangeAffineSpaceIso k K (ULift.{u, 0} (Fin (hemb k Y pY).choose))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First identify the ambient of the base-changed datum with the base change of its original affine space. This identification preserves its structural projection. The affine-space base-change isomorphism also respects the projection to the extension field, so their composite has the required projection.
 -/
 private theorem affineSpaceChartBaseChangeAmbientIso_hom_comp
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

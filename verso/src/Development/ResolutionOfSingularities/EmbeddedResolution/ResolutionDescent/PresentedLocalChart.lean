@@ -37,30 +37,10 @@ structure PresentedLocalChart {k : Type u} [Field k] [CharZero k] {Y V : Scheme.
         (P.codimBound + (N - r) + 1)
   le_threshold : r ≤ threshold
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Start with the local smooth ambient lift at the chosen point, its affine open domain, and its affine-space presentations above the supplied threshold. The selected closed immersion of the source induces its topology, so choose a basic open in the source ambient scheme whose inverse image contains the point and lies inside the local domain. The function defining this smaller open restricts to a section on the original local domain. Lift that section to the affine space of the threshold presentation using the composite closed immersion of the local domain. Restrict the lift to the smooth ambient lift. Its basic open has inverse image in the local domain equal to the desired smaller open, because basic opens pull back by pulling back their defining functions.
 
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The two resulting open subschemes of the source have the same image and hence are isomorphic over the source. Restrict the original pullback square to the lifted basic open and transfer it along this isomorphism. The restricted ambient remains affine and smooth with the required finiteness properties, and the restricted map of the smaller domain into it is a closed immersion. At every dimension above the threshold, present the lifted basic open in affine space by adjoining an extra coordinate for the inverse of its defining section. The basic-open presentation theorem increases the coordinate codimension by one and preserves compatibility over the field. These data give the requested chart.
 -/
 theorem nonempty_presentedLocalChart (hS : SmoothPullbackHasLocalAmbientEmbedding.{u})
     (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] [CharZero k] (Y V : Scheme.{u})

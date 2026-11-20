@@ -22,8 +22,8 @@ private def tensorProductLiftRingHom {S R C T : Type u} [CommRing S] [CommRing R
   (Algebra.TensorProduct.productMap (IsScalarTower.toAlgHom S R T)
       ({ toRingHom := b, commutes' := fun s => (hab s).symm } : C →ₐ[S] T)).toRingHom
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two maps agree on the common base ring, so the universal map from the tensor product is defined. On a pure tensor it multiplies the image of the first factor with the image of the second, which gives the displayed equality.
 -/
 private theorem tensorProductLiftRingHom_tmul {S R C T : Type u} [CommRing S] [CommRing R] [CommRing C]
     [CommRing T] [Algebra S R] [Algebra S C] (a : R →+* T) (b : C →+* T)
@@ -35,30 +35,10 @@ private theorem tensorProductLiftRingHom_tmul {S R C T : Type u} [CommRing S] [C
   exact Algebra.TensorProduct.productMap_apply_tmul (IsScalarTower.toAlgHom S R T)
     ({ toRingHom := b, commutes' := fun s => (hab s).symm } : C →ₐ[S] T) x y
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Choose affine opens about the given source point and its image on which the induced map of sections is standard smooth of the required relative dimension. Within the target open, choose a basic open of the whole affine target that still contains the image point. Restrict its defining section to the target open and pull it back to the source open. Its basic open is affine, contains the source point, and maps into the chosen target basic open.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The section rings of the smaller opens are the original rings localized at the section and its image. Compatibility of restrictions identifies their map with localization of the original standard smooth map, so its relative dimension is preserved. The section ring of the smaller target open is also the localization of the global target ring at the chosen global section. Precomposing with this localization preserves standard smoothness of the same relative dimension. Finally global sections of the smaller source as an open subscheme are canonically its sections in the original scheme. Transporting the property through this isomorphism gives the required map.
 -/
 theorem exists_affineOpen_isStandardSmoothOfRelativeDimension {X Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine X] (r : ℕ) (h : Y ⟶ X)
@@ -167,16 +147,10 @@ theorem exists_affineOpen_isStandardSmoothOfRelativeDimension {X Y : Scheme.{u}}
   exact (RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := r)).1 _
     (Y.basicOpen s).topIso.symm.commRingCatIsoToRingEquiv hcomp
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Regard the two ring maps as a tower of algebras and apply the standard smooth lifting theorem along the given surjection. It supplies a standard smooth algebra of the same relative dimension over the original base, a surjection from the lift to the given target algebra, and an isomorphism identifying the target with the tensor product of the lift and the quotient base. The isomorphism agrees with the given lift map on the second tensor factor.
 
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+For a pair of maps out of the quotient base and the lift that agree on the original base, multiply their values on pure tensors to obtain the induced map from the tensor product. Transport it through the isomorphism. It has the required restriction to the lift by the formula on the second factor. Its restriction to the quotient base is determined by the commutative square and surjectivity from the original base, so it gives the required map there as well. The surjection from the lift to the target makes this induced map unique. This proves the pushout property.
 -/
 theorem exists_lift_isPushout_of_isStandardSmoothOfRelativeDimension {S R B : CommRingCat.{u}}
     (ι : S ⟶ R) (hι : Function.Surjective ⇑(CommRingCat.Hom.hom ι)) (φ : R ⟶ B) (r : ℕ)

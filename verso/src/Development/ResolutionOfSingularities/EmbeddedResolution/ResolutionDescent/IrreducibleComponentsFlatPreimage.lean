@@ -7,14 +7,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the image of the point lies in the specified irreducible component. Its generic point generalizes the image point, so the generalizing property lifts it to a generalization of the source point. Choose an irreducible component through this lifted point. It is closed, so it contains the original point as well. The closure of its image is irreducible by continuity and contains the target generic point, hence contains the whole target component. Maximality of that target component forces equality. Conversely, if the original point belongs to a component with this image closure, its image lies in the closure and thus in the specified component.
 -/
 theorem apply_mem_irreducibleComponent_iff_of_generalizingMap
     {X Y : Scheme.{u}} (f : X ⟶ Y) (hf : GeneralizingMap (fun x : ↥X => f x))
@@ -49,8 +43,8 @@ theorem apply_mem_irreducibleComponent_iff_of_generalizingMap
   · rintro ⟨C', -, hxC', rfl⟩
     exact subset_closure ⟨x, hxC', rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The underlying map of a flat morphism is generalizing. Apply the component criterion for generalizing maps to the specified component and point.
 -/
 theorem apply_mem_irreducibleComponent_iff_of_flat
     {X Y : Scheme.{u}} (f : X ⟶ Y) [AlgebraicGeometry.Flat f]

@@ -28,8 +28,8 @@ namespace EmbeddingDatum
 variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
   {p : Y ⟶ Spec (CommRingCat.of k)}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ambient enlargement is over the field, so its composite with the new structural map is the old structural map. Precomposing by the old embedding gives the structural map of the embedded scheme.
 -/
 private theorem emb_comp_comp_eq_of_comp_eq (G : EmbeddingDatum k Y p) {A' : Scheme.{u}}
     (q : A' ⟶ Spec (CommRingCat.of k)) (τ : G.ambient ⟶ A')
@@ -48,8 +48,8 @@ def enlargeAmbient (G : EmbeddingDatum k Y p) (A' : Scheme.{u}) [AlgebraicGeomet
   embeddingDatumOfClosedImmersion A' q (G.emb ≫ τ) hker (emb_comp_comp_eq_of_comp_eq G q τ hτ) hsnc
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The enlargement datum takes the specified larger scheme as its ambient scheme.
 -/
 theorem enlargeAmbient_ambient (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     [AlgebraicGeometry.IsAffine A'] (q : A' ⟶ Spec (CommRingCat.of k))
@@ -61,8 +61,8 @@ theorem enlargeAmbient_ambient (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     (G.enlargeAmbient A' q τ hτ hker hsnc).ambient = A' := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The enlargement datum equips the larger ambient scheme with the structural morphism given in its inputs.
 -/
 theorem enlargeAmbient_ambientToSpec (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     [AlgebraicGeometry.IsAffine A'] (q : A' ⟶ Spec (CommRingCat.of k))
@@ -74,8 +74,8 @@ theorem enlargeAmbient_ambientToSpec (G : EmbeddingDatum k Y p) (A' : Scheme.{u}
     (G.enlargeAmbient A' q τ hτ hker hsnc).ambientStruct = q := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The enlarged datum is constructed by composing the original embedding with the closed immersion into the larger ambient scheme. Its embedding is exactly this composite.
 -/
 theorem enlargeAmbient_emb (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     [AlgebraicGeometry.IsAffine A'] (q : A' ⟶ Spec (CommRingCat.of k))
@@ -86,18 +86,16 @@ theorem enlargeAmbient_emb (G : EmbeddingDatum k Y p) (A' : Scheme.{u})
     (hsnc : InStrictNormalCrossingPosition q ([] : List A'.IdealSheafData)) :
     (G.enlargeAmbient A' q τ hτ hker hsnc).emb = G.emb ≫ τ := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ideal sheaf of the image under a composite is the image ideal sheaf of the first kernel along the second map. Since the first map is a closed immersion, applying the kernel composition formula gives the asserted equality.
 -/
 private theorem imageIdealSheaf_ker_eq_ker_comp {Yc A A' : Scheme.{u}} (e : Yc ⟶ A)
     [AlgebraicGeometry.IsClosedImmersion e] (σ : A ⟶ A') :
     imageIdealSheaf σ (Scheme.Hom.ker e) = Scheme.Hom.ker (e ≫ σ) :=
   (Scheme.Hom.ker_comp e σ).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The image of the original embedding ideal along the ambient immersion is the kernel ideal of the composite embedding. It has the required nonvanishing by the enlarged datum. Apply pushforward functoriality of principalization along the closed immersion of positive étale coordinate codimension, with empty boundary on both ambient schemes. Identifying the image ideal with the enlarged embedding ideal gives the asserted pushforward comparison of ambient sequences.
 -/
 theorem isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient [AlgebraicGeometry.IsAffine Y]
     [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -128,8 +126,8 @@ theorem isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient [AlgebraicGeometry.
     (hAlg.pushforward k G.ambient A' G.ambientStruct q τ hτ c hc hcodim
       (Scheme.Hom.ker G.emb) G.nonzeroOnComponents_ker hJ G.sncEmpty hsnc)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Pushforward functoriality gives the comparison of the two ambient blowup sequences. The enlarged embedding is the original embedding followed by the ambient closed immersion, so this comparison gives a chart pushforward for the embedded sequences. Chart pushforward induces an isomorphism on their blowup sequences after deleting unit-center steps, which are the outputs of the two resolution rules.
 -/
 theorem isomorphic_embeddedResolutionRule_enlargeAmbient [AlgebraicGeometry.IsAffine Y]
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -154,8 +152,8 @@ theorem isomorphic_embeddedResolutionRule_enlargeAmbient [AlgebraicGeometry.IsAf
       (isPushforwardBlowupSeq_ambientBlowups_enlargeAmbient G Alg hAlg A' q τ hτ hker hsnc c hc hcodim)
   exact P.inducedBlowupsWithoutIso_isomorphic (hw k Y p G) (hw k Y p (G.enlargeAmbient A' q τ hτ hker hsnc))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Passing to an embedded blowup sequence retains the given embedding. Composing the retained old embedding with the enlargement map therefore gives the retained enlarged embedding, by the definition of enlargement.
 -/
 private theorem emb_comp_ambientMap_eq_enlargeAmbient_emb [AlgebraicGeometry.IsAffine Y]
     [AlgebraicGeometry.LocallyOfFiniteType p]

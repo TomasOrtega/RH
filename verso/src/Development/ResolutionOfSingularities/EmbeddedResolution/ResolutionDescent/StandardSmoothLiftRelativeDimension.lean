@@ -16,12 +16,8 @@ variable {S R B : Type u} [CommRing S] [CommRing R] [CommRing B]
   (hsurj : Function.Surjective (algebraMap S R))
   (P : Algebra.SubmersivePresentation R B ι σ)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The lift adds one variable and one relation. The difference between the two finite cardinalities therefore agrees with that of the original presentation, which is its dimension.
 -/
 theorem liftedSubmersivePresentation_dimension :
     (liftedSubmersivePresentation hsurj P).dimension = P.dimension := by
@@ -46,10 +42,8 @@ section
 variable (S R B : Type u) [CommRing S] [CommRing R] [CommRing B]
   [Algebra S R] [Algebra R B] [Algebra S B] [IsScalarTower S R B]
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Choose a finite submersive presentation of the given algebra with the stated dimension and lift it along the surjection of base rings. The lifted submersive presentation has the same dimension because it adds one variable and one relation. The lift construction provides a surjective map to the original algebra and identifies its base change with that algebra by the given tensor-product isomorphism. On the second factor the isomorphism is precisely the lift map.
 -/
 theorem exists_lift_of_isStandardSmoothOfRelativeDimension (r : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension r R B]

@@ -56,8 +56,8 @@ instance instSmoothToAmbient (C : SmoothLocalChart G H u y) :
 instance instIsClosedImmersionImm (C : SmoothLocalChart G H u y) :
     AlgebraicGeometry.IsClosedImmersion C.imm := C.isClosedImmersion_imm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the ambient basic open under the embedding is the basic open defined by the pulled-back section of the source. A basic open in the affine source is affine.
 -/
 theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
     (C : SmoothLocalChart G H u y) :
@@ -68,8 +68,8 @@ theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
   rw [h]
   exact (isAffineOpen_top V).basicOpen _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart domain is the inverse image of the indicated ambient open. Restriction of the embedding to this open is its base change along the open inclusion, so the displayed square is a pullback.
 -/
 theorem isPullback_morphismRestrict_basicOpen (C : SmoothLocalChart G H u y) :
     CategoryTheory.IsPullback

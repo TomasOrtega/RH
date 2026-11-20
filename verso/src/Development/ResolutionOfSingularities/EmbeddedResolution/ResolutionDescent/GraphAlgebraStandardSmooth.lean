@@ -16,8 +16,8 @@ abbrev graphJacobianMinorDet [Fintype τ] [DecidableEq τ] (f : τ → MvPolynom
 abbrev GraphAlgebraAway [Fintype τ] [DecidableEq τ] (f : τ → MvPolynomial σ R) (v : τ → σ) : Type u :=
   Localization.Away (graphJacobianMinorDet f v)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The algebra is localized at the powers of the minor determinant. The determinant itself belongs to those powers, so its image is a unit.
 -/
 theorem isUnit_algebraMap_graphJacobianMinorDet [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -25,8 +25,8 @@ theorem isUnit_algebraMap_graphJacobianMinorDet [Fintype τ] [DecidableEq τ]
   IsLocalization.map_units (M := Submonoid.powers (graphJacobianMinorDet f v)) (GraphAlgebraAway f v)
     ⟨graphJacobianMinorDet f v, Submonoid.mem_powers _⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The Jacobian of the graph presentation is the chosen minor determinant multiplied by a power of minus one. Both factors become units in the localization, so the image of their product is a unit.
 -/
 theorem isUnit_algebraMap_jacobian_graphPreSubmersive [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
@@ -46,8 +46,8 @@ private def graphAlgebraAwayPreSubmersivePresentation [Fintype τ] [DecidableEq 
   Algebra.PreSubmersivePresentation.comp (graphAlgebraAwayLocalizationPresentation f v).toPreSubmersivePresentation
     (graphPreSubmersivePresentation f v hv)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The Jacobian of the composite presentation is the product of the image of the graph presentation's Jacobian and the Jacobian of the localization presentation. The first is a unit after localization, and the second is a unit because the localization presentation is submersive.
 -/
 private theorem isUnit_jacobian_presentation_graphAlgebraAway [Fintype τ] [DecidableEq τ] [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
@@ -67,8 +67,8 @@ private def graphAlgebraAwaySubmersivePresentation [Fintype τ] [DecidableEq τ]
     (Equiv.sumCongr (Equiv.refl Unit) (Fintype.equivFin σ).symm)
     (Equiv.sumCongr (Equiv.refl Unit) (Fintype.equivFin τ).symm)
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Supply the required witnesses or components.
+/- English proof (authored)
+Compose the graph presentation with the presentation adjoining the inverse of the minor determinant. The composite Jacobian is a unit by the product calculation, so this is a submersive presentation. Its sets of variables and relations are finite and can be reindexed by finite sets of the stated sizes. This presentation exhibits the algebra as standard smooth.
 -/
 theorem isStandardSmooth_graphAlgebraAway [Fintype τ] [DecidableEq τ] [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :

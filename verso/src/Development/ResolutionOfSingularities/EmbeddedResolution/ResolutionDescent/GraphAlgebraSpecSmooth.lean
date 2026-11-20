@@ -10,10 +10,8 @@ open CategoryTheory AlgebraicGeometry
 
 variable {R : Type u} [CommRing R] {σ τ : Type u} [Fintype τ] [DecidableEq τ]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The graph algebra localized at the chosen Jacobian minor is standard smooth over the ring of the graph coordinates. Its algebra map is therefore smooth. The affine correspondence between smooth ring maps and smooth morphisms of spectra gives the claim.
 -/
 theorem smooth_specMap_algebraMap_graphAlgebraAway [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
@@ -28,8 +26,8 @@ theorem smooth_specMap_algebraMap_graphAlgebraAway [Fintype σ]
   rw [h]
   refine ⟨?_, ?_⟩ <;> infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The localized graph algebra is obtained by inverting the chosen Jacobian minor. The map on spectra of a localization at one element is the inclusion of the corresponding basic open.
 -/
 theorem isOpenImmersion_specMap_algebraMap_graphAlgebraAway
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -44,8 +42,8 @@ instance instIsOpenImmersionSpecMapGraphAway
       (Spec.map (CommRingCat.ofHom (algebraMap (GraphAlgebra f) (GraphAlgebraAway f v)))) :=
   isOpenImmersion_specMap_algebraMap_graphAlgebraAway f v
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Prime ideals of the localized graph algebra correspond by contraction to prime ideals of the original graph algebra that avoid the powers of the Jacobian minor. These are precisely the points of the basic open of the minor.
 -/
 theorem range_specMap_algebraMap_graphAlgebraAway
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -56,8 +54,8 @@ theorem range_specMap_algebraMap_graphAlgebraAway
     (GraphAlgebraAway f v) (graphJacobianMinorDet f v)
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ring of graph coordinates acts on the localization through its map to the graph algebra and the localization map. This is the composite of the two algebra maps in the scalar tower.
 -/
 theorem algebraMap_graphAlgebraAway_eq_comp
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
@@ -66,8 +64,8 @@ theorem algebraMap_graphAlgebraAway_eq_comp
         (algebraMap (MvPolynomial τ R) (GraphAlgebra f)) :=
   IsScalarTower.algebraMap_eq (MvPolynomial τ R) (GraphAlgebra f) (GraphAlgebraAway f v)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Factor the algebra map through the graph algebra by the scalar tower. Taking spectra reverses the order of the two factors, giving the stated composite of scheme maps.
 -/
 theorem specMap_algebraMap_graphAlgebraAway_eq_comp
     (f : τ → MvPolynomial σ R) (v : τ → σ) :

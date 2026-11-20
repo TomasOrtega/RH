@@ -10,10 +10,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace PresentedSmoothChart
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A standard smooth ring map is smooth, so its map of spectra is smooth. The canonical isomorphism from the spectrum of the ambient global sections back to the affine ambient scheme is smooth as well, and smoothness is preserved under composition.
 -/
 theorem smooth_specMap_comp_isoSpec_inv {A : Scheme.{u}} [AlgebraicGeometry.IsAffine A]
     {B' : CommRingCat.{u}} (σ : Γ(A, ⊤) ⟶ B')
@@ -29,14 +27,8 @@ theorem smooth_specMap_comp_isoSpec_inv {A : Scheme.{u}} [AlgebraicGeometry.IsAf
   have h2 : AlgebraicGeometry.Smooth A.isoSpec.inv := inferInstance
   exact MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ h1 h2
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose the affine neighborhood of the source point on which the induced map of global sections is standard smooth of the given relative dimension. The ambient closed immersion induces a surjection on global sections. Apply the standard smooth lifting theorem for this surjection to obtain the lifted algebra and its surjective map to the source neighborhood's global sections, with a pushout square of rings. Taking spectra gives a pullback square. Use the canonical affine-scheme isomorphisms to identify its three original corners with the neighborhood, the original source of the closed immersion, and the ambient scheme. Naturality of those isomorphisms identifies the arrows with the original maps. The new neighborhood embedding is closed because it comes from the surjection, and the lifted ring map has the required standard smoothness.
 -/
 theorem exists_affineOpen_isPullback_specMap {A X Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine A] [AlgebraicGeometry.IsAffine X]

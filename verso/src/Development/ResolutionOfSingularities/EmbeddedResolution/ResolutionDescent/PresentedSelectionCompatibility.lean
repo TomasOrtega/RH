@@ -24,16 +24,10 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Choose the surjective étale affine cover of the source with two presented embeddings, one pulled back from the target ambient scheme and the other from the source ambient scheme. Smooth ambient compatibility gives pullback comparisons from the two global sequences, over the composite to the target and over the cover to the source, respectively. Independence of presented embeddings identifies these two sequences on the cover. The comparison from the source is strict because the cover is surjective and the source rule has proper centers.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+Base change the target sequence along the smooth map and delete unit-center steps. Its strict base change along the cover is another pullback of the target sequence along the composite, by composition of the two comparisons. Uniqueness identifies this sequence with the first cover sequence. It is therefore isomorphic to the strict pullback of the source sequence. Descent of the isomorphism along the faithfully flat cover identifies the source sequence with the target base change after deletion. Transporting the latter's pullback comparison gives the result.
 -/
 theorem isPullbackBlowupSequence_presentedSelection_of_smooth (E : EmbeddedResolutionRule.{u}) (C : PresentedSelection.{u})
     (hinv : E.IsIndependentOfPresentedEmbedding) (hsbc : E.IsCompatibleWithSmoothAmbientMaps)
@@ -94,8 +88,8 @@ theorem isPullbackBlowupSequence_presentedSelection_of_smooth (E : EmbeddedResol
     IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic s2' hCc (heq.symm.trans heq2)
   exact hB'.of_isomorphic hdesc.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion is smooth of relative dimension zero. The smooth pullback comparison for the presented selection therefore applies to every open immersion over the field and gives compatibility of the associated affine rule.
 -/
 theorem isCompatibleWithOpenImmersions_toAffineResolutionRule (E : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u})
@@ -110,8 +104,8 @@ theorem isCompatibleWithOpenImmersions_toAffineResolutionRule (E : EmbeddedResol
   exact isPullbackBlowupSequence_presentedSelection_of_smooth E C hinv hsbc hprop hS hsm hsnc k Y V pY pV
     φ 0 hφ
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An étale cover is smooth of relative dimension zero, so the smooth pullback comparison gives a pullback of sequences. Since the cover is surjective and the original output has proper centers, the strict pullback criterion gives the required strict comparison.
 -/
 theorem isCompatibleWithEtaleCovers_toAffineResolutionRule (E : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u})

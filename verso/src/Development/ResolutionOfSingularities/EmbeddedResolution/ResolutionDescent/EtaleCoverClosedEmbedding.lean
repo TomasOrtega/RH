@@ -28,24 +28,24 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On affine source and target charts, being locally of finite type is the finite-type property of the induced ring map. The source-locality result for this ring-map property gives the corresponding Zariski locality of scheme morphisms.
 -/
 private theorem isZariskiLocalAtSource_locallyOfFiniteType :
     IsZariskiLocalAtSource (@LocallyOfFiniteType.{u}) := by
   have hrh : HasRingHomProperty (@LocallyOfFiniteType.{u}) RingHom.FiniteType := inferInstance
   exact @HasRingHomProperty.instIsZariskiLocalAtSource (@LocallyOfFiniteType.{u}) _ hrh
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On affine charts flatness is the flatness of the induced ring map. The scheme property associated to this ring-map property is Zariski local on the source.
 -/
 private theorem isZariskiLocalAtSource_flat :
     IsZariskiLocalAtSource (@Flat.{u}) := by
   have hrh : HasRingHomProperty (@Flat.{u}) RingHom.Flat := inferInstance
   exact @HasRingHomProperty.instIsZariskiLocalAtSource (@Flat.{u}) _ hrh
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The disjoint union is covered by its open summands, and the given map restricts to the specified map on each. Each restriction is locally of finite type, so locality on the source proves the result.
 -/
 private theorem locallyOfFiniteType_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, LocallyOfFiniteType (f i)) :
@@ -53,46 +53,20 @@ private theorem locallyOfFiniteType_sigmaDesc {ι : Type u} {X : ι → Scheme.{
   have := isZariskiLocalAtSource_locallyOfFiniteType
   exact IsZariskiLocalAtSource.sigmaDesc hf
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusions of the summands give an open cover of the coproduct. The restriction to each summand is flat by hypothesis. Flatness is local on the source, so the whole map is flat.
 -/
 private theorem flat_sigmaDesc {ι : Type u} {X : ι → Scheme.{u}} {Z : Scheme.{u}}
     (f : ∀ i, X i ⟶ Z) (hf : ∀ i, Flat (f i)) : Flat (Limits.Sigma.desc f) := by
   have := isZariskiLocalAtSource_flat
   exact IsZariskiLocalAtSource.sigmaDesc hf
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Take the disjoint union of the finitely many chart domains with the map to the source induced by their open inclusions. It is an affine reduced scheme, and its map to the source is étale and surjective because the domains cover. Its structure map is locally of finite type and quasi-compact, the latter because its underlying space is compact and the field spectrum has one point.
 
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
+For the first embedding take the disjoint union of the charts' smooth ambient schemes. Pasting the pullback squares by coproduct gives the pullback of the target embedding along the induced smooth ambient map. For the second take the disjoint union of the corresponding basic opens in the source ambient scheme. Restrict the source embedding to each basic open and take the coproduct of these pullback squares. In each case the new ambient is affine, smooth and locally of finite type over the field, and quasi-compact by finiteness. The embedding is closed by base change. Its kernel is the pullback of the old kernel along the flat ambient map, so it remains nonzero on components. The composites over the field agree by the pullback squares, and smoothness gives strict normal crossings for the empty boundary.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+For the first ambient union use the common threshold to present every summand in affine spaces of the same dimension and coordinate codimension. For the second, presenting each basic open adds one coordinate and one to the codimension of the original source presentation. In either union choose distinct field elements for the finitely many indices using characteristic zero. Put each summand in the slice at its assigned value of one new coordinate. The slice construction gives a closed immersion over the field and increases the common coordinate codimension by one. These are the required presentations of the two embeddings.
 -/
 private theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_localCharts (hsm : AffineSpaceIsSmooth.{u})
     (k : Type u) [Field k] [CharZero k]
@@ -343,12 +317,8 @@ private theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_localCharts 
           (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} Q.dim 1) (Spec (CommRingCat.of k))).hom)
         hrhocod
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a presented local chart through every point of the affine source. Its chart domain is open and contains that point, so compactness gives a finite collection still covering the source. Take the maximum presentation threshold among the selected charts. Their finite cover and the common threshold satisfy the chart assembly theorem, which supplies the two presented embeddings on the surjective étale affine cover.
 -/
 theorem exists_etaleCover_closedEmbeddingIntoAffineSpace_of_smooth
     (hS : SmoothPullbackHasLocalAmbientEmbedding.{u}) (hsm : AffineSpaceIsSmooth.{u})

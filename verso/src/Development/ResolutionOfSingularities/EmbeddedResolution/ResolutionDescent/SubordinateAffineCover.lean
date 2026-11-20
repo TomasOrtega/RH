@@ -10,24 +10,16 @@ private def affineOpensLePreimageCover {X' X : Scheme.{u}} (φ : X' ⟶ X) {ι :
     (U : ι → X.Opens) : Set X'.Opens :=
   {W : X'.Opens | IsAffineOpen W ∧ ∃ i, W ≤ φ ⁻¹ᵁ (U i)}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The defining condition for membership is that the open be affine and contained in the inverse image of at least one member of the target cover.
 -/
 private theorem mem_affineOpensLePreimageCover {X' X : Scheme.{u}} (φ : X' ⟶ X) {ι : Type u}
     (U : ι → X.Opens) {W : X'.Opens} :
     W ∈ affineOpensLePreimageCover φ U ↔ IsAffineOpen W ∧ ∃ i, W ≤ φ ⁻¹ᵁ (U i) :=
   Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At each source point choose a target cover member containing its image. The inverse image is an open neighborhood, so the basis of affine opens supplies an affine neighborhood contained in it. Such affine neighborhoods cover the source. Compactness gives a finite subcover, and for each chosen affine open retain one index of a target member whose inverse image contains it. This produces all the required data.
 -/
 theorem exists_finite_affine_cover_subordinate {X' X : Scheme.{u}} [CompactSpace X']
     (φ : X' ⟶ X) {ι : Type u} (U : ι → X.Opens) (hU : iSup U = ⊤) :
@@ -71,8 +63,8 @@ noncomputable def opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X)
     φ.resLE (U (β a)) (V a) (hβ a) ≫ Sigma.ι (fun i => (U i).toScheme) (β a)
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map from the source coproduct is defined on each summand by restricting the original map to the selected target open and including that open in the target coproduct. Restricting to the specified source summand recovers this composite.
 -/
 theorem sigmaι_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X) {ι κ : Type u}
     (U : ι → X.Opens) (V : κ → X'.Opens) (β : κ → ι)
@@ -81,8 +73,8 @@ theorem sigmaι_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X) {
       φ.resLE (U (β a)) (V a) (hβ a) ≫ Sigma.ι (fun i => (U i).toScheme) (β a) := by
   simp [opensCoprodMapOfRefinement]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Check equality on each source summand. The route through the target coproduct first maps to the selected target open, then includes it in the target scheme. This is the source open inclusion followed by the original map, by the defining property of the restriction. Thus the two composites agree on every summand.
 -/
 theorem opensCoprodMapOfRefinement_comp_sigmaOpensDesc {X' X : Scheme.{u}} (φ : X' ⟶ X) {ι κ : Type u}
     (U : ι → X.Opens) (V : κ → X'.Opens) (β : κ → ι)
@@ -93,8 +85,8 @@ theorem opensCoprodMapOfRefinement_comp_sigmaOpensDesc {X' X : Scheme.{u}} (φ :
     sigma_ι_sigmaOpensDesc_assoc]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both maps become the original map restricted to the source open after composing with the inclusion of the target open. The inclusion is a monomorphism, so the original maps agree.
 -/
 private theorem resLE_eq_homOfLE_comp_restrict {X' X : Scheme.{u}} (φ : X' ⟶ X)
     (U : X.Opens) (V : X'.Opens) (e : V ≤ φ ⁻¹ᵁ U) :
@@ -102,8 +94,8 @@ private theorem resLE_eq_homOfLE_comp_restrict {X' X : Scheme.{u}} (φ : X' ⟶ 
   rw [← cancel_mono U.ι]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Factor the map through the full inverse image of the target open. The first map is an open immersion and hence smooth. The restriction on the full inverse image is a base change of the smooth map, so it is smooth too. Therefore their composite is smooth.
 -/
 private theorem smooth_resLE {X' X : Scheme.{u}} (φ : X' ⟶ X) [Smooth φ]
     (U : X.Opens) (V : X'.Opens) (e : V ≤ φ ⁻¹ᵁ U) :
@@ -111,8 +103,8 @@ private theorem smooth_resLE {X' X : Scheme.{u}} (φ : X' ⟶ X) [Smooth φ]
   rw [resLE_eq_homOfLE_comp_restrict]
   infer_instance
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On each source summand the coproduct map is the restricted smooth map followed by the inclusion of the chosen target summand, which is an open immersion. This composite is smooth on every summand. The summands form an open cover, so the coproduct map is smooth.
 -/
 theorem smooth_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X) [Smooth φ] {ι κ : Type u}
     (U : ι → X.Opens) (V : κ → X'.Opens) (β : κ → ι)
@@ -130,8 +122,8 @@ instance instSmoothOpensCoprodRefine {X' X : Scheme.{u}} (φ : X' ⟶ X) [Smooth
     Smooth (opensCoprodMapOfRefinement φ U V β hβ) :=
   smooth_opensCoprodMapOfRefinement φ U V β hβ
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Composing the refinement map with the target coproduct map gives the source coproduct map followed by the original map. The latter composite is locally of finite type because the source map is assembled from open immersions. The locally finite type property of the composite implies the same property for the refinement map.
 -/
 theorem locallyOfFiniteType_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X)
     [LocallyOfFiniteType φ] {ι κ : Type u}

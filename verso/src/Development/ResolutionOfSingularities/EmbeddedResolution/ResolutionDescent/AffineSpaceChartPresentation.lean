@@ -19,8 +19,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The composite preserves the structural map to the base. On each coordinate, its pullback reindexes first by the bijection and then by its inverse, so the coordinate returns to itself. These data determine the identity map of the affine space.
 -/
 private theorem affineSpace_reindex_symm_comp_reindex {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     AffineSpace.reindex (e.symm : m → n) S ≫ AffineSpace.reindex (e : n → m) S =
@@ -34,8 +34,8 @@ private theorem affineSpace_reindex_symm_comp_reindex {n m : Type u} (e : n ≃ 
           (AffineSpace.coord S i)) = AffineSpace.coord S i
     simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The composite is over the base. Its pullback on each coordinate first applies the inverse bijection to the index and then applies the bijection, recovering that coordinate. The coordinate characterization of maps into affine space gives the identity.
 -/
 private theorem affineSpace_reindex_comp_reindex_symm {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     AffineSpace.reindex (e : n → m) S ≫ AffineSpace.reindex (e.symm : m → n) S =
@@ -57,28 +57,28 @@ def affineSpaceIsoOfEquiv {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
   inv_hom_id := affineSpace_reindex_comp_reindex_symm e S
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A reindexing map pulls target coordinates back to the source coordinates. The forward isomorphism therefore uses the inverse bijection to send target indices to source indices, as in its definition.
 -/
 theorem affineSpaceIsoOfEquiv_hom {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).hom = AffineSpace.reindex (e.symm : m → n) S := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inverse isomorphism goes in the opposite direction and is defined by reindexing along the original bijection.
 -/
 theorem affineSpaceIsoOfEquiv_inv {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).inv = AffineSpace.reindex (e : n → m) S := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Reindexing changes the coordinate labels and preserves the structure morphism. Composing the forward reindexing with the target projection therefore gives the source projection.
 -/
 theorem affineSpaceIsoOfEquiv_hom_comp_over {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).hom ≫ (AffineSpace m S ↘ S) = (AffineSpace n S ↘ S) := by
   simp [affineSpaceIsoOfEquiv, AffineSpace.reindex]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply compatibility of coordinate reindexing with the structural projection when the base is the field spectrum.
 -/
 theorem affineSpaceIsoOfEquiv_hom_comp_toSpec (k : Type u) [Field k] {n m : Type u} (e : n ≃ m) :
     (affineSpaceIsoOfEquiv e (Spec (CommRingCat.of k))).hom ≫ affineSpaceIndexedByToSpec k m =
@@ -95,8 +95,8 @@ def toAffineSpaceOfAmbientIso {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u
   φ.hom ≫ affineSpaceInl k n 1 ≫
     (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map first identifies the ambient scheme with affine space, then includes it as the zero locus of the extra coordinate, and finally reindexes the coordinates by an isomorphism. The middle map is a closed immersion, and the two isomorphisms preserve this property under composition.
 -/
 theorem isClosedImmersion_toAffineSpaceOfAmbientIso {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     {p : Y ⟶ Spec (CommRingCat.of k)} (G : EmbeddingDatum k Y p) (n : ℕ)
@@ -108,8 +108,8 @@ theorem isClosedImmersion_toAffineSpaceOfAmbientIso {k : Type u} [Field k] [Char
     inferInstance
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The last coordinate reindexing respects the projection to the field, as does the inclusion by a zero coordinate. The composite with the field projection therefore reduces to the structural map on the original affine space composed with the given ambient isomorphism. This is the ambient structural map by hypothesis.
 -/
 theorem toAffineSpaceOfAmbientIso_comp_toSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     {p : Y ⟶ Spec (CommRingCat.of k)} (G : EmbeddingDatum k Y p) (n : ℕ)
@@ -124,8 +124,8 @@ theorem toAffineSpaceOfAmbientIso_comp_toSpec {k : Type u} [Field k] [CharZero k
   simp only [Category.assoc]
   rw [affineSpaceIsoOfEquiv_hom_comp_toSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, hφ]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion by one zero coordinate has smooth coordinate codimension one. Transport this codimension through the target reindexing, which is over the field, and through the source isomorphism from the ambient scheme. This gives coordinate codimension one for the composite.
 -/
 theorem hasSmoothCoordCodim_toAffineSpaceOfAmbientIso (hsm : AffineSpaceIsSmooth.{u}) {k : Type u}
     [Field k] [CharZero k] {Y : Scheme.{u}} {p : Y ⟶ Spec (CommRingCat.of k)}

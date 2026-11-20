@@ -36,12 +36,8 @@ structure PresentedSelection where
     (hsnc : InStrictNormalCrossingPosition (baseChangeToSpec (sel k Y p).ambientStruct K) []),
     ClosedEmbeddingIntoAffineSpace ((sel k Y p).baseChange K hker hsnc)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Extend the chosen embedding to the larger field. The extended ambient scheme is smooth, so the empty boundary is in strict normal crossing position. The field projection is flat, which identifies the new kernel with the pullback of the old kernel and preserves nonvanishing on components. Thus the embedded rule's field compatibility gives a strict pullback for this extended embedding. Both the extended embedding and the selected embedding over the larger field have presentations by the selection data. Independence of presentations identifies their output sequences. Transport the strict pullback along this isomorphism to obtain field compatibility for the selected affine rule.
 -/
 theorem isCompatibleWithFieldBaseChange_toAffineResolutionRule (R : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u}) (hinv : R.IsIndependentOfPresentedEmbedding)
@@ -87,8 +83,8 @@ def affineSpacePresentedSelection (hemb : AffineEmbedsIntoAffineSpace.{u})
     affineSpaceChartBaseChangePresentation hemb hsncE hsm k K Y p hker hsncK
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The presented selection is constructed using the affine-space embedding choice as its selection, so reading that component gives the stated equality.
 -/
 theorem affineSpacePresentedSelection_selection (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :

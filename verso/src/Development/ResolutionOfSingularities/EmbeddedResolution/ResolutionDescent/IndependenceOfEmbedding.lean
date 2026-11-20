@@ -52,24 +52,24 @@ private def uliftFinAddEquivUliftSum (n m : ℕ) :
     ULift.{u, 0} (Fin (n + m)) ≃ ULift.{u, 0} (Fin n ⊕ Fin m) :=
   Equiv.ulift.trans (finSumFinEquiv.symm.trans Equiv.ulift.symm)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The structural map for a finite coordinate set corresponds to a polynomial algebra over the field on finitely many variables. That algebra is of finite type, so the map is locally of finite type.
 -/
 private theorem locallyOfFiniteType_affineSpaceIndexedByToSpec (k : Type u) [Field k] (N : Type u)
     [Finite N] : AlgebraicGeometry.LocallyOfFiniteType (affineSpaceIndexedByToSpec k N) := by
   unfold affineSpaceIndexedByToSpec
   infer_instance
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The structural map of affine space to the field spectrum is affine, since it is induced by the inclusion of the field in the polynomial algebra. Affine morphisms are quasi-compact.
 -/
 private theorem quasiCompact_affineSpaceIndexedByToSpec (k : Type u) [Field k] (N : Type u) :
     AlgebraicGeometry.QuasiCompact (affineSpaceIndexedByToSpec k N) := by
   unfold affineSpaceIndexedByToSpec
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A field is an integral domain, and the polynomial ring over it is an integral domain for any set of variables. The corresponding affine scheme has irreducible underlying space.
 -/
 private theorem irreducibleSpace_affineSpaceIndexedBy (k : Type u) [Field k] (N : Type u) :
     IrreducibleSpace ↥(affineSpaceIndexedBy k N) := by
@@ -77,8 +77,8 @@ private theorem irreducibleSpace_affineSpaceIndexedBy (k : Type u) [Field k] (N 
     inferInstanceAs (IrreducibleSpace (PrimeSpectrum k))
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An isomorphism is an open immersion, and open immersions are flat.
 -/
 private theorem flat_of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) (hf : CategoryTheory.IsIso f) :
     AlgebraicGeometry.Flat f := by
@@ -86,8 +86,8 @@ private theorem flat_of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) (hf : CategoryThe
   have : AlgebraicGeometry.IsOpenImmersion f := inferInstance
   infer_instance
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equalities of the ideals and of the ordered boundaries. The algorithm then receives the same mathematical inputs, so its output sequence is the same.
 -/
 private theorem principalizationAlgorithm_toSequenceOfBlowups_congr (Alg : PrincipalizationAlgorithm.{u}) (k : Type u) [Field k]
     [CharZero k] (X : Scheme.{u}) (q : X ⟶ Spec (CommRingCat.of k))
@@ -100,10 +100,8 @@ private theorem principalizationAlgorithm_toSequenceOfBlowups_congr (Alg : Princ
   subst hEF
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reindex the disjoint union of the two coordinate sets by a single set of size the sum of their sizes. This gives an isomorphism over the field, since its inverse reindexes by the inverse bijection and both composites fix every coordinate. The structural map is the composite of this isomorphism and the smooth structural map for the single coordinate set. It is therefore smooth.
 -/
 theorem smooth_affineSpaceIndexedByToSpec_finSumFin (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n m : ℕ) :
@@ -124,16 +122,8 @@ theorem smooth_affineSpaceIndexedByToSpec_finSumFin (hsm : AffineSpaceIsSmooth.{
   rw [← h]
   exact MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ hiso hs
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse ambient isomorphism identifies the two embeddings over the field and gives a pullback square with the identity of the embedded scheme. It is flat, so the kernel ideal of the new embedding is the pullback of the old one. It is also smooth, so smooth functoriality of principalization applies to this ideal and the empty boundary. Substituting the equality of input ideals gives the pullback comparison of ambient blowup sequences. The chart comparison for the pullback then gives a pullback comparison of induced resolution sequences over the identity after deleting unit-center steps. Every remaining center in the original sequence is proper, so the comparison over the identity is an isomorphism. Reverse its direction to obtain the stated comparison.
 -/
 theorem isomorphic_embeddedResolutionRuleOfPrincipalization_of_iso (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -199,24 +189,10 @@ def LinearEmbeddingsHaveLocallyConstCodim : Prop :=
       HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)))
         (affineSpaceInrEmbedding k n m) n
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Enlarge each of the two ambient schemes to its given affine-space presentation and then to the common affine space with both blocks of coordinates. Each embedding used for enlargement is closed and over the field. The componentwise nonvanishing condition persists under composition, and every new ambient space is smooth with empty strict normal crossing boundary. The codimension comparison gives the required positive étale coordinate codimension at each enlargement, using the complementary block for the standard linear inclusions. The enlargement theorem gives an isomorphism of resolution sequences at each step.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+The two composite embeddings into the common affine space are the coordinate maps obtained by appending zero coordinates in the other block. The assumed comparison by an ambient automorphism identifies these coordinate maps over the field, so the two sequences in the common affine space are isomorphic by invariance under ambient isomorphisms. Compose this middle isomorphism with the enlargement isomorphisms and the inverses of those on the second side.
 -/
 theorem isomorphic_embeddedResolutionRuleOfPrincipalization (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (hsm : AffineSpaceIsSmooth.{u})
@@ -359,8 +335,8 @@ theorem isomorphic_embeddedResolutionRuleOfPrincipalization (Alg : Principalizat
     Φ hΦ1 hfin
   exact e1.trans (e2.trans (e3.trans (e1'.trans e2').symm))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Take any two admissible embeddings of the same scheme and their affine-space presentations. The comparison theorem using the two codimension hypotheses gives an isomorphism of their resolution sequences. This gives independence for every such pair.
 -/
 theorem isIndependentOfPresentedEmbedding_of_locallyConstCodim (Alg : PrincipalizationAlgorithm.{u}) (hAlg : IsFunctorialPrincipalization Alg)
     (hw : TransitionsAreBlowupsForEmbeddings Alg) (hsm : AffineSpaceIsSmooth.{u})

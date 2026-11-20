@@ -21,16 +21,16 @@ def NilIsStrictNormalCrossingsOfSmooth : Prop :=
   ∀ (k : Type u) [Field k] [CharZero k] (A : Scheme.{u})
     (q : A ⟶ Spec (CommRingCat.of k)), AlgebraicGeometry.Smooth q → InStrictNormalCrossingPosition q []
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For any of the smooth schemes in the statement, the empty list is in strict normal crossing position by the empty-boundary theorem for smooth schemes. Apply that theorem to its structural map.
 -/
 theorem nilIsStrictNormalCrossingsOfSmooth : NilIsStrictNormalCrossingsOfSmooth.{u} := by
   intro k _ _ A q hq
   have : AlgebraicGeometry.Smooth q := hq
   exact inStrictNormalCrossingPosition_nil q
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The rule is formed by deleting the unit-center steps of the blowup sequence induced by principalization. Each index within the resulting length therefore has a center ideal distinct from the unit ideal, which is the required proper-center condition.
 -/
 theorem hasProperCenters_embeddedResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u}) (h : TransitionsAreBlowupsForEmbeddings A) :
     (embeddedResolutionRuleOfPrincipalization A h).HasProperCenters := by
@@ -38,8 +38,8 @@ theorem hasProperCenters_embeddedResolutionRuleOfPrincipalization (A : Principal
   have hi' : i < ((D.toEmbeddedBlowupSequence A).inducedBlowups (h k Y p D)).withoutIsoBlowups.length := hi
   exact SequenceOfBlowups.withoutIsoBlowups_center_ne_top _ hi'
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate both rules on an arbitrary input scheme over its field. The chosen embedding is exactly the affine-space embedding datum used by the affine principalization rule. The comparison of the two principalization constructions for this datum identifies the output sequences. Equality at every input proves equality of the rules.
 -/
 theorem toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u}) (h : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

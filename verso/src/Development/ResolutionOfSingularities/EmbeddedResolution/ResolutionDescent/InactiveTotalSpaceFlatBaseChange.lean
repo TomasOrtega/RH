@@ -28,8 +28,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 namespace EmbeddedBlowupSequence
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of an old detached piece into the successor coproduct first includes it in the preceding coproduct and then includes that coproduct as the old summand. Passing from the successor to the later coproduct gives the inclusion of the same piece at the later stage.
 -/
 theorem detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE (S : EmbeddedBlowupSequence k Y pY) (s a b : ℕ)
     (hsa : s < a) (hab : a + 1 ≤ b) :
@@ -37,8 +37,8 @@ theorem detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE (S : EmbeddedBl
       S.detachedToCoprod s b (lt_of_lt_of_le hsa (le_trans (Nat.le_succ a) hab)) := by
   rw [← Category.assoc, ← S.detachedToCoprod_succ_of_lt s a hsa, S.detachedToCoprod_detachedCoprodMapOfLE]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of the new summand is the inclusion of the piece detached at this step into the successor coproduct. Composing with the map to the later stage gives the corresponding inclusion there.
 -/
 theorem detachedCoprodInr_detachedCoprodMapOfLE (S : EmbeddedBlowupSequence k Y pY) (a b : ℕ) (hab : a + 1 ≤ b) :
     S.detachedCoprodInr a ≫ S.detachedCoprodMapOfLE hab =
@@ -49,16 +49,16 @@ def inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAr
     S.detachedCoprod i ⟶ Y :=
   (coprod.inr : S.detachedCoprod i ⟶ S.totalSpace i) ≫ (S.inducedBlowups h).projectionToBase i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inactive map to the base is the detached-summand inclusion followed by the projection of the induced blowup sequence. On a piece detached at an earlier stage, that projection factors through the strict transform at the stage of detachment.
 -/
 theorem detachedToCoprod_inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (s i : ℕ)
     (hs : s < i) :
     S.detachedToCoprod s i hs ≫ S.inactiveTotalToBase h i = S.detachedι s ≫ S.strictTransformToBase s :=
   detachedToCoprod_inr_inducedBlowups_projectionToBase S h s i hs
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Check the two summands of the total space. The projection of the induced blowup sequence restricts to the strict-transform map on the first summand and to the inactive map by definition on the second. The coproduct universal property then identifies the projection.
 -/
 theorem coprodDesc_strictTransformToBase_inactiveTotalToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     coprod.desc (S.strictTransformToBase i) (S.inactiveTotalToBase h i) = (S.inducedBlowups h).projectionToBase i := by
@@ -76,31 +76,29 @@ variable {k' : Type u} [Field k'] [CharZero k'] {Y' : Scheme.{u}} [AlgebraicGeom
   {pY' : Y' ⟶ Spec (CommRingCat.of k')} [AlgebraicGeometry.LocallyOfFiniteType pY']
   {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison reindexing is strictly increasing on the stages under consideration. Both given indices are in that range, so it preserves their strict inequality.
 -/
 theorem reindex_lt_reindex (F : ChartFlatBaseChange S S') {s j : ℕ} (hsj : s < j)
     (hj : j ≤ S'.length) : F.reindex s < F.reindex j :=
   F.reindex_lt_reindex_of_lt hsj hj
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The bound on the successor places the preceding stage strictly before the end of the sequence. Strict increase of the reindexing across this step gives the required weak inequality.
 -/
 private theorem reindex_le_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j + 1 ≤ S'.length) :
     F.reindex j ≤ F.reindex (j + 1) :=
   (F.reindex_lt_succ j (by omega)).le
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The bound on the successor places the preceding stage strictly before the end of the sequence. Apply strict increase of the reindexing across this step.
 -/
 private theorem reindex_lt_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j + 1 ≤ S'.length) :
     F.reindex j < F.reindex (j + 1) :=
   F.reindex_lt_succ j (by omega)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Postcompose both maps to the original base with its closed immersion into the ambient base. On the first route, express the strict-transform projection through its ambient stage, then commute the strict-transform comparison with the stage inclusions. The ambient stage pullback square commutes with the ambient projections. On the second route, the projection through the new ambient stage agrees with the strict-transform projection followed by the new base embedding, and the comparison square of base embeddings commutes. The postcomposites agree, so cancel the original base embedding, which is a monomorphism.
 -/
 theorem strictTransformComparison_comp_strictTransformToBase (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     F.strictTransformComparison j hj ≫ S.strictTransformToBase (F.reindex j) = S'.strictTransformToBase j ≫ F.baseMap := by
@@ -128,8 +126,8 @@ theorem strictTransformComparison_comp_strictTransformToBase (F : ChartFlatBaseC
       _ = (S'.strictTransformToBase j ≫ F.baseMap) ≫ S.emb := (Category.assoc _ _ _).symm
   exact (cancel_mono S.emb).mp key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Paste the pullback square for the strict-transform inclusions with the pullback square for the ambient stage projections. Identify the vertical composites as the strict-transform projections followed by the base embeddings. The square for those embeddings is a pullback, and the strict-transform projections commute with the comparison maps. Pullback cancellation therefore gives the desired square over the bases.
 -/
 theorem isPullback_strictTransformComparison_strictTransformToBase (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     IsPullback (F.strictTransformComparison j hj) (S'.strictTransformToBase j) (S.strictTransformToBase (F.reindex j))
@@ -141,8 +139,8 @@ theorem isPullback_strictTransformComparison_strictTransformToBase (F : ChartFla
     exact h1
   exact h2.of_bot (F.strictTransformComparison_comp_strictTransformToBase j hj) F.isPullback_emb
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Compose the given compatibility over the original base with the original base embedding. The strict-transform projection through its ambient stage and the square of base embeddings turn this into compatibility over the ambient base, with the map to the new base followed by its embedding. The emptiness criterion for an omitted detached piece now applies.
 -/
 theorem isEmpty_of_comm_detachedScheme_of_not_mem_range (F : ChartFlatBaseChange S S') (s : ℕ) (hs : s < S.length)
     (hskip : ∀ j, j < S'.length → F.reindex j ≠ s) (Q : Scheme.{u}) (q : Q ⟶ S.detachedScheme s)
@@ -157,17 +155,15 @@ theorem isEmpty_of_comm_detachedScheme_of_not_mem_range (F : ChartFlatBaseChange
     _ = p ≫ (S'.emb ≫ F.ambientMap) := by rw [F.isPullback_emb.w]
     _ = (p ≫ S'.emb) ≫ F.ambientMap := (Category.assoc _ _ _).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A map to the initial scheme induces a function from the source's underlying space to the empty set. Thus the source has no points.
 -/
 private theorem isEmpty_of_hom_to_initial {P : Scheme.{u}}
     (f : P ⟶ ⊥_ Scheme.{u}) : IsEmpty ↥P :=
   Function.isEmpty f.base
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For each earlier detached piece, both routes through the old summand map it to the base through its strict transform at detachment. The old summand therefore retains its preceding base map. On the new summand the base map is its detachment inclusion followed by that stage's strict-transform projection. These restrictions determine the map on the successor coproduct.
 -/
 private theorem inactiveTotalToBase_succ_eq_desc (T : EmbeddedBlowupSequence k Y pY)
     (hT : T.TransitionsAreBlowups) (i : ℕ) :
@@ -195,12 +191,8 @@ private theorem inactiveTotalToBase_succ_eq_desc (T : EmbeddedBlowupSequence k Y
   · exact hl.trans (coprod.inl_desc _ _).symm
   · exact hr.trans (coprod.inr_desc _ _).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of detached stages in the coproduct. At zero, any source mapping to the empty coproduct is empty. At a successor, the pullback of the older coproduct is empty by induction and the pullback of the new piece is empty by the criterion for omitted stages. Base change of their coproduct is the coproduct of these two empty pullbacks, using the summand description of the map to the base. A scheme with the stated compatible maps maps to this empty coproduct, so it is empty.
 -/
 private theorem forall_isEmpty_of_comm_inactiveTotalToBase (F : ChartFlatBaseChange S S')
     (h : S.TransitionsAreBlowups) :
@@ -237,8 +229,8 @@ private theorem forall_isEmpty_of_comm_inactiveTotalToBase (F : ChartFlatBaseCha
       exact isEmpty_of_hom_to_initial
         (h3.lift q p hcomm' ≫ coprod.desc (𝟙 (⊥_ Scheme.{u})) (𝟙 (⊥_ Scheme.{u})))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Every summand is indexed by an existing stage omitted by the reindexing, by the two assumptions on the indices. Apply the preceding induction criterion to the compatible pair of maps.
 -/
 theorem isEmpty_of_comm_inactiveTotalToBase_of_not_mem_range (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups)
     (i : ℕ) (hlt : ∀ s, s < i → s < S.length)
@@ -247,18 +239,8 @@ theorem isEmpty_of_comm_inactiveTotalToBase_of_not_mem_range (F : ChartFlatBaseC
     (hcomm : q ≫ S.inactiveTotalToBase h i = p ≫ F.baseMap) : IsEmpty ↥P :=
   forall_isEmpty_of_comm_inactiveTotalToBase F h i hlt hskip P q p hcomm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct from the initial stage of the interval to its endpoint. At the initial stage the coproduct map is the identity, so the starting square is the given pullback. At a successor the new detached piece is omitted by the reindexing, so it has empty pullback. The successor map to the base is the coproduct of the previous base map and that piece's map. Its pullback is therefore still represented by the preceding pullback, with the first projection followed by the inclusion of the old summand. This inclusion extends the coproduct map through the successor and proves the induction step.
 -/
 theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups)
     {a b : ℕ} (hab : a ≤ b) (hlt : ∀ s, a ≤ s → s < b → s < S.length)
@@ -321,8 +303,8 @@ theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseC
         exact hpbSucc
   exact main b hab hlt hskip
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Paste the pullback square comparing the detached schemes inside their strict transforms with the pullback square comparing the strict transforms over the bases. The resulting projections are the detachment inclusions followed by the strict-transform projections.
 -/
 theorem isPullback_inactiveSchemeMap_baseMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -341,8 +323,8 @@ def inactiveTotalMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced
           (F.detachedSchemeComparison j (by omega) ≫
             S.detachedToCoprod (F.reindex j) (F.reindex (j + 1)) (F.reindex_lt_reindex_succ j hj))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a successor, the recursive map is defined on the old summand by the preceding comparison followed by the map to the later coproduct. On the new summand it compares the detached piece and includes it at the reindexed stage. Identifying the source with this coproduct gives the stated map.
 -/
 private theorem inactiveTotalMap_succ_eq_desc (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -362,8 +344,8 @@ private theorem inactiveTotalMap_succ_eq_desc (F : ChartFlatBaseChange S S')
   rw [h0, hid]
   exact Category.id_comp _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the successor comparison to the old summand. By its coproduct description, this is the preceding comparison followed by the inclusion of the earlier target coproduct into the later target coproduct.
 -/
 private theorem detachedCoprodInl_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -373,8 +355,8 @@ private theorem detachedCoprodInl_inactiveTotalMap (F : ChartFlatBaseChange S S'
   rw [inactiveTotalMap_succ_eq_desc F n hj]
   exact coprod.inl_desc _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the successor comparison to the new summand. Its coproduct description gives the comparison of the newly detached scheme followed by that piece's inclusion in the reindexed coproduct.
 -/
 private theorem detachedCoprodInr_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (n : ℕ)
@@ -385,12 +367,8 @@ private theorem detachedCoprodInr_inactiveTotalMap (F : ChartFlatBaseChange S S'
   rw [inactiveTotalMap_succ_eq_desc F n hj]
   exact coprod.inr_desc _ _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage of the coproduct. The initial coproduct has no earlier index. At a successor, a piece from a strictly earlier stage factors through the old summand. Apply the induction hypothesis there and compose the inclusion of the corresponding piece with the map to the larger target coproduct. For the piece detached at the current step, the restriction to the new summand gives the asserted formula directly.
 -/
 private theorem forall_detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] :
@@ -412,8 +390,8 @@ private theorem forall_detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChang
       · subst heq
         rw [S'.detachedToCoprod_self s, detachedCoprodInr_inactiveTotalMap F s hj]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the inductive description of the inactive comparison on each detached summand to the specified stage and summand index.
 -/
 theorem detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length)
@@ -423,8 +401,8 @@ theorem detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChange S S')
         S.detachedToCoprod (F.reindex s) (F.reindex j) (F.reindex_lt_reindex hs hj) :=
   forall_detachedToCoprod_inactiveTotalMap F j hj s hs
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Check the two maps on each piece of the older coproduct. Including that piece first in the successor and then in the later stage gives its inclusion at the later stage. The direct map from the older coproduct has the same restriction. Thus the maps agree.
 -/
 private theorem inl_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c b : ℕ}
     (hcb : c + 1 ≤ b) :
@@ -435,8 +413,8 @@ private theorem inl_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c
   have h2 := T.detachedToCoprod_detachedCoprodMapOfLE hs (Nat.le_of_succ_le hcb)
   exact h1.trans h2.symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second inclusion inserts the newly detached piece into the successor coproduct. The map to the later coproduct carries this inclusion to the inclusion of the same piece there.
 -/
 private theorem inr_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c b : ℕ}
     (hcb : c + 1 ≤ b) :
@@ -444,16 +422,16 @@ private theorem inr_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c
       T.detachedToCoprod c b hcb :=
   T.detachedCoprodInr_detachedCoprodMapOfLE c b hcb
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first projection by its equal map in the given pullback square. The universal property stays the same.
 -/
 private theorem isPullback_of_fst_eq {P X Z W : Scheme.{u}} {f f' : P ⟶ X} {g : P ⟶ Z}
     {q : X ⟶ W} {u : Z ⟶ W} (hf : f = f') (hp : IsPullback f' g q u) : IsPullback f g q u := by
   subst hf
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use the two equalities to replace both projections of the given pullback. The same universal property proves the assertion.
 -/
 private theorem isPullback_of_fst_eq_of_snd_eq {P X Z W : Scheme.{u}} {f f' : P ⟶ X}
     {g g' : P ⟶ Z} {q : X ⟶ W} {u : Z ⟶ W} (hf : f = f') (hg : g = g')
@@ -462,8 +440,8 @@ private theorem isPullback_of_fst_eq_of_snd_eq {P X Z W : Scheme.{u}} {f f' : P 
   subst hg
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equal second projection and the equal map from the first target to the base. This gives exactly the given pullback square.
 -/
 private theorem isPullback_of_snd_eq_of_map_eq {P X Z W : Scheme.{u}} {f : P ⟶ X} {g g' : P ⟶ Z}
     {q q' : X ⟶ W} {u : Z ⟶ W} (hg : g = g') (hq : q = q')
@@ -472,16 +450,8 @@ private theorem isPullback_of_snd_eq_of_map_eq {P X Z W : Scheme.{u}} {f : P ⟶
   subst hq
   exact hp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the source stage. At zero the source coproduct is empty, and every target summand before the initial reindexed stage is omitted. Their pullback is empty, so the two unique projections from the initial scheme give the desired square. At a successor take the coproduct of the previous comparison square and the square for the newly detached piece. This gives a pullback up to the stage just after that piece in the original sequence. Any remaining intervening stages are omitted, so including their pieces preserves the pullback. On the old and new summands the resulting first projection gives the two defining restrictions of the successor comparison, which identifies the resulting square.
 -/
 theorem isPullback_inactiveTotalMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']
@@ -556,15 +526,15 @@ def totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     S'.totalSpace j ⟶ S.totalSpace (F.reindex j) :=
   coprod.map (F.strictTransformComparison j hj) (F.inactiveTotalMap j hj)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The total space is the coproduct of the strict transform and accumulated detached pieces. Its comparison is defined as the coproduct map of the strict-transform comparison and the inactive comparison.
 -/
 theorem totalSpaceMap_eq_coprodMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length) :
     F.totalSpaceMap j hj = coprod.map (F.strictTransformComparison j hj) (F.inactiveTotalMap j hj) := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Restrict the coproduct comparison to the strict-transform summand. This gives the strict-transform comparison followed by the corresponding target inclusion.
 -/
 theorem inl_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length) :
@@ -573,8 +543,8 @@ theorem inl_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsRe
         (coprod.inl : S.strictTransform (F.reindex j) ⟶ S.totalSpace (F.reindex j)) := by
   simp [ChartFlatBaseChange.totalSpaceMap]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On the inactive summand the total space comparison is the inactive comparison followed by the target inclusion. Restrict that comparison to the specified detached scheme using its summand formula, then compose with the inclusion into the target total space.
 -/
 theorem detachedToCoprod_inr_totalSpaceMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length)
@@ -587,8 +557,8 @@ theorem detachedToCoprod_inr_totalSpaceMap (F : ChartFlatBaseChange S S')
   rw [F.totalSpaceMap_eq_coprodMap j hj, coprod.inr_map, ← Category.assoc,
     F.detachedToCoprod_inactiveTotalMap j hj s hs, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform comparison and the inactive comparison each give pullback squares over the same map of bases. Take their coproduct on each side. The resulting projections are the projections of the induced blowup sequences, since those restrict to the two component maps. Its comparison is the total space map by definition.
 -/
 theorem isPullback_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)

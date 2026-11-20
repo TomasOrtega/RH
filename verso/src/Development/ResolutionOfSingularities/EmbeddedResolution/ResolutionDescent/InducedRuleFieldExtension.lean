@@ -19,8 +19,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback carries the unit ideal to the unit ideal. Its support is empty, so no point lies in that support.
 -/
 private theorem notMem_support_comap_top {A C : Scheme.{u}} (h : A ⟶ C) (x : ↥A) :
     x ∉ ((⊤ : C.IdealSheafData).comap h).support := by
@@ -29,20 +29,8 @@ private theorem notMem_support_comap_top {A C : Scheme.{u}} (h : A ⟶ C) (x : �
   have hx' : x ∈ ((⊥ : TopologicalSpace.Closeds ↥A) : Set ↥A) := hx
   simp at hx'
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The reindexing of a pullback comparison of a sequence with itself is strictly increasing and fixes the final index. A forward induction shows each reindexed index is at least the original one. An induction backwards from the final stage gives the reverse bound, because advancing by one index increases the reindexed index by at least one. Thus every actual center index is matched. By the comparison's support condition the pulled-back center at each matched index has a point in its support. The pullback of a unit ideal has empty support, so none of the centers is the unit ideal.
 -/
 theorem center_ne_top_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (h : IsPullbackBlowupSequence (𝟙 X) s s) :
@@ -82,8 +70,8 @@ theorem center_ne_top_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s : Se
   rw [hc] at hx
   exact notMem_support_comap_top _ x hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The identity is an open immersion and preserves the structure map. Compatibility of the affine rule therefore gives a pullback comparison of its output sequence with itself over the identity. The preceding result excludes unit centers at every actual stage.
 -/
 theorem AffineResolutionRule.center_ne_top (B : AffineResolutionRule.{u}) (hB : IsCompatibleWithOpenImmersions B)
     (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -93,18 +81,8 @@ theorem AffineResolutionRule.center_ne_top (B : AffineResolutionRule.{u}) (hB : 
     ∀ i : ℕ, i < (B k Y p).length → (B k Y p).center i ≠ ⊤ :=
   center_ne_top_of_isPullbackSequenceOfBlowups_id (B k Y p) (hB k Y Y p p (𝟙 Y) (Category.id_comp p))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a surjective étale affine cover of the original scheme whose extension is a surjective étale affine cover of the extended scheme. On the extended cover, compare the sequence obtained by two successive strict pullbacks of the global sequence with the affine rule's output obtained by extending the affine output on the original cover. Both are strict pullbacks from the original global sequence along the same composite, by the compatibility of the induced rule with covers and of the affine rule with field extension. Hence they are isomorphic. Delete unit-center steps on both sides. The affine output already has proper centers by open-immersion compatibility, so the deletion preserves it up to isomorphism. The induced rule on the extended scheme also pulls back to that affine output. Descent of an isomorphism along the faithfully flat cover identifies the extended global sequence with the base change of the original sequence after deletion of unit centers. Base change followed by this deletion is a pullback comparison of the required type.
 -/
 theorem inducedRuleCompatibleWithFieldExtension (B : AffineResolutionRule.{u}) : InducedRuleCompatibleWithFieldExtension B := by
   intro hoi hfe F hF k _ _ X f _ _ _ K _ _ _ _

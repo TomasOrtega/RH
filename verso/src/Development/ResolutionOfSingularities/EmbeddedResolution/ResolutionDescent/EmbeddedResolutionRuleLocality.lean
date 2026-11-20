@@ -21,8 +21,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Use the equality of ideals to identify the two inputs to principalization. The ambient scheme, ideal and boundary now agree, and the proofs of admissibility do not affect the value. The resulting blowup sequences are equal.
 -/
 private theorem principalizationAlgorithm_toSequenceOfBlowups_congr_ideal (A : PrincipalizationAlgorithm.{u}) (k : Type u) [Field k] [CharZero k]
     (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k))
@@ -35,8 +35,8 @@ private theorem principalizationAlgorithm_toSequenceOfBlowups_congr_ideal (A : P
   subst hIJ
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the source sequence of the existing pullback comparison by the equal sequence. All the same comparison maps and center identities apply.
 -/
 private theorem isPullbackSequenceOfBlowups_congr_left {X X' : Scheme.{u}} {φ : X' ⟶ X}
     {s1 s2 : SequenceOfBlowups X'} {t : SequenceOfBlowups X} (h : s1 = s2) (H : IsPullbackBlowupSequence φ s1 t) :
@@ -44,12 +44,8 @@ private theorem isPullbackSequenceOfBlowups_congr_left {X X' : Scheme.{u}} {φ :
   subst h
   exact H
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth ambient map is flat, so the pullback square of embeddings identifies the new kernel ideal with the pullback of the old kernel. Its nonvanishing condition is the one supplied by the new embedding, and the pulled-back boundary is empty. Apply smooth functoriality of principalization to obtain the comparison of the ambient blowup sequences, identifying the input ideals by their equality. The pullback square of the embeddings and this ambient comparison give the chart comparison for flat base change. Its comparison of induced blowup sequences after deleting unit-center steps is exactly the assertion for the embedded rule.
 -/
 theorem embeddedResolutionRule_isPullbackBlowupSequence_of_smooth
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -87,8 +83,8 @@ theorem embeddedResolutionRule_isPullbackBlowupSequence_of_smooth
   exact (chartFlatBaseChangeOfIsPullbackSeq (D.toEmbeddedBlowupSequence A) (D'.toEmbeddedBlowupSequence A) φ ψ
     hsq.flip hpb).isPullbackBlowupSequence_inducedBlowupsWithoutIso _ _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Take an arbitrary smooth ambient map over the field and a pullback square of embeddings as in the compatibility condition. The smooth pullback theorem for the embedded rule gives the required comparison of output sequences for these data.
 -/
 theorem embeddedResolutionRule_isCompatibleWithSmoothAmbientMaps
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A) :
@@ -96,8 +92,8 @@ theorem embeddedResolutionRule_isCompatibleWithSmoothAmbientMaps
   intro k _ _ Y Y' p p' _ _ _ _ _ _ _ _ D D' φ _ ψ hφ hsq
   exact embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After extending the field, the schemes and structural maps retain the affineness and finiteness properties needed by principalization. The ambient projection is flat, so the base-change square identifies the new embedding ideal with the pullback of the original ideal. The supplied nonvanishing and empty-boundary conditions therefore allow application of field functoriality of principalization. This gives a pullback comparison of the ambient sequences, which induces a pullback comparison of the embedded sequences with unit-center steps deleted. The projection of the base-changed embedded scheme is surjective, and the original sequence with unit-center steps deleted has only proper centers. The strict pullback criterion thus removes all reindexing.
 -/
 theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -171,8 +167,8 @@ theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
   · intro i hi
     exact SequenceOfBlowups.withoutIsoBlowups_center_ne_top ((D.toEmbeddedBlowupSequence A).inducedBlowups _) hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For any field extension and base-changed embedding satisfying the given conditions, the strict field base-change theorem for the embedded rule gives the required comparison. This is precisely compatibility with field base change.
 -/
 theorem embeddedResolutionRule_isCompatibleWithFieldBaseChange
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A) :

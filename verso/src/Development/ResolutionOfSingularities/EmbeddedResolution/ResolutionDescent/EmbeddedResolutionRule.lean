@@ -13,8 +13,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map after extending the field is the pullback of the original structural map. Being locally of finite type is preserved by pullback.
 -/
 theorem locallyOfFiniteType_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -24,8 +24,8 @@ theorem locallyOfFiniteType_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Fiel
     (IsPullback.of_hasPullback p (specMapAlgebraMap k K))
     (inferInstanceAs (AlgebraicGeometry.LocallyOfFiniteType p))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The new structural map is obtained by pulling back the original structural map along the map of field spectra. Quasi-compactness is preserved by this base change.
 -/
 theorem quasiCompact_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.QuasiCompact p]
@@ -35,8 +35,8 @@ theorem quasiCompact_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (IsPullback.of_hasPullback p (specMapAlgebraMap k K))
     (inferInstanceAs (AlgebraicGeometry.QuasiCompact p))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map over the extension field is the base change of the original map. Smoothness is preserved by base change.
 -/
 theorem smooth_baseChangeToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -108,8 +108,8 @@ namespace EmbeddingDatum
 variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
   {p : Y ⟶ Spec (CommRingCat.of k)}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original embedding followed by the ambient structural map is the structural map of the embedded scheme. Thus following the projection to the original scheme and then this composite agrees with following the projection to the extension field and then its map to the original field, by commutativity of the base-change square.
 -/
 private theorem pullbackCondition_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -124,8 +124,8 @@ def baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K] [Algebra k K
     (pullbackCondition_baseChangeEmb D K)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base-changed embedding comes from the universal property of the ambient pullback. Its first component is the projection to the original embedded scheme followed by the original embedding.
 -/
 theorem baseChangeEmb_comp_baseChangeProjection (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -133,16 +133,16 @@ theorem baseChangeEmb_comp_baseChangeProjection (D : EmbeddingDatum k Y p) (K : 
   pullback.lift_fst _ _ _
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base-changed embedding was defined using the structural map to the extension field as its second component. Composing with the second projection therefore returns that structural map.
 -/
 theorem baseChangeEmb_comp_baseChangeToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :
     D.baseChangeEmb K ≫ baseChangeToSpec D.ambientStruct K = baseChangeToSpec p K :=
   pullback.lift_snd _ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Place the comparison square beside the base-change square for the ambient scheme. Their outer rectangle is the base-change square for the embedded scheme because the original embedding respects the field structure and the induced map respects the extension-field projections. The ambient square and the outer rectangle are pullbacks, so pullback cancellation proves that the comparison square is a pullback.
 -/
 theorem isPullback_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
@@ -155,8 +155,8 @@ theorem isPullback_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field 
   exact IsPullback.of_right hbig (baseChangeEmb_comp_baseChangeProjection D K)
     (IsPullback.of_hasPullback D.ambientStruct (specMapAlgebraMap k K)).flip
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison square identifies the base-changed embedding with the pullback of the original closed immersion. A base change of a closed immersion is a closed immersion.
 -/
 theorem isClosedImmersion_baseChangeEmb (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] : AlgebraicGeometry.IsClosedImmersion (D.baseChangeEmb K) :=
@@ -167,31 +167,31 @@ instance instIsClosedImmersionBaseChangeEmb (D : EmbeddingDatum k Y p) (K : Type
     [Algebra k K] : AlgebraicGeometry.IsClosedImmersion (D.baseChangeEmb K) :=
   isClosedImmersion_baseChangeEmb D K
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original ambient scheme and both field spectra are affine. Their fiber product is therefore affine, with coordinate ring given by extension of scalars.
 -/
 theorem isAffine_baseChange_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] : AlgebraicGeometry.IsAffine (baseChange D.ambientStruct K) :=
   isAffine_baseChange D.ambientStruct K
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original ambient structural map is smooth by the embedding data. Its base change to the extension field is smooth by stability under pullback.
 -/
 theorem smooth_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u) [Field K]
     [Algebra k K] :
     AlgebraicGeometry.Smooth (baseChangeToSpec D.ambientStruct K) :=
   smooth_baseChangeToSpec D.ambientStruct K
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original ambient structural map is locally of finite type by the embedding data. Applying stability under pullback gives the property for the ambient structural map over the extension field.
 -/
 theorem locallyOfFiniteType_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :
     AlgebraicGeometry.LocallyOfFiniteType (baseChangeToSpec D.ambientStruct K) :=
   locallyOfFiniteType_baseChangeToSpec D.ambientStruct K
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original ambient structural map is quasi-compact by the embedding data. Its pullback to the extension field is therefore quasi-compact.
 -/
 theorem quasiCompact_baseChangeToSpec_ambientToSpec (D : EmbeddingDatum k Y p) (K : Type u)
     [Field K] [Algebra k K] :
@@ -235,8 +235,8 @@ def EmbeddedResolutionRule.toAffineResolutionRule (R : EmbeddedResolutionRule.{u
   fun k _ _ Y p _ _ _ _ => R k Y p (S k Y p)
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The affine rule first uses the chosen embedding of the input scheme, then evaluates the embedded resolution rule at that embedding. Evaluating the definition gives the claimed sequence.
 -/
 theorem EmbeddedResolutionRule.toAffineResolutionRule_apply (R : EmbeddedResolutionRule.{u}) (S : EmbeddingChoice.{u})
     (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})

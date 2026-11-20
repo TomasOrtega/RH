@@ -86,20 +86,20 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution.OrderReductionProperties
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The tuned-ideal construction satisfies the inclusion from a successor tuning index and the product bound for two indices. The criterion for the tuning properties applies to these two inclusions.
 -/
 theorem tunedSheafProperties : TunedSheafProperties.{u} :=
   tunedSheafProperties_of_succ_le_of_mul_le tunedSheaf_succ_le.{u} tunedSheaf_mul_le_add.{u}
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+The étale equalization theorem produces a common étale neighborhood for the two maximal-contact hypersurfaces. On it their pullback ideals agree, which gives the required equivalence.
 -/
 theorem maxContactHypersurfacesEtaleEquivalent : MaxContactHypersurfacesEtaleEquivalent.{u} := by
   apply FunctorialResolution.EmbeddedResolution.exists_etale_equalizing_isMaxContactHypersurface
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For an admissible triple take a smooth pullback with the stated quasi-compact structural map and compatibility over the base. The admissibility theorem for smooth pullback gives all the conditions for the pulled-back triple.
 -/
 theorem validPullbackAlongSmooth : OrderReduction.ValidPullbackAlongSmooth.{u} := by
   rw [OrderReduction.validPullbackAlongSmooth_iff]
@@ -108,8 +108,8 @@ theorem validPullbackAlongSmooth : OrderReduction.ValidPullbackAlongSmooth.{u} :
   have : AlgebraicGeometry.QuasiCompact q := hqc
   exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+The field-extension admissibility theorem applies to the given admissible triple over the original field and the stated extension. Thus the resulting triple is admissible.
 -/
 theorem validBaseChange : OrderReductionFieldBaseChange.ValidBaseChange.{u} := by
   unfold FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.ValidBaseChange
@@ -117,8 +117,8 @@ theorem validBaseChange : OrderReductionFieldBaseChange.ValidBaseChange.{u} := b
   apply MarkedIdealWithBoundary.isAdmissible_baseChange
   all_goals assumption
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The field homomorphism into the characteristic-zero extension gives characteristic zero downstairs. Admissibility gives a smooth original structural map. The order formula for field extension then identifies the order at each upstairs point with the original order at its image.
 -/
 theorem orderAtBaseChangeEq : OrderReductionFieldBaseChange.OrderAtBaseChangeEq.{u} := by
   intro T L _ _ f hV y
@@ -127,12 +127,8 @@ theorem orderAtBaseChangeEq : OrderReductionFieldBaseChange.OrderAtBaseChangeEq.
   have : AlgebraicGeometry.Smooth T.structMap := by assumption
   exact FunctorialResolution.EmbeddedResolution.orderAt_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal y
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given pullback scheme is canonically isomorphic to the scheme obtained by field extension, with its projections identified. The iterated derivative ideal commutes with the canonical field extension by its base-change formula. Pull back this equality along the canonical isomorphism, using the smooth pullback formula for derivatives along that isomorphism. Composition of pullbacks gives the claimed identity for the given square.
 -/
 private theorem derivIdealSheafIter_comap_of_isPullback
     {k L : Type u} [Field k] [Field L]
@@ -169,20 +165,16 @@ private theorem derivIdealSheafIter_comap_of_isPullback
     simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_comp]
   rw [hc1, hc2, h2, key]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+For every field-extension pullback square and derivative index, apply the iterated derivative comparison for that square. This is the required base-change property.
 -/
 theorem derivIdealSheafIterate_comm_baseChange : DerivIdealSheafIterateCommBaseChange.{u} := by
   unfold DerivIdealSheafIterateCommBaseChange
   intros
   apply derivIdealSheafIter_comap_of_isPullback <;> assumption
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+The original balance condition bounds the required powers of each derivative ideal by the corresponding power of the original ideal. Field extension identifies the derivative ideals with their pullbacks, and pullback preserves powers and inclusions. The original inequalities therefore give the power bounds characterizing balance upstairs.
 -/
 theorem isBalanced_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
@@ -214,12 +206,8 @@ theorem isBalanced_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmiss
     exact FunctorialResolution.EmbeddedResolution.IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hB' hi
   exact hgoal
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
-
-Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Removing unit entries leaves the same list of nontrivial entries, since a second filtering keeps all entries of the first result. The admissibility theorem for boundaries with the same nontrivial entries applies to the trimmed triple.
 -/
 theorem forall_isAdmissible_dropTrivialBoundary : MaxContactFunctoriality.DropTrivialBoundaryAdmissible.{u} := by
   intro T hV
@@ -236,28 +224,24 @@ theorem forall_isAdmissible_dropTrivialBoundary : MaxContactFunctoriality.DropTr
   funext D
   by_cases hD : D = ⊤ <;> simp [hD]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The filter discards the unit head and returns the filtered tail.
 -/
 private theorem filterNeTop_cons_top {X : Scheme.{u}}
     (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.filterNeTop ((⊤ : X.IdealSheafData) :: L) = FunctorialResolution.EmbeddedResolution.filterNeTop L := by
   simp [FunctorialResolution.EmbeddedResolution.filterNeTop]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The nonunit head passes the filter and is followed by the filtered tail.
 -/
 private theorem filterNeTop_cons_of_ne_top {X : Scheme.{u}}
     {D : X.IdealSheafData} (hD : D ≠ ⊤) (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.filterNeTop (D :: L) = D :: FunctorialResolution.EmbeddedResolution.filterNeTop L := by
   simp [FunctorialResolution.EmbeddedResolution.filterNeTop, hD]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the original list before the appended tail. If the head passes the first test, both transformed lists contain its image before the last filter, which keeps or discards it on both sides together. If it fails the first test, it must be unit. Its image is also unit and is removed by the final filter on the side where it still appears. In both cases use the induction hypothesis for the tail, with the appended suffix unchanged.
 -/
 private theorem filterNeTop_map_filter_append {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤)
@@ -281,8 +265,8 @@ private theorem filterNeTop_map_filter_append {X Y : Scheme.{u}}
           filterNeTop_cons_top]
         exact ih
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage boundary is the map of the original list by the iterated strict transform followed by the exceptional entries. Strict transform fixes the unit ideal. Apply the filtered-list identity to this map and use the same exceptional suffix for both lists.
 -/
 private theorem filterNeTop_boundary_filter {X : Scheme.{u}}
     (d : BlowupSequenceData X) (p : X.IdealSheafData → Bool)
@@ -295,10 +279,8 @@ private theorem filterNeTop_boundary_filter {X : Scheme.{u}}
   exact filterNeTop_map_filter_append (d.iteratedStrictTransform i)
     (d.iteratedStrictTransform_top i) p hp (d.boundaryFrom [] i) L
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+Restoring unit entries leaves exceptional divisibility, order along centers, and smoothness of centers unchanged. At each stage the two boundary lists have the same nontrivial entries, since strict transforms of unit entries are unit and both contain the same exceptional entries. Thus the strict normal crossing condition with the trimmed boundary transfers to the full boundary.
 -/
 theorem isMarked_of_isMarked_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) (_hV : T.IsAdmissible)
     (d : BlowupSequenceData T.scheme) (I : T.scheme.IdealSheafData) (m : ℕ)
@@ -314,23 +296,23 @@ theorem isMarked_of_isMarked_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u
     simpa using hD
   exact hasStrictNormalCrossingsWith_of_filterNeTop_eq _ _ _ _ key (h.center_snc i hi)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For each admissible triple and blowup sequence marked for its trimmed boundary, apply the restoration theorem with its ideal and mark. This supplies the marking for the original boundary.
 -/
 theorem forall_isMarked_of_isMarked_dropTrivialBoundary : MaxContactFunctoriality.MarkedOfMarkedDropTrivialBoundary.{u} := by
   intro T hV d h
   exact isMarked_of_isMarked_dropTrivialBoundary T hV d T.ideal T.mult h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a local certificate and its two required properties at each point from the hypothesis. The localization theorem for order certificates combines this family into a certificate on the whole scheme.
 -/
 theorem orderCertificateLocalToGlobal : OrderCertificateLocalToGlobal.{u} := by
   intro k _ W p N μ Mem Z h
   exact FunctorialResolution.EmbeddedResolution.OrderCertificate.localize (fun z _ => (h z).choose)
     (fun z _ => (h z).choose_spec.1) (fun z _ => (h z).choose_spec.2)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A smooth divisor gives a singleton in strict normal crossing position. The smooth-pullback theorem for members of such a boundary makes the pulled-back singleton member a smooth divisor.
 -/
 theorem isSmoothDivisorStableUnderSmoothPullback : IsSmoothDivisorStableUnderSmoothPullback.{u} := by
   unfold FunctorialResolution.EmbeddedResolution.IsSmoothDivisorStableUnderSmoothPullback
@@ -339,14 +321,14 @@ theorem isSmoothDivisorStableUnderSmoothPullback : IsSmoothDivisorStableUnderSmo
       (FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPosition_singleton_of_isSmoothDivisor _ _ (by assumption)) _
       (List.mem_singleton_self _)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the maximal-contact pullback theorem that uses stability of smooth divisors. The smooth divisor theorem supplies that stability.
 -/
 theorem maxContactHypersurfaceSmoothPullback : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u} :=
   maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback isSmoothDivisorStableUnderSmoothPullback.{u}
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the multiplication criterion for maximal-contact invariance. The maximal-contact ideal is the appropriate iterated derivative ideal, and the balanced tuned ideal is the tuned ideal at the positive tuning exponent. The derivative product bound for that exponent is the required inclusion.
 -/
 private theorem isMaxContactInvariant_balancedTunedSheaf (htf : TunedSheafProperties.{u})
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -359,8 +341,8 @@ private theorem isMaxContactInvariant_balancedTunedSheaf (htf : TunedSheafProper
   exact htf.derivIdealSheafIter_mul_derivIdealSheaf_le_tunedSheaf k X p I m hm hmax
     (FunctorialResolution.EmbeddedResolution.tuningExponent m) (FunctorialResolution.EmbeddedResolution.one_le_tuningExponent m)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+For each marked ideal satisfying the geometric hypotheses, apply the balanced-tuning invariance result using the given tuning properties. This proves the required general condition.
 -/
 theorem isMaxContactInvariantBalancedTuned_of_tunedSheafProperties (htf : TunedSheafProperties.{u}) :
     BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned.{u} := by
@@ -369,10 +351,8 @@ theorem isMaxContactInvariantBalancedTuned_of_tunedSheafProperties (htf : TunedS
   apply isMaxContactInvariant_balancedTunedSheaf htf
   all_goals assumption
 
-/- English proof (translation)
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
-
-Use the matching hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+A smooth divisor gives strict normal crossing position for its singleton boundary. The replacement triple retains the original scheme, structural map, ideal, and mark, so the other admissibility properties come from the original triple.
 -/
 theorem isAdmissible_withBoundary_ker_of_isSmoothDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     {Y : Scheme.{u}} (e : Y ⟶ T.scheme) [AlgebraicGeometry.IsClosedImmersion e]
@@ -389,8 +369,8 @@ theorem isAdmissible_withBoundary_ker_of_isSmoothDivisor (T : MarkedIdealWithBou
   cases hV
   constructor <;> assumption
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+For a unit entry both filters discard it, and for a nonunit entry both keep it. Thus they give the same list.
 -/
 private theorem removeUnitIdeals_eq_nontrivialPart {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals L = FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L := by
@@ -399,8 +379,8 @@ private theorem removeUnitIdeals_eq_nontrivialPart {X : Scheme.{u}} (L : List X.
   funext D
   by_cases hD : D = ⊤ <;> simp [hD]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Both constructions use the same pullback scheme, structural map, ideal, and mark. Their boundary filters agree because removing unit ideals gives the nontrivial part, so the triples are equal.
 -/
 private theorem smoothPullbackTriple_eq_pullbackWithNontrivialBoundary (S : EmbeddedResolution.MarkedIdealWithBoundary.{u})
     {X' : Scheme.{u}} (q : X' ⟶ S.scheme) [AlgebraicGeometry.Smooth q] :
@@ -409,12 +389,8 @@ private theorem smoothPullbackTriple_eq_pullbackWithNontrivialBoundary (S : Embe
   rw [removeUnitIdeals_eq_nontrivialPart]
   rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the smooth pullback triple with the pullback whose unit boundary entries have been removed. Admissibility, the dimension bound, maximal contact, and the strict normal crossing condition transfer to this presentation. The pullback theorem for hypersurface reduction with boundary deletion now gives the relation over the smooth map. The equality of triples identifies the resulting source sequence with the desired one.
 -/
 theorem separateBoundary_pullback_of_smooth (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) :
@@ -457,10 +433,8 @@ theorem separateBoundary_pullback_of_smooth (hinv : ComapIsoInvariance.{u}) (P :
     (FunctorialResolution.EmbeddedResolution.MaxContactReduction.reduceAlongHypersurface hinv T (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.lowerDimensionalFamily A T) S
       H).toMarkedSequenceOfBlowups.toSequenceOfBlowups) hstep) hmain
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Assemble the geometric properties needed for order reduction. Controlled transforms admit maximal-contact data, and centers project into the original order locus. Smooth pullback preserves balance and admissibility under the stated hypotheses, and étale maps give the required dimension bound. The stage theorem supplies local Noetherianity. The blowup-lift comparison gives equality on controlled transforms, smooth ideals are determined by their supports as required, and the étale equalization theorem compares maximal-contact choices. Finally the pullback criterion gives a strict pullback when all centers are nonempty.
 -/
 theorem orderReductionHypotheses : OrderReduction.OrderReductionHypotheses.{u} := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
@@ -481,19 +455,15 @@ theorem orderReductionHypotheses : OrderReduction.OrderReductionHypotheses.{u} :
     have : AlgebraicGeometry.QuasiCompact q := hqc
     exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction of cover properties requires the tuning properties, the dimension bound along blowups, and preservation of admissibility under smooth pullback. The established results supply these three inputs.
 -/
 theorem maxContactCoverProperties : MaxContactCoverProperties.{u} :=
   FunctorialResolution.EmbeddedResolution.OrderReduction.maxContactCoverProperties_of_tunedSheafProperties.{u} tunedSheafProperties.{u} EmbeddedResolution.dimensionNonincreasingAlongBlowups.{u}
     validPullbackAlongSmooth.{u}
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Field extension preserves admissibility and successor dimension, so the dimension predicate is unchanged. The order formula transfers the bound at each image point. The balance comparison transfers the derivative power bounds. Thus all four hypotheses are inherited.
 -/
 theorem isBaseChangeInherited (P : ℕ → Prop) : IsBaseChangeInherited.{u} P := by
   unfold FunctorialResolution.EmbeddedResolution.IsBaseChangeInherited
@@ -513,12 +483,8 @@ theorem isBaseChangeInherited (P : ℕ → Prop) : IsBaseChangeInherited.{u} P :
   · intro hft
     exact isBalanced_baseChange T hV L f hft (hB _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The predicate of being at most the reference dimension descends along dimension inequalities. Apply the cover sequence results with the given boundary reductions. They give nonunit centers, order certificates at mark one, and a strict descent of the cover sequence. The smooth-divisor comparison gives the required mark-one relation after replacing the boundary by its admissible singleton. Finally reduction along maximal contact empties the final tuned order locus. These five properties give the cover sequence specification.
 -/
 theorem coverSequenceProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L : PrincipalizationAssignment.{u})
@@ -549,16 +515,8 @@ theorem coverSequenceProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoIn
     exact FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.orderAtLeastLocus_coverMarkedBlowupData_eq_empty hstar hinv (fun d => d ≤ n) hmono
       A L hdiv T h
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
-
-Use the matching hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The cover map is surjective and locally an isomorphism, and the induced stage comparisons are local isomorphisms between locally Noetherian stages. Descent of marking therefore marks the downstairs sequence for the balanced tuned ideal at the positive tuned mark. The original order bound and nonempty marked locus show that the original mark equals the maximum order. Equivalence of marked sequences under tuning now transfers the marking to the original ideal and mark.
 -/
 theorem markingDescends (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) :
@@ -597,8 +555,8 @@ theorem markingDescends (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
   exact ((tunedSheafProperties.{u}.isMarked_tuned_iff T.base T.scheme T.structMap T.ideal T.mult
     hv.one_le_mult hmax T.boundary d).1).mpr key2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+The good-cover property makes the cover map surjective. Its local open-immersion form makes it étale and hence flat. Together these are faithful flatness.
 -/
 private theorem coverFaithfullyFlat (P : ℕ → Prop) :
     MaxContactFunctoriality.CoverFaithfullyFlat.{u} P := by
@@ -606,8 +564,8 @@ private theorem coverFaithfullyFlat (P : ℕ → Prop) :
   exact ⟨MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h,
     MaxContactFunctoriality.coverMap_flat T h⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second projection is the base change of the first morphism in the cospan. Stability under base change transfers the property to this projection.
 -/
 private theorem pullback_snd_of_isStableUnderBaseChange
     {P : CategoryTheory.MorphismProperty Scheme.{u}}
@@ -617,8 +575,8 @@ private theorem pullback_snd_of_isStableUnderBaseChange
   CategoryTheory.MorphismProperty.of_isPullback (P := P)
     (CategoryTheory.IsPullback.of_hasPullback f g) hf
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is the base change of the second morphism in the cospan. Apply stability under base change.
 -/
 private theorem pullback_fst_of_isStableUnderBaseChange
     {P : CategoryTheory.MorphismProperty Scheme.{u}}
@@ -628,26 +586,10 @@ private theorem pullback_fst_of_isStableUnderBaseChange
   CategoryTheory.MorphismProperty.of_isPullback (P := P)
     (CategoryTheory.IsPullback.of_hasPullback f g).flip hg
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact.
+/- English proof (authored)
+The field extension is flat and preserves pointwise order. It therefore pulls back the marked order locus, and the upstairs mark stays unchanged by the boundary replacement. If the original locus is empty, both reductions have length zero and hence form a strict pullback. If it is nonempty, surjectivity makes the upstairs locus nonempty. Trim both triples and identify the upstairs trimmed triple with the extension of the downstairs trimmed triple.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+The chosen cover of the extended triple and the extension of the original cover are admissible. Their schemes are Noetherian, giving quasi-compactness of their maps to the field spectrum and the common fiber product's relevant structural composite. The dimension of the extended original cover is bounded by that of the extended original scheme because field extension preserves dimension. The projection from the common fiber product is étale and gives the remaining dimension bound. With these geometric conditions and the established descent, tuning, and hypersurface comparisons, apply the field-extension theorem for maximal-contact reduction with a replaced boundary.
 -/
 theorem isStrictPullbackBlowupSeq_maxContact_baseChange
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
@@ -809,8 +751,8 @@ theorem isStrictPullbackBlowupSeq_maxContact_baseChange
       (MorphismProperty.comp_mem (@AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcSnd hqcCbc)
       (le_trans hdimQ hdimChart)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the descended cover sequence of the trimmed triple. Its underlying sequence is the principalization sequence of the original triple. The strict pullback to the cover has nonunit centers by the cover specification. If a downstairs center were the unit ideal, its pullback would be unit, so every center downstairs is nonunit.
 -/
 private theorem center_maxContact_ne_top
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
@@ -826,14 +768,8 @@ private theorem center_maxContact_ne_top
   exact hpb.center_ne_top_of_forall_center_ne_top
     (hsf.center_ne_top _ (hS.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The field-extension theorem gives a strict pullback of the two reductions. If the upstairs order locus is empty, the field-extension projection's surjectivity and the order formula force the downstairs locus to be empty too. Both sequences then have length zero and satisfy the pullback relation. If the upstairs locus is nonempty, every center of the upstairs reduction is nonunit by the cover descent argument. Removing isomorphism steps therefore gives an isomorphic sequence. The pullback relation obtained from strict pullback after removal of those steps transports to the upstairs sequence itself.
 -/
 theorem maxContact_baseChange_isPullbackBlowupSequence
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
@@ -893,24 +829,24 @@ theorem maxContact_baseChange_isPullbackBlowupSequence
     exact (hstrict.isPullbackSequenceOfBlowups_withoutIsoBlowups).of_isomorphic
       (FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.withoutIsoBlowups_isomorphic_self _ hct)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every entry retained by the first filter is nonunit, so the second filter retains each entry in its existing order.
 -/
 private theorem nontrivialPart_idem {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart (FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L)
       = FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L := by
   simp [FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart, List.filter_filter]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Removing unit ideals gives the nontrivial part. Filtering that result again does nothing, so it has the same nontrivial part as the original list.
 -/
 private theorem sameNontrivialBoundary_removeUnitIdeals {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.SameNontrivialBoundary (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals L) L := by
   rw [FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.sameNontrivialBoundary_iff, removeUnitIdeals_eq_nontrivialPart]
   exact nontrivialPart_idem L
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the boundary of the already admissible triple by the other list. The lists have the same nontrivial entries, so the normal crossing condition and admissibility transfer to this replacement.
 -/
 private theorem isAdmissible_withBoundary_of_sameNontrivialBoundary (S : EmbeddedResolution.MarkedIdealWithBoundary.{u})
     (E F : List S.scheme.IdealSheafData)
@@ -922,30 +858,10 @@ private theorem isAdmissible_withBoundary_of_sameNontrivialBoundary (S : Embedde
     apply FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.validOfSameNontrivialBoundary <;> assumption
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
+/- English proof (authored)
+The ideal on the modified upstairs triple is the pullback of the original ideal, with the same mark. If the original order locus is empty, it pulls back to the empty locus, and both sequences have length zero. If only the upstairs locus is empty, its reduction has length zero and the empty-pullback-locus theorem gives the comparison with the downstairs sequence.
 
-Use the matching hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+When both loci are nonempty, trim the two boundaries. Admissibility persists because the nontrivial boundary entries agree with the appropriate lists. Both chosen cover triples are admissible and Noetherian. The common fiber product is quasi-compact over the base, using the cover projections and Noetherianity. Its étale projection to the upstairs cover bounds its dimension by that of this cover, which in turn is at most the upstairs dimension. The smooth comparison theorem over the two covers now applies, using the established boundary-loop compatibility and descent properties.
 -/
 theorem maxContact_isPullback_of_smooth_of_orderAt_le_mult
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
@@ -1118,24 +1034,10 @@ theorem maxContact_isPullback_of_smooth_of_orderAt_le_mult
         (MorphismProperty.comp_mem (@AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcSnd hqcStruct)
         hdimfp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Use the tuning equivalence for marked sequences and the local-isomorphism descent of order certificates. The two field-extension comparison theorems supply pullback and strict pullback. Stage comparison maps on the cover are local isomorphisms, and the stages are locally Noetherian, so the tuned marking descends. Restoring unit entries preserves marking, and the stage order theorem supplies the bound by the mark.
 
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact.
-
-Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+Smooth functoriality supplies the pullback clause. For a surjective smooth map it gives strict pullback because every downstairs center is nonunit. This is vacuous for the empty sequence and follows by descent from the cover otherwise. Flatness and surjectivity of the cover give its descent properties. The kernel subscheme comparison transfers admissibility and dimension along the divisor presentation, tuning at mark one fixes the ideal, and the established admissibility results handle trimming and the smooth singleton boundary.
 -/
 theorem descentProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L : PrincipalizationAssignment.{u})
@@ -1222,8 +1124,8 @@ theorem descentProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvarian
   · intro T hV _hbd Y q e hei _hq hD
     exact @isAdmissible_withBoundary_ker_of_isSmoothDivisor T hV Y e hei hD
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The given boundary reductions provide the cover sequence properties, and their position invariance gives the descent hypotheses together with those reductions. Apply the abstract maximal-contact order-reduction theorem with these properties and the given lower-dimensional reduction.
 -/
 theorem isOrderReduction_maxContact_of_isBoundaryPositionInvariant (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L L' : PrincipalizationAssignment.{u})
@@ -1235,10 +1137,8 @@ theorem isOrderReduction_maxContact_of_isBoundaryPositionInvariant (hinv : Comap
     (coverSequenceProperties_of_isBoundaryDivisorReduction hinv n A L hdiv)
     (descentProperties_of_isBoundaryDivisorReduction hinv n A L hdiv hshift)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each dimension bound, the maximal-contact principalization gives the required order reduction by the boundary position invariance theorem. The canonical order family is defined by this same principalization with pullback invariance under isomorphisms. Their assignments agree on every triple, so the result applies to the canonical family.
 -/
 theorem isOrderReduction_orderFamily_of_strictTransformIsBlowup
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :

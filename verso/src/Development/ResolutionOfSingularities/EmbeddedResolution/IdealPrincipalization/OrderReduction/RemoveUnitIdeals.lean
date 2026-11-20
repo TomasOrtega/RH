@@ -41,8 +41,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The criterion for a zero-length upstairs sequence requires every downstairs center to pull back to the unit ideal along a compatible lift. The downstairs sequence has length zero as well, so it has no centers and the condition is vacuous.
 -/
 theorem isPullback_of_length_eq_zero_of_length_eq_zero {X' X : Scheme.{u}} (φ : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
@@ -56,28 +56,24 @@ namespace MaxContactFunctoriality
 def removeUnitIdeals {X : Scheme.{u}} (L : List X.IdealSheafData) : List X.IdealSheafData :=
   L.filter (fun D => @decide (D ≠ ⊤) (Classical.propDecidable _))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first entry is the unit ideal and is discarded by the filter. The remaining result is the filtered tail.
 -/
 private theorem removeUnitIdeals_cons_top {X : Scheme.{u}}
     (L : List X.IdealSheafData) :
     removeUnitIdeals ((⊤ : X.IdealSheafData) :: L) = removeUnitIdeals L := by
   simp [removeUnitIdeals]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The nonunit head passes the filter and is followed by the filtered tail.
 -/
 private theorem removeUnitIdeals_cons_of_ne_top {X : Scheme.{u}} {D : X.IdealSheafData}
     (hD : D ≠ ⊤) (L : List X.IdealSheafData) :
     removeUnitIdeals (D :: L) = D :: removeUnitIdeals L := by
   simp [removeUnitIdeals, hD]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the list. The empty list gives equality. If the head is unit, its pullback is unit too, so it is discarded whether removed before pullback or afterwards. If the head is nonunit, it passes the first filter and is retained in the final list precisely when its pullback is nonunit. The induction hypothesis identifies the outputs on the tails.
 -/
 theorem removeUnitIdeals_map_comap_removeUnitIdeals {X Y : Scheme.{u}} (f : Y ⟶ X) (L : List X.IdealSheafData) :
     removeUnitIdeals (List.map (fun D => D.comap f) (removeUnitIdeals L)) =
@@ -144,12 +140,8 @@ noncomputable abbrev dropTrivialBoundaryPullback (T : MarkedIdealWithBoundary.{u
     (E' : List Y.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   ((MaxContactReduction.dropTrivialBoundary T).pullbackAlong Y qY h).withBoundary (removeUnitIdeals E')
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The identity of the underlying scheme is smooth, flat, and surjective, and pulling the triple back along it gives the same triple. Fix the first hypersurface upstairs. Smooth-surjective compatibility of reduction along hypersurfaces gives this same upstairs sequence as a strict pullback of each of the reductions attached to the two downstairs choices. Descent of sequence isomorphisms along the identity identifies the two downstairs sequences.
 -/
 theorem reduceAlongHypersurface_isomorphic_of_isMaxContactHypersurface
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)
@@ -196,8 +188,8 @@ theorem reduceAlongHypersurface_isomorphic_of_isMaxContactHypersurface
     T hP S hv hord hdim H' hH' hH'snc (𝟙 S.scheme) hVpb hdimpb H hHup hHupsnc
   exact hA.isomorphic_of_isomorphic hB (SequenceOfBlowups.isomorphic_refl _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Consecutive pullback of an ideal equals pullback along the composite. Apply this identity to every entry of the list.
 -/
 private theorem map_comap_map_comap {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     (L : List Z.IdealSheafData) :
@@ -206,16 +198,16 @@ private theorem map_comap_map_comap {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y �
   rw [List.map_map]
   exact List.map_congr_left (fun D _ => (Scheme.IdealSheafData.comap_comp D f g).symm)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both boundary constructions retain exactly those entries that are different from the unit ideal, in their original order.
 -/
 private theorem dropTrivialBoundary_boundary_eq_removeUnitIdeals (T : MarkedIdealWithBoundary.{u}) :
     (MaxContactReduction.dropTrivialBoundary T).boundary = removeUnitIdeals T.boundary := by
   rw [MaxContactReduction.dropTrivialBoundary_boundary]
   exact List.filter_congr (fun D _ => congrArg _ (Subsingleton.elim _ _))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The relation compares the lists obtained by dropping entries whose unit-ideal test is true. Removing unit ideals applies the equivalent test of being nonunit. Thus the relation gives equality of the two filtered lists.
 -/
 private theorem removeUnitIdeals_eq_of_sameNontrivialBoundary {X : Scheme.{u}} {L L' : List X.IdealSheafData}
     (hL : MarkedIdealWithBoundary.SameNontrivialBoundary L L') : removeUnitIdeals L = removeUnitIdeals L' := by
@@ -235,8 +227,8 @@ private theorem removeUnitIdeals_eq_of_sameNontrivialBoundary {X : Scheme.{u}} {
     List.filter_congr (fun D _ => (hdn D).symm)
   exact h1.trans (hL'.trans h2)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The final removal of unit ideals gives the same result whether or not unit entries are removed before pullback. Remove them first on both sides and use equality of these initial filtered lists.
 -/
 private theorem removeUnitIdeals_map_comap_congr {X Y : Scheme.{u}} (g : X ⟶ Y)
     {L L' : List Y.IdealSheafData}
@@ -245,8 +237,8 @@ private theorem removeUnitIdeals_map_comap_congr {X Y : Scheme.{u}} (g : X ⟶ Y
       = removeUnitIdeals (List.map (fun D => D.comap g) L') := by
   rw [← removeUnitIdeals_map_comap_removeUnitIdeals g L, ← removeUnitIdeals_map_comap_removeUnitIdeals g L', hL]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The fields and schemes already agree. Substituting the equal structural maps, ideals, marks, and boundaries identifies the two triples.
 -/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [fk : Field k] {Z : Scheme.{u}}
     {p₁ p₂ : Z ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : Z.IdealSheafData} {m₁ m₂ : ℕ}
@@ -258,14 +250,10 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [fk : Field k] {Z 
         boundary := b₂ } := by
   subst hp; subst hI; subst hm; subst hb; rfl
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+On the common fiber product the two paths to the original scheme agree. This makes their structural maps agree because each factors through that scheme. Smooth pullback commutes with balanced tuning, and trimming or replacing unit boundary entries does not affect the underlying ideal or mark. Hence both ideals are pullbacks of the same original tuned ideal along the common path, and their marks agree.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+For the boundaries, the modified upstairs list has the same nontrivial entries as the pulled-back original list. Replace it by that list after filtering. Removing unit ideals at intermediate stages gives the same final filtered list, since unit ideals stay unit under pullback. Both resulting boundaries are therefore obtained by pulling back the original list along the common path and then removing unit ideals. The two triples on the fiber product coincide.
 -/
 theorem smoothPullbackTriple_coverTriple_eq (T : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}}
     (qY : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
@@ -476,12 +464,8 @@ theorem smoothPullbackTriple_coverTriple_eq (T : MarkedIdealWithBoundary.{u}) {Y
           congrArg removeUnitIdeals (map_comap_map_comap _ _ _).symm
   exact markedIdealWithBoundary_mk_congr hsm hideal rfl hb
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Induct on the list. The empty result agrees. For a unit head the stated test is false, and both operations discard it. For a nonunit head it is true, and both retain it. Apply induction to the remaining list.
 -/
 private theorem filter_eq_removeUnitIdeals {X : Scheme.{u}}
     (p : X.IdealSheafData → Bool) (hp : ∀ D : X.IdealSheafData, p D = true ↔ D ≠ ⊤)
@@ -501,8 +485,8 @@ private theorem filter_eq_removeUnitIdeals {X : Scheme.{u}}
       rw [removeUnitIdeals_cons_of_ne_top hD]
       simp [hpt, ih]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The definition of the trimmed triple changes the boundary by filtering for nonunit entries. The filter comparison identifies this list with the output of removing unit ideals.
 -/
 private theorem dropTrivialBoundary_eq_withBoundary_removeUnitIdeals (S : MarkedIdealWithBoundary.{u}) :
     MaxContactReduction.dropTrivialBoundary S = S.withBoundary (removeUnitIdeals S.boundary) := by
@@ -510,12 +494,8 @@ private theorem dropTrivialBoundary_eq_withBoundary_removeUnitIdeals (S : Marked
   exact congrArg S.withBoundary
     (filter_eq_removeUnitIdeals _ (fun D => by simp) S.boundary)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The filter retains only nonunit ideals. Hence every member of its output is nonunit.
 -/
 private theorem ne_top_of_mem_removeUnitIdeals {X : Scheme.{u}} (L : List X.IdealSheafData) :
     ∀ D ∈ removeUnitIdeals L, D ≠ ⊤ := by
@@ -534,8 +514,8 @@ private theorem ne_top_of_mem_removeUnitIdeals {X : Scheme.{u}} (L : List X.Idea
       · subst h1; exact hC
       · exact ih D h1
 
-/- English proof (translation)
-Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples and the equal cover comparison maps in the strict pullback data. The given relation then has the required base map and source sequence.
 -/
 private theorem isStrictPullback_coverMarkedSequence_of_eq_of_heq (hinv : ComapIsoInvariance.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) {S₁ S₂ : MarkedIdealWithBoundary.{u}} (hS : S₁ = S₂)
@@ -549,22 +529,16 @@ private theorem isStrictPullback_coverMarkedSequence_of_eq_of_heq (hinv : ComapI
   cases hee
   exact hd
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equality of triples identifies the admissibility, order, dimension, and order-locus data. The supplied hypotheses on the equal triple therefore apply.
 -/
 private theorem orderReductionHypotheses_of_eq {P : ℕ → Prop} {S₁ S₂ : MarkedIdealWithBoundary.{u}}
     (hS : S₁ = S₂) (hy : OrderReductionHypotheses P S₁) : OrderReductionHypotheses P S₂ := by
   subst hS
   exact hy
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Base change the downstairs sequence along the original flat map. After removing isomorphism steps it is a pullback sequence. To identify it with the given upstairs sequence, compare them on the fiber product of the two covers. There the two pullbacks of the downstairs sequence are isomorphic by strict pullback uniqueness and commutativity of the fiber product. The assumed comparison identifies the other cover sequence with this one after removing isomorphism steps. Descend the isomorphism first through the faithfully flat projection from the fiber product and then through the faithfully flat upstairs cover. The resulting isomorphism compares the two original upstairs sequences after removing isomorphism steps. The given nonunit center condition on the upstairs cover implies the original upstairs centers are nonunit, so removing isomorphism steps preserves its sequence up to isomorphism. Transport the pullback relation to it.
 -/
 private theorem isPullback_of_faithfullyFlat_covers {X Y : Scheme.{u}} (h : Y ⟶ X)
     [AlgebraicGeometry.Flat h] {C₁ C₂ : Scheme.{u}} (c₁ : C₁ ⟶ X) (c₂ : C₂ ⟶ Y)
@@ -618,8 +592,8 @@ private theorem isPullback_of_faithfullyFlat_covers {X Y : Scheme.{u}} (h : Y �
   exact hfin.trans (SequenceOfBlowups.withoutIsoBlowups_isomorphic_self s₂
     (fun i hi => hd₂.center_ne_top_of_forall_center_ne_top hne₂ i hi))
 
-/- English proof (translation)
-Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The two maps defining the fiber product are smooth, one by composition. Its projections are smooth by base change. The first projection is the base change of the surjective cover map, so it is surjective too.
 -/
 private theorem smooth_pullback_fst_snd_and_surjective_fst {X Y : Scheme.{u}} (h : Y ⟶ X)
     [AlgebraicGeometry.Smooth h]
@@ -632,24 +606,24 @@ private theorem smooth_pullback_fst_snd_and_surjective_fst {X Y : Scheme.{u}} (h
   have hcc : AlgebraicGeometry.Smooth (c₂ ≫ h) := inferInstance
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The smooth pullback triple is the ordinary pullback with all unit boundary entries removed. This is precisely the result of trimming the ordinary pullback triple.
 -/
 private theorem smoothPullbackTriple_eq_dropTrivialBoundary (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}}
     (q : X' ⟶ S.scheme) :
     smoothPullbackTriple S q = MaxContactReduction.dropTrivialBoundary (S.pullbackAlong X' (q ≫ S.structMap) q) :=
   (dropTrivialBoundary_eq_withBoundary_removeUnitIdeals (S.pullbackAlong X' (q ≫ S.structMap) q)).symm
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal triples have equal boundary lists, so the nonunit property for every member transfers.
 -/
 private theorem boundary_ne_top_of_eq {S₁ S₂ : MarkedIdealWithBoundary.{u}} (hS : S₁ = S₂)
     (hb : ∀ D ∈ S₁.boundary, D ≠ ⊤) : ∀ D ∈ S₂.boundary, D ≠ ⊤ := by
   subst hS
   exact hb
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Each cover boundary entry is the pullback of an original boundary entry. Surjectivity reflects whether an ideal is unit, so every pulled-back entry is nonunit.
 -/
 private theorem coverTriple_boundary_ne_top (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)
     [AlgebraicGeometry.Surjective (MaxContactCoverData.coverMap S hv)]
@@ -662,12 +636,8 @@ private theorem coverTriple_boundary_ne_top (S : MarkedIdealWithBoundary.{u}) (h
   obtain ⟨D₀, hD₀, rfl⟩ := List.mem_map.1 hD2
   exact (comap_ne_top_iff_of_surjective (MaxContactCoverData.coverMap S hv) D₀).2 (hb D₀ hD₀)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The good cover is admissible and has positive tuned mark. The tuning theorem bounds the order of the tuned original ideal by this mark because the original mark is the maximum. The cover map is smooth, so the order on the pulled-back ideal equals the order at the image point. The same bound holds on the cover.
 -/
 private theorem orderAt_coverTriple_le_mult (hstar0 : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (horder : CoSupportTunedSheafEqAndOrderLE.{u}) (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)
@@ -698,30 +668,10 @@ private theorem orderAt_coverTriple_le_mult (hstar0 : _root_.FunctorialResolutio
     (MaxContactCoverData.balancedTunedIdeal S hv) x]
   exact hOL' _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Both chosen cover triples are admissible, and surjectivity preserves the nonunit property of their original boundary entries. Smooth pullback followed by trimming gives an admissible triple on the common scheme. The given identity identifies the two such triples there. The pulled-back cover hypersurfaces are of maximal contact and have strict normal crossing position by smooth pullback. Smooth compatibility of the boundary loop compares each cover sequence with reduction on this common triple using its respective hypersurface, as a pullback after omission of isomorphism steps.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+The dimension-bound comparison allows the two reductions on the common triple to use the same reference dimension. Independence of the choice of maximal contact identifies those reductions up to isomorphism. For each given strict pullback witness, removing isomorphism steps yields a pullback sequence, which is isomorphic to its corresponding reduction by uniqueness. Compose these isomorphisms through the two reductions.
 -/
 private theorem withoutIsoBlowups_isomorphic_of_smoothPullbackTriple_eq
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)
@@ -928,22 +878,10 @@ private theorem withoutIsoBlowups_isomorphic_of_smoothPullbackTriple_eq
   rw [hu] at e₂
   exact e₂.trans (hmid.trans e₁.symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
+/- English proof (authored)
+Smooth pullback preserves the pointwise order bound. If the upstairs marked order locus is empty, the upstairs reduction has length zero. When the downstairs locus is also empty, both reductions are empty and satisfy the pullback relation. Otherwise the empty-pullback-locus property gives the relation with the zero-length sequence upstairs.
 
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+If the upstairs locus is nonempty, so is the downstairs locus because order loci pull back. Trim both boundaries and choose strict descents of their cover sequences. These are the underlying sequences of the two principalizations. The covers are faithfully flat, and the upstairs cover sequence has nonunit centers. On the common fiber product the two cover triples agree after smooth pullback and trimming, by commutation of tuning and boundary pullback. Both cover triples have the required tuned order bound. Over the common scheme the pulled-back cover reductions therefore agree up to isomorphism after removing isomorphism steps, by the comparison of hypersurfaces. Faithfully flat descent of this comparison gives the desired pullback of the two descended sequences.
 -/
 theorem maxContactPrincipalization_isPullbackBlowupSequence_of_smooth
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)

@@ -305,7 +305,10 @@ theorem isHermitian_diagHermitian : (H3.map (IsCMField.complexConj QI : QI →+*
   rw [conj_diagHermitian, H3, Matrix.diagonal_transpose]
 
 theorem diagHermitian_mul_self : H3 * H3 = 1 := by
-  ext i j; fin_cases i <;> fin_cases j <;> simp [H3]
+  rw [H3, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
+  apply congrArg Matrix.diagonal
+  funext i
+  fin_cases i <;> simp
 
 theorem det_diagHermitian_ne_zero : H3.det ≠ 0 := by simp [H3, Fin.prod_univ_three]
 

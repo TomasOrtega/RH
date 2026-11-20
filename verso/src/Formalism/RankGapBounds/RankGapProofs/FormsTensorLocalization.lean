@@ -8,12 +8,8 @@ namespace Formalism.RankGapBounds.FormsTensorLocalization
 
 open Formalism.UG
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On a pure tensor, multilinearity allows the scalar with total exponent to be distributed among the factors, where each scaled factor lies in its given submodule. The scaled pure tensor therefore comes from the tensor product of those submodules. The image is closed under scalar multiplication and addition, which extends the result to every tensor.
 -/
 theorem tensor_reduction_holds : TensorStep := by
   intro k _ ι _ A _ _ B l e hB y
@@ -32,10 +28,8 @@ theorem tensor_reduction_holds : TensorStep := by
     rw [smul_add]
     exact Submodule.add_mem _ hx hy
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A form with values in V lies in the form submodule and satisfies pointwise membership in V. Scalar multiplication preserves the form submodule. The stated pointwise inclusion sends each scaled value into U, so the scaled form has values in U.
 -/
 theorem functoriality_reduction_holds : FunctStep := by
   intro G _ Γ K k _ W _ _ ρK U V l e hVU f hf
@@ -45,8 +39,8 @@ theorem functoriality_reduction_holds : FunctStep := by
   intro g _
   exact hVU _ (hf2 g (Set.mem_univ g))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+A U-valued form gives a W-valued form by composing with the inclusion, and its values still lie in U. Conversely, each W-valued form whose values lie in U lifts pointwise to U. Equivariance is preserved in each direction because the inclusion is injective and the action restricts to U. The two maps are inverse and preserve sums and scalar multiples pointwise.
 -/
 theorem forms_in_equivalence_holds : FormsInEquiv := by
   intro G _ Γ K k _ W _ _ ρK U hU
@@ -61,8 +55,8 @@ theorem forms_in_equivalence_holds : FormsInEquiv := by
             left_inv := fun f => rfl,
             right_inv := fun φ => rfl }, fun f g => rfl⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+When the Hecke summand has finite support, the resulting value is a finite sum of scalar multiples of values in U. Each summand and their sum therefore lie in U. The infinite-support convention gives zero, which also lies in U.
 -/
 theorem hecke_valuation_reduction : HeckeValStep := by
   classical
@@ -73,8 +67,8 @@ theorem hecke_valuation_reduction : HeckeValStep := by
   · exact Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (hφ _)
   · exact U.zero_mem
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
+/- English proof (authored)
+Write the localized element as a fraction with numerator m and a denominator from the multiplicative set. Scalar multiplication by the prescribed power of t scales only the numerator. The new numerator lies in N by hypothesis, giving the required localized representative.
 -/
 theorem localization_reduction_holds : LocStep := by
   intro T _ M _ _ S N t e h y
@@ -82,16 +76,16 @@ theorem localization_reduction_holds : LocStep := by
   | h m s =>
     exact ⟨t ^ e • m, h m, s, (LocalizedModule.smul'_mk _ _ _).symm⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Scalar multiplication preserves the submodule of forms. At every group element, the tensor reduction puts the scaled value in the image of the tensor product of the prescribed submodules. This gives the additional pointwise membership needed for the conclusion.
 -/
 theorem theorem_a_of_lemma_a_holds : TheoremA_of_LemmaA := by
   intro G _ Γ K k _ ι _ A _ _ B ρK l e hB f hf
   refine Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ hf, Submodule.mem_pi.2 fun g _ => ?_⟩
   exact tensor_reduction_holds k ι A B l e hB (f g)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the pointwise tensor reduction before localization. The algebra map respects powers and its scalar action agrees with the original scalar action. Thus the numerator multiplied by the prescribed power satisfies the required value condition. The localization reduction then gives the result for fractions.
 -/
 theorem TheoremA_loc_from_LemmaA : TheoremA_loc_of_LemmaA := by
   intro G _ Γ K k _ ι _ A _ _ B ρK l e T _ _ _ _ S hB y

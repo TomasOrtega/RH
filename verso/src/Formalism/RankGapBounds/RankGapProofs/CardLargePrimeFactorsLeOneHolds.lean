@@ -4,8 +4,8 @@ open Real Finset
 
 namespace Formalism.RankGapBounds.ChebyshevFactorialBounds
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Chebyshev's estimate bounds θ(n) by n log 4 for nonnegative n. Substitute the definition of θ(n) as the sum of log p over primes at most n.
 -/
 theorem chebyshevThetaLe_holds : ChebyshevTheta := by
   intro n
@@ -13,12 +13,8 @@ theorem chebyshevThetaLe_holds : ChebyshevTheta := by
   rw [Chebyshev.theta_eq_sum_primesLE_log] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+For each prime p at most n, the valuation of n factorial at p is at least ⌊n/p⌋, since the first summand in Legendre's formula is ⌊n/p⌋ and the others are nonnegative. The powers of distinct primes are pairwise coprime. Multiplying their separate divisibilities proves the claim.
 -/
 private theorem prod_primes_pow_div_dvd_factorial (n : ℕ) : ∏ p ∈ primesUpTo n, p ^ (n / p) ∣ n.factorial := by
   have key : ∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) → ∏ p ∈ s, p ^ (n / p) ∣ n.factorial := by
@@ -40,14 +36,8 @@ private theorem prod_primes_pow_div_dvd_factorial (n : ℕ) : ∏ p ∈ primesUp
               (Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩)
   exact key _ fun p hp => (Finset.mem_filter.mp hp).2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The product of p raised to ⌊n/p⌋ over primes at most n divides n factorial, which is at most n raised to n. Taking logarithms gives a bound n log n for the sum with the floor weights. Since n/p ≤ ⌊n/p⌋ + 1, replacing the floors adds at most the sum of log p, bounded by n log 4. Divide the resulting inequality by the positive n.
 -/
 private theorem sum_primes_log_div_le_log_add_log_four (n : ℕ) (hn : 1 ≤ n) :
     ∑ p ∈ primesUpTo n, Real.log p / p ≤ Real.log n + Real.log 4 := by
@@ -88,14 +78,8 @@ private theorem sum_primes_log_div_le_log_add_log_four (n : ℕ) (hn : 1 ≤ n) 
       _ = n * (Real.log n + Real.log 4) := by ring
   exact le_of_mul_le_mul_left hsum hn'
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+For each p ≥ 2, the bound 1/(p − 1) ≤ 2/p holds, and log p is nonnegative. The prime sum is therefore at most twice the sum weighted by 1/p, hence at most 2(log n + log 4). Since n ≥ 2 and log 4 = 2 log 2, this is at most 6 log n.
 -/
 theorem sumLogDivPredLe_holds : MertensType := by
   refine ⟨6, fun n hn => ?_⟩
@@ -120,12 +104,8 @@ theorem sumLogDivPredLe_holds : MertensType := by
     _ ≤ 2 * (Real.log n + Real.log 4) := by linarith
     _ ≤ 6 * Real.log n := by rw [h4]; linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+If two different primes greater than L divided z, their coprimality would make their product divide z. The product would then be at most z, yet it exceeds L². This contradicts the bound on z.
 -/
 theorem cardLargePrimeFactorsLeOne_holds : LargePrimeFactor := by
   intro L z hL hz hzL
@@ -141,8 +121,8 @@ theorem cardLargePrimeFactorsLeOne_holds : LargePrimeFactor := by
   rw [sq] at hzL
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The harmonic sum through n is the sum of the reciprocals of the integers from one to n. Apply the harmonic-number estimate Hₙ ≤ 1 + log n.
 -/
 theorem harmonicLeOneAddLog_holds : HarmonicLog := by
   intro n _
@@ -150,20 +130,8 @@ theorem harmonicLeOneAddLog_holds : HarmonicLog := by
   simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast] at h
   simpa only [one_div] using h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+For modulus l > 0, let r be the remainder of a − 1 modulo l. Then 0 ≤ r < l, so r + 1 is a positive representative of the residue of a and is at most l. The set of positive representatives is therefore nonempty, and its least element is at most r + 1. If a is already in [1, l], it belongs to this set. Any smaller positive representative would differ from a by a positive multiple of l smaller than l, which is impossible.
 -/
 theorem leastPosResidueSpec_holds : LeastResFacts := by
   intro a l hl

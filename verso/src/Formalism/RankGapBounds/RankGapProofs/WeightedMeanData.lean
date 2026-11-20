@@ -10,14 +10,14 @@ section Means
 
 variable {ι : Type} [Fintype ι]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The index set is nonempty and all summands are strictly positive. Its finite sum is therefore strictly positive.
 -/
 lemma sum_pos_of_pos [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) : 0 < ∑ i, d i :=
   Finset.sum_pos (fun i _ => hd i) Finset.univ_nonempty
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply each pointwise comparison by the positive weight and sum. The denominator is a sum of nonnegative weights, and its reciprocal is nonnegative, so multiplying by it preserves the inequality.
 -/
 lemma wmean_mono {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (h : ∀ i, X i ≤ Y i) :
     wmean d X ≤ wmean d Y := by
@@ -27,14 +27,14 @@ lemma wmean_mono {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (h : ∀ i, X i ≤ 
     (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (h i) (hd i).le)
     (inv_nonneg.mpr (Finset.sum_nonneg fun i _ => (hd i).le))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Distribute each weight over the two summands, split the numerator sum, and divide both parts by the common total weight.
 -/
 lemma wmean_add (d X Y : ι → ℝ) : wmean d (fun i => X i + Y i) = wmean d X + wmean d Y := by
   simp only [wmean, mul_add, Finset.sum_add_distrib, add_div]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Since the index set is nonempty and the weights are positive, their sum is nonzero. For constant data c the numerator is c times this sum, which cancels with the denominator.
 -/
 lemma wmean_const [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ) :
     wmean d (fun _ => c) = c := by
@@ -43,8 +43,8 @@ lemma wmean_const [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
   rw [div_eq_iff hS, ← Finset.sum_mul]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Apply monotonicity with the constant sequence c as the upper bound. Its weighted mean is c.
 -/
 lemma wmean_le_const [Nonempty ι] {d X : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
     (h : ∀ i, X i ≤ c) : wmean d X ≤ c := by
@@ -52,8 +52,8 @@ lemma wmean_le_const [Nonempty ι] {d X : ι → ℝ} (hd : ∀ i, 0 < d i) (c :
   have h3 := wmean_const hd c
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The pointwise hypothesis is equivalent to c ≤ Xᵢ + Yᵢ. Take weighted means, use additivity and the mean of a constant, and subtract the mean of Y.
 -/
 lemma sub_wmean_le [Nonempty ι] {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
     (h : ∀ i, c - Y i ≤ X i) : c - wmean d Y ≤ wmean d X := by
@@ -63,8 +63,8 @@ lemma sub_wmean_le [Nonempty ι] {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (c :
   have h3 := wmean_const hd c
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Summing the pointwise inequalities preserves their order. Multiplying by the nonnegative reciprocal of the cardinality then proves the result.
 -/
 lemma umean_mono {X Y : ι → ℝ} (h : ∀ i, X i ≤ Y i) : umean X ≤ umean Y := by
   unfold umean
@@ -72,20 +72,20 @@ lemma umean_mono {X Y : ι → ℝ} (h : ∀ i, X i ≤ Y i) : umean X ≤ umean
   exact mul_le_mul_of_nonneg_right (Finset.sum_le_sum fun i _ => h i)
     (inv_nonneg.mpr (Nat.cast_nonneg _))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Linearity of the finite sum splits the numerator of the mean of X + Y into the two numerators. Both have the same denominator.
 -/
 lemma umean_add (X Y : ι → ℝ) : umean (fun i => X i + Y i) = umean X + umean Y := by
   simp only [umean, Finset.sum_add_distrib, add_div]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pull the constant c out of the sum and then out of the quotient by the cardinality.
 -/
 lemma umean_mul (c : ℝ) (X : ι → ℝ) : umean (fun i => c * X i) = c * umean X := by
   simp only [umean, ← Finset.mul_sum, mul_div_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The numerator is c times the number of indices, and the number of indices is nonzero. Cancelling gives c.
 -/
 lemma umean_const [Nonempty ι] (c : ℝ) : umean (fun _ : ι => c) = c := by
   have hc : (Fintype.card ι : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
@@ -93,10 +93,8 @@ lemma umean_const [Nonempty ι] (c : ℝ) : umean (fun _ : ι => c) = c := by
   rw [div_eq_iff hc]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Take means in the pointwise inequality using monotonicity. Additivity and scalar linearity split the right side into its displayed terms, and the mean of the constant term is K.
 -/
 lemma umean_le_comb [Nonempty ι] {X A B P E : ι → ℝ} (p q K : ℝ)
     (h : ∀ i, X i ≤ A i + B i + p * P i + q * E i + K) :
@@ -113,20 +111,8 @@ lemma umean_le_comb [Nonempty ι] {X A B P E : ι → ℝ} (p q K : ℝ)
 
 end Means
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The case u = 0 follows from nonnegativity of the right side. For u > 0, apply log z ≤ z − 1 with z = (1 + H/u)/(1 + X) and multiply by u. This gives u log(1 + X) plus (H − uX)/(1 + X) as an upper bound. Using u ≤ U and H ≤ Xb, this is at most U log(1 + X) + bX/(1 + X). Finally X/(1 + X) ≤ log(1 + X), giving the estimate.
 -/
 lemma phi_bound {u H X b U : ℝ} (hu : 0 ≤ u) (hH : 0 < H) (hHX : H ≤ X * b) (hb : 0 < b)
     (hX : 0 < X) (huU : u ≤ U) :
@@ -196,29 +182,27 @@ def K0 : ℝ :=
   D.sumA * (C.cCount * (D.L + (m : ℝ) ^ 2 * D.L / D.k) + 2 * D.logGam / ((f : ℝ) * D.k))
     + D.EDiv C + (m : ℝ) * C.cE * D.B0 + C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The quantity is the real value of a natural number, so it is nonnegative.
 -/
 lemma nT_nonneg : 0 ≤ D.nT := by
   exact Nat.cast_nonneg _
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The Hida setting gives nonnegativity of every coefficient aT. Their finite sum is nonnegative.
 -/
 lemma sumA_nonneg (hS : D.HidaSetting C) : 0 ≤ D.sumA := by
   obtain ⟨-, -, -, -, -, -, -, haT, -⟩ := hS
   exact Finset.sum_nonneg fun t _ => haT t
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The factor g is independent of t, so it factors out of the sum. The remaining sum is the definition of the total coefficient.
 -/
 lemma sum_aT_mul (g : ℝ) : ∑ t, D.aT t * g = D.sumA * g := by
   simp only [Data.sumA, Finset.sum_mul]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+For each index the value given by μN minus h is at most μMaxN minus h. The latter is bounded by its maximum over all indices. The weights are positive, so the weighted mean of the former values is also at most that maximum. Their difference is the claimed nonnegative quantity.
 -/
 lemma uF_nonneg (hS : D.HidaSetting C) (u0 : U0) : 0 ≤ D.uF u0 := by
   obtain ⟨-, -, -, -, -, -, -, -, -, hd, -, hmu, -⟩ := hS
@@ -231,20 +215,8 @@ lemma uF_nonneg (hS : D.HidaSetting C) (u0 : U0) : 0 ≤ D.uF u0 := by
   have := wmean_le_const (d := D.d u0) (X := fun u => D.muN u0 u - D.h u0 u) (hd u0) _ hle
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+In the logarithmic average, expand the logarithm of each positive product divided by π. The constant contribution is m times the difference log v − log π, with the inner cardinality cancelling the factor 1/f. Expanding the divisor sum gives the opposite contribution with the matching total coefficient. In the displayed combination these logarithmic terms cancel, as do the terms involving m times the total coefficient times the logarithmic level. The remaining weighted logarithms and entropy terms form the main sum, and the two subtracted corrections in the averaged expression contribute with positive signs.
 -/
 lemma key_identity (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.w u0 j ρ) :
     D.SDiv - D.sumA * D.abelian₂ C u0 + (m : ℝ) * D.sumA * D.lg =

@@ -2,34 +2,34 @@ import Formalism.RankGapBounds.RandomSubsetCounterexample
 
 namespace Formalism.RankGapBounds.LocalQuadraticParts
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The residue of x equals one exactly when the residue of x − 1 is zero. This is equivalent to divisibility of x − 1 by n.
 -/
 lemma zmod_int_eq_one_iff (n : ℕ) (x : ℤ) : ((x : ZMod n) = 1) ↔ (n : ℤ) ∣ x - 1 := by
   rw [← sub_eq_zero, ← Int.cast_one, ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The residue of x equals minus one exactly when x + 1 has residue zero, equivalently when n divides x + 1.
 -/
 lemma zmod_int_eq_neg_one_iff (n : ℕ) (x : ℤ) : ((x : ZMod n) = -1) ↔ (n : ℤ) ∣ x + 1 := by
   rw [← sub_eq_zero, sub_neg_eq_add, ← Int.cast_one, ← Int.cast_add, ZMod.intCast_zmod_eq_zero_iff_dvd]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+View l as an integer and apply the congruence criterion for residue one. Its residue modulo n is the same whether it is taken directly from the natural numbers or through the integers.
 -/
 lemma zmod_nat_eq_one_iff (n l : ℕ) : ((l : ZMod n) = 1) ↔ (n : ℤ) ∣ (l : ℤ) - 1 := by
   have h := zmod_int_eq_one_iff n (l : ℤ)
   simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+View l as an integer and apply the congruence criterion for residue minus one. Both interpretations give the same residue modulo n.
 -/
 lemma zmod_nat_eq_neg_one_iff (n l : ℕ) : ((l : ZMod n) = -1) ↔ (n : ℤ) ∣ (l : ℤ) + 1 := by
   have h := zmod_int_eq_neg_one_iff n (l : ℤ)
   simpa using h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Write y = 2k + 1. Then y² + 1 = 4(k² + k) + 2, which has remainder two modulo four.
 -/
 lemma four_not_dvd_odd_sq_add_one (y : ℤ) (hy : Odd y) : ¬ (4 : ℤ) ∣ y ^ 2 + 1 := by
   obtain ⟨k, rfl⟩ := hy
@@ -38,16 +38,8 @@ lemma four_not_dvd_odd_sq_add_one (y : ℤ) (hy : Odd y) : ¬ (4 : ℤ) ∣ y ^ 
   generalize k ^ 2 + k = t
   omega
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Write x = 2k + 1. Cancelling the visible powers of two reduces the left side to divisibility of k(k + 1) by 2 raised to m − 1, and the right side to divisibility of one of k or k + 1 by that power. Exactly one of the consecutive factors is odd, so it is coprime to the power of two. This proves the forward implication, and divisibility of either factor plainly implies divisibility of the product.
 -/
 lemma sq_sub_one_dvd_iff (x : ℤ) (hx : Odd x) (m : ℕ) (hm : 1 ≤ m) :
     (2 : ℤ) ^ (m + 1) ∣ x ^ 2 - 1 ↔ ((2 : ℤ) ^ m ∣ x - 1 ∨ (2 : ℤ) ^ m ∣ x + 1) := by
@@ -81,14 +73,8 @@ lemma sq_sub_one_dvd_iff (x : ℤ) (hx : Odd x) (m : ℕ) (hm : 1 ≤ m) :
     · exact dvd_mul_of_dvd_left h _
     · exact dvd_mul_of_dvd_right h _
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. A detailed English derivation is pending.
+/- English proof (authored)
+At j = 0 the statement is unchanged on both sides. For the induction step put y = x raised to 2ʲ, which is odd. The new modulus is a multiple of four, so it cannot divide y² + 1. By the odd-square divisibility criterion, it divides y² − 1 exactly when the previous modulus divides y − 1 or y + 1. Apply the induction hypothesis.
 -/
 lemma pow_two_pow_pm_iff (j : ℕ) : ∀ (x : ℤ), Odd x → ∀ m : ℕ, 1 ≤ m →
     (((2 : ℤ) ^ (m + j) ∣ x ^ (2 ^ j) - 1 ∨ (2 : ℤ) ^ (m + j) ∣ x ^ (2 ^ j) + 1) ↔
@@ -115,8 +101,8 @@ lemma pow_two_pow_pm_iff (j : ℕ) : ∀ (x : ℤ), Odd x → ∀ m : ℕ, 1 ≤
     · intro h
       exact Or.inl h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the preceding power-of-two criterion take the base exponent to be e + 2 − j. It is positive by j ≤ e, and adding j restores e + 2.
 -/
 lemma pm_iff (e j : ℕ) (hj : j ≤ e) (x : ℤ) (hx : Odd x) :
     (((2 : ℤ) ^ (e + 2) ∣ x ^ (2 ^ j) - 1 ∨ (2 : ℤ) ^ (e + 2) ∣ x ^ (2 ^ j) + 1) ↔
@@ -125,10 +111,8 @@ lemma pm_iff (e j : ℕ) (hj : j ≤ e) (x : ℤ) (hx : Odd x) :
   rw [show e + 2 - j + j = e + 2 by omega] at h
   exact h
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
+/- English proof (authored)
+An even integer exponent gives the identity, and an odd exponent gives minus one. Conversely the exponents zero and one yield these two values.
 -/
 lemma units_zpow_neg_one_iff (n : ℕ) (u : (ZMod n)ˣ) :
     (∃ k : ℤ, (-1 : (ZMod n)ˣ) ^ k = u) ↔ (u = 1 ∨ u = -1) := by
@@ -141,12 +125,8 @@ lemma units_zpow_neg_one_iff (n : ℕ) (u : (ZMod n)ˣ) :
     · exact ⟨0, zpow_zero _⟩
     · exact ⟨1, zpow_one _⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The power of the quotient class is the class of the corresponding power of the original unit. This class is the identity exactly when the power belongs to the subgroup generated by minus one. That subgroup consists of one and minus one, and the inclusion of units into the residue ring distinguishes their values whenever they are distinct.
 -/
 lemma hOf_pow_eq_one_iff (e j l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) :
     (hOf e l hl) ^ (2 ^ j) = 1 ↔
@@ -172,8 +152,8 @@ lemma hOf_pow_eq_one_iff (e j l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) :
       apply Units.ext
       rw [hv, h, Units.val_neg, Units.val_one]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The modulus is divisible by two. If l were even, the common divisor two would contradict coprimality. Hence l is odd.
 -/
 lemma odd_of_coprime (e l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) : Odd (l : ℤ) := by
   have h2 : ¬ 2 ∣ l := fun h => by
@@ -182,8 +162,8 @@ lemma odd_of_coprime (e l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) : Odd (l : ℤ
     omega
   exact Int.odd_iff.mpr (by omega)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The quotient power equals one exactly when the integer power of l is congruent to one or minus one modulo 2 raised to e + 2. The coprimality hypothesis makes l odd. Apply the power-of-two divisibility criterion and convert the resulting divisibilities back to congruences.
 -/
 theorem powTwoPowEqOneIff_holds : OrdersIff := by
   intro e j l hl hj
@@ -193,22 +173,8 @@ theorem powTwoPowEqOneIff_holds : OrdersIff := by
   rw [show (4 : ℤ) * 2 ^ e = 2 ^ (e + 2) by ring]
   exact pm_iff e j hj l (odd_of_coprime e l hl)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+An odd l is congruent to one or minus one modulo four. The power criterion at j = e therefore shows that the order divides 2ᵉ, so it is 2ᵏ for some k ≤ e. Apply the criterion at k to see that 2 raised to e + 2 − k divides l − 1 or l + 1. Both are positive under the hypotheses, so l + 1 is at least that power. Since J is at least the order 2ᵏ, the same lower bound implies l + 1 ≥ (4 times 2ᵉ)/J.
 -/
 theorem leOfOrderOfLe_holds : OrdersBound := by
   intro e J l hl hJ hl1 hord

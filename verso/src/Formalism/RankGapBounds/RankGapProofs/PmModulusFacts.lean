@@ -4,22 +4,14 @@ namespace Formalism.RankGapBounds.LocalQuadraticParts
 
 open Finset
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A natural number maps to zero in the residue ring modulo M precisely when it is divisible by M. Apply the forward implication.
 -/
 private theorem dvd_of_natCast_zmod_eq_zero {M a : ℕ} (h : (a : ZMod M) = 0) : M ∣ a := by
   exact (CharP.cast_eq_zero_iff (ZMod M) M a).mp h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Take l in s. If its residue is one, write l − 1 = qM. If its residue is minus one, write l + 1 = qM. In each case q ≥ 1 since l ≥ 3, and q − 1 < N since l ≤ N and M ≥ 2. Thus l occurs in the corresponding image at index q − 1.
 -/
 lemma pm_cover (M N : ℕ) (hM : 2 ≤ M) (s : Finset ℕ)
     (hs : ∀ l ∈ s, 3 ≤ l ∧ l ≤ N ∧ ((l : ZMod M) = 1 ∨ (l : ZMod M) = -1)) :
@@ -53,16 +45,8 @@ lemma pm_cover (M N : ℕ) (hM : 2 ≤ M) (s : Finset ℕ)
     rw [Nat.sub_add_cancel hq0, mul_comm]
     omega
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The two progressions cover s. The summands are nonnegative, so the sum over s is at most the sum over the union, which in turn is at most the sum of the two separate sums. Each progression is injective in its index because M is positive, so these sums can be indexed by the indicated range.
 -/
 lemma pm_sum_cover (f : ℕ → ℝ) (hf : ∀ l, 0 ≤ f l) (M N : ℕ) (hM : 2 ≤ M) (s : Finset ℕ)
     (hs : ∀ l ∈ s, 3 ≤ l ∧ l ≤ N ∧ ((l : ZMod M) = 1 ∨ (l : ZMod M) = -1)) :
@@ -95,14 +79,14 @@ lemma pm_sum_cover (f : ℕ → ℝ) (hf : ∀ l, 0 ≤ f l) (M N : ℕ) (hM : 2
     sum_le_sum_of_subset_of_nonneg hsub (fun i _ _ => hf i)
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since 0 < a ≤ b, both numbers are in the interval where the logarithm is increasing.
 -/
 private theorem log_le_log_of_pos_of_le {a b : ℝ} (ha : 0 < a) (h : a ≤ b) : Real.log a ≤ Real.log b := by
   exact Real.log_le_log ha h
 
-/- English proof (translation)
-Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the desired inequality by the positive product bd. The resulting inequality is precisely ad ≤ cb.
 -/
 private theorem div_le_div_of_mul_le_mul_of_pos' {a b c d : ℝ} (hb : 0 < b) (hd : 0 < d)
     (h : a * d ≤ c * b) : a / b ≤ c / d := by
@@ -111,10 +95,8 @@ private theorem div_le_div_of_mul_le_mul_of_pos' {a b c d : ℝ} (hb : 0 < b) (h
   | exact (div_le_div_iff hb hd).mpr h
   | exact (div_le_div_iff₀ hb hd).mpr h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Since 1 ≤ m ≤ Y, one has 0 ≤ log m ≤ log Y. Also m ≥ xy/2 > 0, so 1/m ≤ 2/(xy). Multiplying the two bounds gives the result.
 -/
 lemma pm_key_Y (m x y Y : ℝ) (hx : 1 ≤ x) (hy : 1 ≤ y) (h1 : x * y / 2 ≤ m) (hmY : m ≤ Y)
     (hm1 : 1 ≤ m) : Real.log m / m ≤ Real.log Y * (2 / y) * (1 / x) := by
@@ -131,16 +113,14 @@ lemma pm_key_Y (m x y Y : ℝ) (hx : 1 ≤ x) (hy : 1 ≤ y) (h1 : x * y / 2 ≤
 
 noncomputable def pmW (k : ℕ) : ℝ := (1 + Real.log ((k : ℝ) + 1)) / ((k : ℝ) + 1) ^ 2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A multiple of M has residue zero in the residue ring modulo M.
 -/
 private theorem natCast_zmod_eq_zero_of_dvd {M a : ℕ} (h : M ∣ a) : (a : ZMod M) = 0 := by
   exact (CharP.cast_eq_zero_iff (ZMod M) M a).mpr h
 
-/- English proof (translation)
-Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
+/- English proof (authored)
+Since k = 2, the modulus is four. An odd integer has remainder one or three modulo four, and three is the residue of minus one.
 -/
 private theorem natCast_zmod_four_eq_one_or_neg_one_of_odd (l k : ℕ) (hk : k = 2) (hodd : l % 2 = 1) :
     (l : ZMod (2 ^ k)) = 1 ∨ (l : ZMod (2 ^ k)) = -1 := by
@@ -157,12 +137,8 @@ private theorem natCast_zmod_four_eq_one_or_neg_one_of_odd (l k : ℕ) (hk : k =
     push_cast at h0
     exact eq_neg_of_add_eq_zero_left h0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The odd residue of l is one or minus one modulo four. The order criterion at exponent e gives a power equal to the identity, so the order is 2ⁱ with i ≤ e. Its bound by J also gives i ≤ ⌊log₂ J⌋. For j equal to the minimum of these two bounds, the order divides 2ʲ. Apply the order criterion at j to deduce the asserted congruence.
 -/
 lemma pm_resid (hI : OrdersIff) (e J l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) (hodd : l % 2 = 1)
     (hord : orderOf (hOf e l hl) ≤ J) :
@@ -184,22 +160,16 @@ lemma pm_resid (hI : OrdersIff) (e J l : ℕ) (hl : Nat.Coprime l (4 * 2 ^ e)) (
   rw [hoi]
   exact pow_dvd_pow 2 hij
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+For a positive natural number n, n ≥ 1 and its logarithm is nonnegative. At zero the real-logarithm convention gives zero.
 -/
 private theorem log_natCast_nonneg_real (n : ℕ) : 0 ≤ Real.log n := by
   rcases Nat.eq_zero_or_pos n with h | h
   · simp [h]
   · exact Real.log_nonneg (Nat.one_le_cast.mpr h)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The empty sum and the sum with one term satisfy the estimate directly. For positive n, the inequality log(n/(n + 1)) ≤ n/(n + 1) − 1 gives 1/(n + 1) ≤ log(n + 1) − log n. Adding that bound at each step proves the harmonic estimate by induction.
 -/
 private theorem sum_range_inv_succ_le_one_add_log (N : ℕ) :
     ∑ k ∈ range N, 1 / ((k : ℝ) + 1) ≤ 1 + Real.log N := by
@@ -220,26 +190,8 @@ private theorem sum_range_inv_succ_le_one_add_log (N : ℕ) :
       push_cast
       linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
-
-Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Use the nonnegative weight log l/l for l ≤ Y and zero beyond Y. The progression cover bounds the sum over s by the sums on the two progressions. On either progression, m = (k + 1)M ± 1 is at least (k + 1)M/2. Each weight is therefore at most 2 log Y divided by M(k + 1). Apply the harmonic bound in each progression and use N ≤ Y.
 -/
 lemma pm_y_sum (M N : ℕ) (hM : 2 ≤ M) (Y : ℝ) (hY : 1 ≤ Y) (hNY : (N : ℝ) ≤ Y) (s : Finset ℕ)
     (hs : ∀ l ∈ s, 3 ≤ l ∧ l ≤ N ∧ ((l : ZMod M) = 1 ∨ (l : ZMod M) = -1))
@@ -312,10 +264,8 @@ lemma pm_y_sum (M N : ℕ) (hM : 2 ≤ M) (Y : ℝ) (hY : 1 ≤ Y) (hNY : (N : �
         add_le_add (hA.trans hsumk) (hB.trans hsumk)
     _ = 4 * Real.log Y * (1 + Real.log Y) / M := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write j = min(e, ⌊log₂ J⌋). Since j ≤ e, the exponent e + 2 − j lies between two and e + 2. Also 2ʲ ≤ J. Hence 2ᵉ = 2ʲ times 2 raised to e − j, which is bounded by J times 2 raised to e + 2 − j.
 -/
 lemma pm_modulus_facts (e J : ℕ) (hJ : 1 ≤ J) :
     2 ≤ 2 ^ (e + 2 - min e (Nat.log 2 J)) ∧ 2 ^ (e + 2 - min e (Nat.log 2 J)) ≤ 2 ^ (e + 2) ∧
@@ -333,26 +283,16 @@ lemma pm_modulus_facts (e J : ℕ) (hJ : 1 ≤ J) :
       _ ≤ J * 2 ^ (e + 2 - min e (Nat.log 2 J)) :=
           Nat.mul_le_mul h2j (Nat.pow_le_pow_right (by norm_num) (by omega))
 
-/- English proof (translation)
-Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Use the inequality log x ≥ 1 − 1/x for positive x and set x = 2.
 -/
 private theorem one_half_le_log_two : (1 : ℝ) / 2 ≤ Real.log 2 := by
   have h := Real.one_sub_inv_le_log_of_pos (show (0 : ℝ) < 2 by norm_num)
   norm_num at h ⊢
   linarith
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose M = 2 raised to e + 2 minus min(e, ⌊log₂ J⌋). The order bound places every prime in the sum in one of the two classes ±1 modulo M. The progression estimate bounds the sum by 4 log Y(1 + log Y)/M, and the modulus estimate gives 1/M ≤ J/2ᵉ. Since e ≥ 1, e log 2 ≥ 1/2. Expanding the square of e log 2 + log Y shows that three times this square bounds log Y(1 + log Y). This gives the claimed constant twelve.
 -/
 theorem ordersSumY_of (hI : OrdersIff) : OrdersSumY := by
   refine ⟨12, ?_⟩

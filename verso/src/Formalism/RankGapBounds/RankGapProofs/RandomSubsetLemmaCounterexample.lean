@@ -4,15 +4,15 @@ namespace Formalism.RankGapBounds.LocalQuadraticParts
 
 open Finset
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both δ and 1 − δ are nonnegative, so each power in the product defining the weight is nonnegative.
 -/
 lemma wt_nonneg {α : Type*} [Fintype α] {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (T : Finset α) :
     0 ≤ wt δ T :=
   mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Expand the product with one factor δ + (1 − δ) for each element of the ground set. A choice of δ in the factors indexed by T gives exactly the weight of T. The original product is one, proving the normalization.
 -/
 lemma sum_wt {α : Type*} [Fintype α] (δ : ℝ) : ∑ T : Finset α, wt δ T = 1 := by
   have h := Finset.sum_pow_mul_eq_add_pow δ (1 - δ) (Finset.univ : Finset α)
@@ -21,10 +21,8 @@ lemma sum_wt {α : Type*} [Fintype α] (δ : ℝ) : ∑ T : Finset α, wt δ T =
   rw [h]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Group the subsets by size k. The combined weight at k is the binomial coefficient times δᵏ times (1 − δ) raised to the complementary size. Thus the sum is the binomial variance polynomial evaluated at δ, which equals the ground-set size times δ(1 − δ).
 -/
 lemma sum_wt_var {α : Type*} [Fintype α] (δ : ℝ) :
     ∑ T : Finset α, wt δ T * ((T.card : ℝ) - δ * Fintype.card α) ^ 2 =
@@ -44,14 +42,8 @@ lemma sum_wt_var {α : Type*} [Fintype α] (δ : ℝ) :
   rw [nsmul_eq_mul]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For fixed p, the number of bad elements of T is the sum over all t of the indicator that t belongs to T and is bad. Interchange the finite sums over subsets and elements. For each t the total weight of the indicated subsets is at most βδ, so the whole sum is at most βδ times the size of the ground set. Multiply by the nonnegative weight of p and sum over p.
 -/
 lemma sum_wt_bad {α ι : Type*} [Fintype α] [DecidableEq α] [Fintype ι] (δ β : ℝ) (ω : ι → ℝ)
     (BAD : ι → α → Finset α → Prop) [∀ p t T, Decidable (BAD p t T)] (hω : ∀ p, 0 ≤ ω p)
@@ -91,18 +83,8 @@ lemma sum_wt_bad {α ι : Type*} [Fintype α] [DecidableEq α] [Fintype ι] (δ 
     _ = β * δ * Fintype.card α * ∑ p, ω p := by
         rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun p _ => by ring)
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose every outcome with X ≤ 4M has V ≥ r. By the bound on the mean of V, those outcomes have total weight at most two thirds. The remaining outcomes have total weight at least one third, and some therefore have positive weight. On each of them X is strictly greater than 4M, so the mean of X is strictly greater than 4M/3. Since M ≥ 0 this contradicts its bound by M.
 -/
 lemma pick {γ : Type*} (s : Finset γ) (w V X : γ → ℝ) (r M : ℝ) (hr : 0 < r) (hM : 0 ≤ M)
     (hw : ∀ T ∈ s, 0 ≤ w T) (hsum : ∑ T ∈ s, w T = 1) (hV0 : ∀ T ∈ s, 0 ≤ V T)
@@ -154,10 +136,8 @@ lemma pick {γ : Type*} (s : Finset γ) (w V X : γ → ℝ) (r M : ℝ) (hr : 0
   rw [← Finset.sum_mul] at hlt
   nlinarith [mul_nonneg (sub_nonneg.mpr hB) hM]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a random subset with the product weights of parameter δ, and put μ = δ times the ground-set size. The mean squared deviation of its size from μ is μ(1 − δ), which is at most two thirds of (μ/2)² because μ ≥ 6. The mean weighted bad count is at most βμ times the sum of the weights. The selection lemma gives a subset whose squared deviation is less than (μ/2)² and whose bad count is at most four times its mean bound. Taking square roots gives the two size inequalities.
 -/
 theorem tops_lemma_six_holds : TopsFixed := by
   intro α ι _ _ _ δ β ω BAD _ hδ0 hδ1 hq hβ hω hBAD

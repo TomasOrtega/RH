@@ -11,17 +11,15 @@ namespace landauIteratedDerivatives
 def Good (H : ℝ → ℝ) (σ : ℝ) : Prop :=
   IntegrableOn (fun x : ℝ => H x * x ^ (-σ - 1)) (Ioi 1)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The real power with fixed exponent is measurable. Multiplying it by the almost-everywhere strongly measurable function preserves almost-everywhere strong measurability for the restricted measure.
 -/
 lemma meas_rpow (H : ℝ → ℝ) (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (σ : ℝ) :
     AEStronglyMeasurable (fun x : ℝ => H x * x ^ (-σ - 1)) (volume.restrict (Ioi 1)) :=
   hH.mul (by fun_prop : Measurable fun x : ℝ => x ^ (-σ - 1)).aestronglyMeasurable
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On the integration interval the argument is at least one. Increasing the Mellin parameter decreases the power factor, and the factors are nonnegative. Thus the norm of the new integrand is bounded by that of the old integrable one. The new integrand is measurable, so it is integrable.
 -/
 lemma good_mono {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     {σ σ' : ℝ} (h : Good H σ) (hle : σ ≤ σ') : Good H σ' := by
@@ -34,14 +32,8 @@ lemma good_mono {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict 
   exact mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hx1 (by linarith))
     (norm_nonneg _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Divide the positive allowance by one more than the integer power. The logarithm bound by a power divided by its exponent applies at this smaller exponent. Raise it to the given integer power, using nonnegativity of the logarithm. The resulting exponent on the argument is at most the original allowance, so increasing it gives the stated bound with the reciprocal exponent as the constant.
 -/
 lemma logpow_le (n : ℕ) {ε : ℝ} (hε : 0 < ε) {x : ℝ} (hx : 1 ≤ x) :
     Real.log x ^ n ≤ (((n : ℝ) + 1) / ε) ^ n * x ^ ε := by
@@ -64,14 +56,8 @@ lemma logpow_le (n : ℕ) {ε : ℝ} (hε : 0 < ε) {x : ℝ} (hx : 1 ≤ x) :
     _ ≤ (1 / η) ^ n * x ^ ε := mul_le_mul_of_nonneg_left h4 (by positivity)
     _ = (((n : ℝ) + 1) / ε) ^ n * x ^ ε := by rw [h5]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The logarithmic factor is measurable. Use the logarithm-power bound with allowance equal to the difference of the two Mellin parameters. Its extra power exactly changes the faster-decaying weight into the weight at the smaller parameter. The norm of the logarithm-weighted integrand is therefore bounded by a fixed multiple of the integrable original weighted norm.
 -/
 lemma good_logpow {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     {τ σ : ℝ} (hτ : Good H τ) (hlt : τ < σ) (n : ℕ) :
@@ -102,12 +88,8 @@ lemma good_logpow {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restric
 def J (H : ℝ → ℝ) (n : ℕ) (z : ℂ) : ℂ :=
   ∫ x in Ioi (1:ℝ), (((-Real.log x) ^ n * H x : ℝ) : ℂ) * (x : ℂ) ^ (-z - 1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Multiply the input by the stated power of minus the logarithm and embed it in the complex numbers. This is almost-everywhere strongly measurable. For a real exponent above the boundary, the logarithmic integrability bound with an intermediate exponent controls its norm-weighted integral. Apply Mellin differentiation, which introduces one more factor of minus the logarithm. The resulting integral is the next member of the family.
 -/
 lemma hasDerivAt_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -135,10 +117,8 @@ lemma hasDerivAt_J (hMD : MellinDeriv) {H : ℝ → ℝ}
   push_cast
   ring
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At derivative order zero the identity holds by definition. At a successor, the inductive equality holds on the open half-plane and hence on a neighborhood of the point. Differentiating that local equality gives the derivative of the current integral in the family. Mellin differentiation identifies it with the next integral.
 -/
 lemma iteratedDeriv_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -155,10 +135,8 @@ lemma iteratedDeriv_J (hMD : MellinDeriv) {H : ℝ → ℝ}
     rw [hev.deriv_eq]
     exact (hasDerivAt_J hMD hH hpos hgood n hz).deriv
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At a real parameter and positive integration variable, the complex power equals the embedding of the corresponding real power. The other factors are real too. The complex integral is therefore the embedding of the stated real integral.
 -/
 lemma J_real (H : ℝ → ℝ) (cr : ℝ) (n : ℕ) :
     J H n (cr : ℂ) = ((∫ x in Ioi (1:ℝ), (-Real.log x) ^ n * H x * x ^ (-cr - 1) : ℝ) : ℂ) := by
@@ -170,12 +148,8 @@ lemma J_real (H : ℝ → ℝ) (cr : ℝ) (n : ℕ) :
   push_cast
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Evaluate the logarithm-weighted Mellin integral at a real parameter. Move the factorial and the real increment factors inside the integral by linearity. The two minus signs in each power cancel, leaving the nonnegative-power coefficient and logarithm factor displayed in the real integral.
 -/
 lemma term_eq (H : ℝ → ℝ) (cr t : ℝ) (n : ℕ) :
     (n.factorial : ℂ)⁻¹ • ((-(t : ℂ)) ^ n • J H n (cr : ℂ)) =
@@ -196,20 +170,8 @@ lemma term_eq (H : ℝ → ℝ) (cr t : ℝ) (n : ℕ) :
   push_cast
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each integration point, take the power series for the exponential of the increment times the logarithm. Multiplying it by the original Mellin integrand makes its sum the integrand at the shifted real parameter. All terms are nonnegative, since the increment, the logarithm, and the input are nonnegative on the interval. Monotone convergence therefore expresses the integral of the shifted integrand as the sum of the integrals of the terms. That sum is finite by the assumed summability. Measurability and finiteness give integrability.
 -/
 lemma integrable_of_series {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
     (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x) {cr t : ℝ} (ht : 0 ≤ t)
@@ -265,41 +227,23 @@ lemma integrable_of_series {H : ℝ → ℝ} (hH : AEStronglyMeasurable H (volum
     (fun n => setIntegral_nonneg measurableSet_Ioi (hf0 n)) hsum]
   exact ENNReal.ofReal_ne_top
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The difference of the two embedded numbers is the embedding of their real difference. The complex norm of a real number is its absolute value, giving the distance.
 -/
 lemma dist_ofReal' (x y : ℝ) : dist (x : ℂ) (y : ℂ) = |x - y| := by
   rw [Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Subtracting the real part leaves only the imaginary component. The complex norm of that difference is the absolute value of the imaginary part.
 -/
 lemma dist_re (z : ℂ) : dist z (z.re : ℂ) = |z.im| := by
   rw [Complex.dist_eq_re_im, Complex.ofReal_re, Complex.ofReal_im, sub_self, sub_zero,
     show (0 : ℝ) ^ 2 + z.im ^ 2 = z.im ^ 2 by ring, Real.sqrt_sq_eq_abs]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The continuation is analytic in an open neighborhood of the compact real segment from the convergence boundary to the original right boundary. Choose a positive uniform thickness inside that neighborhood. In the strip to the right of the convergence boundary with imaginary part smaller than this thickness in absolute value, the continuation and the Mellin transform are analytic. They agree near a point in the original right half-plane, so the identity theorem gives equality throughout this convex strip.
 
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Prove the first alternative.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+Center a Taylor disk one quarter of the thickness to the right of the convergence boundary, with radius half the thickness. The disk lies in the region of analyticity, using the original half-plane on the far right and the uniform neighborhood of the real segment elsewhere. At the center, derivatives equal the logarithm-weighted Mellin integrals. Evaluate the Taylor series three eighths of the thickness to the left of the center, inside the disk and to the left of the convergence boundary. Its coefficients, after combining the two signs, are integrals of the nonnegative terms of the exponential series. They are summable, so monotone convergence yields integrability at this smaller real parameter.
 -/
 lemma key (hMD : MellinDeriv) {H : ℝ → ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1))) (hpos : ∀ x : ℝ, 1 < x → 0 ≤ H x)
@@ -386,16 +330,8 @@ lemma key (hMD : MellinDeriv) {H : ℝ → ℝ}
 end landauIteratedDerivatives
 
 open landauIteratedDerivatives in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose integrability fails at some real parameter above the lower bound. The set of all such failures is nonempty and bounded above by the original convergence bound. Let its supremum be the convergence boundary. All larger parameters give integrability, and the continuation is analytic near the real segment from this boundary to the original bound. The Taylor-series argument produces an integrable parameter strictly below the supremum. Monotonicity then makes every larger parameter integrable as well. This smaller parameter is therefore an upper bound on all failures, contradicting the definition of the supremum.
 -/
 theorem landauLemma_of (hMD : MellinDeriv) : LandauLemma := by
   intro H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq σ hσ

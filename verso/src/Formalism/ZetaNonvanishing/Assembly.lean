@@ -10,20 +10,20 @@ section SlopeTestRemainingChoices
 
 variable {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Away from one the defining product is the variable minus one times zeta times the Dirichlet L-function. The hypothesis selects this part of the definition.
 -/
 lemma Pfun_eq_of_ne {s : ℂ} (hs : s ≠ 1) :
     Pfun χ s = (s - 1) * riemannZeta s * DirichletCharacter.LFunction χ s := by
   simp [Pfun, hs]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The product is regularized at one by giving the zeta factor with its pole removed the value one. The regularized product at that point is the L-value there.
 -/
 lemma Pfun_one : Pfun χ 1 = DirichletCharacter.LFunction χ 1 := by simp [Pfun]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At one evaluate the regularized product as the L-value, which is nonzero for the nonprincipal character. Away from one the factor given by the variable minus one is nonzero, and both zeta and the L-function are nonzero in the given closed half-plane. Their product is nonzero.
 -/
 lemma Pfun_ne_zero_of_one_le_re (hχ : χ ≠ 1) {s : ℂ} (hs : 1 ≤ s.re) : Pfun χ s ≠ 0 := by
   by_cases h1 : s = 1
@@ -34,10 +34,8 @@ lemma Pfun_ne_zero_of_one_le_re (hχ : χ ≠ 1) {s : ℂ} (hs : 1 ≤ s.re) : P
     exact mul_ne_zero (mul_ne_zero (sub_ne_zero.mpr h1) (riemannZeta_ne_zero_of_one_le_re hs))
       (DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) hs)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On a neighborhood avoiding one the regularized function is the product of the variable minus one, zeta, and the L-function. These are differentiable there. The product rule differentiates each of the three factors in turn, giving the three stated summands.
 -/
 lemma deriv_Pfun_of_ne {s : ℂ} (hs : s ≠ 1) :
     deriv (Pfun χ) s = riemannZeta s * DirichletCharacter.LFunction χ s
@@ -55,10 +53,8 @@ lemma deriv_Pfun_of_ne {s : ℂ} (hs : s ≠ 1) :
   rw [h.deriv]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+In the half-plane of real part greater than one, apply the Dirichlet-series identity for the real character. The zeta and L-values are nonzero and the variable differs from one. Substitute the product and derivative formulas for the regularized product. Dividing the derivative by the product gives the two logarithmic derivatives and the reciprocal of the variable minus one. Rearranging gives the identity.
 -/
 lemma LSeries_LamF_eq (hχ : χ ≠ 1) (h4 : LSeriesLamF) (hreal : ∀ n : ℕ, (χ n).im = 0)
     {s : ℂ} (hs : 1 < s.re) :
@@ -78,10 +74,8 @@ end SlopeTestRemainingChoices
 
 section Mellin
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The complex integrand is strongly measurable because the embedded real function and the complex power are measurable. On the positive integration interval its norm is the real absolute value of the function times the power with exponent minus the real part of the parameter minus one. This is the assumed integrable bound.
 -/
 lemma cint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (s : ℂ)
     (hI : IntegrableOn (fun x : ℝ => |f x| * x ^ (-s.re - 1)) (Ioi 1)) :
@@ -94,8 +88,8 @@ lemma cint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (s : ℂ)
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.norm_cpow_eq_rpow_re_of_pos hx0]
     simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The real integrand is measurable. On the integration interval the power factor is nonnegative, so the absolute value of the integrand equals the assumed integrable function. This gives integrability.
 -/
 lemma rint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (σ : ℝ)
     (hI : IntegrableOn (fun x : ℝ => |f x| * x ^ (-σ - 1)) (Ioi 1)) :
@@ -105,8 +99,8 @@ lemma rint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (σ : ℝ)
   have hx0 : 0 < x := by linarith [mem_Ioi.mp hx]
   rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (Real.rpow_nonneg hx0.le _)]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The real power is nonnegative on the positive integration interval, so its absolute value equals itself. The power integrability formula applies since the weight exponent is larger than the power exponent.
 -/
 lemma int_abs_rpow (h5 : MellinElem) {a σ : ℝ} (h : a < σ) :
     IntegrableOn (fun x : ℝ => |x ^ a| * x ^ (-σ - 1)) (Ioi 1) := by
@@ -116,14 +110,8 @@ lemma int_abs_rpow (h5 : MellinElem) {a σ : ℝ} (h : a < σ) :
 
 variable {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the corrected sum into the weighted arithmetic sum, the negative logarithmic term, the linear correction, and the additional power term. All four Mellin integrands are integrable because the real part is greater than one and the last exponent is less than one. Split the integral and pull out constants. The weighted sum gives its Dirichlet series divided by the usual two linear factors. The elementary Mellin integrals evaluate the logarithmic and power terms, giving the remaining three fractions.
 -/
 lemma mellin_H (h3 : MellinS) (h5 : MellinElem) (σ₀ C : ℝ) {s : ℂ} (hs : 1 < s.re)
     (hσ₀ : σ₀ < 1) :
@@ -184,15 +172,15 @@ def Phi (σ₀ C : ℝ) (s : ℂ) : ℂ := dslope (Afun χ σ₀ C) 1 s / (s * P
 
 def qfun (σ₀ C : ℝ) (s : ℂ) : ℂ := q0 χ σ₀ C s - s * (s - 1) * Imel χ σ₀ C s
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The number one has real part one. Equality with it would contradict the strictly larger real part.
 -/
 lemma ne_one_of_one_lt_re {s : ℂ} (hs : 1 < s.re) : s ≠ 1 := by
   rintro rfl
   simp at hs
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+If the difference were zero, its real part would be zero, so the parameter's real part would equal the stated real number. This contradicts the strict bound.
 -/
 lemma sub_ne_zero_of_lt_re {s : ℂ} {a : ℝ} (hs : a < s.re) : s - a ≠ 0 := by
   intro h
@@ -200,18 +188,16 @@ lemma sub_ne_zero_of_lt_re {s : ℂ} {a : ℝ} (hs : a < s.re) : s - a ≠ 0 := 
   simp at this
   linarith
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The given real part is greater than a nonnegative real number and thus positive. Zero has real part zero, so the parameter is nonzero.
 -/
 lemma ne_zero_of_lt_re {s : ℂ} {a : ℝ} (ha : 0 ≤ a) (hs : a < s.re) : s ≠ 0 := by
   rintro rfl
   simp at hs
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the Mellin evaluation for the corrected weighted sum and then the Dirichlet-series logarithmic derivative identity. The factors given by the parameter, its difference from one, and its difference from the shift are nonzero in this half-plane. The regularized product is nonzero there as well. Multiply by the two Mellin denominator factors and combine fractions. The logarithmic derivative remains, and the other terms are exactly the stated correction.
 -/
 lemma key_identity (hχ : χ ≠ 1) (h3 : MellinS) (h4 : LSeriesLamF) (h5 : MellinElem)
     (hreal : ∀ n : ℕ, (χ n).im = 0) {σ₀ C : ℝ} (hσ₀1 : σ₀ < 1) {s : ℂ}

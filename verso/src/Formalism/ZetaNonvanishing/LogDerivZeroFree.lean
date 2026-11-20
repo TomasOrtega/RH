@@ -6,16 +6,8 @@ noncomputable section
 
 namespace Formalism
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the entire function vanishes at a point of the open set. Since it is nonzero somewhere, its analytic order at this point is finite. Vanishing makes this order a positive integer, say m plus one, and differentiating lowers it to m. Near the point the derivative is the product of the original function and the analytic multiplier. Orders add under multiplication, so this product has order at least m plus one. The two expressions for the same derivative give a contradiction.
 -/
 theorem logDerivZeroFree : LogDerivZeroFree := by
   intro P q U hU hP ⟨z, hz⟩ hq hPq s hs hPs

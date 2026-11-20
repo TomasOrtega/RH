@@ -28,23 +28,23 @@ def IZ (ε C θ : ℝ) (s : ℂ) : ℂ :=
 
 def PhiZ (ε C θ : ℝ) (s : ℂ) : ℂ := ε * dslope AZ 1 s / (s * riemannZeta₁ s) + C / (s - θ)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
+/- English proof (authored)
+Multiply the corrected negative logarithmic derivative by the regularized zeta function. Since the regularized zeta value is nonzero, the denominator in its logarithmic derivative cancels. The remaining expression is the negative derivative plus the stated linear term times regularized zeta.
 -/
 lemma AZ_eq {s : ℂ} (hZ : riemannZeta₁ s ≠ 0) : AZ s = riemannZeta₁ s * nZ s := by
   unfold AZ nZ
   field_simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At one the regularized zeta function has value one and derivative equal to the Euler–Mascheroni constant. The linear correction at one equals this same constant, so the two terms cancel.
 -/
 lemma AZ_one : AZ 1 = 0 := by
   unfold AZ linZ
   rw [deriv_riemannZeta₁_one, riemannZeta₁_one]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The regularized zeta function is entire, so its derivative is complex differentiable. The linear correction is also differentiable. Their indicated products and sum are differentiable everywhere.
 -/
 lemma differentiable_AZ : Differentiable ℂ AZ := by
   have hZ : Differentiable ℂ riemannZeta₁ := differentiable_riemannZeta₁
@@ -52,10 +52,8 @@ lemma differentiable_AZ : Differentiable ℂ AZ := by
   unfold AZ linZ
   fun_prop
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+In the half-plane of real part greater than one the Mellin formula for the corrected weighted sum converges and the zeta factors are nonzero. Substitute the relation between the logarithmic derivatives of zeta and its regularization. Combining the rational terms gives the corrected negative logarithmic derivative divided by the product of the variable and the variable minus one.
 -/
 lemma mellin_Gz_n (h3 : MellinSgen) (h5 : MellinElem) {s : ℂ} (hs : 1 < s.re) :
     ∫ x in Ioi (1:ℝ), (Gz x : ℂ) * (x : ℂ) ^ (-s - 1) = nZ s / (s * (s - 1)) := by
@@ -69,18 +67,16 @@ lemma mellin_Gz_n (h3 : MellinSgen) (h5 : MellinElem) {s : ℂ} (hs : 1 < s.re) 
   field_simp
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The corrected weighted sum is measurable, as is the real power function. A linear combination with constant coefficients is measurable.
 -/
 lemma measurable_HZ (h3 : MellinSgen) (ε C θ : ℝ) : Measurable (HZ ε C θ) := by
   have hz := measurable_Gz h3
   unfold HZ
   exact (measurable_const.mul hz).add (measurable_const.mul (measurable_id.pow_const _))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+After distributing the Mellin weight, the integrand is the sum of a constant multiple of the corrected weighted sum times that weight and a constant multiple of the power term times the weight. The first is integrable for the real exponent above one. The second is integrable because the real exponent is also above the power exponent. Their sum is integrable.
 -/
 lemma rint_HZ (h3 : MellinSgen) (h5 : MellinElem) {ε C θ : ℝ} (hθ : θ < 1) {σ : ℝ}
     (hσ : 1 < σ) : IntegrableOn (fun x : ℝ => HZ ε C θ x * x ^ (-σ - 1)) (Ioi 1) := by
@@ -94,10 +90,8 @@ lemma rint_HZ (h3 : MellinSgen) (h5 : MellinElem) {ε C θ : ℝ} (hθ : θ < 1)
   rw [hfun]
   exact Integrable.add (Integrable.const_mul a1 _) (Integrable.const_mul a4 _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Both weighted summands are integrable when the real part exceeds one because the power exponent is below one. Split the integral and take out the constant coefficients. The weighted sum has the corrected logarithmic-derivative Mellin formula, and integrating the power gives the reciprocal of the complex variable minus the power exponent. Combining the two terms gives the stated transform.
 -/
 lemma mellin_HZ (h3 : MellinSgen) (h5 : MellinElem) {ε C θ : ℝ} (hθ : θ < 1)
     {s : ℂ} (hs : 1 < s.re) :
@@ -117,8 +111,8 @@ lemma mellin_HZ (h3 : MellinSgen) (h5 : MellinElem) {ε C θ : ℝ} (hθ : θ < 
     integral_const_mul, integral_const_mul, mellin_Gz_n h3 h5 hs, h5.2.2.1 θ s (by linarith)]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
+/- English proof (authored)
+Away from one the divided difference is the difference of the two values divided by the difference of the inputs. The value of the numerator function at one is zero. Substitute its expression as regularized zeta times the corrected logarithmic derivative, and cancel the nonzero regularized zeta value.
 -/
 lemma PhiZ_eq {ε C θ : ℝ} {s : ℂ} (hs1 : s ≠ 1) (hs0 : s ≠ 0) (hZ : riemannZeta₁ s ≠ 0) :
     PhiZ ε C θ s = ε * nZ s / (s * (s - 1)) + C / (s - θ) := by
@@ -127,20 +121,16 @@ lemma PhiZ_eq {ε C θ : ℝ} {s : ℂ} (hs1 : s ≠ 1) (hs0 : s ≠ 0) (hZ : ri
   rw [dslope_of_ne _ hs1, slope_def_field, AZ_one, sub_zero, AZ_eq hZ]
   field_simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+In the half-plane of real part greater than one, the variable is neither zero nor one, and the regularized zeta function is nonzero. The algebraic continuation formula and the Mellin integral evaluation therefore give the same rational expression there.
 -/
 lemma PhiZ_eq_IZ (h3 : MellinSgen) (h5 : MellinElem) {ε C θ : ℝ} (hθ : θ < 1)
     {s : ℂ} (hs : 1 < s.re) : PhiZ ε C θ s = IZ ε C θ s := by
   rw [mellin_HZ h3 h5 hθ hs, PhiZ_eq (ne_one_of_one_lt_re hs) (ne_zero_of_lt_re zero_le_one hs)
     (riemannZetaOne_ne_zero_of_one_le_re hs.le)]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Work in the open set where the variable, its regularized zeta value, and its difference from the chosen real exponent are nonzero. The divided difference of the entire numerator function, with its derivative value at one, is complex differentiable everywhere. On this open set the denominators do not vanish, so both displayed quotients are complex differentiable. Their sum is analytic at every point of the open set.
 -/
 lemma PhiZ_analyticAt (ε C θ : ℝ) {s : ℂ} (hs0 : s ≠ 0)
     (hE : riemannZeta₁ s ≠ 0) (hsθ : s ≠ θ) : AnalyticAt ℂ (PhiZ ε C θ) s := by
@@ -163,10 +153,8 @@ lemma PhiZ_analyticAt (ε C θ : ℝ) {s : ℂ} (hs0 : s ≠ 0)
         (sub_ne_zero.mpr hz.2.2)
   exact hd.analyticAt (hVo.mem_nhds ⟨hs0, hE, hsθ⟩)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The modified weighted sum is measurable and nonnegative, and its Mellin integral converges for real exponents above one. There the proposed continuation agrees with the transform and is analytic. At every real exponent above the chosen positive exponent and at most one, its denominators are nonzero by real nonvanishing of regularized zeta and by the explicit value at one. The continuation is analytic around those real points as well. Landau's positive-integrand theorem therefore gives integrability for every real exponent above the chosen one.
 -/
 lemma landau_Z (h2 : LandauEq) (h3 : MellinSgen) (h5 : MellinElem) (h8 : ZetaRealNonvanish)
     {ε C θ : ℝ} (hθ0 : 0 < θ) (hθ1 : θ < 1) (hH : ∀ x : ℝ, 1 ≤ x → 0 ≤ HZ ε C θ x) :
@@ -187,22 +175,10 @@ lemma landau_Z (h2 : LandauEq) (h3 : MellinSgen) (h5 : MellinElem) (h8 : ZetaRea
     · subst h2'
       exact riemannZetaOne_ne_zero_of_one_le_re (by simp)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On the half-plane above the chosen exponent, the Mellin transform is analytic by differentiation under the integral. Subtract the elementary power contribution and multiply by the variable, the variable minus one, and regularized zeta. This gives an analytic function on that half-plane. In the smaller half-plane to the right of one, the Mellin formula identifies it with the signed entire numerator used in the continuation. The identity theorem gives this equality throughout the larger half-plane.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+Use the sign squared equal to one to rearrange the identity as a differential equation. The derivative of regularized zeta equals regularized zeta times an analytic function on the half-plane. Regularized zeta is entire and has value one at one, so the logarithmic-derivative nonvanishing criterion rules out any zero there.
 -/
 lemma riemannZetaOne_ne_zero_of_integrable_mellin (h1 : MellinDeriv) (h3 : MellinSgen) (h5 : MellinElem)
     (h11 : LogDerivZeroFree) {ε C θ : ℝ} (hε : ε * ε = 1) (hθ1 : θ < 1)
@@ -267,16 +243,8 @@ lemma riemannZetaOne_ne_zero_of_integrable_mellin (h1 : MellinDeriv) (h3 : Melli
   intro s hs
   exact h11 riemannZeta₁ q U hUopen hZd ⟨1, by simp⟩ hqd hid s hs
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every summand is nonnegative because the von Mangoldt weight is nonnegative and the index is at most the argument. Since the index is at least one, the factor given by the argument divided by the index minus one is at most the argument and hence at most the larger bound. Replace each factor by this bound, then extend the sum to the larger set of indices using nonnegativity.
 -/
 lemma Sz_bound {x X : ℝ} (hx1 : 1 ≤ x) (hxX : x ≤ X) :
     0 ≤ Sz x ∧ Sz x ≤ X * ∑ n ∈ Finset.Icc 1 ⌊X⌋₊, Λ n := by
@@ -307,14 +275,8 @@ lemma Sz_bound {x X : ℝ} (hx1 : 1 ≤ x) (hxX : x ≤ X) :
           · intro n _ _
             exact mul_nonneg (by linarith) vonMangoldt_nonneg
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+On the given finite interval the weighted sum is nonnegative and bounded by the larger endpoint times the sum of the weights through its integer part. The term given by the argument times its logarithm is nonnegative and bounded by its value at the endpoint, because both factors are nonnegative and increasing there. The positive linear correction is likewise bounded at the endpoint. The sum of these three endpoint bounds bounds the absolute value of the corrected sum.
 -/
 lemma Gz_bdd {X : ℝ} (hX : 1 ≤ X) : ∃ B : ℝ, 0 ≤ B ∧ ∀ x : ℝ, 1 ≤ x → x ≤ X → |Gz x| ≤ B := by
   have hγ : 0 ≤ Real.eulerMascheroniConstant := by
@@ -337,18 +299,8 @@ lemma Gz_bdd {X : ℝ} (hX : 1 ≤ X) : ∃ B : ℝ, 0 ≤ B ∧ ∀ x : ℝ, 1 
   rw [abs_le]
   constructor <;> nlinarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a constant at least as large as the constant in the eventual one-sided bound and the absolute bound on the initial finite interval. Since the exponent is positive, the power of an argument at least one is at least one. Thus subtracting the given signed corrected sum from this power term gives a nonnegative function on the whole integration interval. Its sign coefficient squares to one. The Landau integrability theorem and the differential-equation criterion give nonvanishing of regularized zeta above the chosen exponent. Away from one this implies nonvanishing of ordinary zeta by the regularization identity. At one use the stated zeta nonvanishing on the line of real part one.
 -/
 theorem zetaLandau : ZetaLandau := by
   intro s₀ hs₀ θ hθ0 hθ1 hCex s hs
@@ -384,10 +336,8 @@ theorem zetaLandau : ZetaLandau := by
   · rw [riemannZetaOne_eq_mul_of_ne_one h1] at hZ1
     exact right_ne_zero_of_mul hZ1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a positive allowance no larger than half either gap, the gap from the given exponent to the point's real part and the gap to one. The shifted exponent is still below both. The given eventual bound at that shifted exponent now meets the one-sided zeta Landau theorem, which gives nonvanishing at the point.
 -/
 theorem zetaLandauEps : ZetaLandauEps := by
   intro s₀ hs₀ θ hθ0 hθ1 hB s hs

@@ -6,16 +6,16 @@ noncomputable section
 
 namespace Formalism
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
+/- English proof (authored)
+Away from one, the ordinary zeta function is the regularized function divided by the variable minus one. Multiply by this nonzero factor to obtain the identity.
 -/
 lemma riemannZetaOne_eq_mul_of_ne_one {s : ℂ} (hs : s ≠ 1) : riemannZeta₁ s = (s - 1) * riemannZeta s := by
   have hs' : s - 1 ≠ 0 := sub_ne_zero.mpr hs
   rw [riemannZeta_eq_inv_sub_mul hs]
   field_simp
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At one the regularized function has value one. Elsewhere with real part at least one, the ordinary zeta value is nonzero by the zero-free result for that region. The regularization multiplies it by the nonzero factor given by the variable minus one.
 -/
 lemma riemannZetaOne_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZeta₁ s ≠ 0 := by
   by_cases h1 : s = 1
@@ -23,8 +23,8 @@ lemma riemannZetaOne_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZ
   · rw [riemannZetaOne_eq_mul_of_ne_one h1]
     exact mul_ne_zero (sub_ne_zero.mpr h1) (riemannZeta_ne_zero_of_one_le_re hs)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+If the embedded real number equaled one, taking real parts would give equality with one, contrary to the given strict inequality.
 -/
 lemma ofReal_ne_one_of_lt {σ : ℝ} (h : σ < 1) : (σ : ℂ) ≠ 1 := by
   intro h'
@@ -32,18 +32,16 @@ lemma ofReal_ne_one_of_lt {σ : ℝ} (h : σ < 1) : (σ : ℂ) ≠ 1 := by
   simp at this
   linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ordinary zeta value is nonzero by the real nonvanishing hypothesis. The real argument is strictly below one, so multiplying by its difference from one gives a nonzero regularized value.
 -/
 lemma riemannZetaOne_ne_zero_of_real_mem_Ioo (h8 : ZetaRealNonvanish) {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) :
     riemannZeta₁ σ ≠ 0 := by
   rw [riemannZetaOne_eq_mul_of_ne_one (ofReal_ne_one_of_lt h1)]
   exact mul_ne_zero (sub_ne_zero.mpr (ofReal_ne_one_of_lt h1)) (h8 σ h0 h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On a neighborhood avoiding one, the regularized function equals the product of the variable minus one with the ordinary zeta function. Both factors are differentiable there. The derivative identity is the product rule at the given point.
 -/
 lemma deriv_riemannZetaOne_of_ne_one {s : ℂ} (hs : s ≠ 1) :
     deriv riemannZeta₁ s = riemannZeta s + (s - 1) * deriv riemannZeta s := by
@@ -57,8 +55,8 @@ lemma deriv_riemannZetaOne_of_ne_one {s : ℂ} (hs : s ≠ 1) :
   rw [h.deriv]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Substitute the product formula and its derivative into the logarithmic derivative of the regularized function. The two nonzero factors permit division, giving the logarithmic derivative of ordinary zeta plus the reciprocal of the variable minus one. Rearrange with the stated signs.
 -/
 lemma logderiv_zeta_eq {s : ℂ} (hs : s ≠ 1) (hz : riemannZeta s ≠ 0) :
     -deriv riemannZeta s / riemannZeta s =
@@ -101,8 +99,8 @@ def IOC (ε C θ : ℝ) (s : ℂ) : ℂ :=
 def PhiOC (ε C θ : ℝ) (s : ℂ) : ℂ :=
   ε * dslope (AOC χ w) 1 s / (s * EOC χ s) + C / (s - θ)
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A complex differentiable function on the whole plane is analytic. The derivative of an analytic function is analytic and hence complex differentiable.
 -/
 lemma differentiable_deriv_of {f : ℂ → ℂ} (hf : Differentiable ℂ f) : Differentiable ℂ (deriv f) :=
   fun z => ((analyticOnNhd_univ_iff_differentiable.mpr hf).deriv z trivial).differentiableAt

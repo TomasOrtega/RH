@@ -6,21 +6,15 @@ namespace Formalism.LFunctionChainParameters.ConditionalMainTheorem
 
 open Formalism
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the zeta Landau theorem in its case below the line of real part one. The assumed eventual bound gives its growth hypothesis with constant one, and the real-part condition places the given point in the resulting zero-free region.
 -/
 theorem landau_zero_free_half_plane : LandauZeroFreeHalfPlane := by
   intro θ h0 h1 y₀ hG s hs
   exact Formalism.zetaLandau 1 (Or.inl rfl) θ h0 h1 ⟨1, y₀, fun y hy => by simpa using hG y hy⟩ s hs
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+It suffices to establish nonvanishing on the open half-plane to the right of one half. Apply the epsilon form of the zeta Landau theorem at one half. For any positive requested exponent allowance, choose the smaller of half the available parameter range and the allowance divided by one plus the absolute value of the growth coefficient. This choice is positive, lies below the available range, and makes the extra growth exponent at most the requested allowance. The assumed power bound therefore gives the required eventual estimate, after increasing the starting point to at least one so that increasing the exponent increases the power. The Landau theorem gives nonvanishing, and the zero-free half-plane criterion gives the Riemann hypothesis.
 -/
 theorem riemann_hypothesis_of_power_bound : PowerBoundGivesRiemannHypothesis := by
   intro C ε₁ hε₁ hG

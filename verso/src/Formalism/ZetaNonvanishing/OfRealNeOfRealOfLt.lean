@@ -11,8 +11,8 @@ section Fam
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ι → ℕ} [∀ i, NeZero (N i)]
   (χ : (i : ι) → DirichletCharacter ℂ (N i)) (w : ι → ℝ)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Equality of the embedded real numbers would imply equality of their real parts, which are the original real numbers. This contradicts strict inequality.
 -/
 lemma ofReal_ne_ofReal_of_lt {a b : ℝ} (h : a < b) : (b : ℂ) ≠ (a : ℂ) := by
   intro h'
@@ -20,8 +20,8 @@ lemma ofReal_ne_ofReal_of_lt {a b : ℝ} (h : a < b) : (b : ℂ) ≠ (a : ℂ) :
   simp at this
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+If the complex number were the embedding of the real number, its real part would equal that real number, contradicting the strict lower bound.
 -/
 lemma ne_ofReal_of_lt_re {s : ℂ} {a : ℝ} (h : a < s.re) : s ≠ (a : ℂ) := by
   intro h'

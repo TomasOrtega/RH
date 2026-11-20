@@ -12,10 +12,8 @@ namespace LandauMellinIdentity
 
 def Imel (H : ℝ → ℝ) (s : ℂ) : ℂ := ∫ x in Ioi (1:ℝ), (H x : ℂ) * (x : ℂ) ^ (-s - 1)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Embed the real integrand in the complex numbers, preserving almost-everywhere strong measurability. Its complex norm is the original real function on the integration interval because that function is nonnegative. Thus the assumed weighted integrability gives the norm integrability required by the Mellin differentiation theorem. That theorem gives complex differentiability throughout the half-plane.
 -/
 lemma imel_differentiableOn {H : ℝ → ℝ} {a : ℝ}
     (hH : AEStronglyMeasurable H (volume.restrict (Ioi 1)))
@@ -36,16 +34,8 @@ lemma imel_differentiableOn {H : ℝ → ℝ} {a : ℝ}
 end LandauMellinIdentity
 
 open LandauMellinIdentity in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Landau's lemma extends integrability of the positive Mellin integrand to every real exponent above the lower bound. The Mellin differentiation theorem then makes its transform analytic on that half-plane. Consider the union of the original right half-plane and the real interval above the lower bound. Both parts are connected and meet at the real point one beyond the original boundary, so their union is connected. The proposed continuation is analytic near every point of the union by the two continuation hypotheses. It agrees with the Mellin transform near the common point by the original identity on the open right half-plane. The identity theorem extends this equality across the union, in particular to every real exponent in the larger interval.
 -/
 theorem landauEq : LandauEq := by
   intro H a b hab hH hpos hb Φ hΦ1 hΦ2 hΦeq

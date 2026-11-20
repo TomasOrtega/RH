@@ -6,20 +6,8 @@ noncomputable section
 
 namespace Formalism
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
+/- English proof (authored)
+Set the complementary variable equal to the positive even integer two more than twice the given index. Its real part is greater than one, so the zeta value there is nonzero. It is neither one nor a nonpositive integer, so the functional equation applies and the gamma factor is nonzero. The cosine factor is the cosine of an integral multiple of π, hence is one or minus one. The constant and the power of 2π are also nonzero. The functional equation expresses the zeta value at the original negative odd integer as a product of these nonzero factors.
 -/
 lemma zeta_neg_odd_ne_zero (m : ℕ) : riemannZeta (-((2 * m + 1 : ℕ) : ℂ)) ≠ 0 := by
   set t : ℂ := ((2 * m + 2 : ℕ) : ℂ) with ht
@@ -56,12 +44,8 @@ lemma zeta_neg_odd_ne_zero (m : ℕ) : riemannZeta (-((2 * m + 1 : ℕ) : ℂ)) 
     push_cast
     exact pow_ne_zero _ (by norm_num)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A zero strictly to the right of the critical line is excluded by hypothesis. Suppose a zero is strictly to the left. If it is a nonpositive integer, zero itself has nonzero zeta value and every negative odd integer has nonzero zeta value by the functional-equation calculation. A negative even integer is one of the excluded trivial zeros. At any other point the functional equation applies and gives a zero at the complementary point, whose real part is strictly greater than one half. This again contradicts the assumed nonvanishing. The real part must therefore be one half.
 -/
 theorem riemannHypothesis_of_zero_free_halfPlane : RHofHalfPlane := by
   intro h s hs htriv hs1

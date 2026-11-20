@@ -20,8 +20,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An affine étale chart makes the section ring formally étale over the polynomial ring. The chart respects the given scalar map, so its composition with the polynomial ring structure over the base field is the given structure on sections. The polynomial ring is formally smooth over the field, and composing with a formally étale map preserves formal smoothness.
 -/
 private theorem formallySmooth_of_etaleChart {X₁ : Scheme.{u}} {k₁ : Type u} [Field k₁]
     {p₁ : X₁ ⟶ Spec (CommRingCat.of k₁)} {U₁ : X₁.Opens} {m₁ : ℕ}
@@ -38,10 +38,8 @@ private theorem formallySmooth_of_etaleChart {X₁ : Scheme.{u}} {k₁ : Type u}
     c.algebra_formallyEtale hU
   exact Algebra.FormallySmooth.comp k₁ (MvPolynomial (ULift.{u} (Fin m₁)) k₁) Γ(X₁, U₁)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the ideal sheaf pulled back to U is the inverse image of its original support. The restricted ideal is the unit ideal, whose support is empty. Consequently every point of U is outside the original support.
 -/
 private theorem notMem_support_of_restrictIdeal_eq_top_of_mem {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {U : Y.Opens} (h : restrictIdeal I U = ⊤) {y : Y} (hyU : y ∈ U) : y ∉ I.support := by
@@ -53,14 +51,8 @@ private theorem notMem_support_of_restrictIdeal_eq_top_of_mem {Y : Scheme.{u}} (
   have h2 : (⟨y, hyU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Since the principal ideals coincide, write z = uy and y = bz for elements u and b of R. Substitution gives (bu − 1)y = 0. The nonzerodivisor condition on y gives bu = 1, so u is a unit and z is its product with y.
 -/
 private theorem exists_isUnit_mul_of_span_singleton_eq {R : Type*} [CommRing R] {y z : R}
     (hy : y ∈ nonZeroDivisors R) (hsp : Ideal.span {z} = Ideal.span {y}) :
@@ -85,8 +77,8 @@ private theorem exists_isUnit_mul_of_span_singleton_eq {R : Type*} [CommRing R] 
     exact h2
   exact ⟨u, ⟨⟨u, b, h3, h2⟩, rfl⟩, hu.symm⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The expression is already the expansion in the given basis. Uniqueness of basis coordinates gives the specified coefficient at index i.
 -/
 private theorem repr_sum_smul_apply {ι₀ : Type*} [Fintype ι₀]
     {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
@@ -94,12 +86,8 @@ private theorem repr_sum_smul_apply {ι₀ : Type*} [Fintype ι₀]
     b.repr (∑ j : ι₀, cc j • b j) i = cc i := by
   rw [Module.Basis.repr_sum_self]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For each coordinate the induced map on differentials sends its differential over S to the corresponding differential over S′. Expand the given differential in the coordinate basis over S. The induced map sends each coefficient to its image in S′ and each basis vector to the corresponding one over S′. Taking the i-th coefficient gives the formula.
 -/
 private theorem basisKaehler_repr_kaehlerMap (k₀ : Type*) [CommRing k₀] (ι₀ : Type*) [Fintype ι₀]
     [DecidableEq ι₀] (S : Type*) [CommRing S] (S' : Type*) [CommRing S']
@@ -138,8 +126,8 @@ private theorem basisKaehler_repr_kaehlerMap (k₀ : Type*) [CommRing k₀] (ι�
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   [AlgebraicGeometry.Smooth p] {V : X.Opens} {n : ℕ}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The old chart makes the section ring formally smooth over the base field. A unit determinant means the differentials of the proposed coordinates form a basis, so the differential criterion makes polynomial evaluation at those sections formally étale. The smooth ambient scheme gives a section ring of finite type over the field, and hence finitely presented over the Noetherian polynomial ring. Thus the evaluation map is étale. The associated morphism to affine space is the required chart and pulls back the variables to the given sections.
 -/
 theorem exists_etaleChart_coord_eq_of_isUnit_jacobianDet (hV : IsAffineOpen V)
     (c : EtaleChart p V n) (w : ULift.{u} (Fin n) → Γ(X, V)) :
@@ -177,8 +165,8 @@ theorem exists_etaleChart_coord_eq_of_isUnit_jacobianDet (hV : IsAffineOpen V)
   exact exists_etaleChart_coord_eq p hV w f hfC hfX
     (ringHom_etale_of_formallyEtale p hV f hfC hfEtale)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Let g be the determinant of the proposed differentials in the old coordinate basis. Since g lies outside the prime of x, its affine basic open contains x. Its section ring is the localization at g, where the determinant becomes a unit. The coordinate basis of the old chart localizes to a basis there, and the restricted chart gives formal smoothness over the base field. The differential criterion followed by finite presentation makes evaluation at the restricted proposed sections étale. The chart from this evaluation has the required restricted coordinates.
 -/
 theorem exists_etaleChart_restrict_coord_eq_of_jacobianDet_notMem
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V)
@@ -259,20 +247,8 @@ theorem exists_etaleChart_restrict_coord_eq_of_jacobianDet_notMem
     (ringHom_etale_of_formallyEtale p hVg f hfC hfEtale)
   exact ⟨X.basicOpen g, hVg, hle, hxg, c', fun j => (hc' j).trans (halg _)⟩
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace only coordinate j₂ by its sum with t times coordinate j₁. The j₂ partial derivation gives one on the new section because it gives one on the old j₂ coordinate, kills coordinate j₁, and kills the scalar t. The differential matrix is the identity with column j₂ replaced, so its determinant is that same partial derivative, which is one. The unit determinant criterion gives an étale chart with these coordinates on the whole open.
 -/
 theorem exists_etaleChart_coord_add_smul (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j₁ j₂ : Fin n) (hj : j₁ ≠ j₂) (t : k) :
@@ -337,8 +313,8 @@ theorem exists_etaleChart_coord_add_smul (hV : IsAffineOpen V) (c : EtaleChart p
   · rw [hc' j₂, hwj]
   · rw [hc' j, hwne j hjne]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Replace the j₁-th section by the proposed section and retain all other coordinates. The differential matrix in the old coordinate basis is the identity with only column j₁ replaced. Its determinant is the j₁-th coefficient of the proposed differential, namely the indicated partial derivative. This element lies outside the prime of x. Apply the determinant criterion on its basic open to obtain a chart with the desired updated and restricted coordinates.
 -/
 theorem exists_etaleChart_update_coord_of_partialDeriv_notMem
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V) (j₁ : Fin n)
@@ -405,8 +381,8 @@ def chartPartialDeriv (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
   EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) f
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart partial derivative is defined by applying the algebraic partial derivation from the chart’s polynomial algebra structure, with the corresponding coordinate index. Evaluating the definition on f gives the equality.
 -/
 theorem chartPartialDeriv_eq (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
     (f : Γ(X, V)) :
@@ -419,8 +395,8 @@ theorem chartPartialDeriv_eq (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : F
       EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j) f :=
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Addition of derivations is pointwise. Evaluating their finite sum at a therefore gives the sum of the individual values.
 -/
 private theorem derivation_sum_apply {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     {ι : Type*} [DecidableEq ι] (s : Finset ι) (D : ι → Derivation R A A) (a : A) :
@@ -432,18 +408,8 @@ private theorem derivation_sum_apply {R A : Type*} [CommRing R] [CommRing A] [Al
       simp [ih]
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the coordinate differentials of the first chart as a basis. The coefficients of a derivation in the dual basis are its values on the first chart’s coordinates. Apply this expansion to the chosen partial derivation of the second chart and evaluate on f. The resulting sum is the chain rule.
 -/
 private theorem chartPartialDeriv_chainRule {W : X.Opens} (hW : IsAffineOpen W) {n₁ n₂ : ℕ}
     (c₁ : EtaleChart p W n₁) (c₂ : EtaleChart p W n₂) (j : Fin n₂) (f : Γ(X, W)) :
@@ -494,10 +460,8 @@ private theorem chartPartialDeriv_chainRule {W : X.Opens} (hW : IsAffineOpen W) 
   rw [hcoord i, hpd i, hD]
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart partial derivation is the functional dual to the corresponding coordinate differential, applied after the universal derivation. Evaluating it on its coordinate pairs the basis vector with its own dual and gives one.
 -/
 private theorem chartPartialDeriv_coord_self (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j : Fin n) : chartPartialDeriv hV c j (c.coord j) = 1 := by
@@ -513,10 +477,8 @@ private theorem chartPartialDeriv_coord_self (hV : IsAffineOpen V) (c : EtaleCha
   exact EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin n)) Γ(X, V) (ULift.up j)
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The chart partial derivation corresponding to j pairs the differential of coordinate i with the j-th element of the dual basis. Distinct indices give zero.
 -/
 private theorem chartPartialDeriv_coord_of_ne (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j i : Fin n) (h : j ≠ i) : chartPartialDeriv hV c j (c.coord i) = 0 := by
@@ -535,8 +497,8 @@ private theorem chartPartialDeriv_coord_of_ne (hV : IsAffineOpen V) (c : EtaleCh
   exact h (congrArg ULift.down hcon)
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Split according to whether the two indices agree. The diagonal coordinate value gives one and the off-diagonal coordinate value gives zero.
 -/
 private theorem chartPartialDeriv_coord (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j i : Fin n) :
@@ -548,10 +510,8 @@ private theorem chartPartialDeriv_coord (hV : IsAffineOpen V) (c : EtaleChart p 
     exact chartPartialDeriv_coord_of_ne hV c j i (fun hc => h hc.symm)
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The chart partial derivative is a derivation over k and thus is additive and k-linear. Apply additivity to the sum and take the image of t outside the derivative by k-linearity.
 -/
 private theorem chartPartialDeriv_add_algebraMap_mul (hV : IsAffineOpen V) (c : EtaleChart p V n)
     (j : Fin n) (a b : Γ(X, V)) (t : k) :
@@ -575,10 +535,8 @@ private theorem chartPartialDeriv_add_algebraMap_mul (hV : IsAffineOpen V) (c : 
   simp [Derivation.leibniz, h3]
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart partial derivative comes from a derivation on the section ring. The displayed product formula is its Leibniz rule.
 -/
 private theorem chartPartialDeriv_mul (hV : IsAffineOpen V) (c : EtaleChart p V n) (j : Fin n)
     (a b : Γ(X, V)) :
@@ -595,8 +553,8 @@ private theorem chartPartialDeriv_mul (hV : IsAffineOpen V) (c : EtaleChart p V 
   rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the chain rule for two charts with both index sets of size n.
 -/
 private theorem chartPartialDeriv_chainRule_of_same_rank (hV : IsAffineOpen V)
     (c c' : EtaleChart p V n) (j : Fin n) (f : Γ(X, V)) :
@@ -604,22 +562,8 @@ private theorem chartPartialDeriv_chainRule_of_same_rank (hV : IsAffineOpen V)
       ∑ i : Fin n, chartPartialDeriv hV c' j (c.coord i) * chartPartialDeriv hV c i f :=
   chartPartialDeriv_chainRule hV c c' j f
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Take the chart obtained by the shear adding t times coordinate j₁ to coordinate j₂. In terms of the new coordinates, the old j₂ coordinate is the new j₂ coordinate minus t times the unchanged j₁ coordinate. Thus the new j₁ partial derivation evaluates to one on the old j₁ coordinate, to the negative of t on the old j₂ coordinate, and to zero on all others. The new partial derivations at the other indices have their usual dual values on all old coordinates. The chain rule expresses each new derivation from these values in the old partial basis, giving both asserted formulas.
 -/
 theorem exists_etaleChart_coord_add_smul_chartPartialDeriv (hV : IsAffineOpen V)
     (c : EtaleChart p V n) (j₁ j₂ : Fin n) (hj : j₁ ≠ j₂) (t : k) :
@@ -686,8 +630,8 @@ theorem exists_etaleChart_coord_add_smul_chartPartialDeriv (hV : IsAffineOpen V)
     simp
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted chart is the composite of the inclusion of the smaller open subscheme with the chart. Pullback of functions therefore first takes the old chart’s pullback and then restricts to the smaller open. After identifying the section rings, this is the asserted composite on polynomial functions.
 -/
 private theorem etaleChart_restrict_coordRingHom (c : EtaleChart p V n) {W : X.Opens}
     (hWV : W ≤ V) :
@@ -701,16 +645,8 @@ private theorem etaleChart_restrict_coordRingHom (c : EtaleChart p V n) {W : X.O
     exact FunctorialResolution.EmbeddedResolution.EtaleChart.coord_restrict c hWV i
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restriction takes the old chart’s coordinate sections to those of the restricted chart. The induced map on differentials therefore takes each coordinate differential to the corresponding one on the smaller open. Expanding df in the old differential basis and mapping the expansion shows that its coefficients restrict to the coefficients of the differential of the restricted f. These coefficients are the corresponding chart partial derivatives.
 -/
 private theorem map_chartPartialDeriv_restrict (hV : IsAffineOpen V) (c : EtaleChart p V n)
     {W : X.Opens} (hW : IsAffineOpen W) (hWV : W ≤ V) (j : Fin n) (f : Γ(X, V)) :
@@ -764,10 +700,8 @@ private theorem map_chartPartialDeriv_restrict (hV : IsAffineOpen V) (c : EtaleC
   rw [hl, hr, ← halg]
   exact key
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The germ of a section at y is unchanged by restriction to a smaller neighborhood of y. A section belongs to the prime corresponding to y exactly when its germ lies in the maximal ideal of the stalk. The original section and its restriction therefore satisfy the same prime membership condition.
 -/
 private theorem map_mem_primeIdealOf_of_mem_of_le {V₁ W₁ : X.Opens} (hV₁ : IsAffineOpen V₁)
     (hW₁ : IsAffineOpen W₁) (hle : W₁ ≤ V₁) {y : X} (hyV : y ∈ V₁) (hyW : y ∈ W₁)
@@ -785,8 +719,8 @@ private theorem map_mem_primeIdealOf_of_mem_of_le {V₁ W₁ : X.Opens} (hV₁ :
   exact notMem_basicOpen_of_mem_primeIdealOf hV₁ hyV f hf h2
 
 omit [AlgebraicGeometry.Smooth p] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Assume every old partial derivative of g in an unlabeled direction vanishes at x. Intersect the given chart with a chart witnessing strict normal crossing position for H and the listed divisors, taking an affine basic neighborhood of x in the intersection. There H is generated by one of the new coordinates, say y, since x lies in its support. The restriction of g is a unit times y because they generate the same principal ideal and y is a nonzerodivisor. Each labeled old coordinate likewise is a unit times the distinct new coordinate of its divisor. That new coordinate vanishes at x, and differentiation in the y direction kills it. The Leibniz rule therefore makes the derivative of each labeled old coordinate vanish at x in the y direction. Apply the chain rule to the restriction of g in that direction. Each labeled term vanishes by this calculation, and each unlabeled term vanishes by the assumption and compatibility with restriction. On the other hand, differentiating the unit times y in the y direction gives that unit modulo the prime of x. This contradiction yields an unlabeled index whose partial derivative lies outside the prime.
 -/
 theorem exists_unlabeled_index_partialDeriv_notMem_primeIdealOf
     (hV : IsAffineOpen V) (c : EtaleChart p V n) {x : X} (hx : x ∈ V)

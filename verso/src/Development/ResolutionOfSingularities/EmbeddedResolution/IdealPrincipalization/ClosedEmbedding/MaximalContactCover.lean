@@ -32,22 +32,22 @@ abbrev markedTripleOfIdeal (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   { base := k, scheme := Y, structMap := q, ideal := J, mult := 1, boundary := [] }
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction takes the supplied scheme as the underlying scheme of the marked ideal.
 -/
 @[simp] theorem markedTripleOfIdeal_scheme (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
     (markedTripleOfIdeal k Y q J).scheme = Y := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The structural morphism in the marked ideal is the supplied map to the spectrum of the field.
 -/
 @[simp] theorem markedTripleOfIdeal_structureMorphism (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
     (markedTripleOfIdeal k Y q J).structMap = q := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal sheaf in the marked ideal is the one used to form it.
 -/
 @[simp] theorem markedTripleOfIdeal_ideal (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
@@ -57,8 +57,8 @@ def HasLocalEtaleCharts {X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) : Prop :=
   ∀ x : X', ∃ (W : X'.Opens) (_ : x ∈ W) (n : ℕ), Nonempty (EtaleChart p W n)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For each affine open, the associated sheaf ideal is the image of the given global ideal under the restriction map. Image under a ring homomorphism preserves inclusion. This gives the sheaf ideal inclusion on each affine open.
 -/
 private theorem ofIdealTop_mono {X : Scheme.{u}} {I J : Ideal Γ(X, ⊤)} (h : I ≤ J) :
     AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop I ≤
@@ -66,10 +66,8 @@ private theorem ofIdealTop_mono {X : Scheme.{u}} {I J : Ideal Γ(X, ⊤)} (h : I
   intro U
   exact Ideal.map_mono h
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Inclusion of the index sets gives inclusion of their sets of coordinate generators, hence inclusion of the ideals they generate on affine space. Sheafification by restriction and pullback along the chart both preserve inclusion. The resulting ideal sheaves are the two coordinate ideals.
 -/
 theorem EtaleChart.coordIdeal_mono {Y : Scheme.{u}} {k : Type u} [Field k]
     {p : Y ⟶ Spec (CommRingCat.of k)} {U : Y.Opens} {m : ℕ} (ch : EtaleChart p U m)
@@ -82,12 +80,8 @@ theorem EtaleChart.coordIdeal_mono {Y : Scheme.{u}} {k : Type u} [Field k]
   rintro x ⟨i, hi, rfl⟩
   exact ⟨i, Finset.mem_coe.mpr (h (Finset.mem_coe.mp hi)), rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+The support of the kernel ideal is the image of the inclusion of its closed subscheme. A closed immersion identifies its source with this kernel subscheme compatibly with their maps to the ambient scheme. The two images therefore coincide.
 -/
 private theorem coe_support_ker_eq_range {X X' : Scheme.{u}} (τ : X ⟶ X') [IsClosedImmersion τ] :
     (↑(Scheme.Hom.ker τ).support : Set X') = Set.range τ.base := by
@@ -106,10 +100,8 @@ private theorem coe_support_ker_eq_range {X X' : Scheme.{u}} (τ : X ⟶ X') [Is
   · rintro y ⟨x, rfl⟩
     exact ⟨(FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).inv.base x, h2 x⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The support of the kernel is the image of the closed immersion. Restriction to the open pulls back that support to its intersection with the open, which is empty by hypothesis. An ideal with empty support is unit.
 -/
 theorem restrictIdeal_ker_eq_top_of_not_mem {X X' : Scheme.{u}} (τ : X ⟶ X')
     [IsClosedImmersion τ] (U : X'.Opens) (h : ∀ x : X, τ.base x ∉ U) :
@@ -134,8 +126,8 @@ structure AdaptedEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
   coord_mem : coord ∈ idxSet
   restrictIdeal_ker : restrictIdeal τ.ker opens = chart.coordIdeal idxSet
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The restricted chart is obtained by composing the smaller-open inclusion with the original chart. Its coordinate ideal is the pullback of the corresponding affine-space ideal along this composite. Functoriality identifies it with the original coordinate ideal pulled back to the smaller open.
 -/
 private theorem coordIdeal_restrict {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U V : X.Opens} {m : ℕ} (ch : EtaleChart p U m)
@@ -144,10 +136,8 @@ private theorem coordIdeal_restrict {X : Scheme.{u}} {k : Type u} [Field k]
   simp only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrict_map]
   rw [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At the image of the given source point, choose a chart from the coordinate codimension hypothesis. Shrink to an affine open still containing the point, and restrict the chart. The coordinate ideal description of the kernel remains valid by compatibility with restriction. Since its coordinate set has positive size, choose a coordinate in it. These data give an adapted affine chart.
 -/
 theorem exists_adaptedEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') (c : ℕ) (hc : 1 ≤ c)
@@ -170,12 +160,8 @@ structure DisjointEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
   chart : EtaleChart p opens coordCount
   not_mem : ∀ x : X, τ.base x ∉ opens
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Take a chart containing the ambient point. The image of the closed immersion is closed and misses that point, so intersect the chart with the open complement of the image. Choose an affine neighborhood of the point inside this intersection. The chart restricts to that neighborhood and its open misses every point in the image.
 -/
 theorem exists_disjointEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') [IsClosedImmersion τ]
@@ -206,16 +192,16 @@ def coverOpens {X X' : Scheme.{u}} {k : Type u} [Field k]
   | Sum.inl a => (A a).opens
   | Sum.inr b => (B b).opens
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+For an index from the adapted-chart family, the combined cover takes the open of that adapted chart.
 -/
 @[simp] theorem coverOpens_inl {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (a : α) :
     coverOpens A B (Sum.inl a) = (A a).opens := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+For an index from the disjoint-chart family, the combined cover takes the open of that disjoint chart.
 -/
 @[simp] theorem coverOpens_inr {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
@@ -229,16 +215,16 @@ def coverHypersurfaceIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
   | Sum.inl a => (A a).chart.coordIdeal {(A a).coord}
   | Sum.inr _ => ⊤
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+On an adapted chart the local hypersurface ideal is defined to be the ideal generated by its chosen coordinate.
 -/
 theorem coverHypersurfaceIdeal_inl {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (a : α) :
     coverHypersurfaceIdeal A B (Sum.inl a) = (A a).chart.coordIdeal {(A a).coord} := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+On a chart disjoint from the source image the local hypersurface ideal is defined to be the unit ideal.
 -/
 theorem coverHypersurfaceIdeal_inr {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
@@ -263,22 +249,8 @@ structure MaximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
         restrictIdeal τ.ker (toCoverData.opens i) = ch.coordIdeal S ∧
         toCoverData.localIdeal i = ch.coordIdeal {j}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components. Prove the second alternative. Prove the first alternative.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient scheme is quasi-compact because its map to the quasi-compact spectrum of the field is quasi-compact. At each point of the closed immersion's image use an adapted affine étale chart, and at each point outside use a disjoint affine étale chart. These opens cover the ambient scheme, so choose a finite subcover. On each adapted chart take the chosen one-coordinate ideal. On each disjoint chart take the unit ideal. Every chosen open remains affine and carries its chart. The adapted charts retain the full coordinate description of the immersion, and the disjoint charts retain disjointness. These are the required data of the finite maximal-contact cover.
 -/
 theorem nonempty_maximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.QuasiCompact p]
@@ -348,14 +320,14 @@ variable {X X' : Scheme.{u}} {k : Type u} [Field k] {p : X' ⟶ Spec (CommRingCa
 abbrev projection (C : MaximalContactCover p τ I c) : C.toCoverData.disjointUnion ⟶ X' :=
   C.toCoverData.disjointUnionMap
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The projection of the cover is defined to be the map from its disjoint union of opens to the ambient scheme.
 -/
 @[simp] theorem projection_eq (C : MaximalContactCover p τ I c) :
     C.projection = C.toCoverData.disjointUnionMap := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The covering opens are affine and there are finitely many of them. Their disjoint union is affine by the finite coproduct result for affine schemes.
 -/
 theorem isAffine_disjointUnion (C : MaximalContactCover p τ I c) : IsAffine C.toCoverData.disjointUnion :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.isAffine_disjointUnion C.toCoverData C.isAffine
@@ -363,8 +335,8 @@ theorem isAffine_disjointUnion (C : MaximalContactCover p τ I c) : IsAffine C.t
 instance instIsAffineTotal (C : MaximalContactCover p τ I c) : IsAffine C.toCoverData.disjointUnion :=
   C.isAffine_disjointUnion
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The finite disjoint union of the affine cover opens is quasi-compact. Since the target of the composite is the one-point spectrum of a field, the composite is quasi-compact.
 -/
 theorem quasiCompact_projection_comp (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.QuasiCompact (C.projection ≫ p) :=
@@ -374,8 +346,8 @@ instance instQuasiCompactProjComp (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.QuasiCompact (C.projection ≫ p) :=
   C.quasiCompact_projection_comp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projection is étale on the disjoint union of the covering opens, hence smooth. Its composite with the smooth ambient structure map is smooth.
 -/
 theorem smooth_projection_comp (C : MaximalContactCover p τ I c) [AlgebraicGeometry.Smooth p] :
     AlgebraicGeometry.Smooth (C.projection ≫ p) := by
@@ -388,8 +360,8 @@ instance instSmoothProjComp (C : MaximalContactCover p τ I c) [AlgebraicGeometr
     AlgebraicGeometry.Smooth (C.projection ≫ p) :=
   C.smooth_projection_comp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projection from the cover is locally of finite type, since it is given by open immersions on its summands. Composing with the locally finite type ambient structure map preserves this property.
 -/
 theorem locallyOfFiniteType_projection_comp (C : MaximalContactCover p τ I c)
     [AlgebraicGeometry.LocallyOfFiniteType p] :
@@ -404,15 +376,15 @@ instance instLocallyOfFiniteTypeProjComp (C : MaximalContactCover p τ I c)
     AlgebraicGeometry.LocallyOfFiniteType (C.projection ≫ p) :=
   C.locallyOfFiniteType_projection_comp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On each cover open the local ideal is either unit or a one-coordinate ideal in an étale chart. The assembled ideal has these same restrictions on the summand opens of the disjoint union. The local smooth-divisor criterion gives the claim.
 -/
 theorem isSmoothDivisor_iInfImageIdeal (C : MaximalContactCover p τ I c) :
     IsSmoothDivisor (C.projection ≫ p) C.toCoverData.iInfImageIdeal :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.isSmoothDivisor_iInfImageIdeal_of_forall_eq_top_or_coordIdeal C.toCoverData C.hypersurface C.hasChart
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Every ambient point lies in a cover open. The corresponding point of that open regarded as a summand maps to the original point, so the projection is surjective.
 -/
 theorem surjective_projection (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.projection :=
@@ -427,15 +399,15 @@ abbrev pullbackFiberToTotal (C : MaximalContactCover p τ I c) : C.pullbackFiber
 abbrev pullbackFiberToBase (C : MaximalContactCover p τ I c) : C.pullbackFiber ⟶ X :=
   Limits.pullback.fst τ C.projection
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The fiber is defined as the categorical pullback of the closed immersion and the cover projection. Its two displayed maps are the projections of that pullback, so they form a pullback square.
 -/
 theorem isPullback_pullbackFiber (C : MaximalContactCover p τ I c) :
     IsPullback C.pullbackFiberToBase C.pullbackFiberToTotal τ C.projection :=
   IsPullback.of_hasPullback τ C.projection
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projection to the cover total space is the base change of the given closed immersion along the cover projection. Closed immersions are stable under base change.
 -/
 theorem isClosedImmersion_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     IsClosedImmersion C.pullbackFiberToTotal := by
@@ -447,8 +419,8 @@ instance instIsClosedImmersionStarEmb (C : MaximalContactCover p τ I c) [IsClos
     IsClosedImmersion C.pullbackFiberToTotal :=
   C.isClosedImmersion_pullbackFiberToTotal
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The cover projection is flat, since it is étale. The fiber map to the original source is its base change, so it is flat.
 -/
 theorem flat_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Flat C.pullbackFiberToBase := by
@@ -461,8 +433,8 @@ instance instFlatStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Flat C.pullbackFiberToBase :=
   C.flat_pullbackFiberToBase
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The cover projection is smooth. The fiber map to the original source is its base change along the original immersion, so that map is smooth as well.
 -/
 theorem smooth_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Smooth C.pullbackFiberToBase := by
@@ -475,8 +447,8 @@ instance instSmoothStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Smooth C.pullbackFiberToBase :=
   C.smooth_pullbackFiberToBase
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The cover projection is surjective since the opens cover the ambient scheme. The fiber map to the original source is its base change, which preserves surjectivity.
 -/
 theorem surjective_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.pullbackFiberToBase := by
@@ -488,8 +460,8 @@ instance instSurjectiveStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.pullbackFiberToBase :=
   C.surjective_pullbackFiberToBase
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map to the cover total space is the pullback of the closed immersion along the flat cover projection. The kernel theorem for a flat pullback square identifies its kernel with the pullback of the original kernel ideal.
 -/
 theorem ker_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     Scheme.Hom.ker C.pullbackFiberToTotal = τ.ker.comap C.projection := by
@@ -500,12 +472,8 @@ theorem ker_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImm
     MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData
   exact ker_eq_comap_ker_of_isPullback_of_flat C.isPullback_pullbackFiber
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The fiber's kernel in the total space is the pullback of the original immersion's kernel. On a disjoint summand both this ideal and the hypersurface ideal are unit. On an adapted summand the hypersurface uses one coordinate from the set generating the fiber ideal, so the hypersurface ideal is contained in it. The summandwise inclusions give a global inclusion of ideals. The criterion for factoring through a closed immersion now provides the required lift to the hypersurface.
 -/
 theorem exists_factor_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     ∃ f : C.pullbackFiber ⟶ C.toCoverData.iInfImageIdeal.subscheme,
@@ -539,23 +507,23 @@ def pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImme
     C.pullbackFiber ⟶ C.toCoverData.iInfImageIdeal.subscheme :=
   (C.exists_factor_pullbackFiberToTotal).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map to the hypersurface is chosen from the factorization of the fiber's total-space map. Its composite with the hypersurface inclusion is therefore that total-space map.
 -/
 theorem pullbackFiberToHypersurface_comp_subschemeι (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     C.pullbackFiberToHypersurface ≫ C.toCoverData.iInfImageIdeal.subschemeι = C.pullbackFiberToTotal :=
   (C.exists_factor_pullbackFiberToTotal).choose_spec
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Regroup the composite so that the fiber-to-hypersurface map is followed first by the hypersurface inclusion. Their composite is the fiber-to-total-space map. Postcompose this identity with the given map.
 -/
 theorem pullbackFiberToHypersurface_comp_subschemeι_assoc (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     {Z : Scheme.{u}} (h : C.toCoverData.disjointUnion ⟶ Z) :
     C.pullbackFiberToHypersurface ≫ C.toCoverData.iInfImageIdeal.subschemeι ≫ h = C.pullbackFiberToTotal ≫ h := by
   rw [← Category.assoc, C.pullbackFiberToHypersurface_comp_subschemeι]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite agrees with the fiber's projection to the total space. That projection is a closed immersion because it is obtained by base change from the original one.
 -/
 private theorem isClosedImmersion_pullbackFiberToHypersurface_comp_subschemeι (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
@@ -563,8 +531,8 @@ private theorem isClosedImmersion_pullbackFiberToHypersurface_comp_subschemeι (
   rw [C.pullbackFiberToHypersurface_comp_subschemeι]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The composite with the hypersurface inclusion is a closed immersion. A morphism whose composite with a closed immersion is a closed immersion is itself a closed immersion, giving the claim.
 -/
 theorem isClosedImmersion_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     IsClosedImmersion C.pullbackFiberToHypersurface := by
@@ -579,8 +547,8 @@ instance instIsClosedImmersionStarFactor (C : MaximalContactCover p τ I c) [IsC
 def comapImageIdealSheaf (C : MaximalContactCover p τ I c) : C.toCoverData.disjointUnion.IdealSheafData :=
   (imageIdealSheaf τ I).comap C.projection
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal on the cover total space is defined by pulling the original image ideal back along the cover projection.
 -/
 theorem comapImageIdealSheaf_eq (C : MaximalContactCover p τ I c) :
     C.comapImageIdealSheaf = (imageIdealSheaf τ I).comap C.projection := rfl
@@ -589,14 +557,14 @@ def idealOnHypersurface (C : MaximalContactCover p τ I c) :
     C.toCoverData.iInfImageIdeal.subscheme.IdealSheafData :=
   C.comapImageIdealSheaf.comap C.toCoverData.iInfImageIdeal.subschemeι
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The hypersurface ideal in the assertion is defined by pulling the total-space ideal back along the hypersurface inclusion.
 -/
 theorem idealOnHypersurface_eq_comap (C : MaximalContactCover p τ I c) :
     C.idealOnHypersurface = C.comapImageIdealSheaf.comap C.toCoverData.iInfImageIdeal.subschemeι := rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On a disjoint summand both ideals are unit, since the immersion's image misses that open. On an adapted summand the local ideal uses a single coordinate from the coordinate set of the restricted kernel. Inclusion of these coordinate sets gives the ideal inclusion.
 -/
 private theorem localIdeal_le_restrictIdeal_ker (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     (i : C.toCoverData.idx) :
@@ -608,8 +576,8 @@ private theorem localIdeal_le_restrictIdeal_ker (C : MaximalContactCover p τ I 
   · rw [hloc, hker]
     exact ch.coordIdeal_mono (Finset.singleton_subset_iff.mpr hjS)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The assembled ideal pulls back to the chosen local ideal on each summand. The pulled-back kernel restricts there to the kernel on the original cover open, since the sum map restricts to its inclusion. The local inclusion holds on every summand and therefore holds globally.
 -/
 private theorem iInfImageIdeal_le_comap_ker (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     C.toCoverData.iInfImageIdeal ≤ (Scheme.Hom.ker τ).comap C.toCoverData.disjointUnionMap := by
@@ -620,10 +588,8 @@ private theorem iInfImageIdeal_le_comap_ker (C : MaximalContactCover p τ I c) [
     MaxContactReduction.FiniteOpenCoverWithIdeals.summandι_comp_disjointUnionMap]
   exact localIdeal_le_restrictIdeal_ker C i
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The kernel of the hypersurface inclusion is the assembled ideal, which is contained in the pulled-back original kernel. The latter is contained in the pulled-back image ideal because an image ideal contains the embedding kernel. An ideal containing the kernel of a closed immersion is recovered by pulling it back to the closed subscheme and taking its image. The pullback here is the hypersurface ideal in the assertion.
 -/
 theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
@@ -638,10 +604,8 @@ theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : Maximal
     C.idealOnHypersurface C.idealOnHypersurface_eq_comap
   exact h2.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Flat base change along the cover projection identifies the pulled-back original image ideal with the image in the total space of the pulled-back source ideal on the fiber. The fiber map factors through the hypersurface. By functoriality of images the total-space ideal is the image of the indicated fiber ideal on the hypersurface, followed by the hypersurface inclusion. Pulling back along that closed immersion recovers the intermediate ideal, giving the formula.
 -/
 theorem idealOnHypersurface_eq_imageIdealSheaf (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :

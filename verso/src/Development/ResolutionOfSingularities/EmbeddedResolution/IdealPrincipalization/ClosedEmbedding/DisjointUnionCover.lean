@@ -37,8 +37,8 @@ abbrev piece (D : FiniteOpenCoverWithIdeals T) (i : D.idx) : Scheme.{u} := (D.op
 abbrev summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) : D.piece i ⟶ D.disjointUnion :=
   Sigma.ι (fun j : D.idx => (D.opens j).toScheme) i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The summand inclusion of a scheme coproduct identifies its source with an open subscheme, namely the component corresponding to that summand.
 -/
 theorem isOpenImmersion_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     IsOpenImmersion (D.summandι i) := by
@@ -49,8 +49,8 @@ instance instIsOpenImmersionSummandι (D : FiniteOpenCoverWithIdeals T) (i : D.i
     IsOpenImmersion (D.summandι i) :=
   isOpenImmersion_summandι D i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A summand of the disjoint union is an open and closed subscheme with the induced structure sheaf. Its coproduct inclusion is therefore also a closed immersion.
 -/
 theorem isClosedImmersion_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     IsClosedImmersion (D.summandι i) := by
@@ -61,8 +61,8 @@ instance instIsClosedImmersionSummandι (D : FiniteOpenCoverWithIdeals T) (i : D
     IsClosedImmersion (D.summandι i) :=
   isClosedImmersion_summandι D i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion is that of an open and closed summand. Its inverse image of a quasi-compact open is a closed subset of that open and is therefore quasi-compact.
 -/
 theorem quasiCompact_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     QuasiCompact (D.summandι i) := by
@@ -73,15 +73,15 @@ instance instQuasiCompactSummandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx)
     QuasiCompact (D.summandι i) :=
   quasiCompact_summandι D i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map from the coproduct is determined by the original open inclusions on its summands. The defining coproduct identity gives the stated composite.
 -/
 theorem summandι_comp_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     D.summandι i ≫ D.disjointUnionMap = (D.opens i).ι :=
   sigma_ι_sigmaOpensDesc T.scheme D.opens i
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite is the inclusion of the given open into the original scheme, whose image is that open. Evaluating the composite at the summand point gives the membership.
 -/
 theorem disjointUnionMap_summandι_mem (D : FiniteOpenCoverWithIdeals T) (i : D.idx) (y : D.piece i) :
     D.disjointUnionMap.base ((D.summandι i).base y) ∈ D.opens i := by
@@ -91,21 +91,21 @@ theorem disjointUnionMap_summandι_mem (D : FiniteOpenCoverWithIdeals T) (i : D.
   rw [Scheme.Opens.range_ι] at hmem
   exact hmem
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The summand inclusion is a closed immersion. The image ideal of a closed subscheme pulls back through that immersion to the original defining ideal.
 -/
 private theorem comap_imageIdealSheaf_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     (imageIdealSheaf (D.summandι i) (D.localIdeal i)).comap (D.summandι i) = D.localIdeal i :=
   FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp (D.localIdeal i) (D.summandι i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the image ideal is the kernel of the map from the closed subscheme to the target, obtained by composing its inclusion with the given morphism.
 -/
 private theorem imageIdealSheaf_eq_ker {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     (I : X.IdealSheafData) : imageIdealSheaf f I = Scheme.Hom.ker (I.subschemeι ≫ f) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The sheaf condition for the empty cover makes the ring of sections on the empty open terminal. Its two projections from its square are therefore equal. Evaluating them on any pair of sections shows those sections are equal.
 -/
 private theorem subsingleton_sections_bot (Z : Scheme.{u}) :
     Subsingleton ↥(Z.presheaf.obj (Opposite.op (⊥ : Z.Opens))) := by
@@ -119,10 +119,8 @@ private theorem subsingleton_sections_bot (Z : Scheme.{u}) :
       ↥(Z.presheaf.obj (Opposite.op (⊥ : Z.Opens)))))
   exact congrArg (fun m => (CommRingCat.Hom.hom m) (a, b)) h
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine open misses the image, so its inverse image is empty. On that inverse image the section ring has one element, so the map on sections sends one to zero. The kernel ideal on the affine open thus contains one and is the unit ideal.
 -/
 private theorem ideal_ker_eq_top_of_disjoint {Y Z : Scheme.{u}} (g : Z ⟶ Y) [QuasiCompact g]
     (U : Y.affineOpens) (hdisj : ∀ z : ↥Z, g.base z ∉ (U.1 : Set ↥Y)) :
@@ -139,10 +137,8 @@ private theorem ideal_ker_eq_top_of_disjoint {Y Z : Scheme.{u}} (g : Z ⟶ Y) [Q
   rw [RingHom.mem_ker, map_one]
   exact Subsingleton.elim _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The subscheme giving the image ideal maps into summand $j$, while the affine open lies in summand $i$. Distinct coproduct summands have disjoint images, so the inverse image of the affine open is empty. Its kernel ideal on that open is unit.
 -/
 private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeals T) {i j : D.idx} (hij : j ≠ i)
     (W : D.disjointUnion.Opens) (hW : IsAffineOpen W)
@@ -157,16 +153,8 @@ private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeal
   exact Blowup.sigmaι_base_ne (fun t : D.idx => (D.opens t).toScheme) hij
     ((D.localIdeal j).subschemeι.base z) v (hcomp.symm.trans hv.symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Work on an affine open of summand $i$. Its image in the disjoint union is affine because the summand inclusion is an open immersion. There all image ideals from other summands are unit, since their images are disjoint. Thus the intersection of image ideals on this affine image is the contribution from $i$ alone. Pulling it back along the summand inclusion recovers the original ideal of that summand. Equality on every affine open gives the result.
 -/
 theorem comap_iInfImageIdeal_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     D.iInfImageIdeal.comap (D.summandι i) = D.localIdeal i := by
@@ -205,8 +193,8 @@ theorem comap_iInfImageIdeal_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.
 abbrev summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx) : D.disjointUnion.Opens :=
   (D.summandι i).opensRange
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The associated summand open is defined to be the image of the summand inclusion. The inclusion of this open has that same image.
 -/
 theorem range_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     Set.range (D.summandι i).base = Set.range (D.summandOpen i).ι.base :=
@@ -216,8 +204,8 @@ abbrev summandIso (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     D.piece i ≅ (D.summandOpen i).toScheme :=
   IsOpenImmersion.isoOfRangeEq (D.summandι i) (D.summandOpen i).ι (range_summandι D i)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the summand open with the original summand by the inverse of the image isomorphism. Its inclusion then factors through the coproduct summand inclusion. Composing with the total map gives the original open inclusion.
 -/
 theorem summandOpen_ι_comp_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     (D.summandOpen i).ι ≫ D.disjointUnionMap = (D.summandIso i).inv ≫ (D.opens i).ι := by
@@ -225,8 +213,8 @@ theorem summandOpen_ι_comp_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) (
     simp [FiniteOpenCoverWithIdeals.summandIso]
   rw [← h, Category.assoc, summandι_comp_disjointUnionMap]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The underlying point space of the scheme coproduct is the disjoint union of the summand point spaces. Represent the point by a summand index and a point in that summand. Its image under the corresponding inclusion is the given point.
 -/
 theorem exists_summandι_base_eq (D : FiniteOpenCoverWithIdeals T) (x : ↥D.disjointUnion) :
     ∃ (i : D.idx) (y : D.piece i), (D.summandι i).base y = x := by
@@ -235,8 +223,8 @@ theorem exists_summandι_base_eq (D : FiniteOpenCoverWithIdeals T) (x : ↥D.dis
   show (Sigma.ι (fun j : D.idx => (D.opens j).toScheme) i).base y = x
   simpa using hx
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Represent the point as the image of a summand point. This puts it in the range of that summand inclusion, which is the designated summand open.
 -/
 theorem exists_mem_summandOpen (D : FiniteOpenCoverWithIdeals T) (x : ↥D.disjointUnion) :
     ∃ i : D.idx, x ∈ D.summandOpen i := by
@@ -245,16 +233,16 @@ theorem exists_mem_summandOpen (D : FiniteOpenCoverWithIdeals T) (x : ↥D.disjo
   have hmem : x ∈ Set.range (D.summandι i).base := ⟨y, hy⟩
   exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The scheme of the original open is affine by hypothesis. Its image under the coproduct open immersion is isomorphic to it, so the resulting summand open is affine.
 -/
 theorem isAffineOpen_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx) (h : IsAffineOpen (D.opens i)) :
     IsAffineOpen (D.summandOpen i) := by
   have hA : IsAffine ((D.opens i).toScheme) := h
   exact isAffineOpen_opensRange (D.summandι i)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of the summand open is its inverse image isomorphism to the summand followed by the coproduct inclusion. Restriction is pullback along that composite, which factors into the two stated pullbacks.
 -/
 theorem restrictIdeal_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx) (J : D.disjointUnion.IdealSheafData) :
     restrictIdeal J (D.summandOpen i) = (J.comap (D.summandι i)).comap (D.summandIso i).inv := by
@@ -262,23 +250,23 @@ theorem restrictIdeal_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx) 
     simp [FiniteOpenCoverWithIdeals.summandIso]
   rw [restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, h]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Express restriction to the summand open as pullback to the summand followed by transport along the inverse image isomorphism. The first pullback of the assembled ideal is the original local ideal, leaving its stated transport.
 -/
 theorem restrictIdeal_iInfImageIdeal_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     restrictIdeal D.iInfImageIdeal (D.summandOpen i) =
       (D.localIdeal i).comap (D.summandIso i).inv := by
   rw [restrictIdeal_summandOpen D i D.iInfImageIdeal, comap_iInfImageIdeal_summandι D i]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The assembled ideal is defined as the intersection of the image ideals of all the summand ideals.
 -/
 theorem iInfImageIdeal_eq_iInf (D : FiniteOpenCoverWithIdeals T) :
     D.iInfImageIdeal = ⨅ i : D.idx, imageIdealSheaf (D.summandι i) (D.localIdeal i) :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use functoriality to write the left side as pullback along the summand open inclusion followed by the total map. This composite is the inverse summand isomorphism followed by the original open inclusion. Pulling back in that order gives the right side.
 -/
 theorem restrictIdeal_comap_disjointUnionMap_summandOpen (D : FiniteOpenCoverWithIdeals T) (i : D.idx)
     (J : T.scheme.IdealSheafData) :
@@ -287,8 +275,8 @@ theorem restrictIdeal_comap_disjointUnionMap_summandOpen (D : FiniteOpenCoverWit
   rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, summandOpen_ι_comp_disjointUnionMap]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original chart followed by the affine-space structure map agrees with the original open's map to the field. Precompose by the inverse summand isomorphism. The resulting map to the original scheme is the summand open inclusion followed by the total cover map, giving the claimed structure map.
 -/
 private theorem summandIso_inv_comp_map_comp_affineSpaceFinToSpec (D : FiniteOpenCoverWithIdeals T) (i : D.idx) {n : ℕ}
     (c : EtaleChart T.structMap (D.opens i) n) :
@@ -297,8 +285,8 @@ private theorem summandIso_inv_comp_map_comp_affineSpaceFinToSpec (D : FiniteOpe
   rw [Category.assoc, c.comp_struct, ← Category.assoc, ← summandOpen_ι_comp_disjointUnionMap,
     Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse summand isomorphism is étale, as is the original chart map. Étale morphisms are closed under composition.
 -/
 private theorem etale_summandIso_inv_comp_map (D : FiniteOpenCoverWithIdeals T) (i : D.idx) {n : ℕ}
     (c : EtaleChart T.structMap (D.opens i) n) :
@@ -314,15 +302,15 @@ def summandEtaleChart (D : FiniteOpenCoverWithIdeals T) (i : D.idx) {n : ℕ}
   comp_struct := summandIso_inv_comp_map_comp_affineSpaceFinToSpec D i c
   isEtale := etale_summandIso_inv_comp_map D i c
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The transported chart map is defined by first identifying the summand open with the original open and then using the given chart map.
 -/
 theorem summandEtaleChart_map (D : FiniteOpenCoverWithIdeals T) (i : D.idx) {n : ℕ}
     (c : EtaleChart T.structMap (D.opens i) n) :
     (D.summandEtaleChart i c).map = (D.summandIso i).inv ≫ c.map := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each coordinate ideal is the pullback of the corresponding coordinate-subspace ideal on affine space. The transported chart map is the inverse summand isomorphism followed by the original chart map. Functoriality writes its coordinate ideal as the original coordinate ideal pulled back along the inverse isomorphism.
 -/
 theorem summandEtaleChart_coordIdeal (D : FiniteOpenCoverWithIdeals T) (i : D.idx) {n : ℕ}
     (c : EtaleChart T.structMap (D.opens i) n) (S : Finset (Fin n)) :
@@ -330,12 +318,8 @@ theorem summandEtaleChart_coordIdeal (D : FiniteOpenCoverWithIdeals T) (i : D.id
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, summandEtaleChart_map,
     ← Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For any element of one ideal, its image belongs to the common image ideal. Surjectivity of the ring map realizes that image as the image of an element of the other original ideal. Injectivity makes the two original elements equal. This proves both inclusions by interchanging the ideals.
 -/
 private theorem eq_of_map_eq_of_bijective {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (hinj : Function.Injective φ) (hsurj : Function.Surjective φ)
@@ -359,26 +343,24 @@ private theorem eq_of_map_eq_of_bijective {A B : Type u} [CommRing A] [CommRing 
     rw [hax'] at ha
     exact ha
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the open subscheme is a point of the ambient scheme lying in the given open. Thus the preimage of that open under its own inclusion contains the whole open subscheme.
 -/
 private theorem top_le_preimage_opens {X : Scheme.{u}} (V : X.Opens) :
     (⊤ : V.toScheme.Opens) ≤ (TopologicalSpace.Opens.map V.ι.base).obj V := by
   intro y _
   exact y.2
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+On sections, the open inclusion identifies the original sections over the given open with the global sections of the corresponding open subscheme. The ring map in this direction is the inverse of the canonical identification from the global sections to the original section ring.
 -/
 private theorem appLE_ι_eq_topIso_inv {X : Scheme.{u}} (V : X.Opens) :
     V.ι.appLE V ⊤ (top_le_preimage_opens V) = V.topIso.inv := by
   simp
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the two pulled-back ideals on the whole affine open subscheme. These evaluations are the images of the original ideals on that affine open under its section-ring isomorphism. They agree by hypothesis. A ring isomorphism reflects equality of ideals, so the original ideals agree there.
 -/
 private theorem ideal_eq_of_comap_ι_eq {X : Scheme.{u}} {I J : X.IdealSheafData}
     (V : X.Opens) (hV : IsAffineOpen V) (h : I.comap V.ι = J.comap V.ι) :
@@ -399,14 +381,8 @@ private theorem ideal_eq_of_comap_ι_eq {X : Scheme.{u}} {I J : X.IdealSheafData
     exact V.topIso.symm.commRingCatIsoToRingEquiv.surjective
   exact eq_of_map_eq_of_bijective _ hinj hsurj (key1.symm.trans key2)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Refine the given open cover by all affine opens contained in one of its members. They still cover the scheme because affine opens form a basis. On each of them the pulled-back ideals agree by factoring its inclusion through the original cover member. The affine evaluation result gives equality of the ideals on that affine open. The resulting local equalities imply equality globally.
 -/
 private theorem ext_of_comap_ι_eq_of_iSup_eq_top {X : Scheme.{u}} {ι : Type u} (U : ι → X.Opens)
     (hU : iSup U = ⊤) {I J : X.IdealSheafData}
@@ -431,10 +407,8 @@ private theorem ext_of_comap_ι_eq_of_iSup_eq_top {X : Scheme.{u}} {ι : Type u}
       rw [← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]
     rw [e1, e2, h i]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The summand opens cover the disjoint union. On each summand open, restriction of each ideal is its given summand pullback transported by the same isomorphism. These restrictions agree by hypothesis, and equality of ideals can be checked on an open cover.
 -/
 theorem ext_of_comap_summandι (D : FiniteOpenCoverWithIdeals T) {J J' : D.disjointUnion.IdealSheafData}
     (h : ∀ i : D.idx, J.comap (D.summandι i) = J'.comap (D.summandι i)) : J = J' := by
@@ -449,8 +423,8 @@ theorem ext_of_comap_summandι (D : FiniteOpenCoverWithIdeals T) {J J' : D.disjo
     rw [h i] at h1
     exact h1.trans h2.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Take an element of the first ideal. Its image lies in the image of the second ideal by the assumed inclusion. Surjectivity expresses it as the image of an element of that ideal, and injectivity identifies the two preimages. This proves the original inclusion.
 -/
 private theorem ideal_le_of_map_le_of_bijective {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (hinj : Function.Injective φ) (hsurj : Function.Surjective φ)
@@ -461,10 +435,8 @@ private theorem ideal_le_of_map_le_of_bijective {A B : Type u} [CommRing A] [Com
   have hba' : b = a := hinj hba
   rwa [hba'] at hb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the pullback inclusion on the whole affine open subscheme. The two evaluated ideals are the images of the original affine ideals under a ring isomorphism. This isomorphism reflects inclusion, giving the claimed inequality.
 -/
 private theorem ideal_le_of_comap_ι_le {Y : Scheme.{u}} {J J' : Y.IdealSheafData}
     (V : Y.Opens) (hV : IsAffineOpen V) (h : J.comap V.ι ≤ J'.comap V.ι) :
@@ -482,10 +454,8 @@ private theorem ideal_le_of_comap_ι_le {Y : Scheme.{u}} {J J' : Y.IdealSheafDat
     V.topIso.symm.commRingCatIsoToRingEquiv.surjective
   exact ideal_le_of_map_le_of_bijective _ hinj hsurj hle
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Refine the pointwise neighborhoods by affine opens, which still cover the scheme. On each of these affine opens the first ideal is contained in the second, so their intersection equals the first ideal. Equality of ideal sheaves can be checked on the affine cover. Thus the intersection is the first ideal globally, which is equivalent to the desired inclusion.
 -/
 private theorem le_of_ideal_le_locally {Y : Scheme.{u}} {J J' : Y.IdealSheafData}
     (V : ↥Y → Y.Opens) (hmem : ∀ y : ↥Y, y ∈ V y)
@@ -507,12 +477,8 @@ private theorem le_of_ideal_le_locally {Y : Scheme.{u}} {J J' : Y.IdealSheafData
       exact hloc y W hW hWV
   exact inf_eq_left.mp key
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For every point choose a summand open containing it. An affine open contained in this summand open factors through the original summand inclusion by the open immersion property. Pullback preserves the given inclusion along that factorization. Evaluation on the affine open gives an inclusion of the original ideals there. The local criterion for inclusion now gives the global inequality.
 -/
 theorem le_of_comap_summandι_le (D : FiniteOpenCoverWithIdeals T) {J J' : D.disjointUnion.IdealSheafData}
     (h : ∀ i : D.idx, J.comap (D.summandι i) ≤ J'.comap (D.summandι i)) : J ≤ J' := by
@@ -538,8 +504,8 @@ theorem le_of_comap_summandι_le (D : FiniteOpenCoverWithIdeals T) {J J' : D.dis
   rw [e1, e2]
   exact Scheme.IdealSheafData.comap_mono _ (h (idxf y))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On each open summand the total map is the original open inclusion, which is étale. Étaleness is local on the source, and the summands cover the disjoint union.
 -/
 theorem etale_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : Etale D.disjointUnionMap :=
   etale_sigmaOpensDesc T.scheme D.opens
@@ -547,8 +513,8 @@ theorem etale_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : Etale D.disjo
 instance instEtaleTotalMap (D : FiniteOpenCoverWithIdeals T) : Etale D.disjointUnionMap :=
   etale_disjointUnionMap D
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The disjoint union map is étale. Every étale morphism is smooth.
 -/
 theorem smooth_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : Smooth D.disjointUnionMap := by
   have het : Etale D.disjointUnionMap := etale_disjointUnionMap D
@@ -557,16 +523,16 @@ theorem smooth_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : Smooth D.dis
 instance instSmoothTotalMap (D : FiniteOpenCoverWithIdeals T) : Smooth D.disjointUnionMap :=
   smooth_disjointUnionMap D
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The disjoint union map is étale and hence smooth. Smooth morphisms are flat.
 -/
 theorem flat_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : Flat D.disjointUnionMap := by
   have he : Etale D.disjointUnionMap := etale_disjointUnionMap D
   have hs : Smooth D.disjointUnionMap := inferInstance
   infer_instance
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On the open summands the map is the inclusion of an open, which is locally of finite type. These summands cover the source, so the total map is locally of finite type.
 -/
 theorem locallyOfFiniteType_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) : LocallyOfFiniteType D.disjointUnionMap :=
   locallyOfFiniteType_sigmaOpensDesc T.scheme D.opens
@@ -574,29 +540,29 @@ theorem locallyOfFiniteType_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) :
 instance instLocallyOfFiniteTypeTotalMap (D : FiniteOpenCoverWithIdeals T) : LocallyOfFiniteType D.disjointUnionMap :=
   locallyOfFiniteType_disjointUnionMap D
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For an arbitrary target point, the open cover assumption puts it in one of the original opens. The corresponding point on that summand maps to the chosen point, proving surjectivity.
 -/
 theorem surjective_disjointUnionMap (D : FiniteOpenCoverWithIdeals T) (h : iSup D.opens = ⊤) :
     Surjective D.disjointUnionMap :=
   surjective_sigmaOpensDesc T.scheme D.opens h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each scheme in the finite coproduct is affine by hypothesis. A finite disjoint union of affine schemes is affine, with coordinate ring the finite product of the section rings.
 -/
 theorem isAffine_disjointUnion (D : FiniteOpenCoverWithIdeals T) (h : ∀ i : D.idx, IsAffineOpen (D.opens i)) :
     IsAffine D.disjointUnion :=
   isAffine_sigmaOpens T.scheme D.opens h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A field has only one prime ideal, its zero ideal. Hence its spectrum is a subsingleton.
 -/
 private theorem subsingleton_spec (k : Type u) [Field k] :
     Subsingleton ↥(Spec (CommRingCat.of k)) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum k))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The finite disjoint union of the affine cover opens is affine and therefore quasi-compact. The spectrum of the base field has one point. The inverse image of an open there is either empty or the whole quasi-compact source, so the composite is quasi-compact.
 -/
 theorem quasiCompact_disjointUnionMap_comp (D : FiniteOpenCoverWithIdeals T)
     (h : ∀ i : D.idx, IsAffineOpen (D.opens i)) :
@@ -607,12 +573,8 @@ theorem quasiCompact_disjointUnionMap_comp (D : FiniteOpenCoverWithIdeals T)
   exact AlgebraicGeometry.quasiCompact_of_compactSpace_of_subsingleton
     (D.disjointUnionMap ≫ T.structMap)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the total space choose its summand open and transport the given étale chart from that summand. The assembled ideal restricts to the given local ideal under this identification. It is therefore either unit or generated by the chosen single étale coordinate. The local coordinate criterion for a smooth divisor applies.
 -/
 theorem isSmoothDivisor_iInfImageIdeal_of_exists_etaleChart (D : FiniteOpenCoverWithIdeals T)
     (h : ∀ i : D.idx, ∃ (n : ℕ) (c : EtaleChart T.structMap (D.opens i) n),
@@ -632,10 +594,8 @@ theorem isSmoothDivisor_iInfImageIdeal_of_exists_etaleChart (D : FiniteOpenCover
     rw [restrictIdeal_iInfImageIdeal_summandOpen D i, hj]
     exact (summandEtaleChart_coordIdeal D i c {j}).symm
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+On a summand with unit ideal, choose any available étale chart. On a summand with a coordinate ideal, use the chart supplied with that coordinate description. In either case there is a chart in which the local ideal is unit or a single coordinate ideal, so the assembled ideal defines a smooth divisor.
 -/
 theorem isSmoothDivisor_iInfImageIdeal_of_forall_eq_top_or_coordIdeal (D : FiniteOpenCoverWithIdeals T)
     (halt : ∀ i : D.idx, D.localIdeal i = ⊤ ∨

@@ -23,16 +23,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback to the boundary divisor recovers $J$ from its image ideal. The mark is one, so the order locus is the support of the image ideal, and its inverse image lies in the support of $J$. If any connected component lay in that inverse image, an irreducible component through one of its points would lie there as well, since an irreducible component is connected. This contradicts nonvanishing of the admissible ideal $J$ on components. Thus the selected union is empty. Its kernel ideal has empty support and is unit. If the selected union is treated by the non-open branch of the definition, that branch also gives the unit ideal.
 -/
 theorem containedComponentsIdeal_eq_top_of_eq_imageIdealSheaf
     (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ) (hj : j < T.boundary.length)

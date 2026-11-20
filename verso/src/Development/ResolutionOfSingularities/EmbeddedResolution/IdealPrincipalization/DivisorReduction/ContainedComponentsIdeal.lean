@@ -28,8 +28,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility makes the ambient scheme Noetherian. The boundary subscheme is closed in it, so its underlying topological space is Noetherian.
 -/
 theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -44,8 +44,8 @@ abbrev divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     connectedComponent x ⊆
       ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary subscheme is Noetherian, so it has finitely many connected components, each of which is closed. The indicated set is the union of the connected components contained in the inverse image of the order locus. It is therefore closed.
 -/
 theorem isClosed_divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -55,8 +55,8 @@ theorem isClosed_divisorComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u})
     ↥(T.boundary.get ⟨j, hj⟩).subscheme
     (⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+When the indicated union of components is open, the contained-components ideal is defined as the kernel of the inclusion of that open subscheme into the ambient scheme.
 -/
 theorem containedComponentsIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen (divisorComponentsInOrderLocus T j hj)) :
@@ -64,16 +64,16 @@ theorem containedComponentsIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundar
       openSubschemeKer (T.boundary.get ⟨j, hj⟩) ⟨divisorComponentsInOrderLocus T j hj, h⟩ :=
   DivisorReduction.containedComponentsIdeal_eq_ker T j hj h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the branch where the selected union of components fails to be open, the defining rule for the contained-components ideal assigns the unit ideal.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : ¬ IsOpen (divisorComponentsInOrderLocus T j hj)) :
     DivisorReduction.containedComponentsIdeal T j hj = ⊤ :=
   DivisorReduction.containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility states that the boundary has strict normal crossings, in particular each entry defines a smooth divisor over the field. The given index is in range, so the chosen entry has that property.
 -/
 theorem isSmoothDivisor_boundary_get (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -83,10 +83,8 @@ theorem isSmoothDivisor_boundary_get (T : MarkedIdealWithBoundary.{u}) (hV : T.I
     exact List.getElem_mem hj
   exact ((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).1 _ hmem
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the selected union is open, it is also closed in the boundary divisor. The support of the kernel of its inclusion is then its image. Each point in that image comes from a point whose full connected component maps into the order locus, so its image lies there. In the other case the ideal is unit and has empty support.
 -/
 theorem support_containedComponentsIdeal_subset_orderAtLeastLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -107,10 +105,8 @@ theorem support_containedComponentsIdeal_subset_orderAtLeastLocus (T : MarkedIde
     rw [mem_support_iff_stalkIdeal_ne_top] at hx'
     exact absurd (stalkIdeal_top x) hx'
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the selected union is open, it is also closed and its kernel subscheme is that open and closed part of the smooth boundary divisor. Its map to the field is smooth by restriction. If the union fails to be open, the selected ideal is unit, so its zero subscheme is empty and its map to the field is smooth.
 -/
 theorem smooth_subschemeι_containedComponentsIdeal_comp (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -128,22 +124,8 @@ theorem smooth_subschemeι_containedComponentsIdeal_comp (T : MarkedIdealWithBou
     exact ((isSmoothDivisor_iff T.structMap (⊤ : T.scheme.IdealSheafData)).1
       (isSmoothDivisor_top T.structMap)).2
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
-
-It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the support forces the selected union to be open, since otherwise the ideal is unit. It is then an open and closed union of boundary components, and the point lies in its image. Choose an ambient neighborhood whose inverse image in the boundary lies in that union. Intersect it with a strict normal crossings chart around the point. On the intersection the contained-components ideal agrees with the chosen boundary ideal. That boundary entry cannot restrict to the unit ideal, since the point lies in its support, so the original chart assigns it a coordinate $b$. The restricted chart retains all the individual boundary coordinate or unit descriptions and their distinctness. The contained-components ideal is the ideal of $b$ there.
 -/
 theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (x : ↥T.scheme)
@@ -215,8 +197,8 @@ theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.
     exact (mem_support_iff_stalkIdeal_ne_top (⊤ : T.scheme.IdealSheafData) x).1 hx
       (stalkIdeal_top x)
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For an open selected union, the union is also closed in the boundary divisor. Its defining ideal agrees locally with the smooth divisor ideal along that union and with the unit ideal off it. Both ideals are locally generated by a nonzero divisor. In the other case the ideal is unit everywhere, so one is a generator.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -232,10 +214,8 @@ theorem isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal (T : MarkedI
     exact ((isSmoothDivisor_iff T.structMap (⊤ : T.scheme.IdealSheafData)).1
       (isSmoothDivisor_top T.structMap)).1
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At each point of the center support use the adapted chart for the contained-components ideal. Every boundary entry is unit or a distinct coordinate ideal, and the center is cut out by a single coordinate from that chart. These local descriptions give the strict normal crossings condition.
 -/
 theorem hasStrictNormalCrossingsWith_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -252,16 +232,16 @@ theorem hasStrictNormalCrossingsWith_containedComponentsIdeal (T : MarkedIdealWi
   · intro i hi t hti
     exact hsome i hi t hti
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The selected ideal is locally generated by a nonzero divisor. It is therefore already invertible as an ideal, and its blowup is the identity by the blowup universal property.
 -/
 theorem isBlowupAlongIdealSheaf_id_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
     Blowup.IsBlowupAlongIdealSheaf (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) :=
   Blowup.isBlowupAlongIdealSheaf_id_of_isLocallyGeneratedByNonZeroDivisor _ (isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The selected center has strict normal crossings with the boundary and its support lies in the order-at-least-multiplicity locus. The corresponding ideal power containment gives inclusion of the marked ideal in the selected center ideal to the marked power. That power is locally generated by a nonzero divisor. Dividing an ideal contained in an invertible ideal by the latter gives an ideal sheaf, whose product with the center power recovers the marked ideal.
 -/
 theorem exists_mul_pow_containedComponentsIdeal_eq_ideal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :

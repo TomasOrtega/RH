@@ -27,16 +27,16 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The category of opens comes from a partially ordered set, so there is at most one arrow between two given objects. The same holds in the opposite category. The two arrows are therefore equal, and applying the presheaf gives equal maps.
 -/
 private theorem presheaf_map_eq {X : Scheme.{u}} {A B : (X.Opens)ᵒᵖ} (f g : A ⟶ B) :
     X.presheaf.map f = X.presheaf.map g := by
   have h : f = g := Quiver.Hom.unop_inj (Subsingleton.elim f.unop g.unop)
   rw [h]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open, the section ideal of a product is the product of the section ideals. Each product of a section from the first smaller ideal and a section from the second smaller ideal belongs to the product of the larger ideals. These products generate the smaller product. The resulting inclusions on affine opens give the sheaf inclusion.
 -/
 private theorem idealSheafData_mul_le_mul {Y : Scheme.{u}} {A B C D : Y.IdealSheafData}
     (h1 : A ≤ B) (h2 : C ≤ D) : A * C ≤ B * D := by
@@ -45,8 +45,8 @@ private theorem idealSheafData_mul_le_mul {Y : Scheme.{u}} {A B C D : Y.IdealShe
   exact Ideal.mul_mono (Scheme.IdealSheafData.le_def.mp h1 U)
     (Scheme.IdealSheafData.le_def.mp h2 U)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On every affine open, multiplication of a section in the first ideal by a section in the second stays in the first ideal. The products generate the product ideal there, so the same containment holds for the sheaves.
 -/
 private theorem idealSheafData_mul_le_left {Y : Scheme.{u}} (A B : Y.IdealSheafData) :
     A * B ≤ A := by
@@ -54,8 +54,8 @@ private theorem idealSheafData_mul_le_left {Y : Scheme.{u}} (A B : Y.IdealSheafD
   rw [Scheme.IdealSheafData.ideal_mul]
   exact Ideal.mul_le.mpr fun r hr s _ => Ideal.mul_mem_right _ _ hr
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Write the larger exponent as the smaller exponent plus their difference. The larger power is the product of the smaller power and the power given by that difference. A product of ideals is contained in its first factor.
 -/
 private theorem idealSheafData_pow_le_pow_of_le {Y : Scheme.{u}} (A : Y.IdealSheafData) {i j : ℕ}
     (h : j ≤ i) : A ^ i ≤ A ^ j := by
@@ -63,8 +63,8 @@ private theorem idealSheafData_pow_le_pow_of_le {Y : Scheme.{u}} (A : Y.IdealShe
   calc A ^ (j + d) = A ^ j * A ^ d := by rw [pow_add]
     _ ≤ A ^ j := idealSheafData_mul_le_left _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The sections on the whole open subscheme identify canonically with the original scheme’s sections over that open. The stated map is the inverse of the canonical section-ring isomorphism, so it is bijective.
 -/
 private theorem appLE_ι_bijective {Y : Scheme.{u}} (V : Y.Opens)
     (e : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -75,10 +75,8 @@ private theorem appLE_ι_bijective {Y : Scheme.{u}} (V : Y.Opens)
   rw [h]
   exact ConcreteCategory.bijective_of_isIso _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the equal pullback sheaves on the whole affine open subscheme. The two ideals obtained are the extensions of the original section ideals along the section-ring isomorphism for the open inclusion. Transporting them back along the inverse isomorphism recovers the original ideals, which are therefore equal.
 -/
 private theorem ideal_eq_of_comap_ι_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (V : Y.affineOpens) (h : A.comap (V : Y.Opens).ι = B.comap (V : Y.Opens).ι) :
@@ -97,20 +95,16 @@ private theorem ideal_eq_of_comap_ι_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData
     sup_bot_eq, sup_bot_eq] at h3
   exact h3.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Affine opens form a basis of the scheme topology. Apply the basis property to the point and its given open neighborhood.
 -/
 private theorem exists_affineOpen_le {X : Scheme.{u}} (x : ↥X) (W : X.Opens)
     (hx : x ∈ W) : ∃ V : X.affineOpens, x ∈ V.1 ∧ V.1 ≤ W := by
   obtain ⟨U, hU, hxU, hUW⟩ := AlgebraicGeometry.exists_isAffineOpen_mem_and_subset hx
   exact ⟨⟨U, hU⟩, hxU, hUW⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restriction to the basic open is localization at the defining section. Membership in the extended ideal expresses the image of the original section as a fraction with numerator in the ideal and denominator a power of the defining section. Equality of fractions means that a further power annihilates the difference after cross-multiplication. Consequently the product of the original section and a sufficiently large power belongs to the original ideal.
 -/
 private theorem exists_pow_mul_mem_of_map_mem_basicOpen {Y : Scheme.{u}} (U : Y.affineOpens)
     (f : Γ(Y, U.1)) (J : Ideal Γ(Y, U.1)) (x : Γ(Y, U.1))
@@ -135,14 +129,8 @@ private theorem exists_pow_mul_mem_of_map_mem_basicOpen {Y : Scheme.{u}} (U : Y.
   rw [h2]
   exact J.mul_mem_left _ hy
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood with the desired containment at each point. Inside any fixed affine open, refine these neighborhoods to a cover by basic opens. The containment restricts to each basic open by extension of section ideals. For a section in the first ideal, clear denominators on each basic open to find a power of its defining element that sends the section into the second ideal. These powers generate the unit ideal, since the radical of the ideal they generate contains the defining elements of the cover. Expressing one as a combination of the powers shows that the section lies in the second ideal on the affine open.
 -/
 theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (h : ∀ y : ↥Y, ∃ U : Y.affineOpens, y ∈ U.1 ∧ A.ideal U ≤ B.ideal U) :
@@ -170,8 +158,8 @@ theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
   · intro y
     exact (h y).choose_spec.2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The Leibniz rule puts the derivative of the product in the sum of two terms. In the term obtained by differentiating the second factor, the first factor is the next higher power and is contained in the desired power. In the term obtained by differentiating that higher power, the derivative of a power contributes the desired power times the derivative ideal of its base. Multiplying the latter ideal by the second factor stays inside the second factor, which is itself contained in its derivative ideal.
 -/
 theorem derivIdealSheaf_pow_succ_mul_le (k : Type u) [Field k] [CharZero k] {Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -188,12 +176,8 @@ theorem derivIdealSheaf_pow_succ_mul_le (k : Type u) [Field k] [CharZero k] {Y :
             (le_trans (idealSheafData_mul_le_left J (derivIdealSheaf k q F))
               (le_derivIdealSheaf k q J))
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of differentiations. With zero differentiations both sides agree. At the next step, monotonicity lets us differentiate the preceding upper bound. Since the next count is at most the initial exponent, the power left in that bound has positive exponent. The one-step product estimate decreases that exponent by one and differentiates the remaining ideal once more, yielding the stated bound.
 -/
 theorem derivIdealSheafIterate_pow_mul_le (k : Type u) [Field k] [CharZero k] {Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -213,8 +197,8 @@ theorem derivIdealSheafIterate_pow_mul_le (k : Type u) [Field k] [CharZero k] {Y
     rw [h1]
     exact derivIdealSheaf_pow_succ_mul_le k q F (derivIdealSheafIterate k q j J) (m - (j + 1))
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two equal structural morphisms. They then give the same base algebra on every affine open, so their derivative iterates agree.
 -/
 private theorem derivIdealSheafIterate_congr_hom (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (q q' : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType q]
@@ -223,14 +207,8 @@ private theorem derivIdealSheafIterate_congr_hom (k : Type u) [CommRing k] [IsNo
   subst hq
   rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an affine neighborhood of the point inside the inverse image of the given open. Its map to the original scheme factors through the restricted isomorphism and the open inclusions, so it is a smooth open immersion. Smooth pullback commutes with iterated differentiation both along this composite and along the inclusion of the affine neighborhood upstairs. Composition of pullbacks and equality of the induced structural maps identify the two restricted sheaves. Evaluating on the affine neighborhood gives the section-ideal equality.
 -/
 theorem exists_affineOpen_comap_derivIdealSheafIterate_eq (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -263,8 +241,8 @@ theorem exists_affineOpen_comap_derivIdealSheafIterate_eq (k : Type u) [Field k]
     exact h2
   exact ideal_eq_of_comap_ι_eq V key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The blowup is smooth over the base by the normal-crossings hypothesis. At a point over the center, choose affine étale coordinates for the center and a blowup chart containing the point. Shrink the chart to an affine neighborhood. Its exceptional ideal is generated by the exceptional coordinate, which is a nonzerodivisor. The coordinate pullback formulas and the identity expressing the total transform as the exceptional power times the controlled transform give the hypotheses of the ring-level derivative estimate. Translating its conclusion to section ideals proves the containment there. Away from the center, the blowup is an isomorphism. Pullback therefore commutes locally with iteration, and the iterated product estimate applied to the same total-transform identity gives the containment on that neighborhood. The affine neighborhoods cover the blowup.
 -/
 theorem comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -405,8 +383,8 @@ theorem comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [F
     rw [exceptionalIdeal_pow_mul_controlledTransform π Z I m hπ hI] at h2
     exact Scheme.IdealSheafData.le_def.mp h2 V
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Containment in the initial power of the center ideal puts every point of the center in the corresponding order locus of the original ideal. Each differentiation lowers the guaranteed order by at most one. Thus the center lies in the order locus at the exponent left after the stated number of differentiations. The power-containment criterion for a center with strict normal crossings gives the desired containment.
 -/
 theorem derivIdealSheafIterate_le_pow_of_hasStrictNormalCrossingsWith (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

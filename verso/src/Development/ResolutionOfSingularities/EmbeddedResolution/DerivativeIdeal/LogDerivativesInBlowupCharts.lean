@@ -6,8 +6,8 @@ import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.
 namespace FunctorialResolution.EmbeddedResolution
 namespace EtaleCoordinates
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Evaluation is additive and preserves zero, so evaluating the finite sum gives the sum of the evaluations.
 -/
 private theorem finset_sum_derivation_apply {R : Type*} [CommRing R] {A : Type*} [CommRing A]
     [Algebra R A] {μ : Type*} (u : Finset μ) (D : μ → Derivation R A A) (x : A) :
@@ -19,8 +19,8 @@ private theorem finset_sum_derivation_apply {R : Type*} [CommRing R] {A : Type*}
     rw [Finset.sum_insert hb, Finset.sum_insert hb, ← ih]
     simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Scalar multiplication of a derivation multiplies each of its values by the scalar, giving the formula.
 -/
 private theorem smul_derivation_apply {R : Type*} [CommRing R] {A : Type*} [CommRing A]
     [Algebra R A] (a : A) (D : Derivation R A A) (x : A) : (a • D) x = a * D x := by
@@ -33,18 +33,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) [DecidableEq ι]
   [IsScalarTower k (MvPolynomial ι k) S₁] [Algebra.FormallyEtale (MvPolynomial ι k) S₁]
   (φ : S →ₐ[k] S₁) (T : Finset ι) (s : ι)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let b be the exceptional coordinate. On generators coming from J, the chart partial in a nonexceptional center direction acts as b times the image of the source partial. The assumed bound for source derivatives therefore puts these chart derivatives in the product of the (c + 1)-st power of b with L + L′. The extended J itself is also contained there. The Leibniz rule extends the derivative bound to the span of the generators. For g in L apply it to the product of g with the (c + 1)-st power of b, which belongs to the extended J. The chosen partial kills b, so it leaves exactly that power times its derivative of g. Cancel the power, which is a nonzerodivisor, to get the derivative in L + L′.
 -/
 theorem partialDeriv_mem_sup_of_span_pow_mul_eq_map
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -97,30 +87,8 @@ theorem partialDeriv_mem_sup_of_span_pow_mul_eq_map
   rw [h2]
   exact hw
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write m = e + 1 and denote the exceptional coordinate by b. Each image of f in J has the form b to the m-th power times f₁ in J₁. The original images satisfy the bound because the logarithmic ideal contains J₁. For a tangent source derivation, expand its value on f in the coordinate partials, with coefficients its values on the coordinates. In the distinguished boundary direction i the coefficient is divisible by the old boundary coordinate. Its image is therefore divisible by the new boundary coordinate and the exceptional coordinate, so the chart formula contributes a multiple of the coordinate-scaled tangent partial of f₁. Every other nonexceptional partial in the chart is tangent, and the formula leaves at least the e-th exceptional power. In the exceptional direction the remaining bracket is a sum of f₁ and weighted partials of f₁, including the scaled tangent partial in direction i. All these remaining factors lie in the new logarithmic ideal. The bound holds for the derivative generators and hence for their ideal.
 -/
 theorem map_logDerivIdeal_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -227,12 +195,8 @@ theorem map_logDerivIdeal_le_span_pow_mul [Fintype ι]
               Ideal.mul_mem_left _ _ (hpd j hji), by ring⟩
       exact Ideal.mul_mem_left _ _ hkey
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+At step zero the estimate is the assumed inclusion. At a successor through step m, the remaining exceptional exponent is positive. Apply the one-step logarithmic estimate to the two preceding iterates. It advances both iterates and lowers the exceptional exponent by one, giving the asserted power.
 -/
 theorem map_logDerivIdealIterate_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)

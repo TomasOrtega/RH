@@ -13,10 +13,8 @@ variable (k : Type*) [CommRing k] (ι : Type*)
   (S : Type*) [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
   [IsScalarTower k (MvPolynomial ι k) S] [Algebra.FormallyEtale (MvPolynomial ι k) S]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Each original ideal is contained in its partial derivative ideal, so their sum lies in the sum on the right. Each element of the original sum is a finite sum of elements of the summands. Apply additivity of the chosen derivative and use that each derivative lies in the corresponding partial derivative ideal. This gives the containment for every generator.
 -/
 theorem partialDerivIdeal_iSup_le {κ : Sort*} (h : ι) (F : κ → Ideal S) :
     partialDerivIdeal k ι S h (⨆ j, F j) ≤ ⨆ j, partialDerivIdeal k ι S h (F j) := by
@@ -33,8 +31,8 @@ theorem partialDerivIdeal_iSup_le {κ : Sort*} (h : ι) (F : κ → Ideal S) :
     simp only [map_add]
     exact Submodule.add_mem _ hx hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the partial derivative estimate for sums first to the sum over indices and then to each internal sum over witnesses that the index is at most n.
 -/
 theorem partialDerivIdeal_biSup_le (h : ι) (n : ℕ) (F : ℕ → Ideal S) :
     partialDerivIdeal k ι S h (⨆ i, ⨆ _ : i ≤ n, F i) ≤
@@ -53,12 +51,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) [DecidableEq ι]
   [IsScalarTower k (MvPolynomial ι k) S₁] [Algebra.FormallyEtale (MvPolynomial ι k) S₁]
   (φ : S →ₐ[k] S₁) (T : Finset ι) (s h : ι)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The target sum already contains L(i). At i below m the exceptional exponent in its defining identity is positive. The defining identity at i + 1 bounds the image of the derivative ideal of the previous source iterate with exceptional exponent one lower. Apply the chart partial estimate to these two successive identities. Every distinguished partial derivative of an element of L(i) therefore belongs to the sum of L(i) and L(i + 1).
 -/
 theorem partialDerivIdeal_controlledTransform_le_sup
     (_hsT : s ∈ T)
@@ -89,14 +83,8 @@ theorem partialDerivIdeal_controlledTransform_le_sup
   exact partialDeriv_mem_sup_of_span_pow_mul_eq_map k ι S S₁ φ T s hin hs hout hnzd h hhT hhs
     (derivIdealIterate k i J) (L i) (L (i + 1)) (m - i - 1) hJ hD g hg
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero take the summand L(0). At a successor use monotonicity and the partial derivative bound for sums to apply the next step to each preceding summand L(i). Each i is below m and the one-step estimate puts its partial derivative ideal in the sum of L(i) and L(i + 1). Both indices are at most the new bound, proving the induction step.
 -/
 theorem partialDerivIdealIterate_controlledTransform_le_iSup
     (hsT : s ∈ T)
@@ -131,12 +119,8 @@ theorem partialDerivIdealIterate_controlledTransform_le_iSup
       · exact le_iSup₂ (f := fun j (_ : j ≤ l + 1) => L j) i (by omega)
       · exact le_iSup₂ (f := fun j (_ : j ≤ l + 1) => L j) (i + 1) (by omega)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Split the n ordinary derivative steps into logarithmic steps and steps in the distinguished partial direction using the mixed-iteration bound. For a term with l partial steps, the partial iterate of L(0) lies in the sum of L(i) for i at most l. Apply the remaining n − l logarithmic steps and use monotonicity and the estimate for sums to bound each resulting term separately. Since i is at most l, increasing the logarithmic count from n − l to n − i only enlarges the ideal. Each enlarged term occurs in the desired sum.
 -/
 theorem derivIdealIterate_le_iSup_logDerivIdealIterate_controlledTransform [Fintype ι]
     (hsT : s ∈ T)

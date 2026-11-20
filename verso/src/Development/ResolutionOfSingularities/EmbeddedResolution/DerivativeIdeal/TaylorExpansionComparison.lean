@@ -8,10 +8,8 @@ section
 
 variable {k S : Type*} [CommRing k] [CommRing S] [Algebra k S]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+At exponent zero the derivative is zero, so take coefficient zero. At a successor apply the Leibniz rule to b times the previous power. After multiplication by b, the term differentiating the old power uses the induction coefficient. The other term adds the derivative of b to that coefficient.
 -/
 private theorem exists_mul_deriv_pow_eq_pow_mul {k : Type*} [CommRing k] {S : Type*}
     [CommRing S] [Algebra k S] (Δ : Derivation k S S) (b : S) (n : ℕ) :
@@ -27,14 +25,8 @@ private theorem exists_mul_deriv_pow_eq_pow_mul {k : Type*} [CommRing k] {S : Ty
       rw [hbp, hl]
       linear_combination b * hc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero this is membership of g in J. If the weighted j-th derivative is in J, then b times its derivative is in J by the assumed product containment. Expand this derivative by the Leibniz rule. Its term from differentiating the power of b is a ring multiple of the previous weighted derivative, because b times the derivative of the j-th power is divisible by that power. Subtract that term to leave the next weighted derivative, still in J.
 -/
 theorem pow_mul_iterate_deriv_mem_of_mul_derivIdeal_le (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Algebra k S]
     (M J : Ideal S) (Δ : Derivation k S S) (b : S)
@@ -68,21 +60,15 @@ section
 
 variable {A R S : Type*} [CommRing A] [CommRing R] [CommRing S] [Algebra A R] [Algebra ℚ S]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Only the degree-zero term occurs. Its factorial and power factors are one, so it equals σ(f).
 -/
 theorem truncatedSeries_length_one (σ : R →+* S) (D : Derivation A R R) (β : S) (f : R) :
     TaylorExpansion.truncatedSeries σ D β 1 f = σ f := by
   simp [TaylorExpansion.truncatedSeries_apply]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Every derivative of order at least two vanishes because the second derivative is zero and the derivation kills zero. With N at least two only the constant and linear terms remain, giving the stated sum.
 -/
 theorem truncatedSeries_of_deriv_deriv_eq_zero (σ : R →+* S) (D : Derivation A R R) (β : S) (N : ℕ)
     (hN : 2 ≤ N) (f : R) (hf : D (D f) = 0) :
@@ -112,10 +98,8 @@ theorem truncatedSeries_of_deriv_deriv_eq_zero (σ : R →+* S) (D : Derivation 
   rw [TaylorExpansion.truncatedSeries_apply, ← hsum]
   simp [Finset.sum_range_succ]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each weighted derivative of g belongs to J by stability. Its image is the product of the corresponding power of φ(b) and the image of the iterated derivative. Multiplying by the inverse factorial preserves membership in the extended ideal. The Taylor sum is a sum of such members.
 -/
 theorem truncatedSeries_mem_map {A R B : Type*} [CommRing A] [CommRing R] [CommRing B] [Algebra A R]
     [Algebra ℚ B] (φ : R →+* B) (D : Derivation A R R) (b : R) (J : Ideal R)
@@ -146,12 +130,8 @@ def IsTaylorExpansionOn (P : Type*) [CommRing P] {A R B : Type*} [CommRing A] [C
   ∀ N : ℕ, 1 ≤ N → ∀ x : P,
     TaylorExpansion.truncatedSeries φ D β N (algebraMap P R x) - φ' (algebraMap P R x) ∈ maximalIdeal B ^ N
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+For positive N reduce both maps modulo the N-th maximal-ideal power. The truncated Taylor formula gives a ring homomorphism into this quotient because β to the N-th power vanishes there. It agrees with the second map on coefficients, since the derivation kills those coefficients and the original maps agree there. The variable hypothesis gives agreement on all variables modulo the same power. Thus the two homomorphisms agree on the polynomial algebra, giving the congruence on every element.
 -/
 theorem isTaylorExpansionOn_mvPolynomial {k : Type*} [CommRing k] {ι : Type*}
     {A R B : Type*} [CommRing A] [CommRing R] [CommRing B]
@@ -189,8 +169,8 @@ theorem isTaylorExpansionOn_mvPolynomial {k : Type*} [CommRing k] {ι : Type*}
   simp only [RingHom.coe_comp, Function.comp_apply, TaylorExpansion.truncatedSeriesRingHom_apply] at h
   exact Ideal.Quotient.eq.1 h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A derivation factors through the module of relative Kähler differentials. Formal unramifiedness makes this module zero, so every such derivation vanishes.
 -/
 private theorem derivation_apply_eq_zero_of_formallyUnramified {P R : Type*} [CommRing P]
     [CommRing R] [Algebra P R] [Algebra.FormallyUnramified P R] {M : Type*} [AddCommGroup M]
@@ -201,22 +181,8 @@ private theorem derivation_apply_eq_zero_of_formallyUnramified {P R : Type*} [Co
   rw [h0, map_zero] at h1
   exact h1.symm
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Work modulo the (k + 1)-st power. The two maps are additive and agree on base scalars and the unit. Their difference satisfies the Leibniz rule with the module structure given by φ′. Indeed the multiplicativity error already vanishes, and the product of the two differences lies in the 2k-th power, contained in the (k + 1)-st because k is positive. Agreement on the base gives linearity over P. The difference is therefore a P-derivation into the quotient, which is zero by formal unramifiedness.
 -/
 private theorem sub_mem_pow_succ_of_sub_mem_pow (P : Type*) {R B : Type*} [CommRing P] [CommRing R]
     [CommRing B] [Algebra P R] [Algebra.FormallyUnramified P R]
@@ -298,16 +264,8 @@ private theorem sub_mem_pow_succ_of_sub_mem_pow (P : Type*) {R B : Type*} [CommR
     derivation_apply_eq_zero_of_formallyUnramified d x
   exact Ideal.Quotient.eq_zero_iff_mem.mp hdx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
-
-Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
+/- English proof (authored)
+Fix the truncated series at length N. It is additive, preserves one and is multiplicative modulo the N-th maximal-ideal power. It agrees with φ′ on P modulo that power by hypothesis. Modulo the first power it agrees with φ, since the nonconstant terms are divisible by β, and φ agrees with φ′. Inductively improve agreement modulo successive powers up to N. At each step the hypotheses modulo the N-th power also hold modulo the current next power, and formal unramifiedness makes the error derivation vanish at that step.
 -/
 theorem truncatedSeries_sub_mem_maximalIdeal_pow (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]
@@ -361,10 +319,8 @@ theorem truncatedSeries_sub_mem_maximalIdeal_pow (P : Type*) [CommRing P] {A R B
             (ih hk1' (by omega)) x
   exact key N hN le_rfl f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Insert the truncated series between the two values. Its difference from φ(f) is in the principal ideal of β, and its difference from φ′(f) is in the N-th maximal-ideal power. Subtract the first difference from the second to express φ(f) − φ′(f) in the sum of these ideals.
 -/
 theorem sub_mem_span_sup_maximalIdeal_pow (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]
@@ -385,10 +341,8 @@ theorem sub_mem_span_sup_maximalIdeal_pow (P : Type*) [CommRing P] {A R B : Type
   rw [hEq]
   exact Submodule.sub_mem _ (Submodule.mem_sup_right h2) (Submodule.mem_sup_left h1)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For every positive N the comparison gives membership in the corresponding ideal sum. For N equal to zero the power is the unit ideal, so membership is automatic. Hence the element lies in the intersection.
 -/
 theorem sub_mem_iInf_span_sup_maximalIdeal_pow (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]
@@ -408,20 +362,8 @@ theorem sub_mem_iInf_span_sup_maximalIdeal_pow (P : Type*) [CommRing P] {A R B :
     exact Submodule.mem_top
   · exact sub_mem_span_sup_maximalIdeal_pow P φ φ' D β hcong hβ hrep N hN f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Quotient by J. This is a Noetherian local ring because J lies in the maximal ideal. The image of the maximal ideal is the maximal ideal of the quotient. The image of x belongs to every power of it since the J summand vanishes. Krull intersection makes that image zero, so x belongs to J.
 -/
 private theorem mem_of_forall_mem_sup_maximalIdeal_pow {B : Type*} [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] (J : Ideal B) (hJ : J ≤ IsLocalRing.maximalIdeal B) (x : B)
@@ -474,8 +416,8 @@ private theorem mem_of_forall_mem_sup_maximalIdeal_pow {B : Type*} [CommRing B] 
   rw [hbot, Ideal.mem_bot] at hfin
   exact Ideal.Quotient.eq_zero_iff_mem.1 hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The difference lies in the sum of the principal ideal of β and each maximal-ideal power. Since the principal ideal lies in the maximal ideal, the quotient and Krull intersection argument puts the difference in that principal ideal.
 -/
 theorem sub_mem_span_singleton_of_isTaylorExpansionOn (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]
@@ -492,8 +434,8 @@ theorem sub_mem_span_singleton_of_isTaylorExpansionOn (P : Type*) [CommRing P] {
   exact mem_of_forall_mem_sup_maximalIdeal_pow (Ideal.span ({β} : Set B))
     (Ideal.span_le.2 (Set.singleton_subset_iff.2 hβ)) (φ f - φ' f) hall
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The Taylor comparison puts the difference in the ideal generated by β. That ideal lies in I because β belongs to I.
 -/
 theorem sub_mem_of_isTaylorExpansionOn (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]
@@ -510,14 +452,8 @@ theorem sub_mem_of_isTaylorExpansionOn (P : Type*) [CommRing P] {A R B : Type*}
     Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hI)
   exact hle hmem
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For g in J, if the extension along φ is the unit ideal the conclusion is automatic. Otherwise this extension is proper and lies in the maximal ideal. For each positive length N, weighted derivative stability puts the truncated Taylor series of g in the extension along φ because φ(b) = β. The comparison with φ′ gives that φ′(g) lies in the sum of this extension and the N-th maximal-ideal power. This also holds for N equal to zero. The quotient and Krull intersection argument gives membership in the extension along φ. This works for every generator of the extension along φ′.
 -/
 theorem map_le_map_of_pow_mul_iterate_deriv_mem (P : Type*) [CommRing P] {A R B : Type*}
     [CommRing A] [CommRing R] [CommRing B] [Algebra P R] [Algebra A R]

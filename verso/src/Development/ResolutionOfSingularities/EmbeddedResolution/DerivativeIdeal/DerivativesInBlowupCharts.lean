@@ -12,18 +12,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) [DecidableEq ι]
   [IsScalarTower k (MvPolynomial ι k) S₁] [Algebra.FormallyEtale (MvPolynomial ι k) S₁]
   (φ : S →ₐ[k] S₁) (T : Finset ι) (s : ι)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Both sides as functions of f are k-derivations into the chart ring with scalars acting through φ. On the center coordinates different from s, the chart substitutes the product of the new coordinate with the exceptional coordinate. The i-th derivative of this product is the exceptional coordinate when the index is i and zero otherwise. It kills the exceptional coordinate itself and every coordinate outside the center. These are the values of the scaled source partial on all coordinates, which determine the derivation.
 -/
 theorem partialDeriv_map_of_mem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -74,16 +64,8 @@ theorem partialDeriv_map_of_mem
       simp only [partialDeriv_coord, if_neg hij, map_zero, mul_zero]
   exact DFunLike.congr_fun hD f
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the two sides as derivations into the chart ring. A partial in a direction outside the center kills both factors of each transformed center coordinate, since neither has its index. It also kills the unchanged exceptional coordinate. On each coordinate outside the center the map leaves the coordinate unchanged, so the values are the same as in the source. Agreement on coordinates yields equality.
 -/
 theorem partialDeriv_map_of_notMem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -138,36 +120,8 @@ theorem partialDeriv_map_of_notMem
       · exact (map_zero φ).symm
   exact DFunLike.congr_fun key f
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The weighted exceptional partial after pullback and the pullback of the sum of the weighted center partials are both derivations. Compare them on source coordinates. For the exceptional coordinate, either side gives its image. For another center coordinate, the exceptional partial differentiates the exceptional factor, and multiplying it back gives the entire image. Outside the center both derivations vanish. The coordinate values determine the derivations.
 -/
 theorem coord_mul_partialDeriv_map_eq_map_sum
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -292,8 +246,8 @@ theorem coord_mul_partialDeriv_map_eq_map_sum
           partialDeriv_coord_of_ne k ι S₁ s j hne, mul_zero]
   exact DFunLike.congr_fun hD f
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+In the formula summing over all center coordinates, separate the summand at s. It is present because s belongs to the center index set. The remaining sum is over that set with s removed.
 -/
 theorem coord_mul_partialDeriv_map_eq_map_add_sum_erase
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -307,10 +261,8 @@ theorem coord_mul_partialDeriv_map_eq_map_add_sum_erase
   refine congrArg φ ?_
   exact (Finset.add_sum_erase T (fun i => coord k ι S i * partialDeriv k ι S i f) hsT).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+Differentiate the factorization of φ(f) in direction i. This direction kills the exceptional factor, so it produces the exceptional power times the derivative of g. The chart derivative formula also identifies the same derivative with one exceptional factor times the image of the source derivative. Cancel that factor because it is a nonzerodivisor.
 -/
 theorem map_partialDeriv_eq_pow_mul_of_mem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -336,8 +288,8 @@ theorem map_partialDeriv_eq_pow_mul_of_mem
     (mem_nonZeroDivisors_iff.mp hnzd).2 _ key
   linear_combination h3
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The chart partial in a direction outside the center commutes with the pullback of source functions. It also kills the exceptional coordinate, so applying it to the factorization of φ(f) leaves the full exceptional power multiplying the derivative of g.
 -/
 theorem map_partialDeriv_eq_pow_mul_of_notMem
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -354,16 +306,8 @@ theorem map_partialDeriv_eq_pow_mul_of_notMem
   rw [← partialDeriv_map_of_notMem k ι S S₁ φ T s hin hs hout hsT i hiT f, hfg,
     Derivation.leibniz, hpow, smul_zero, add_zero, smul_eq_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
-
-Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+Let b be the exceptional coordinate. Differentiate φ(f) = b to the (e + 1)-st power times g in direction s. The derivative is that power times the partial of g plus (e + 1) times the preceding power times g. Multiply by b and compare with the weighted chart formula, separating the source s term from the other center terms. Each other center term contributes the full power of b times the corresponding new weighted partial of g, by the derivative formula for a nonexceptional center direction. Subtract this sum and cancel one common nonzerodivisor b. Factoring the remaining e-th power yields the formula.
 -/
 theorem map_partialDeriv_self_eq_pow_mul
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -410,15 +354,15 @@ theorem map_partialDeriv_self_eq_pow_mul
   have h3 := (mem_nonZeroDivisors_iff.mp hnzd).2 _ h0
   linear_combination h3
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The element a belongs to the principal ideal it generates, and g belongs to I. Their product belongs to the ideal product.
 -/
 private theorem mul_mem_span_singleton_mul {R : Type*} [CommRing R] (a : R) (I : Ideal R)
     {g : R} (hg : g ∈ I) : a * g ∈ Ideal.span ({a} : Set R) * I :=
   Ideal.mul_mem_mul (Ideal.subset_span (Set.mem_singleton_iff.mpr rfl)) hg
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Evaluation at x distributes over finite sums of derivations and takes a scalar multiple to the same multiple of the value. Apply these two facts term by term.
 -/
 private theorem finset_sum_smul_derivation_apply {k : Type*} [CommRing k] {S : Type*} [CommRing S]
     [Algebra k S] {ι : Type*} (t : Finset ι) (c : ι → S) (D : ι → Derivation k S S) (x : S) :
@@ -429,20 +373,8 @@ private theorem finset_sum_smul_derivation_apply {k : Type*} [CommRing k] {S : T
     rw [Finset.sum_cons, Finset.sum_cons]
     simp [ih]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write m = e + 1 and denote the exceptional coordinate by b. For every element of J its pullback is b to the m-th power times an element g of J₁. Its image already lies in the stated ideal since the derivative ideal contains J₁. For derivatives in other center directions the chart formula gives b to the e-th power times a derivative of g. In a direction outside the center it leaves one additional factor of b. The exceptional direction gives b to the e-th power times a sum of multiples of g and its chart derivatives. In each case the remaining factor belongs to the derivative ideal of J₁. The coordinate partials generate all derivations, so the same containment holds for every derivative generator and extends to the whole ideal.
 -/
 theorem map_derivIdeal_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)
@@ -506,12 +438,8 @@ theorem map_derivIdeal_le_span_pow_mul [Fintype ι]
     rw [map_mul]
     exact Ideal.mul_mem_left _ _ (hkey x hx i)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At iteration zero this is the assumed containment. If the next index is at most m, the exceptional exponent at the previous step is positive. Apply the one-step chart estimate with the two preceding iterates as inputs. It takes one more derivative step on both sides and decreases the guaranteed exceptional exponent by one, giving the induction step.
 -/
 theorem map_derivIdealIterate_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)

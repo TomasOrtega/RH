@@ -6,16 +6,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+The set of points away from the pole where zeta is nonzero, together with the pole, is open. Away from one this follows by continuity, and near one it follows because the pole-regularized function tends to the nonzero residue. The bounded-height segment on the line with real part one is compact and lies in this open set by nonvanishing on the line. A positive neighborhood width around the segment therefore lies in the same set. For a point just to the left of the line, project horizontally to the segment. Its distance is at most the width, so zeta is nonzero there. On and to the right of the line use the original bound.
 -/
 theorem zeroFreeBoundedHeight : SmallHeight := by
   unfold SmallHeight

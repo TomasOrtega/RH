@@ -8,10 +8,8 @@ namespace Formalism.ZF
 
 namespace ComplexPowerDifferenceIntegral
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The interval has positive endpoints and excludes zero. Integrate the complex power with exponent −s − 1 using its antiderivative, whose denominator −s is nonzero. Multiplying the evaluated integral by s gives the difference of endpoint powers.
 -/
 lemma cpow_sub_eq_integral' {x y : ℝ} (hx : 0 < x) (hxy : x ≤ y) {s : ℂ} (hs : s ≠ 0) :
     (x : ℂ) ^ (-s) - (y : ℂ) ^ (-s) = s * ∫ t in x..y, (t : ℂ) ^ (-s - 1) := by
@@ -24,14 +22,8 @@ lemma cpow_sub_eq_integral' {x y : ℝ} (hx : 0 < x) (hxy : x ≤ y) {s : ℂ} (
   rw [e, mul_div_assoc', eq_div_iff hs']
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Express the power difference as s times the integral of the power with exponent −s − 1. For any integration point at least a, the integrand norm is at most the corresponding real power at a, since the exponent is negative. The interval has length at most one, giving the bound after multiplication by the norm of s.
 -/
 lemma norm_cpow_sub_le_point {a x : ℝ} (ha : 0 < a) (hax : a ≤ x) (hxa : x ≤ a + 1) {s : ℂ}
     (hs : 0 < s.re) :
@@ -58,10 +50,8 @@ lemma norm_cpow_sub_le_point {a x : ℝ} (ha : 0 < a) (hax : a ≤ x) (hxa : x �
 
 def eint (s : ℂ) (a : ℝ) : ℂ := ∫ x in a..(a + 1), ((x : ℂ) ^ (-s) - ((a + 1 : ℝ) : ℂ) ^ (-s))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The preceding pointwise bound applies to the power difference at every point of the unit interval beginning at a. Integrating this constant norm bound over an interval of length one gives the claim.
 -/
 lemma norm_eint_le {a : ℝ} (ha : 0 < a) {s : ℂ} (hs : 0 < s.re) :
     ‖eint s a‖ ≤ ‖s‖ * a ^ (-s.re - 1) := by
@@ -75,14 +65,8 @@ lemma norm_eint_le {a : ℝ} (ha : 0 < a) {s : ℂ} (hs : 0 < s.re) :
         intervalIntegral.norm_integral_le_of_norm_le_const hC
     _ = _ := by rw [show a + 1 - a = 1 by ring, abs_one, mul_one]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+When s = 1 both sides are zero. Otherwise integrate the power with exponent −s on the positive unit interval and subtract the endpoint constant integrated over length one. Multiply by s − 1 and simplify the antiderivative denominator 1 − s.
 -/
 lemma d_eq {a : ℝ} (ha : 0 < a) (s : ℂ) :
     (a : ℂ) ^ (1 - s) - ((a + 1 : ℝ) : ℂ) ^ (1 - s) - (s - 1) * ((a + 1 : ℝ) : ℂ) ^ (-s) =

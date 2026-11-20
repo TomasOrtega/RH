@@ -8,12 +8,8 @@ namespace Formalism.ZF
 
 namespace VonMangoldtMertensInequality
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At a positive index the complex logarithm of n is the real logarithm. Write the reciprocal power as an exponential with real part in the exponent equal to −σ log n and imaginary part equal to −y log n. Its real part is the real exponential times the cosine, which is even. Multiply by the real von Mangoldt coefficient.
 -/
 lemma re_term_vonMangoldt {n : ℕ} (hn : n ≠ 0) (σ y : ℝ) :
     (LSeries.term (fun m => (Λ m : ℂ)) ((σ : ℂ) + y * I) n).re =
@@ -34,8 +30,8 @@ lemma re_term_vonMangoldt {n : ℕ} (hn : n ≠ 0) (σ y : ℝ) :
     congr 1
     ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The von Mangoldt Dirichlet series converges absolutely at the given point and equals the negative zeta logarithmic derivative. The real-part map is continuous and linear, so taking it term by term gives the stated sum.
 -/
 lemma hasSum_re_L {σ : ℝ} (hσ : 1 < σ) (y : ℝ) :
     HasSum (fun n => (LSeries.term (fun m => (Λ m : ℂ)) ((σ : ℂ) + y * I) n).re)
@@ -45,8 +41,8 @@ lemma hasSum_re_L {σ : ℝ} (hσ : 1 < σ) (y : ℝ) :
   rw [ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div hs, neg_div] at h1
   simpa only [Complex.reCLM_apply] using Complex.reCLM.hasSum h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The double-angle identity turns the expression into twice a times the square of 1 + cos θ. This is nonnegative because a is nonnegative.
 -/
 lemma comb_nonneg (a θ : ℝ) (ha : 0 ≤ a) :
     0 ≤ 3 * a + 4 * (a * Real.cos θ) + a * Real.cos (2 * θ) := by
@@ -56,14 +52,8 @@ lemma comb_nonneg (a θ : ℝ) (ha : 0 ≤ a) :
 end VonMangoldtMertensInequality
 
 open VonMangoldtMertensInequality in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use the real-part Dirichlet series at heights zero, t, and 2t, with weights three, four, and one. For each positive index, the common factor is nonnegative and the cosine combination is nonnegative by the double-angle calculation. The zero-index terms vanish. Summing yields the inequality.
 -/
 theorem mertensInequality : ThreeFourOne := by
   intro σ t hσ

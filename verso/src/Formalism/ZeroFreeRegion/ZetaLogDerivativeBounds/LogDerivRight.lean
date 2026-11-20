@@ -8,18 +8,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt series bounds the logarithmic derivative at s by the corresponding norm sum on the real axis. Close to one, the pole-subtracted quotient is bounded, so the real-axis bound is the reciprocal of the distance from one plus a constant. Farther right, monotonicity bounds the norm sum by its value at the fixed cutoff. The larger of these constants and zero gives the common bound.
 -/
 theorem logDerivBoundRightHalfPlane : LogDerivRight := by
   obtain ⟨B, hB⟩ := log_deriv_riemannZeta_add_inv_sub_bounded.bound

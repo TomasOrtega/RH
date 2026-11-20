@@ -14,8 +14,8 @@ def dz (s : ℂ) (n : ℕ) : ℂ :=
 
 def Dz (s : ℂ) : ℂ := ∑' n, dz s n
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the power-difference term as s − 1 times the associated integral on the interval beginning at n + 1. Take norms and apply the integral bound at that positive endpoint.
 -/
 lemma norm_dz_le {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
     ‖dz s n‖ ≤ ‖s - 1‖ * ‖s‖ * ((n : ℝ) + 1) ^ (-s.re - 1) := by
@@ -23,34 +23,22 @@ lemma norm_dz_le {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
   rw [dz, d_eq ha s, norm_mul, mul_assoc]
   exact mul_le_mul_of_nonneg_left (norm_eint_le ha hs) (norm_nonneg _)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The power series over the positive integers converges for exponent below minus one. Reindex it by n + 1, which is exactly the shifted sequence in the claim.
 -/
 lemma summable_shift {p : ℝ} (hp : p < -1) : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ p) := by
   have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr hp)
   simpa [Nat.cast_add, Nat.cast_one] using h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The power-difference bound dominates each term norm by a constant times the power of n + 1 with exponent −Re(s) − 1. The exponent is below −1, so comparison with the summable shifted powers proves the assertion.
 -/
 lemma summable_norm_dz {s : ℂ} (hs : 0 < s.re) : Summable (fun n => ‖dz s n‖) :=
   Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => norm_dz_le hs n)
     ((summable_shift (by linarith : -s.re - 1 < -1)).mul_left _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Around any point with positive real part, restrict to the unit disk and require the real part to exceed half that of the center. Every power-difference term is holomorphic there. The norms of s and s − 1 are uniformly bounded on this neighborhood, and the exponent in the term bound is at most minus one minus half the center’s real part. The resulting numerical majorant is summable. Thus the series converges uniformly on the neighborhood and its sum is holomorphic there.
 -/
 lemma Dz_differentiableOn : DifferentiableOn ℂ Dz {s : ℂ | 0 < s.re} := by
   intro s0 hs0

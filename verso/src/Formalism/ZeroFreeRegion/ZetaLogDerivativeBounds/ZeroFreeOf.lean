@@ -7,14 +7,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Take the height threshold from the large-height argument and the positive strip width from the bounded-height result at that threshold. Choose the region constant as the smaller of the large-height constant and the strip width times log 2. At bounded heights the conductor logarithm is at least log 2, so the region lies within the nonvanishing strip. At greater heights the constant is at most the large-height constant and that result excludes a zero.
 -/
 theorem classicalZeroFreeRegionOfBounds : ZeroFreeOf := by
   intro h341 hLDR hG hI hSH hLL

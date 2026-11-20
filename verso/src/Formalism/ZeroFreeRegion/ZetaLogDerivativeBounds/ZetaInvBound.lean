@@ -8,23 +8,15 @@ namespace Formalism.ZF
 
 namespace MoebiusInverseZetaBounds
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The natural power series with exponent below minus one converges over positive indices. Reindex it by n + 1 to obtain the required summability.
 -/
 lemma summable_shift {p : ℝ} (hp : p < -1) : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ p) := by
   have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr hp)
   simpa only [Nat.cast_add, Nat.cast_one] using h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The function t to the power −σ − 1 decreases on the positive interval from x to x + 1. Its integral is at least its value at the upper endpoint times the interval length one. Evaluating that integral gives the difference of the −σ powers divided by σ.
 -/
 lemma rpow_le_integral {x σ : ℝ} (hx : 0 < x) (hσ : 0 < σ) :
     (x + 1) ^ (-σ - 1) ≤ (x ^ (-σ) - (x + 1) ^ (-σ)) / σ := by
@@ -54,16 +46,8 @@ lemma rpow_le_integral {x σ : ℝ} (hx : 0 < x) (hσ : 0 < σ) :
     _ ≤ (x + 1) ^ (-σ) * ((x / (x + 1)) ^ (-σ) - 1) := hmul
     _ = (x + 1) ^ (-σ) * (x / (x + 1)) ^ (-σ) - (x + 1) ^ (-σ) := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Separate the initial term one. For every subsequent term apply the unit-interval estimate, whose consecutive endpoint contributions telescope. Every finite partial sum is therefore at most one plus 1/σ. Since the terms are nonnegative, taking the limit gives the same bound.
 -/
 lemma tsum_rpow_le {σ : ℝ} (hσ : 0 < σ) :
     ∑' n : ℕ, ((n : ℝ) + 1) ^ (-σ - 1) ≤ 1 + 1 / σ := by
@@ -91,8 +75,8 @@ lemma tsum_rpow_le {σ : ℝ} (hσ : 0 < σ) :
     have h3 : (1 - ((k : ℝ) + 1) ^ (-σ)) / σ ≤ 1 / σ := div_le_div_of_nonneg_right (by linarith) hσ.le
     linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coefficient one has norm one. At the positive index n + 1 the norm of the denominator is its power with exponent Re(s). Taking the reciprocal gives the stated exponent, which simplifies to −Re(s).
 -/
 lemma norm_term_one_succ (s : ℂ) (n : ℕ) :
     ‖term (1 : ℕ → ℂ) s (n + 1)‖ = ((n : ℝ) + 1) ^ (-(s.re - 1) - 1) := by
@@ -101,8 +85,8 @@ lemma norm_term_one_succ (s : ℂ) (n : ℕ) :
   push_cast
   rw [show -(s.re - 1) - 1 = -s.re by ring, Real.rpow_neg (by positivity), one_div]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The Möbius coefficient has absolute value at most one. The term with coefficient one has the same denominator, so its norm bounds the Möbius term norm.
 -/
 lemma norm_term_moebius_le (s : ℂ) (n : ℕ) :
     ‖term (fun n => ((moebius n : ℤ) : ℂ)) s n‖ ≤ ‖term (1 : ℕ → ℂ) s n‖ := by
@@ -114,14 +98,8 @@ lemma norm_term_moebius_le (s : ℂ) (n : ℕ) :
 end MoebiusInverseZetaBounds
 
 open MoebiusInverseZetaBounds in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+To the right of one, the Möbius Dirichlet series is the reciprocal of zeta. Its term norms are dominated by the absolutely convergent coefficient-one series. The sum of those norms is the shifted real power sum with exponent −Re(s). Apply the power-sum bound with σ = Re(s) − 1 and simplify to Re(s)/(Re(s) − 1).
 -/
 theorem zetaInvBound_statement : ZetaInvBound := by
   intro s hs

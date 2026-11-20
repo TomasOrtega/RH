@@ -6,14 +6,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the formula for Sz by 2π and subtract 2πR. The rectangle identity writes the remaining vertical difference, after multiplication by the imaginary unit, as the signed sum of the two horizontal pieces and the other vertical piece. Multiplication by the imaginary unit preserves the norm. Apply the triangle inequality to these three contributions and the tail E.
 -/
 theorem norm_sub_le_of_rectangle_identity (Sz R V0 V1 E a b : ℂ) (hS : Sz = (1 / (2 * Real.pi) : ℂ) * (V0 + E))
     (hrect : a - b + I * V0 - I * V1 = 2 * Real.pi * I * R) :
@@ -42,8 +36,8 @@ theorem norm_sub_le_of_rectangle_identity (Sz R V0 V1 E a b : ℂ) (hS : Sz = (1
             rw [norm_mul, Complex.norm_I, one_mul]; gcongr; exact norm_sub_le _ _
     _ = ‖E‖ + ‖a‖ + ‖b‖ + ‖V1‖ := by ring
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The whole line is the disjoint union of the interval from −T to T, open at the left end, and its complement. Use additivity of the integral of an integrable function. Since −T ≤ T, the interval integral agrees with the integral over that half-open interval.
 -/
 theorem integral_eq_intervalIntegral_add_compl (f : ℝ → ℂ) (hf : Integrable f) (T : ℝ) (hT : 0 ≤ T) :
     ∫ t, f t = (∫ t in (-T)..T, f t) + ∫ t in (Set.Ioc (-T) T)ᶜ, f t := by

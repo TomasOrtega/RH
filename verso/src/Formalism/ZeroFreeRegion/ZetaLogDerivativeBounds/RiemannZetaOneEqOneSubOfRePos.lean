@@ -8,10 +8,8 @@ namespace Formalism.ZF
 
 namespace ComplexPowerDifferenceIntegral
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The consecutive powers in the first part of each power difference telescope, leaving the initial value one and the endpoint power of N + 1. The remaining terms share the factor s − 1, yielding the displayed finite sum. For N = 0 the two endpoint terms cancel.
 -/
 lemma partial_dz (s : ℂ) (N : ℕ) :
     ∑ i ∈ Finset.range N, dz s i =
@@ -25,20 +23,8 @@ lemma partial_dz (s : ℂ) (N : ℕ) :
     push_cast
     ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Take the limit in the finite power-difference identity. The endpoint power tends to zero because the real part of its exponent is negative. The remaining series starts at index two and sums to zeta minus one. The left side converges to Dz by absolute summability. Equating limits and simplifying gives the identity.
 -/
 lemma one_lt_identity {s : ℂ} (hs : 1 < s.re) : (s - 1) * riemannZeta s = s - Dz s := by
   have hs0 : 0 < s.re := by linarith
@@ -85,12 +71,8 @@ lemma one_lt_identity {s : ℂ} (hs : 1 < s.re) : (s - 1) * riemannZeta s = s - 
   rw [hlim]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Both the regularized zeta function and s − Dz(s) are holomorphic on the right half-plane. In the smaller half-plane to the right of one, the finite-sum limit identity makes them equal because the regularized zeta agrees there with (s − 1) times zeta. The identity theorem extends equality to the connected right half-plane.
 -/
 lemma riemannZetaOne_eq_one_sub_of_re_pos {s : ℂ} (hs : 0 < s.re) : riemannZeta₁ s = s - Dz s := by
   have hU : IsOpen {z : ℂ | 0 < z.re} := isOpen_lt continuous_const Complex.continuous_re

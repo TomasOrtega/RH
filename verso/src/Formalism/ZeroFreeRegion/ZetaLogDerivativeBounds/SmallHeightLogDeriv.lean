@@ -6,8 +6,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Away from one, zeta is the regularized zeta function divided by s − 1. Take logarithmic derivatives where the numerator is nonzero. The quotient contributes minus 1/(s − 1), giving the identity after rearrangement.
 -/
 lemma shld_identity {s : ℂ} (hs : s ≠ 1) (h1 : riemannZeta₁ s ≠ 0) :
     deriv riemannZeta s / riemannZeta s + 1 / (s - 1) =
@@ -17,10 +17,8 @@ lemma shld_identity {s : ℂ} (hs : s ≠ 1) (h1 : riemannZeta₁ s ≠ 0) :
   field_simp
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At one the regularized value equals the residue one. At every other point with real part at least one it is the product of the nonzero zeta value and s − 1. Thus it is nonzero throughout the range.
 -/
 lemma riemannZeta₁_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZeta₁ s ≠ 0 := by
   intro h
@@ -31,18 +29,8 @@ lemma riemannZeta₁_ne_zero_of_one_le_re {s : ℂ} (hs : 1 ≤ s.re) : riemannZ
     rw [riemannZeta_eq_inv_sub_mul hs1, h, mul_zero] at hz
     exact hz rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the compact rectangle with real part between one and three and bounded imaginary part, regularized zeta is nonzero. The open set where it is nonzero contains a fixed neighborhood of this rectangle, so a small strip extension to the left remains nonzero. The derivative quotient of regularized zeta is continuous and therefore bounded on the enlarged compact rectangle. The pole-subtraction identity transfers this bound to the stated zeta logarithmic derivative.
 -/
 theorem logDerivBoundedHeight : SmallHeightLogDeriv := by
   intro T

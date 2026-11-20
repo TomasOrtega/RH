@@ -9,10 +9,8 @@ namespace Formalism.ZF
 
 def lamF (σ : ℝ) : ℝ := ∑' n, ‖term ↗Λ (σ : ℂ) n‖
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The derivative quotient has the same norm as the absolutely convergent von Mangoldt Dirichlet series. Bound the norm of its sum by the sum of term norms. Each term norm depends only on the real part of the argument, so that sum is the defining value of the real majorant.
 -/
 lemma norm_logDeriv_le_lamF {s : ℂ} (hs : 1 < s.re) :
     ‖deriv riemannZeta s / riemannZeta s‖ ≤ lamF s.re := by
@@ -26,8 +24,8 @@ lemma norm_logDeriv_le_lamF {s : ℂ} (hs : 1 < s.re) :
     _ ≤ ∑' n, ‖term ↗Λ s n‖ := norm_tsum_le_tsum_norm hsum
     _ = lamF s.re := by rw [heq]; rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The zero-index term is zero. At a positive index and real argument the coefficient is nonnegative and the denominator is a positive real power. The term is therefore itself a nonnegative real number, equal to its norm.
 -/
 lemma term_vonMangoldt_real (σ : ℝ) (n : ℕ) :
     term ↗Λ (σ : ℂ) n = ((‖term ↗Λ (σ : ℂ) n‖ : ℝ) : ℂ) := by
@@ -38,8 +36,8 @@ lemma term_vonMangoldt_real (σ : ℝ) (n : ℕ) :
         Complex.ofReal_natCast]
     rw [h, Complex.norm_real, Real.norm_of_nonneg (div_nonneg vonMangoldt_nonneg (by positivity))]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a real argument each von Mangoldt term equals its nonnegative real norm. Summing gives a nonnegative real series value equal to the defining norm sum. Taking the norm of the series value leaves that sum.
 -/
 lemma lamF_eq_norm {σ : ℝ} (hσ : 1 < σ) : lamF σ = ‖L ↗Λ (σ : ℂ)‖ := by
   have h : L ↗Λ (σ : ℂ) = ((lamF σ : ℝ) : ℂ) := by
@@ -47,10 +45,8 @@ lemma lamF_eq_norm {σ : ℝ} (hσ : 1 < σ) : lamF σ = ‖L ↗Λ (σ : ℂ)�
     exact tsum_congr fun n => term_vonMangoldt_real σ n
   rw [h, Complex.norm_real, Real.norm_of_nonneg (show 0 ≤ lamF σ from tsum_nonneg fun n => norm_nonneg _)]
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For a positive index the denominator power grows as the real argument increases, because the base is at least one. The term norm therefore decreases or stays constant. The zero term stays zero, and summing the termwise inequalities for the two convergent series proves the claim.
 -/
 lemma lamF_anti {σ τ : ℝ} (hσ : 1 < σ) (h : σ ≤ τ) : lamF τ ≤ lamF σ := by
   have hs : ∀ x : ℝ, 1 < x → Summable fun n => ‖term ↗Λ (x : ℂ) n‖ := fun x hx =>

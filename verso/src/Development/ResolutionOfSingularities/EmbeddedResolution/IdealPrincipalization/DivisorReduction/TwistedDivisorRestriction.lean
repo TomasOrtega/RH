@@ -29,31 +29,29 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assumed bound on the order of the marked ideal is pointwise. Evaluate it at the given point.
 -/
 private theorem orderAt_le_mult (T : MarkedIdealWithBoundary.{u}) (hOB : T.IsOrderBoundedByMult) (x : ↥T.scheme) :
     orderAt T.ideal x ≤ (T.mult : ℕ∞) := hOB x
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For this marked input the balance condition is derivative balance of its ideal at the specified marking. The given finite-type structure makes this the asserted property.
 -/
 private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u})
     (h : AlgebraicGeometry.LocallyOfFiniteType T.structMap) (hbal : T.IsBalanced h) :
     IsDerivBalanced T.base T.structMap T.ideal T.mult := hbal
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of a pulled-back ideal is the inverse image of the original support. The given membership therefore says that the image point belongs to that original support.
 -/
 private theorem mem_support_of_mem_support_comap {X Y : Scheme.{u}} (f : Y ⟶ X)
     (I : X.IdealSheafData) {y : ↥Y} (hy : y ∈ (I.comap f).support) : f y ∈ I.support := by
   rw [Scheme.IdealSheafData.support_comap] at hy
   exact hy
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility implies that the selected boundary entry is a smooth divisor over the field. Distinct irreducible components of a scheme smooth over a field are disjoint. Apply this to the smooth divisor subscheme.
 -/
 private theorem disjoint_irreducibleComponents_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -70,8 +68,8 @@ private theorem disjoint_irreducibleComponents_boundary_subscheme (T : MarkedIde
   unfold IrreducibleComponentsDisjointOfSmooth at h
   exact h T.base _ _ hsm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The initial ideal is divisible by the marked power of the selected center ideal. The residual-by-power formula therefore recovers the initial ideal on multiplying the residual ideal by that power. For the identity blowup the exceptional ideal is the center ideal and identity pullbacks fix all ideals, so this residual ideal is exactly the post-blowup lower ideal.
 -/
 private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -82,24 +80,8 @@ private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : Mark
   simpa [DivisorReduction.lowerIdealAfterBlowup, exceptionalIdeal_id,
     Scheme.IdealSheafData.comap_id] using h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The original ideal factors as the selected center raised to the mark times the lower ideal, so its order is the mark times the center order plus the lower ideal order. Suppose an irreducible component of the divisor lay in the support of the restricted lower ideal. If the entire component maps into the original order locus, the connected component of any chosen point stays in it by disjointness of the smooth divisor's irreducible components. The point then maps into the selected center support. Both factors have positive order there, and the order formula gives original order greater than the mark, a contradiction. Otherwise choose a point of the divisor component mapping outside the order locus. Derivative balance forces the original order there to be zero, so the order formula forces the lower ideal order to be zero. This is again incompatible with belonging to the support of the restricted lower ideal.
 -/
 theorem nonzeroOnComponents_comap_lowerIdealAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hOB : T.IsOrderBoundedByMult) (hbal : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)
@@ -181,10 +163,8 @@ theorem nonzeroOnComponents_comap_lowerIdealAfterBlowup (T : MarkedIdealWithBoun
     rw [← one_le_orderAt_iff_mem_support, hJ0] at hmem
     simp at hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted input uses the same characteristic-zero field and positive marking. Its underlying divisor is smooth over the field, locally of finite type, and quasi-compact. The residual ideal pulled back to the divisor is nonzero on components by the preceding order argument. The theorem on the updated boundary after the preliminary blowup gives strict normal crossings after restriction to the divisor. Together these give all admissibility conditions.
 -/
 theorem isAdmissible_restrictTwistedToDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hOB : T.IsOrderBoundedByMult) (hbal : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)

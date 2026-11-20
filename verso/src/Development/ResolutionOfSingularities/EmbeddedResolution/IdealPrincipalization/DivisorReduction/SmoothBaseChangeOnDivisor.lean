@@ -27,12 +27,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Converting to data and back preserves each length, stage, initial isomorphism, adjacent transition, and center. The given comparison maps are therefore defined on the same range of indices and have the same initial compatibility, pullback squares, and center relations. They witness the strict comparison for the converted sequences.
 -/
 private theorem isStrictPullbackBlowupSeq_ofSequenceOfBlowups {X X' : Scheme.{u}} (φ : X' ⟶ X) (B' : SequenceOfBlowups X')
     (B : SequenceOfBlowups X) (h : IsStrictPullbackBlowupSeq φ B' B) :
@@ -52,8 +48,8 @@ private theorem isStrictPullbackBlowupSeq_ofSequenceOfBlowups {X X' : Scheme.{u}
     simp only [BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.ofSequenceOfBlowups_center]
     exact hc i (hi.trans_eq hlA)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup data underlying each marked conversion are obtained by converting its underlying sequence to data. The strict comparison is preserved when both sequences are converted to data and back, giving the result.
 -/
 theorem IsStrictPullbackBlowupSeq.ofMarkedSequence {A B : MarkedIdealWithBoundary.{u}} (φ : A.scheme ⟶ B.scheme)
     (sA : A.SequenceOfBlowups) (sB : B.SequenceOfBlowups)
@@ -64,8 +60,8 @@ theorem IsStrictPullbackBlowupSeq.ofMarkedSequence {A B : MarkedIdealWithBoundar
     MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence sB]
   exact isStrictPullbackBlowupSeq_ofSequenceOfBlowups φ _ _ h
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute one equal center ideal for the other. The prepended schemes, transitions, and center ideals are then the same. The two witnesses of the blowup property establish the same proposition, so both constructions give the same sequence.
 -/
 theorem BlowupSequenceData.prepend_toSequenceOfBlowups_congr {X : Scheme.{u}} {Z Z' : X.IdealSheafData} (hZZ : Z = Z')
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (hZ' : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z') (d : BlowupSequenceData X) :
@@ -151,22 +147,8 @@ def DivisorReductionSeqEqAmbient (hres : FunctorialResolution.Blowup.StrictTrans
                 (lowerBoundaryAfterBlowup T j hj) (L (restrictTwistedToDivisor T j hj)) hpr)).toMarkedBlowupSequenceData
               T.structMap T.ideal T.mult T.boundary hmk).toMarkedSequenceOfBlowups)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The smooth map is flat and both admissible schemes are Noetherian. If the original order locus is empty, its inverse image is empty. The divisor sequences both have length zero and are strict pullbacks. Otherwise surjectivity makes both order loci nonempty. The selected center on the pullback is the pullback of the original selected center, so surjectivity makes the two centers unit simultaneously. In the unit case, the ordinary lower sequences are strict pullbacks along the map of divisors. The corresponding divisor square is a pullback, so flat compatibility gives the strict comparison for their ambient lifts. In the nonunit case use the twisted lower sequences and apply the same ambient comparison. Prepend the original and pulled-back selected blowups to this strict comparison. The ambient descriptions of the canonical sequences give the result in both cases.
 -/
 theorem divisorFamily_isStrictPullbackBlowupSeq_of_smooth (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

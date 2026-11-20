@@ -136,20 +136,8 @@ structure RestrictedPrincipalizationSmoothPullback (n : ℕ) (L : Principalizati
         (L (restrictTwistedToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE)).toSequenceOfBlowups
         (L (restrictTwistedToDivisor T j hj)).toSequenceOfBlowups
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the original order locus is empty, its smooth pullback is empty as well, so both divisor sequences have zero length. If only the pulled-back locus is empty, the pulled-back sequence has zero length and the empty-cosupport comparison gives the desired pullback. Suppose both loci are nonempty. The selected center on the source of the smooth morphism is the pullback of the original selected center. In particular, a unit center on the original scheme stays unit on pullback. For two unit centers, the lower-dimensional ordinary restrictions give a pullback sequence on the divisors, and flat compatibility of the ambient construction lifts it to the full schemes. For a nonunit original center whose pullback becomes unit, use the mixed comparison between the twisted original restriction and the ordinary restriction after pullback. Lift that comparison to the ambient sequences and omit the prepended step after pullback because its center is empty. When the selected center remains nonunit, use the two twisted restrictions, lift their comparison, and prepend the paired blowups along the original and pulled-back centers. These cases give the asserted comparison.
 -/
 theorem divisorFamily_isPullbackBlowupSequence (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

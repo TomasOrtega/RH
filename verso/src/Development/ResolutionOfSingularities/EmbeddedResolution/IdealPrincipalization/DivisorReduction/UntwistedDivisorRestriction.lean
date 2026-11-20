@@ -24,12 +24,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An irreducible component is closed. Every point outside the chosen component belongs to a different irreducible component, and pairwise disjointness makes every other component lie outside the chosen one. The complement is therefore the union of the other components. There are finitely many by Noetherianity, so their union is closed, proving that the chosen component is also open.
 -/
 theorem isClopen_of_pairwise_disjoint_irreducibleComponents {S : Type*} [TopologicalSpace S]
     [NoetherianSpace S]
@@ -57,8 +53,8 @@ theorem isClopen_of_pairwise_disjoint_irreducibleComponents {S : Type*} [Topolog
   rw [← isClosed_compl_iff, hcompl, Set.sUnion_eq_biUnion]
   exact hfin.isClosed_biUnion (fun C hC => isClosed_of_mem_irreducibleComponents C hC.1)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The irreducible component is open and closed by the disjointness and Noetherianity hypotheses. A connected subset containing the chosen point cannot meet both this clopen component and its complement. Apply this to the connected component of the point.
 -/
 theorem connectedComponent_subset_of_mem_irreducibleComponents {S : Type*} [TopologicalSpace S]
     [NoetherianSpace S]
@@ -70,8 +66,8 @@ theorem connectedComponent_subset_of_mem_irreducibleComponents {S : Type*} [Topo
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The selected boundary entry is a smooth divisor since the boundary has strict normal crossings. The smooth-divisor condition includes smoothness of its closed subscheme over the base field along the indicated composite.
 -/
 private theorem smooth_subschemeι_comp_structureMorphism (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -81,8 +77,8 @@ private theorem smooth_subschemeι_comp_structureMorphism (T : MarkedIdealWithBo
     ((inStrictNormalCrossingPosition_iff T.structMap T.boundary).mp hV.snc).1 _ hmem
   exact ((isSmoothDivisor_iff _ _).mp hDiv).2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The admissible ambient scheme is Noetherian. A closed immersion identifies the boundary's underlying space with a closed subspace of it. This subspace is Noetherian.
 -/
 private theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (j : ℕ) (hj : j < T.boundary.length) :
@@ -92,12 +88,8 @@ private theorem noetherianSpace_boundary_subscheme (T : MarkedIdealWithBoundary.
   exact (AlgebraicGeometry.IsClosedImmersion.isClosedEmbedding
     (T.boundary.get ⟨j, hj⟩).subschemeι).isInducing.noetherianSpace
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The point in the open lifts to its open subscheme. The composite morphism is quasi-compact since its source is Noetherian. Its kernel support contains the image of the lifted point, so the support is nonempty and the kernel cannot be the unit ideal.
 -/
 private theorem ker_ι_comp_ne_top {X Z : Scheme.{u}} (hX : NoetherianSpace ↥X) (V : X.Opens)
     (g : X ⟶ Z) (x : ↥X) (hx : x ∈ V) :
@@ -114,16 +106,8 @@ private theorem ker_ι_comp_ne_top {X Z : Scheme.{u}} (hX : NoetherianSpace ↥X
   rw [h] at h3
   simp at h3
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The lower ideal before any blowup is the original ideal. Derivative balance and the positive mark identify its support with its marked order locus. If the restricted ideal's support contained a divisor component, that component would map into the order locus. The smooth divisor has pairwise disjoint irreducible components, so the connected component of a point on it stays within that irreducible component. The point thus belongs to the open union selected for the preliminary center. The inclusion of this nonempty open into the ambient scheme has nonunit kernel, contrary to the assumption that the selected center ideal is unit.
 -/
 theorem nonzeroOnComponents_comap_lowerIdealWithoutBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hBalanced : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ) (hj : j < T.boundary.length)
@@ -166,12 +150,8 @@ theorem nonzeroOnComponents_comap_lowerIdealWithoutBlowup (T : MarkedIdealWithBo
     fun z hz => hCsub (connectedComponent_subset_of_mem_irreducibleComponents hdisj hC hxC hz)
   exact absurd hZ (ker_ι_comp_ne_top hNoe _ _ x hxV)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The selected divisor is smooth over the same characteristic-zero field, locally of finite type, and quasi-compact as a closed subscheme of the original scheme. Its marking remains positive. The result for the untwisted ideal gives nonvanishing on components. Removing the chosen boundary entry and pulling back the others to its divisor preserves strict normal crossings. The untwisted boundary is the original list and its truncation keeps all entries after removal, giving exactly this boundary.
 -/
 theorem isAdmissible_restrictToDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (_hOB : T.IsOrderBoundedByMult) (hBalanced : T.IsBalanced hV.locallyOfFiniteType) (j : ℕ)

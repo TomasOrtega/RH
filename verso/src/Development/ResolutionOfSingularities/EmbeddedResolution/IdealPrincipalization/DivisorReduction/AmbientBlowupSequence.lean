@@ -35,8 +35,8 @@ noncomputable abbrev restrictTwistedToDivisor (T : MarkedIdealWithBoundary.{u}) 
     MarkedIdealWithBoundary.{u} :=
   restrictToBoundaryDivisor T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structure map of an admissible input is locally of finite type over a field, which is Noetherian. The Noetherianity result for such admissible schemes gives the claim.
 -/
 theorem isNoetherian_scheme_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) :
     AlgebraicGeometry.IsNoetherian T.scheme :=
@@ -63,8 +63,8 @@ noncomputable def embeddingIntoAmbient (hres : FunctorialResolution.Blowup.Stric
   embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient sequence is the general ambient construction for the closed immersion of the selected boundary divisor. Its center formula takes the image ideal of the lower center under the induced stage embedding. Converting the lower marked sequence to blowup data preserves that center.
 -/
 theorem ambientBlowupSeq_center_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -77,8 +77,8 @@ theorem ambientBlowupSeq_center_eq_imageIdealSheaf (hres : FunctorialResolution.
   ambientBlowupSequence_center (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base embedding is the closed immersion of the selected divisor. The ambient blowup construction lifts it at every stage as a closed immersion. Apply that result to the blowup data of the lower sequence.
 -/
 theorem isClosedImmersion_embeddingIntoAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -91,8 +91,8 @@ theorem isClosedImmersion_embeddingIntoAmbient
   isClosedImmersion_embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The general ambient construction inserts one ambient transition for each step of the lower sequence and so preserves length. Passing from the lower marked sequence to its unmarked data also preserves length.
 -/
 theorem ambientBlowupSeq_length (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

@@ -16,8 +16,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The first projection from the fiber product has kernel equal to the pulled-back ideal. This is the defining ideal of the new closed subscheme. The kernel containment required for factorization through its inclusion therefore holds by equality, giving the stated lift.
 -/
 private theorem exists_lift_pullback_subschemeι_comap {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
@@ -29,10 +29,8 @@ private theorem exists_lift_pullback_subschemeι_comap {X Y : Scheme.{u}} (h : Y
   exact ⟨AlgebraicGeometry.IsClosedImmersion.lift D'.subschemeι
       (Limits.pullback.fst h D.subschemeι) hle, by simp⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The square commutes by construction, so the new closed subscheme maps to the categorical fiber product. Conversely, the first projection of the fiber product factors through that closed subscheme, giving a reverse map. One composite is the identity by cancellation of the new closed immersion. The other is the identity because its composites with both fiber-product projections agree with those of the identity. For the second projection this follows from commutativity and cancellation of the original closed immersion. Thus the given square identifies with the pullback square.
 -/
 theorem isPullback_subschemeMapOfComap (X Y : Scheme.{u}) (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :

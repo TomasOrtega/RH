@@ -32,10 +32,8 @@ noncomputable abbrev fieldBaseChangeProjection (T : MarkedIdealWithBoundary.{u})
     (f : T.base →+* K) :=
   CategoryTheory.Limits.pullback.fst T.structMap (FunctorialResolution.EmbeddedResolution.specMapOfFieldHom T.base K f)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The two prefixes of length j+1 agree. Since the replacement list has an entry at j, this equality shows the base-changed list also has one there, and the two entries agree. The base-changed boundary is obtained by pulling each original entry back along the field-extension projection. Taking its jth entry gives the stated pullback.
 -/
 theorem get_eq_comap_fieldBaseChangeProjection (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (K : Type u) [Field K] (f : T.base →+* K)
@@ -124,24 +122,8 @@ structure RestrictedPrincipalizationFieldBaseChange (n : ℕ) (L : Principalizat
         (L (DivisorReduction.restrictTwistedToDivisor ((T.baseChange K f).withBoundary E') j hjE)).toSequenceOfBlowups
         (L (DivisorReduction.restrictTwistedToDivisor T j hj)).toSequenceOfBlowups
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Field extension gives a flat surjective projection, keeps the mark, and pulls the order locus back to its inverse image. If the original locus is empty, both sequences have length zero and their comparisons are strict pullbacks. Otherwise both loci are nonempty by surjectivity. The selected center commutes with this base change, and surjectivity means that it is unit on both sides or nonunit on both sides. In the unit case the lower-dimensional ordinary sequences are strict pullbacks by hypothesis. Apply the flat ambient comparison to the pullback square of the divisor inclusions. In the nonunit case use the strict comparison for the twisted lower sequences and the same ambient result. The selected centers are related by pullback, so their preliminary blowups can be prepended to the strict comparison. The descriptions of the canonical divisor sequences identify these comparisons with the asserted one.
 -/
 theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -304,8 +286,8 @@ theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange (hres : Functori
               (L (DivisorReduction.restrictTwistedToDivisor ((T.baseChange K f).withBoundary E') j hjE)) hpr2)]
         exact key.prepend (DivisorReduction.containedComponentsIdeal T j hj) hb hb2'
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the strict field-extension comparison first. Deleting the empty-center steps of the pulled-back sequence gives its pullback comparison with omissions. By the center assumption every actual step of that sequence has nonempty support, so its center ideal is nonunit. The deletion theorem therefore identifies the shortened sequence with the original pulled-back sequence, and transport gives the stated comparison.
 -/
 theorem divisorFamily_isPullbackSequenceOfBlowups_fieldBaseChange (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

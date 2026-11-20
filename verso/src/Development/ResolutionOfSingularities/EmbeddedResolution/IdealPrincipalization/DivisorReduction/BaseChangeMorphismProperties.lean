@@ -14,16 +14,16 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The identity of a scheme is an isomorphism. An isomorphism is smooth.
 -/
 theorem smooth_id :
     ∀ (X : Scheme.{u}), AlgebraicGeometry.Smooth (CategoryTheory.CategoryStruct.id X) := by
   intro X
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+For each point of the target, the same point in the source maps to it under the identity. Hence the map is surjective.
 -/
 theorem surjective_id :
     ∀ (X : Scheme.{u}), AlgebraicGeometry.Surjective (CategoryTheory.CategoryStruct.id X) := by
@@ -32,8 +32,8 @@ theorem surjective_id :
   intro x
   exact ⟨x, rfl⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback of ideal sheaves is contravariantly functorial. Pulling the ideal back along the second morphism and then the first therefore equals pullback along their composite.
 -/
 theorem comap_comap :
     ∀ (X Y Z : Scheme.{u}) (f : X ⟶ Y) (g : Y ⟶ Z) (I : Z.IdealSheafData),
@@ -41,10 +41,8 @@ theorem comap_comap :
   intro X Y Z f g I
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+A nonunit ideal has a point in its support. Surjectivity lifts this point to the source, and the support of the pullback ideal is the inverse image of the original support. Thus that support is nonempty and the pullback ideal is nonunit.
 -/
 theorem comap_ne_top_of_surjective :
     ∀ (X Y : Scheme.{u}) (h : Y ⟶ X) [AlgebraicGeometry.Surjective h] (Z : X.IdealSheafData),
@@ -60,8 +58,8 @@ theorem comap_ne_top_of_surjective :
   refine (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mp ⟨y, ?_⟩
   simpa [AlgebraicGeometry.Scheme.IdealSheafData.support_comap] using hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A field extension is flat as an algebra over the original field, so its map of spectra is flat. The stated projection is the base change of this map along the original structure morphism. Flatness is stable under base change.
 -/
 theorem flat_fieldBaseChangeProjection :
     ∀ (T : MarkedIdealWithBoundary.{u}) (K : Type u) [Field K] (f : T.base →+* K),
@@ -72,8 +70,8 @@ theorem flat_fieldBaseChangeProjection :
     ((CategoryTheory.IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base K f)).flip)
     hflat
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two field spectra each have a single point, so the map of spectra is surjective. The projection of the base change is its pullback, which preserves surjectivity.
 -/
 theorem surjective_fieldBaseChangeProjection :
     ∀ (T : MarkedIdealWithBoundary.{u}) (K : Type u) [Field K] (f : T.base →+* K),
@@ -86,8 +84,8 @@ theorem surjective_fieldBaseChangeProjection :
     (specMapOfFieldHom T.base K f) (fieldBaseChangeProjection T K f)
     (CategoryTheory.IsPullback.of_hasPullback T.structMap (specMapOfFieldHom T.base K f)).flip
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The field-extension projection is surjective. The general support argument for pullback along a surjective morphism therefore shows that a nonunit ideal remains nonunit.
 -/
 theorem comap_fieldBaseChangeProjection_ne_top :
     ∀ (T : MarkedIdealWithBoundary.{u}) (K : Type u) [Field K] (f : T.base →+* K)

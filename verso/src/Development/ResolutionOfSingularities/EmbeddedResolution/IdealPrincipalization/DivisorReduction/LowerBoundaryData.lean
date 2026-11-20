@@ -33,8 +33,8 @@ noncomputable abbrev lowerBoundaryWithoutBlowup (T : MarkedIdealWithBoundary.{u}
   T.boundary.map (fun D => D.comap (𝟙 T.scheme))
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The initial boundary before any preliminary blowup is obtained by pulling each entry back along the identity. Each entry stays equal to itself, in the same list order.
 -/
 theorem lowerBoundaryWithoutBlowup_eq (T : MarkedIdealWithBoundary.{u}) : lowerBoundaryWithoutBlowup T = T.boundary := by
   simp [lowerBoundaryWithoutBlowup]
@@ -63,8 +63,8 @@ noncomputable def ambientTowerOfLowerResolution (hres : FunctorialResolution.Blo
     (MarkedBlowupSequenceData.ofMarkedSequence (alg (restrictToBoundaryDivisor T j hj I₀ E₀) hdn.1)).toBlowupSequenceData
     hres hno hpr
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The selected subset of the boundary is open by hypothesis. In this branch of the definition, the chosen ideal is the kernel of its open inclusion followed by the boundary inclusion.
 -/
 theorem containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -79,8 +79,8 @@ theorem containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen (T : Marke
           (T.boundary.get ⟨j, hj⟩).subschemeι) :=
   containedComponentsIdeal_eq_ker T j hj h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The openness test for the selected union of connected components fails by hypothesis, so the selected ideal is unit by definition.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -89,8 +89,8 @@ theorem containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent (
     containedComponentsIdeal T j hj = ⊤ :=
   containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The nonempty order locus and unit selected center put the construction in the ordinary divisor restriction branch. The dimension inequality and Noetherianity allow the lower sequence and its ambient lift, since its centers contain no component. The given marking then identifies the output of the lift with the marked form of this ambient tower.
 -/
 theorem divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -111,8 +111,8 @@ theorem divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top (hres : Functo
   exact liftSeqFromDivisor_eq_toMarkedSequence hres hno T alg j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) id
     hdn.1 hpr hmk
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The nonempty order locus and nonunit selected center put the construction in the preliminary blowup branch. Its lower ideal and boundary are the residual and updated data for that blowup. The lower dimension bound, Noetherianity, and proper centers give the ambient tower for the twisted restriction. Prepend the selected blowup. The given marking identifies the lift with the marked form of this prepended tower.
 -/
 theorem divisorReductionSeq_eq_of_isBlowupAlongIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

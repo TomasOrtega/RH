@@ -23,14 +23,8 @@ variable (k : Type u) [Field k] [CharZero k] {X S : Scheme.{u}}
     (ι : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion ι]
     [AlgebraicGeometry.Smooth (ι ≫ p)]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the given power containment for each K term back to the smooth closed subscheme. At the point in question the restricted A has order at least m, so the power inequality gives the restricted K term indexed by l order at least m−l. The derivative support formula puts the point in the support of the derivative ideal of this term of order m−l−1. The comparison of logarithmic derivatives with derivatives after restriction then puts the image point in the support of the corresponding ambient logarithmic term. This holds for every index, hence the image belongs to the support of their sum. The assumed containment in that sum puts it in the support of the ambient derivative ideal of A of order m−1, which is the desired order locus.
 -/
 theorem base_mem_orderAtLeastLocus_of_mem_comap
     (m : ℕ) (hm : 1 ≤ m) (A : X.IdealSheafData) (K : ℕ → X.IdealSheafData)

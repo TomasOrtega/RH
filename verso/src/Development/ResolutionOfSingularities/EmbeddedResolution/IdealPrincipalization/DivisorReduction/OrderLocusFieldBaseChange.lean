@@ -13,8 +13,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base field has characteristic zero by admissibility, and the extension field does too since the field homomorphism is injective. The original structural map is smooth. Changing the boundary leaves the pulled-back ideal fixed, so the order-locus theorem for field extensions identifies this locus with the inverse image of the original one.
 -/
 theorem orderAtLeastLocus_withBoundary_baseChange_eq_preimage (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (K : Type u) [Field K] (f : T.base →+* K)

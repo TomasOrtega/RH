@@ -28,18 +28,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Changing the boundary leaves the ideal and marking fixed. If the order locus is empty, both sequences have zero length and their comparison over the identity is strict. Otherwise the equality of the selected divisor ideals makes the two preliminary center ideals equal, so the construction takes the same branch for both. In the unit branch, the corresponding ordinary lower sequences have a strict comparison by the lower-dimensional boundary reindexing result. The selected divisor embeddings form a pullback square over the identity, so the flat ambient comparison gives the strict comparison of the lifts. In the nonunit branch apply the lower reindexing result to the twisted restrictions and lift the comparison in the same way. The equal preliminary centers allow both first blowups to be prepended to that comparison. The ambient descriptions of the canonical sequences give the assertion.
 -/
 theorem isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -168,8 +158,8 @@ theorem isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq
       (divisorFamily_canonicalAlgorithmRules_length_eq_zero hres n L j₁ (T.withBoundary L₁) hV₁ hdim hO hbal
         hj₁ hcs0)
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+For arbitrary admissible lists with equal selected ideal and matching remaining nontrivial boundary, the identity-base comparison theorem supplies the strict pullback. This proves the required reindexing property.
 -/
 theorem strictBoundaryReindexingInvariance_of_divisorReductionSeqEqAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -184,8 +174,8 @@ theorem strictBoundaryReindexingInvariance_of_divisorReductionSeqEqAmbient
     isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq hres hfacts hbc hsh n L O hL hshape T hV hdim hO hbal
       L₁ L₂ j₁ hj₁ j₂ hj₂ heq hBE hV₁ hV₂⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient sequence description gives strict boundary reindexing invariance over the identity. The result relating strict reindexing to boundary position invariance then applies at the stated dimension bound.
 -/
 theorem isBoundaryPositionInvariant_divisorFamily_of_divisorReductionSeqEqAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

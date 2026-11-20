@@ -22,10 +22,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the power of the factor being cancelled. At zero the membership is the conclusion. For a successor power, factor off one copy and apply the assumed cancellation in the principal power ideal. Then use the induction hypothesis on the remaining power.
 -/
 private theorem mem_span_of_pow_mul_mem_span {R : Type*} [CommRing R] (g h : R)
     (hcan : ∀ (n : ℕ) (z : R), h * z ∈ Ideal.span ({g ^ n} : Set R) →
@@ -44,8 +42,8 @@ private theorem mem_span_of_pow_mul_mem_span {R : Type*} [CommRing R] (g h : R)
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the identity for sheaf multiplication by the full structure sheaf ideal. The result is the full structure sheaf ideal. Taking stalks and using the known stalk of the unit ideal gives the product of the sought stalk ideal with the unit stalk ideal equal to the unit ideal. This product is contained in the sought stalk ideal, forcing it to be the unit ideal.
 -/
 theorem stalkIdeal_one (x : X) : stalkIdeal (1 : X.IdealSheafData) x = ⊤ := by
   have h := stalkIdeal_mul (1 : X.IdealSheafData) (⊤ : X.IdealSheafData) x
@@ -54,8 +52,8 @@ theorem stalkIdeal_one (x : X) : stalkIdeal (1 : X.IdealSheafData) x = ⊤ := by
   rw [h]
   exact Ideal.mul_le.mpr (fun r hr s _ => Ideal.mul_mem_right s _ hr)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the list of ideal sheaves. The empty product has the unit ideal as its stalk. For a nonempty list, take the stalk of the head multiplied by the tail product, then use preservation of multiplication and the induction formula for the tail.
 -/
 theorem stalkIdeal_listProd (L : List X.IdealSheafData) (x : X) :
     stalkIdeal L.prod x = (L.map (fun I => stalkIdeal I x)).prod := by
@@ -72,12 +70,8 @@ def IsEtaleLocallyCoordinateDivisor (p : X ⟶ Spec (CommRingCat.of k)) (D : X.I
   ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),
     restrictIdeal D U = ⊤ ∨ ∃ j : Fin n, restrictIdeal D U = c.coordIdeal {j}
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Choose the listed index of the divisor and take an étale normal-crossings chart around the given point. The chart assigns to this entry either the unit ideal or the ideal of a single coordinate. Use that chart for the local description of the divisor.
 -/
 theorem isEtaleLocallyCoordinateDivisor_of_inStrictNormalCrossingPosition (p : X ⟶ Spec (CommRingCat.of k))
     (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E) (D : X.IdealSheafData) (hD : D ∈ E) :
@@ -101,14 +95,14 @@ theorem isEtaleLocallyCoordinateDivisor_of_inStrictNormalCrossingPosition (p : X
 def orderAlongComponent (I : X.IdealSheafData) {C : Set X} (hC : IsIrreducible C) : ℕ :=
   (orderAt I hC.genericPoint).toNat
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition, the natural-number order along the component is obtained by taking the natural-number value of the order at its generic point.
 -/
 theorem orderAlongComponent_eq_orderAt_genericPoint (I : X.IdealSheafData) {C : Set X} (hC : IsIrreducible C) :
     orderAlongComponent I hC = (orderAt I hC.genericPoint).toNat := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ideal is nonzero on the ambient components, so the order at the generic point of the given component is finite. Taking its natural-number value and inserting that value back into the extended natural numbers recovers it.
 -/
 theorem coe_orderAlongComponent_eq_orderAt_genericPoint [IsLocallyNoetherian X] {D I : X.IdealSheafData} {C : Set X}
     (hC : IsIrreducibleComponentOfSupport D C) (hI : NonzeroOnComponents I) :
@@ -124,16 +118,16 @@ def componentPowerIdeal (I D : X.IdealSheafData) (C : Set X) : X.IdealSheafData 
       orderAlongComponent I h.isIrreducible
   else ⊤
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The component-power construction uses the unit ideal in the branch where the given subset is not an irreducible component of the divisor's support. The hypothesis selects that branch.
 -/
 theorem componentPowerIdeal_of_not_isIrreducibleComponentOfSupport (I D : X.IdealSheafData) {C : Set X}
     (h : ¬ IsIrreducibleComponentOfSupport D C) : componentPowerIdeal I D C = ⊤ :=
   @dif_neg (IsIrreducibleComponentOfSupport D C) (Classical.propDecidable (IsIrreducibleComponentOfSupport D C)) h
     X.IdealSheafData _ _
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The component is a closed irreducible subset of the divisor's support. The construction thus takes its vanishing ideal to the power given by the order of the marked ideal along that component.
 -/
 theorem componentPowerIdeal_of_isIrreducibleComponentOfSupport (I D : X.IdealSheafData) {C : Set X}
     (h : IsIrreducibleComponentOfSupport D C) :
@@ -143,10 +137,8 @@ theorem componentPowerIdeal_of_isIrreducibleComponentOfSupport (I D : X.IdealShe
   unfold componentPowerIdeal
   exact dif_pos h
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the subset is not a component, the ideal is already the unit ideal. If it is a component, its vanishing ideal has precisely the component as support. At a point outside it the vanishing ideal has unit stalk. Stalks commute with powers, so its specified power also has unit stalk.
 -/
 theorem stalkIdeal_componentPowerIdeal_of_not_mem (I D : X.IdealSheafData) (C : Set X) {x : X}
     (hx : x ∉ C) : stalkIdeal (componentPowerIdeal I D C) x = ⊤ := by
@@ -163,8 +155,8 @@ theorem stalkIdeal_componentPowerIdeal_of_not_mem (I D : X.IdealSheafData) (C : 
       one_pow]
   · rw [componentPowerIdeal_of_not_isIrreducibleComponentOfSupport I D hC, stalkIdeal_top]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For this component the defining ideal is the specified power of its vanishing ideal. At the given point on the component, the étale coordinate-divisor description identifies the stalk of its vanishing ideal with the divisor stalk. Taking stalks of the power gives the formula.
 -/
 theorem stalkIdeal_componentPowerIdeal_of_mem [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) {D : X.IdealSheafData}
@@ -183,14 +175,14 @@ def monomialPartAlongDivisor [TopologicalSpace.NoetherianSpace ↥X] (I D : X.Id
     X.IdealSheafData :=
   (supportComponentsFinset D).inf (fun C => componentPowerIdeal I D C)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The contribution along a divisor is defined by intersecting the component-power ideals for its finite set of support components. This intersection is their infimum.
 -/
 theorem monomialPartAlongDivisor_eq_inf_componentPowerIdeal [TopologicalSpace.NoetherianSpace ↥X] (I D : X.IdealSheafData) :
     monomialPartAlongDivisor I D = (supportComponentsFinset D).inf (fun C => componentPowerIdeal I D C) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Check inclusion at each stalk. Products of a section from the first stalk ideal with any element of the second belong to the first ideal. Thus the product ideal is contained in the first.
 -/
 private theorem idealSheafData_mul_le_left (a b : X.IdealSheafData) : a * b ≤ a := by
   rw [le_iff_forall_stalkIdeal_le]
@@ -198,8 +190,8 @@ private theorem idealSheafData_mul_le_left (a b : X.IdealSheafData) : a * b ≤ 
   rw [stalkIdeal_mul]
   exact Ideal.mul_le.mpr fun r hr s _ => Ideal.mul_mem_right s _ hr
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each stalk, a product with a factor in the second ideal belongs to that ideal. Hence the product of the stalk ideals is contained in the second stalk ideal, and the sheaf inclusion follows.
 -/
 private theorem idealSheafData_mul_le_right (a b : X.IdealSheafData) : a * b ≤ b := by
   rw [le_iff_forall_stalkIdeal_le]
@@ -207,10 +199,8 @@ private theorem idealSheafData_mul_le_right (a b : X.IdealSheafData) : a * b ≤
   rw [stalkIdeal_mul]
   exact Ideal.mul_le.mpr fun r _ s hs => Ideal.mul_mem_left _ r hs
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The product of the two ideals is contained in their intersection. Its stalk is the product of two unit stalk ideals, hence is the unit ideal. By monotonicity the stalk of the intersection contains the unit ideal and is therefore equal to it.
 -/
 private theorem stalkIdeal_inf_eq_top (a b : X.IdealSheafData) (x : X)
     (ha : stalkIdeal a x = ⊤) (hb : stalkIdeal b x = ⊤) :
@@ -223,10 +213,8 @@ private theorem stalkIdeal_inf_eq_top (a b : X.IdealSheafData) (x : X)
     rw [← Ideal.one_eq_top, one_mul]
   rwa [htop] at hmono
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the finite set of indices. The empty intersection is the unit ideal. Inserting one index intersects the previous ideal with the additional ideal, both of which have unit stalk at the chosen point. The binary intersection then has unit stalk.
 -/
 private theorem stalkIdeal_finsetInf_eq_top {β : Type u} (f : β → X.IdealSheafData) (x : X)
     (s : Finset β) : (∀ b ∈ s, stalkIdeal (f b) x = ⊤) → stalkIdeal (s.inf f) x = ⊤ := by
@@ -240,8 +228,8 @@ private theorem stalkIdeal_finsetInf_eq_top {β : Type u} (f : β → X.IdealShe
     exact stalkIdeal_inf_eq_top _ _ x (hs a (Finset.mem_insert_self a t))
       (ih fun b hb => hs b (Finset.mem_insert_of_mem hb))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Each support component lies in the divisor support, so none contains the given point. Each component-power ideal has unit stalk there by the calculation away from its component. Their finite intersection therefore has unit stalk.
 -/
 theorem stalkIdeal_monomialPartAlongDivisor_of_not_mem_support [TopologicalSpace.NoetherianSpace ↥X]
     (I D : X.IdealSheafData) {x : X} (hx : x ∉ (D.support : Set X)) :
@@ -254,12 +242,8 @@ theorem stalkIdeal_monomialPartAlongDivisor_of_not_mem_support [TopologicalSpace
     (Set.Finite.mem_toFinset (finite_isIrreducibleComponentOfSupport D)).mp hC
   exact stalkIdeal_componentPowerIdeal_of_not_mem I D C (fun hxC => hx (hCmem.subset_support hxC))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. If the specified ideal is its head, the product is contained in the head ideal. If it occurs in the tail, the full product is contained in the tail product, which is contained in the specified ideal by induction. The empty list has no specified member.
 -/
 private theorem idealSheafData_listProd_le_of_mem :
     ∀ (L : List X.IdealSheafData) (a : X.IdealSheafData), a ∈ L → L.prod ≤ a := by
@@ -276,8 +260,8 @@ private theorem idealSheafData_listProd_le_of_mem :
         exact idealSheafData_mul_le_left _ _
       · exact le_trans (idealSheafData_mul_le_right _ _) (ih a h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each entry of the mapped list is the image of a listed element and therefore equals the multiplicative identity. Their product is the identity.
 -/
 private theorem prod_map_eq_one_of_forall_eq_one {α : Type*} {M : Type*} [CommMonoid M]
     (g : α → M) (L : List α) (h : ∀ b ∈ L, g b = 1) : (L.map g).prod = 1 :=
@@ -285,14 +269,8 @@ private theorem prod_map_eq_one_of_forall_eq_one {α : Type*} {M : Type*} [CommM
     obtain ⟨a, ha, rfl⟩ := List.mem_map.mp hx
     exact h a ha
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The distinguished element occurs exactly once by membership and the absence of repetitions. Every other entry maps to the identity. Multiplying the mapped entries therefore leaves only the value at the distinguished element.
 -/
 private theorem prod_map_eq_apply_of_nodup_of_forall_ne {α : Type*} {M : Type*} [CommMonoid M]
     (g : α → M) : ∀ (L : List α) (a : α), L.Nodup → a ∈ L →
@@ -321,16 +299,8 @@ private theorem prod_map_eq_apply_of_nodup_of_forall_ne {α : Type*} {M : Type*}
         exact ih a (List.nodup_cons.mp hnd).2 h
           (fun c hc => hone c (List.mem_cons.mpr (Or.inr hc)))
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection of the component-power ideals is contained in the ideal for the component containing the point. Its stalk is therefore contained in the stated power. For the reverse containment, use the product of all component-power ideals, which is contained in their intersection. Distinct components of this étale coordinate divisor are disjoint, so all other factors have unit stalk at the point. The product stalk is exactly the power for the chosen component, giving the other inclusion.
 -/
 theorem stalkIdeal_monomialPartAlongDivisor_of_mem [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) {D : X.IdealSheafData}
@@ -379,15 +349,15 @@ def monomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X] (E : List X.Idea
     (I : X.IdealSheafData) : X.IdealSheafData :=
   (E.map (fun D => monomialPartAlongDivisor I D)).prod
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The monomial factor is defined as the product of the contributions along the listed boundary divisors. Applying the divisor-contribution operation to the list gives the factors in the stated product.
 -/
 theorem monomialFactorIdeal_eq_prod_monomialPartAlongDivisor [TopologicalSpace.NoetherianSpace ↥X] (E : List X.IdealSheafData)
     (I : X.IdealSheafData) :
     monomialFactorIdeal E I = (E.map (fun D => monomialPartAlongDivisor I D)).prod := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Take the stalk of the finite product of the contributions along the boundary. Stalks preserve list products, so the result is the product of the stalks of those contributions.
 -/
 theorem stalkIdeal_monomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X]
     (E : List X.IdealSheafData) (I : X.IdealSheafData) (x : X) :
@@ -397,29 +367,29 @@ theorem stalkIdeal_monomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X]
   rw [h, stalkIdeal_listProd, List.map_map]
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+On the given affine open, the product of ideal sheaves is defined by multiplying their section ideals. This gives the equality there.
 -/
 private theorem idealSheafData_ideal_mul (I J : X.IdealSheafData) (W : X.affineOpens) :
     (I * J).ideal W = I.ideal W * J.ideal W := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The section ideal of the unit ideal sheaf contains the unit section on every affine open. Thus it is the unit ideal of that section ring.
 -/
 private theorem idealSheafData_ideal_top (W : X.affineOpens) :
     (⊤ : X.IdealSheafData).ideal W = ⊤ :=
   (Ideal.eq_top_iff_one _).mpr (by simp)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The multiplicative identity for ideal sheaves is the unit ideal sheaf. Its section ideal on the affine open is the unit ideal, the multiplicative identity for ideals in the section ring.
 -/
 private theorem idealSheafData_ideal_one (W : X.affineOpens) :
     (1 : X.IdealSheafData).ideal W = 1 := by
   rw [Ideal.one_eq_top]
   exact idealSheafData_ideal_top W
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the exponent. At zero both sides are the unit ideal by the section calculation for the identity sheaf. At a successor, use preservation of products of section ideals and then the induction hypothesis for the preceding power.
 -/
 private theorem idealSheafData_ideal_pow (J : X.IdealSheafData) (n : ℕ)
     (W : X.affineOpens) : (J ^ n).ideal W = J.ideal W ^ n := by
@@ -427,8 +397,8 @@ private theorem idealSheafData_ideal_pow (J : X.IdealSheafData) (n : ℕ)
   | zero => rw [pow_zero, pow_zero]; exact idealSheafData_ideal_one W
   | succ n ih => rw [pow_succ, pow_succ, idealSheafData_ideal_mul, ih]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. The empty product gives the unit section ideal. For the head and tail, take sections of their product using the affine multiplication formula and substitute the induction formula for the tail.
 -/
 private theorem idealSheafData_ideal_listProd (L : List X.IdealSheafData) (W : X.affineOpens) :
     L.prod.ideal W = (L.map (fun J => J.ideal W)).prod := by
@@ -437,10 +407,8 @@ private theorem idealSheafData_ideal_listProd (L : List X.IdealSheafData) (W : X
   | cons J L ih =>
       rw [List.prod_cons, List.map_cons, List.prod_cons, idealSheafData_ideal_mul, ih]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section ideal consists of elements lying in every prime of the affine open corresponding to a point of the closed set. There are no such primes because the open is disjoint from the set. The unit satisfies the defining condition and the ideal is the unit ideal.
 -/
 private theorem ideal_vanishingIdeal_eq_top_of_disjoint (C : Set X) (hCcl : IsClosed C) (W : X.affineOpens)
     (h : ∀ y : X, y ∈ (W : X.Opens) → y ∉ C) :
@@ -456,8 +424,8 @@ private theorem ideal_vanishingIdeal_eq_top_of_disjoint (C : Set X) (hCcl : IsCl
   have hmem : (W.2.fromSpec).base q ∈ (W : X.Opens) := hmem0
   exact absurd hqC (h _ hmem)
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the subset is a support component, its vanishing ideal has unit sections on the disjoint affine open. Thus its specified power has unit sections there. If it is not a support component, the component-power ideal is already the unit ideal sheaf.
 -/
 private theorem ideal_componentPowerIdeal_eq_top_of_disjoint (I D : X.IdealSheafData) (C : Set X)
     (W : X.affineOpens) (h : ∀ y : X, y ∈ (W : X.Opens) → y ∉ C) :
@@ -468,32 +436,8 @@ private theorem ideal_componentPowerIdeal_eq_top_of_disjoint (I D : X.IdealSheaf
   · rw [componentPowerIdeal_of_not_isIrreducibleComponentOfSupport I D hC]
     exact idealSheafData_ideal_top W
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the point lies on a component, take an affine étale chart in which the divisor is a coordinate divisor and all its support in the chart belongs to that component. On every affine open inside the chart the component's vanishing ideal agrees with the divisor ideal, generated by the restricted coordinate. The component-power ideal is therefore generated by the corresponding power of this coordinate, a nonzerodivisor. Every other component is disjoint from the chart, so its contribution is the unit ideal. The intersection is bounded above by the chosen component ideal and below by the product of all component ideals, which has the same sections there. If the point is off every component, take the open complement of their finite closed union. On any affine open inside it every component power is the unit ideal, so the product and the intersection are the unit ideal, generated by 1.
 -/
 private theorem exists_nhds_ideal_monomialPartAlongDivisor_eq_span [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (I D : X.IdealSheafData)
@@ -595,14 +539,8 @@ private theorem exists_nhds_ideal_monomialPartAlongDivisor_eq_span [TopologicalS
       rw [← hprodtop]
       exact hprodle W
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list of divisors. For the empty list, use the whole scheme and the unit generator. Otherwise intersect the neighborhoods giving a single nonzerodivisor generator for the first divisor's contribution and for the product of the remaining contributions. On every affine open inside this intersection the full product is generated by the product of their generators, which remains a nonzerodivisor.
 -/
 private theorem exists_prod_monomialPartAlongDivisor_eq_span_singleton [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (x : X) :
@@ -632,10 +570,8 @@ private theorem exists_prod_monomialPartAlongDivisor_eq_span_singleton [Topologi
       rw [List.map_cons, List.prod_cons, idealSheafData_ideal_mul, he₁, he₂,
         Ideal.span_singleton_mul_span_singleton]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every listed divisor is étale locally a coordinate divisor by strict normal crossings. The product calculation gives a neighborhood of each point where every affine open has a nonzerodivisor generator for the product. Choose an affine basic neighborhood of the point inside it. The generator on that basic open gives the required local generation of the monomial factor.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_monomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (I : X.IdealSheafData)
@@ -651,26 +587,16 @@ theorem isLocallyGeneratedByNonZeroDivisor_monomialFactorIdeal [TopologicalSpace
   rw [monomialFactorIdeal_eq_prod_monomialPartAlongDivisor]
   exact hgeq
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis says that the extended natural number is strictly greater than n. Every such value, including infinity, is at least n + 1.
 -/
 private theorem natCast_add_one_le_of_not_le (n : ℕ) (b : ℕ∞) (h : ¬ b ≤ (n : ℕ∞)) :
     ((n + 1 : ℕ) : ℕ∞) ≤ b := by
   rw [Nat.cast_succ]
   exact ENat.natCast_add_one_le_iff.2 (not_le.mp h)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The specified position is the only one whose mapped entry can differ from the identity. Removing all the identity factors leaves the mapped entry at that position. This works even when the original list contains repeated entries, since the hypothesis is imposed on positions.
 -/
 private theorem prod_map_eq_apply_getElem_of_forall_ne {α : Type*} {M : Type*} [CommMonoid M] (g : α → M) :
     ∀ (L : List α) (i : ℕ) (hi : i < L.length),
@@ -709,20 +635,8 @@ private theorem prod_map_eq_apply_getElem_of_forall_ne {α : Type*} {M : Type*} 
           rw [List.map_cons, List.prod_cons, hb, one_mul]
           exact hrest
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the point also lies on the second divisor. Its coordinate germ then belongs to the maximal ideal, which by hypothesis is generated by the first coordinate germ. Express the second germ as a multiple of the first. Clear the coefficient's denominator in the affine localization, then clear any remaining localization equality by another element outside the point's prime. This puts the second coordinate times a product of denominators in the affine ideal generated by the first coordinate. Because the coordinates are distinct on the étale chart, the second coordinate acts injectively modulo that ideal. Thus the product of denominators lies in the first-coordinate ideal. Its germ is therefore in the maximal ideal, yet it is a unit because every denominator is outside the prime. This is a contradiction.
 -/
 private theorem not_mem_support_of_stalkIdeal_eq_maximalIdeal (p : X ⟶ Spec (CommRingCat.of k))
     {V : X.Opens} (hV : IsAffineOpen V) {m : ℕ} (c : EtaleChart p V m)
@@ -785,22 +699,8 @@ private theorem not_mem_support_of_stalkIdeal_eq_maximalIdeal (p : X ⟶ Spec (C
     rw [← map_mul, hz]
   exact (mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp hfin)) hunit
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an étale boundary chart at the generic point of the given divisor component. The chosen divisor stalk is the maximal ideal. Any other boundary entry is the unit ideal on the chart or is given by a distinct coordinate. In the latter case its support cannot contain the point, since the second-coordinate argument excludes this when the chosen divisor generates the maximal ideal. All these other divisor contributions therefore have unit stalk. The product stalk reduces to the chosen divisor's contribution, which is its stalk raised to the order along the component.
 -/
 private theorem stalkIdeal_monomialFactorIdeal_genericPoint [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (I : X.IdealSheafData)
@@ -865,12 +765,8 @@ private theorem stalkIdeal_monomialFactorIdeal_genericPoint [TopologicalSpace.No
   rw [stalkIdeal_monomialFactorIdeal, hprod, hi0D,
     stalkIdeal_monomialPartAlongDivisor_of_mem p I hloc hC hC.genericPoint_mem]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the generic point the monomial factor's stalk is the maximal ideal raised to the finite order of the original ideal along the component. This gives a lower bound on its order by that exponent. If its order were greater, the maximal-ideal power would lie in the next power. The original ideal's stalk is contained in the maximal-ideal power with the original order as exponent, so it would then lie in the next power too. That contradicts the exact finite order of the original ideal at the generic point.
 -/
 theorem orderAt_monomialFactorIdeal_genericPoint [TopologicalSpace.NoetherianSpace ↥X]
     [IsLocallyNoetherian X] (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -915,25 +811,15 @@ def nonMonomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoe
     (E : List X.IdealSheafData) (I : X.IdealSheafData) : X.IdealSheafData :=
   idealSheafColon I (monomialFactorIdeal E I)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The residual factor is defined as the ideal quotient of the original ideal by the monomial factor.
 -/
 theorem nonMonomialFactorIdeal_eq_idealSheafColon [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
     (E : List X.IdealSheafData) (I : X.IdealSheafData) :
     nonMonomialFactorIdeal E I = idealSheafColon I (monomialFactorIdeal E I) := rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list of principal ideals. For the empty list the product is the unit ideal. Otherwise write the given element as the first generator times a coefficient, using its membership in the first principal ideal. For each remaining ideal, membership of this product and the cancellation hypothesis show that the coefficient belongs to that ideal. The tail satisfies the same pairwise cancellation assumptions, so the coefficient belongs to the product of the tail by induction. The original element then belongs to the full product.
 -/
 private theorem mem_prod_map_of_forall_mem_span {R : Type*} [CommRing R] {α : Type*}
     (F : α → Ideal R) :
@@ -982,16 +868,8 @@ private theorem mem_prod_map_of_forall_mem_span {R : Type*} [CommRing R] {α : T
       rw [List.map_cons, List.prod_cons, hzy]
       exact Ideal.mul_mem_mul hg0 hyprod
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the localized element and the coefficient of the generator as fractions. Clear their denominators in the equality expressing divisibility, multiplying by one further denominator to obtain the equality in the original ring. The original cancellation property shows that the numerator times the necessary denominators is divisible by d. In the localization this says that the localized element times a product of denominators belongs to the extended principal ideal. These denominators become units, so the localized element itself belongs to the ideal.
 -/
 private theorem mem_span_algebraMap_of_mul_mem {S : Type*} [CommRing S] {q : Submonoid S}
     {A : Type*} [CommRing A] [Algebra S A] [IsLocalization q A] (b d : S)
@@ -1027,10 +905,8 @@ private theorem mem_span_algebraMap_of_mul_mem {S : Type*} [CommRing S] {q : Sub
   rw [mul_assoc, ← heu, Units.mul_inv, mul_one] at h7
   exact h7
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+On the affine étale chart, the coordinate with the second index acts injectively modulo the given power of the coordinate with the first index, because the indices are distinct. The stalk is the localization of the chart ring at the point's prime. Apply preservation of the cancellation property under localization. The image of the first coordinate power is the same power of its germ, giving the stated membership.
 -/
 private theorem mem_span_germ_coord_pow_of_mul_mem (p : X ⟶ Spec (CommRingCat.of k))
     {V : X.Opens} (hV : IsAffineOpen V) {m : ℕ} (c : EtaleChart p V m) {x : X} (hx : x ∈ V)
@@ -1053,30 +929,8 @@ private theorem mem_span_germ_coord_pow_of_mul_mem (p : X ⟶ Spec (CommRingCat.
     (by rw [hpow, hmap]; exact hz)
   rwa [hpow] at hmain
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First show that the original ideal is contained in its proposed monomial factor by testing stalks. Choose an affine étale boundary chart at a point. A boundary entry that misses the point contributes the unit ideal. An entry through the point contributes the principal ideal generated by its coordinate germ raised to the order along the component through the point. The original stalk is contained in each of these principal ideals by the generic-order bound along a divisor. Distinct boundary entries through the point have distinct coordinates. Each coordinate germ can be cancelled modulo any power of another, and repeated cancellation gives the same property for their powers. Unit generators satisfy the cancellation condition as well. The product membership lemma now puts the original stalk inside the product of all these principal ideals, which is the monomial stalk. The monomial factor is locally generated by a nonzerodivisor. For an ideal contained in such a factor, multiplying the factor by the ideal quotient recovers the ideal. This is the proposed product.
 -/
 theorem monomialFactorIdeal_mul_nonMonomialFactorIdeal [TopologicalSpace.NoetherianSpace ↥X]
     [IsLocallyNoetherian X] (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -1185,10 +1039,8 @@ theorem monomialFactorIdeal_mul_nonMonomialFactorIdeal [TopologicalSpace.Noether
   rw [nonMonomialFactorIdeal_eq_idealSheafColon]
   exact hM.mul_idealSheafColon hIM
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take the image of the affine open under the open inclusion. It is affine, lies inside the original open, and its inverse image contains the given affine open. The affine formula for pullback of ideal sheaves expresses the restricted ideal there as extension along the indicated map on sections.
 -/
 private theorem exists_affineOpens_ideal_comap_ι_eq_map (Ω : X.Opens)
     (V : Ω.toScheme.affineOpens) :
@@ -1209,10 +1061,8 @@ private theorem exists_affineOpens_ideal_comap_ι_eq_map (Ω : X.Opens)
   exact ⟨⟨_, haff⟩, he, hle, fun A =>
     Scheme.IdealSheafData.comap_ideal_eq_map_appLE A Ω.ι ⟨_, haff⟩ V he⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take any affine open of the open subscheme. Its image is an ambient affine open contained in the specified open. On the chosen affine open of the subscheme, each restricted ideal is obtained by extending the section ideal on the image. Those section ideals agree by hypothesis. Hence the restricted ideals agree on every affine open and are equal.
 -/
 private theorem comap_ι_eq_of_forall_affineOpens_ideal_eq (A B : X.IdealSheafData) (Ω : X.Opens)
     (h : ∀ W : X.affineOpens, (W : X.Opens) ≤ Ω → A.ideal W = B.ideal W) :
@@ -1225,18 +1075,16 @@ private theorem comap_ι_eq_of_forall_affineOpens_ideal_eq (A B : X.IdealSheafDa
     obtain ⟨W, e, hW, hform⟩ := exists_affineOpens_ideal_comap_ι_eq_map Ω V
     rw [hform A, hform B, h W hW]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The multiplicative identity is the unit ideal sheaf. Its pullback to an open is the unit ideal sheaf there.
 -/
 private theorem idealSheafData_comap_one (Ω : X.Opens) :
     (1 : X.IdealSheafData).comap Ω.ι = 1 := by
   rw [Scheme.IdealSheafData.one_eq_top]
   exact Scheme.IdealSheafData.comap_top _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of factors. The empty product pulls back to the unit ideal. Split a nonempty product into its first factor and the remaining factors. Pullback preserves the product of two factors, and induction handles the remaining factors.
 -/
 private theorem idealSheafData_comap_prod (Ω : X.Opens) :
     ∀ (n : ℕ) (J : Fin n → X.IdealSheafData),
@@ -1252,32 +1100,8 @@ private theorem idealSheafData_comap_prod (Ω : X.Opens) :
       rw [Fin.prod_univ_succ, Scheme.IdealSheafData.comap_mul, ih (fun i => J i.succ),
         Fin.prod_univ_succ]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the point lies on a divisor component, choose an affine étale chart that meets the divisor only along this component and where its vanishing ideal equals the divisor ideal. On any affine open inside the chart, its contribution is the divisor ideal raised to the order along that component. Other components miss the chart and contribute unit ideals. The intersection of the component-power ideals lies between their product and the chosen power, which have equal section ideals there. If the point lies on no component, take the complement of the finite closed union of components. Each contribution is the unit ideal on all affine opens inside it, so the intersection agrees there with the zeroth power of the divisor.
 -/
 private theorem exists_nhds_ideal_monomialPartAlongDivisor_eq_pow [TopologicalSpace.NoetherianSpace ↥X]
     (p : X ⟶ Spec (CommRingCat.of k)) (I D : X.IdealSheafData)
@@ -1379,14 +1203,8 @@ private theorem exists_nhds_ideal_monomialPartAlongDivisor_eq_pow [TopologicalSp
       rw [← hprodtop]
       exact hprodle W
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Induct on the size of the finite family. The empty products agree on the whole scheme. For a nonempty family, find a neighborhood and exponent for the first divisor, and a neighborhood and exponents for the remaining product by induction. Intersect the neighborhoods. On every affine open in the intersection, multiply the established section equalities for the first and remaining factors. This gives the product of the powers with the combined exponents.
 -/
 private theorem exists_prod_monomialPartAlongDivisor_eq_prod_pow
     [TopologicalSpace.NoetherianSpace ↥X] (p : X ⟶ Spec (CommRingCat.of k))
@@ -1413,26 +1231,8 @@ private theorem exists_prod_monomialPartAlongDivisor_eq_prod_pow
       rw [idealSheafData_ideal_mul, idealSheafData_ideal_mul, e1, e2]
       simp only [Fin.cons_zero, Fin.cons_succ]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Take the monomial factor to be the product of the contributions along all boundary divisors and the residual factor to be the ideal quotient by that product. Their product is the original ideal by the factorization result. Off all listed divisor supports each contribution has unit stalk, so the monomial factor has support contained in the boundary. Around each point the neighborhood formula writes the section ideals of the monomial factor as a product of powers of boundary ideals. Equality on all affine opens of the neighborhood gives equality after restriction, and restriction preserves products and powers. It remains to check the residual support. At the generic point of a boundary component the monomial factor is the maximal ideal raised to the original order along that component. If the residual support contained the component, its stalk would be contained in the maximal ideal there. The product identity would force the original stalk into the next power, contradicting its order. Thus no boundary component is contained in the residual support.
 -/
 theorem exists_isMonomialSplitting [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

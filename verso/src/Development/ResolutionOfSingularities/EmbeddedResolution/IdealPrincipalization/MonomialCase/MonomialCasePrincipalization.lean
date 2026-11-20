@@ -51,48 +51,48 @@ def tripleAtLastBlowup (T : MarkedIdealWithBoundary.{u})
     (s.proj s.length ≫ T.structMap) (s.ideal s.length) T.mult (s.boundary s.length)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction of the last-stage triple keeps the base field of the original marked ideal.
 -/
 theorem tripleAtLastBlowup_baseField (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLastBlowup T s).base = T.base := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The last-stage triple is defined on the scheme at the last index of the blowup sequence.
 -/
 theorem tripleAtLastBlowup_scheme (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLastBlowup T s).scheme = s.obj s.length := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map of the last-stage triple is defined by projecting the last stage to the original scheme and then using its structural map to the base field.
 -/
 theorem tripleAtLastBlowup_structureMorphism (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLastBlowup T s).structMap = s.proj s.length ≫ T.structMap := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction uses the transformed ideal at the last stage as the ideal of the triple.
 -/
 theorem tripleAtLastBlowup_ideal (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLastBlowup T s).ideal = s.ideal s.length := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The last-stage triple uses the same mark as the original triple, as in the definition of a marked transform.
 -/
 theorem tripleAtLastBlowup_mult (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLastBlowup T s).mult = T.mult := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The boundary of the last-stage triple is the list of boundary ideals at the last stage of the sequence.
 -/
 theorem tripleAtLastBlowup_boundary (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -106,8 +106,8 @@ noncomputable abbrev monomialIterateFromEmpty (hinv : ComapIsoInvariance.{u}) (T
 noncomputable abbrev monomialStallIndexOfTriple (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) : ℕ :=
   monomialStallIndex hinv T.structMap T.ideal T.mult T.boundary
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At minimum size zero the monomial center is the unit ideal. The last center is the monomial center of the last-stage triple, and admissibility requires a proper ideal. Hence the minimum size cannot be zero.
 -/
 theorem minIndexCard_tripleAtLastBlowup_ne_zero_of_isAdmissibleCenter (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -118,8 +118,8 @@ theorem minIndexCard_tripleAtLastBlowup_ne_zero_of_isAdmissibleCenter (T : Marke
   exact h.1 (monomialCenter_eq_top_of_minIndexCard_eq_zero (s.ideal s.length) T.mult
     (s.boundary s.length) h0)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the specification of the monomial center to the locally monomial last-stage triple and its positive minimum size. It gives a proper smooth center with strict normal crossings lying in the cosupport, and it gives a controlled transform. These are the admissibility conditions.
 -/
 theorem isAdmissibleCenter_of_minIndexCard_tripleAtLastBlowup_ne_zero (hGeom : MonomialGeometryHypotheses.{u})
     (T : MarkedIdealWithBoundary.{u}) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -129,8 +129,8 @@ theorem isAdmissibleCenter_of_minIndexCard_tripleAtLastBlowup_ne_zero (hGeom : M
     MarkedBlowupSequenceData.IsAdmissibleCenter s :=
   monomialCenter_spec hGeom hs h
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the length of the sequence by the equal given index. Each last-stage field is then the corresponding scheme, projection, ideal or boundary at that index, with the original field and mark.
 -/
 private theorem tripleAtLastBlowup_eq_mk_of_length_eq (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (n : ℕ) (hn : s.length = n) :
@@ -140,8 +140,8 @@ private theorem tripleAtLastBlowup_eq_mk_of_length_eq (T : MarkedIdealWithBounda
   subst hn
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Identify the two underlying schemes using their equality. The identification morphism then becomes the identity, so composing the structural morphism and pulling back the ideal and boundary along it leaves the data unchanged. The base field and mark already agree.
 -/
 private theorem markedIdealWithBoundary_mk_comap_eqToHom {k : Type u} [instk : Field k] {A B : Scheme.{u}}
     (hAB : A = B) (q : B ⟶ Spec (CommRingCat.of k)) (J : B.IdealSheafData) (m : ℕ)
@@ -152,8 +152,8 @@ private theorem markedIdealWithBoundary_mk_comap_eqToHom {k : Type u} [instk : F
   subst hAB
   refine MarkedIdealWithBoundary.mk_eq_mk _ _ ?_ ?_ ?_ <;> simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The step appends a blowup only when the last center is admissible. In the other branch it returns the existing sequence. The given hypothesis selects that branch.
 -/
 private theorem blowupAtCenter_eq_self_of_not_isAdmissibleCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -163,12 +163,8 @@ private theorem blowupAtCenter_eq_self_of_not_isAdmissibleCenter {k : Type u} [F
   unfold MarkedBlowupSequenceData.blowupAtCenter
   rw [dif_neg h]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the center is admissible, one blowup is appended. The formulas for its final scheme, projection, ideal and boundary identify its last-stage triple with the blowup of the former last-stage triple at its monomial center. The former minimum size is positive, so the monomial blowup theorem preserves local monomiality and admissibility. If the center is inadmissible, the sequence remains the same and the given property applies directly.
 -/
 private theorem isLocallyMonomialTriple_tripleAtLastBlowup_blowupAtCenter
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -194,12 +190,8 @@ private theorem isLocallyMonomialTriple_tripleAtLastBlowup_blowupAtCenter
   · rw [blowupAtCenter_eq_self_of_not_isAdmissibleCenter hinv s hstep]
     exact hs
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the iteration number. At zero the sequence is empty, and its final scheme, ideal and boundary are the original ones, with identity projection. Thus the final triple is the original locally monomial triple. The rule for a succeeding iteration takes one center step, and local monomiality survives that step by the preceding result.
 -/
 theorem isLocallyMonomialTriple_tripleAtLastBlowup_monomialIterate
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -227,8 +219,8 @@ theorem isLocallyMonomialTriple_tripleAtLastBlowup_monomialIterate
     exact isLocallyMonomialTriple_tripleAtLastBlowup_blowupAtCenter hGeom hinv T
       (monomialIterateFromEmpty hinv T n) ih
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Every iterate strictly before the first stationary index has an admissible center. Such a center is proper, which forces positive minimum candidate size in its last-stage triple.
 -/
 theorem minIndexCard_monomialIterateFromEmpty_ne_zero (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (n : ℕ) (hn : n < monomialStallIndexOfTriple hinv T) :
@@ -238,10 +230,8 @@ theorem minIndexCard_monomialIterateFromEmpty_ne_zero (hinv : ComapIsoInvariance
   minIndexCard_tripleAtLastBlowup_ne_zero_of_isAdmissibleCenter T (monomialIterateFromEmpty hinv T n)
     (isAdmissibleCenter_of_lt_monomialStallIndex hinv T.structMap T.ideal T.mult T.boundary n hn)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+An admissible center increases the length by one. At that new index the scheme is the blowup at the former monomial center, the ideal is its controlled transform, and the boundary consists of the strict transforms and the new exceptional ideal. The projection is the new blowup projection followed by the old last projection. These formulas give the structural map, ideal and boundary of the blown-up triple under the scheme identification. Transport along the identification gives equality of the triples.
 -/
 private theorem tripleAtLastBlowup_blowupAtCenter (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -258,20 +248,8 @@ private theorem tripleAtLastBlowup_blowupAtCenter (hinv : ComapIsoInvariance.{u}
   simp only [Category.assoc]
   exact @markedIdealWithBoundary_mk_comap_eqToHom T.base T.instField _ _ hobj _ _ _ _
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose that no iteration is stationary. Then every last center is admissible and every last triple has positive minimum candidate size. The triples remain locally monomial, and each one is obtained from the preceding triple by blowing up its monomial center. Their dimension successors are bounded by that of the original scheme, by induction using the dimension bound for one blowup. With this fixed dimension bound the monomial invariant strictly decreases at every step, since the successor minimum is also positive. The invariant takes values in a well-founded lexicographic order on triples of natural numbers. An infinite strictly decreasing sequence there is impossible, proving existence of a stationary index.
 -/
 private theorem exists_isStationaryAt_emptyMarkedBlowupSequenceData (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -339,8 +317,8 @@ private theorem exists_isStationaryAt_emptyMarkedBlowupSequenceData (hGeom : Mon
   exact main (monomialInvariant T.krullDimSucc (tripleAtLastBlowup T (monomialIterateFromEmpty hinv T 0)))
     (wellFounded_lt.apply _) 0 rfl
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A stationary index exists, so the first stationary index is stationary and its center is inadmissible. The last-stage triple at that iterate remains locally monomial. If its minimum size were positive, the center specification for such a triple would make its last center admissible. Hence the minimum is zero.
 -/
 theorem minIndexCard_monomialIterateFromEmpty_stallIndex_eq_zero (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -358,19 +336,15 @@ theorem minIndexCard_monomialIterateFromEmpty_stallIndex_eq_zero (hGeom : Monomi
     (isLocallyMonomialTriple_tripleAtLastBlowup_monomialIterate hGeom hinv T hT
       (monomialStallIndexOfTriple hinv T)) hne)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The principalization reconstructs the marked sequence at the first stationary iterate. Reconstruction preserves length, and the iteration starting with the empty sequence has one blowup for each index before the first stationary one. Its length is therefore the stationary index.
 -/
 theorem monomialPrincipalization_length (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) :
     (monomialPrincipalization hinv T).length = monomialStallIndexOfTriple hinv T := by
   rw [monomialPrincipalization_apply, MarkedBlowupSequenceData.toMarkedSequence_length, monomialBlowupSeq_length]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+An empty cosupport gives minimum candidate size zero. The last triple of the empty sequence is the original triple. An admissible center for that sequence would have positive minimum size, so the empty sequence is stationary already at zero. The principalization length equals this first stationary index.
 -/
 theorem monomialPrincipalization_length_eq_zero_of_empty (hinv : ComapIsoInvariance.{u}) :
     ∀ T : MarkedIdealWithBoundary.{u}, MonomialCenter.IsLocallyMonomialTriple T →
@@ -398,10 +372,8 @@ theorem monomialPrincipalization_length_eq_zero_of_empty (hinv : ComapIsoInvaria
   rw [monomialPrincipalization_length]
   exact (monomialStallIndex_eq_monomialStallIndex_empty hinv T.structMap T.ideal T.mult T.boundary).trans hzero
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the first stationary index the final triple is locally monomial and has minimum size zero. The zero-minimum result then gives empty cosupport for its ideal. Reconstruction keeps that final ideal, and empty final cosupport is the criterion for the marked sequence to resolve the ideal.
 -/
 theorem monomialPrincipalization_isResolution (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -417,8 +389,8 @@ theorem monomialPrincipalization_isResolution (hGeom : MonomialGeometryHypothese
   rw [monomialPrincipalization_apply, MarkedBlowupSequenceData.toMarkedSequence_lastIdeal]
   exact hcs
 
-/- English proof (translation)
-Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+After using the equality to identify the two schemes, the pullback morphism is the identity. Any point in the original support then belongs to the pulled-back support, proving nonemptiness.
 -/
 private theorem support_comap_eqToHom_nonempty {A B : Scheme.{u}} (h : A = B)
     (J : B.IdealSheafData) (hJ : (J.support : Set ↥B).Nonempty) :
@@ -427,10 +399,8 @@ private theorem support_comap_eqToHom_nonempty {A B : Scheme.{u}} (h : A = B)
   obtain ⟨x, hx⟩ := hJ
   exact ⟨x, Scheme.IdealSheafData.mem_support_comap.mpr (by simpa using hx)⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage occurs before the first stationary index. Its corresponding iterate is locally monomial and has positive minimum candidate size, so the selected center set is nonempty and equals the support of its monomial center. The principalization uses this center transported along the identification of the stage schemes. This transport preserves nonempty support.
 -/
 theorem monomialPrincipalization_center_support_nonempty (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -457,8 +427,8 @@ theorem monomialPrincipalization_center_support_nonempty (hGeom : MonomialGeomet
     (monomialBlowupSeq_schemeAt hinv T.structMap T.ideal T.mult T.boundary i (Nat.le_of_lt hlen))
     (MarkedBlowupSequenceData.centerAtLast (monomialIterateFromEmpty hinv T i)) hsupp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The iterate before the stationary index is locally monomial with a positive minimum size. Its last center is the monomial center of its last triple, whose support lies in the union of the boundary supports by the center specification.
 -/
 private theorem support_centerAtLast_subset_iUnion_boundary (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -471,12 +441,8 @@ private theorem support_centerAtLast_subset_iUnion_boundary (hGeom : MonomialGeo
     (isLocallyMonomialTriple_tripleAtLastBlowup_monomialIterate hGeom hinv T hT i)
     (minIndexCard_monomialIterateFromEmpty_ne_zero hinv T i hi)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Identify the principalization stage with the last stage of its corresponding iterate. The principalization center and boundary are the last center and boundary of the iterate transported along this identification. Any point of the transported center support maps into the original center support, and hence into a listed boundary support. The corresponding transported boundary ideal has the original point in its support, which places it in the boundary locus.
 -/
 theorem monomialPrincipalization_center_subset_boundaryLocus (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -500,8 +466,8 @@ theorem monomialPrincipalization_center_subset_boundaryLocus (hGeom : MonomialGe
         (Scheme.IdealSheafData.mem_support_comap.mp hx))
   exact ⟨_, List.mem_map.mpr ⟨D, hD, rfl⟩, Scheme.IdealSheafData.mem_support_comap.mpr hxD⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The last center is obtained by applying the monomial center construction to the last ideal, the original mark and the last boundary. This gives the stated formula.
 -/
 private theorem centerAtLast_eq_monomialCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -509,8 +475,8 @@ private theorem centerAtLast_eq_monomialCenter {k : Type u} [Field k] {X : Schem
     MarkedBlowupSequenceData.centerAtLast d =
       monomialCenter (d.ideal d.length) m (d.boundary d.length) := rfl
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two schemes using their equality. Pullback along the identification becomes pullback along the identity, which leaves the ideal, the boundary and the resulting center unchanged. The two expressions coincide.
 -/
 private theorem monomialCenter_comap_eqToHom {X Y : Scheme.{u}} (h : X = Y)
     (J : Y.IdealSheafData) (m : ℕ) (E : List Y.IdealSheafData) :
@@ -519,10 +485,8 @@ private theorem monomialCenter_comap_eqToHom {X Y : Scheme.{u}} (h : X = Y)
   subst h
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage precedes the first stationary index. Its center agrees with the last center of the corresponding iterate under the stage identification, and its ideal and boundary come from the same iterate under the same identification. The last center is the monomial center calculated from that ideal and boundary. The construction commutes with transport along the identification, giving the formula on the principalization stage.
 -/
 theorem monomialPrincipalization_center_eq_monomialCenter (_hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -544,8 +508,8 @@ theorem monomialPrincipalization_center_eq_monomialCenter (_hGeom : MonomialGeom
     centerAtLast_eq_monomialCenter]
   exact (monomialCenter_comap_eqToHom hobj _ T.mult _).symm
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After identifying the schemes by their equality, the pullback morphism is the identity. It preserves every ideal in the calculation and every position of the boundary. Thus the minimum size is unchanged.
 -/
 private theorem minIndexCard_comap_eqToHom {A B : Scheme.{u}} (h : A = B)
     (J : B.IdealSheafData) (m : ℕ) (E : List B.IdealSheafData) :
@@ -554,10 +518,8 @@ private theorem minIndexCard_comap_eqToHom {A B : Scheme.{u}} (h : A = B)
   subst h
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A stage before the length occurs before the first stationary index. The last triple of the corresponding iterate therefore has a positive minimum size. The ideal and boundary in the reconstructed stage are obtained by pulling back those of the iterate along the stage identification, which preserves the minimum size.
 -/
 theorem monomialPrincipalization_minIndexCard_ne_zero (_hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -596,8 +558,8 @@ theorem monomialPrincipalization_minIndexCard_ne_zero (_hGeom : MonomialGeometry
   intro h0
   exact hmin (hEq.symm.trans h0)
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify the two schemes by their equality. The ideal and boundary pullbacks are then the originals. The given point lies in the original cosupport, so the assumed local monomial expression applies there.
 -/
 private theorem isMonomialNear_comap_eqToHom {X Y : Scheme.{u}} (h : X = Y)
     (J : Y.IdealSheafData) (F : List Y.IdealSheafData) (m : ℕ)
@@ -609,12 +571,8 @@ private theorem isMonomialNear_comap_eqToHom {X Y : Scheme.{u}} (h : X = Y)
   have hx' : x ∈ orderAtLeastLocus J m := by simpa using hx
   simpa using hmon x hx'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every reconstructed stage up to the length is identified with the last stage of the corresponding iterate. Its ideal and boundary are obtained by transport along that identification. The iterate's last triple is locally monomial, giving a monomial expression around each point of its cosupport. The identification transports the expression to each point of the principalization stage's cosupport.
 -/
 theorem monomialPrincipalization_isMonomialNear (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -640,8 +598,8 @@ theorem monomialPrincipalization_isMonomialNear (hGeom : MonomialGeometryHypothe
   rw [MarkedBlowupSequenceData.toMarkedSequence_ideal, MarkedBlowupSequenceData.toMarkedSequence_boundary, hid, hbd]
   exact isMonomialNear_comap_eqToHom _ _ _ T.mult hmon x hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every center support is contained in the boundary locus at its stage. The boundary-memory form of the principalization certificate takes exactly this containment, giving the required certificate.
 -/
 theorem monomialPrincipalization_principalizationCertificate (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -656,24 +614,24 @@ theorem monomialPrincipalization_principalizationCertificate (hGeom : MonomialGe
   exact PrincipalizationCertificate.memory
     (monomialPrincipalization_center_subset_boundaryLocus hGeom hinv T hT i hi)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Prove the first alternative.
+/- English proof (authored)
+The weak comparison includes the strict comparison as its first case. The hypothesis provides that case.
 -/
 private theorem centerInvariant_le_of_lt {n n' : ℕ} {a : MonomialCenter.CenterInvariant n} {b : MonomialCenter.CenterInvariant n'}
     (h : MonomialCenter.CenterInvariant.Lt a b) : MonomialCenter.CenterInvariant.Le a b := by
   unfold MonomialCenter.CenterInvariant.Le
   exact Or.inl h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The identification of a scheme with itself is the identity morphism. Pullback of the ideal along the identity gives the same ideal.
 -/
 private theorem comap_eqToHom_refl {A : Scheme.{u}} (h : A = A)
     (D : A.IdealSheafData) : D.comap (eqToHom h) = D := by
   rw [eqToHom_refl]
   simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+The identification morphism is the identity. Pulling back each listed ideal leaves it unchanged, so the entire list is unchanged.
 -/
 private theorem map_comap_eqToHom_refl {A : Scheme.{u}} (h : A = A)
     (E : List A.IdealSheafData) :
@@ -682,8 +640,8 @@ private theorem map_comap_eqToHom_refl {A : Scheme.{u}} (h : A = A)
   | nil => rfl
   | cons _ _ _ => simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the two pairs of schemes by their equalities. Both pullback maps are then identities and preserve the ideal and the boundary on each side. Thus the invariant comparison is exactly the given one.
 -/
 private theorem centerInvariant_le_comap_eqToHom {A B A' B' : Scheme.{u}} (h : A = B) (h' : A' = B')
     (m : ℕ) (J : B.IdealSheafData) (E : List B.IdealSheafData)
@@ -699,14 +657,8 @@ private theorem centerInvariant_le_comap_eqToHom {A B A' B' : Scheme.{u}} (h : A
     comap_eqToHom_refl rfl J, comap_eqToHom_refl rfl J']
   exact hle
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both consecutive stages precede the first stationary index. The earlier iterate has an admissible center and a locally monomial last triple, and its successor is the blowup of that triple at its monomial center. The one-step comparison gives either zero minimum size at the successor or a strict comparison of the center invariants in the stated direction. The successor minimum is positive, so the strict comparison holds and implies the weak one. Finally, the ideal and boundary of each principalization stage are transported from the corresponding iterate. These identifications preserve the comparison.
 -/
 theorem monomialPrincipalization_centerInvariant_le_succ (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) :
@@ -791,8 +743,8 @@ structure IsMonomialCasePrincipalization (F : PrincipalizationAssignment.{u}) : 
     ∀ T : MarkedIdealWithBoundary.{u}, MonomialCenter.IsLocallyMonomialTriple T →
       orderAtLeastLocus T.ideal T.mult = ∅ → (F T).length = 0
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the stage results for containment of the centers in the boundary locus, the corresponding certificates and equality of each center with the monomial center. They also give positive minimum size before the final stage, the successive invariant comparison, local monomiality on every cosupport and nonempty center supports. The final cosupport is empty, so the sequence resolves the triple, and an initially empty cosupport gives length zero. Together these are the required properties of monomial-case principalization.
 -/
 theorem isMonomialCasePrincipalization_monomialPrincipalization (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) : IsMonomialCasePrincipalization (monomialPrincipalization hinv) :=

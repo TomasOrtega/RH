@@ -7,16 +7,16 @@ noncomputable section
 
 namespace Formalism.HF.P
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a prime modulus the Jacobi symbol is the Legendre symbol. It vanishes exactly when the residue of m is zero, equivalently when p divides m.
 -/
 theorem hda_jac_zero_iff (p : ℕ) [Fact p.Prime] (m : ℕ) :
     jacobiSym (m : ℤ) p = 0 ↔ p ∣ m := by
   rw [← jacobiSym.legendreSym.to_jacobiSym, legendreSym.eq_zero_iff, Int.cast_natCast,
     ZMod.natCast_eq_zero_iff]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a prime modulus the Jacobi symbol equals the Legendre symbol, whose definition evaluates the quadratic character on the residue of m.
 -/
 theorem hda_jac_qc (p : ℕ) [Fact p.Prime] (m : ℕ) :
     jacobiSym (m : ℤ) p = quadraticChar (ZMod p) (m : ZMod p) := by
@@ -24,16 +24,8 @@ theorem hda_jac_qc (p : ℕ) [Fact p.Prime] (m : ℕ) :
   unfold legendreSym
   rw [Int.cast_natCast]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero the character is zero, and on every nonzero element it is either one or minus one. Thus the two sign counts add to p − 1. The character sum over the odd finite field is zero, so the difference of those counts is zero. Each count is therefore half of p − 1.
 -/
 theorem hda_card_qc (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) (e : ℤ) (he : e = 1 ∨ e = -1) :
     2 * (univ.filter (fun y : ZMod p => quadraticChar (ZMod p) y = e)).card = p - 1 := by
@@ -67,54 +59,8 @@ theorem hda_card_qc (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) (e : ℤ) (he : e = 
       Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
   rcases he with rfl | rfl <;> omega
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let N be the product of the three distinct odd primes. Each of the three prescribed nonzero Jacobi-symbol values depends only on the residue modulo its own prime, and all three conditions force a unit modulo N. The Chinese remainder theorem identifies the eligible classes with the product of the three sign fibers. Each fiber contains half the nonzero residues, so the number of eligible classes is φ(N)/8. A prime satisfies the required conditions exactly when it lies in one of these classes. The classes are disjoint and each has logarithmic density 1/φ(N). The corresponding weighted series converge for arguments above one, so summing their normalized limits gives 1/8.
 -/
 theorem hda_log (hAP : APLogDensity) (q : Fin 3 → ℕ) (hq : Hyp3 q) (g : Gal3) :
     LogDensity {p : ℕ | (∀ i, p ≠ q i) ∧ ∀ i, chiQ (q i) p = ((g i : ℤˣ) : ℤ)} (1 / 8) := by
@@ -276,8 +222,8 @@ end Formalism.HF.P
 
 namespace Formalism.HF
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The residue-class calculation gives logarithmic density one eighth for the primes with the prescribed three signs. Apply the logarithmic-to-Dirichlet conversion to obtain Dirichlet density one eighth for the same set.
 -/
 theorem hostDensityArith_of (hAP : Formalism.HF.APLogDensity) (hLD : Formalism.HF.LogToDir) :
     Formalism.HF.HostDensityArith := by

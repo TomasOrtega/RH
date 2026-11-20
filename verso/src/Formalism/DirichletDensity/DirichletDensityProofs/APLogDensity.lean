@@ -9,8 +9,8 @@ namespace Formalism.HF.P
 
 variable {q : ℕ} [NeZero q] {a : ZMod q}
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero both terms vanish because the residue-class coefficient is zero. For a positive index, the inclusion of the reals into the complex numbers preserves the quotient and the power of the positive base, so both sides are the same Dirichlet-series term.
 -/
 private lemma apld_term_lemma (a : ZMod q) (x : ℝ) (n : ℕ) :
     LSeries.term (fun n ↦ (residueClass a n : ℂ)) (x : ℂ) n =
@@ -20,12 +20,8 @@ private lemma apld_term_lemma (a : ZMod q) (x : ℝ) (n : ℕ) :
   · rw [LSeries.term_of_ne_zero hn, Complex.ofReal_div, Complex.ofReal_cpow (Nat.cast_nonneg n),
       Complex.ofReal_natCast]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+At a real argument x > 1, the complex Dirichlet series is the real weighted sum viewed in the complex plane, by the term identity. The formula for the regularized residue-class L-function subtracts the pole contribution 1/(φ(q)(x − 1)) from that series. Taking real parts and adding back the pole gives the identity.
 -/
 lemma apld_tsum_residueClass_eq (ha : IsUnit a) {x : ℝ} (hx : 1 < x) :
     ∑' n, residueClass a n / (n : ℝ) ^ x =
@@ -46,10 +42,8 @@ lemma apld_tsum_residueClass_eq (ha : IsUnit a) {x : ℝ} (hx : 1 < x) :
   rw [hA, Complex.ofReal_re]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The residue-class coefficients have abscissa of absolute convergence at most one, so the complex series converges absolutely for x > 1. The term identity identifies its terms with the real terms under the isometric inclusion of the reals into the complex plane, which transfers convergence.
 -/
 lemma apld_summable (a : ZMod q) {x : ℝ} (hx : 1 < x) :
     Summable fun n : ℕ ↦ residueClass a n / (n : ℝ) ^ x := by
@@ -63,10 +57,8 @@ lemma apld_summable (a : ZMod q) {x : ℝ} (hx : 1 < x) :
     exact (apld_term_lemma a x n).symm
   exact Complex.summable_ofReal.1 h3
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The regularized residue-class L-function is continuous on the closed half-plane with real part at least one. Consequently its real part has a finite limit as the real argument decreases to one. The factor x − 1 tends to zero, so the product tends to zero.
 -/
 lemma residue_class_l_function_tendsto (a : ZMod q) :
     Tendsto (fun x : ℝ ↦ (x - 1) * (LFunctionResidueClassAux a x).re) (𝓝[>] 1) (𝓝 0) := by
@@ -84,8 +76,8 @@ lemma residue_class_l_function_tendsto (a : ZMod q) :
     exact this.mono_left nhdsWithin_le_nhds
   simpa using hlin.mul hre
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+At a prime index the numerator is zero. At every other index it is a nonnegative residue-class coefficient. The denominator is a nonnegative real power, so the quotient is nonnegative.
 -/
 lemma apld_nonprime_nonneg (a : ZMod q) (x : ℝ) (n : ℕ) :
     0 ≤ (if n.Prime then 0 else residueClass a n) / (n : ℝ) ^ x := by
@@ -93,10 +85,8 @@ lemma apld_nonprime_nonneg (a : ZMod q) (x : ℝ) (n : ℕ) :
   · simp
   · exact div_nonneg (residueClass_nonneg a n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The terms vanish at primes and at zero. For positive nonprime n, the numerator is nonnegative and nˣ ≥ n because x ≥ 1. Dividing by the larger positive denominator gives the bound.
 -/
 lemma apld_nonprime_le (a : ZMod q) {x : ℝ} (hx : 1 ≤ x) (n : ℕ) :
     (if n.Prime then 0 else residueClass a n) / (n : ℝ) ^ x ≤
@@ -109,10 +99,8 @@ lemma apld_nonprime_le (a : ZMod q) {x : ℝ} (hx : 1 ≤ x) (n : ℕ) :
       calc (n : ℝ) = (n : ℝ) ^ (1 : ℝ) := (Real.rpow_one _).symm
         _ ≤ (n : ℝ) ^ x := Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) hx
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both sides vanish unless n is prime and belongs to the residue class a. At a prime in that class the residue-class von Mangoldt coefficient is log n, which gives the common value.
 -/
 lemma apld_prime_part_eq (a : ZMod q) (x : ℝ) (n : ℕ) :
     (if n.Prime then residueClass a n else 0) / (n : ℝ) ^ x =
@@ -133,24 +121,8 @@ end Formalism.HF.P
 
 open Formalism.HF.P in
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Split the residue-class von Mangoldt series into prime and nonprime terms. Both are nonnegative and summable for x > 1. The nonprime series is uniformly bounded there by its convergent value at x = 1, so multiplying it by x − 1 makes it tend to zero. The full series is the real part of the regularized residue-class L-function plus 1/(φ(q)(x − 1)). After multiplication by x − 1, the regularized part tends to zero by continuity. The prime part therefore tends, after the same normalization, to 1/φ(q), as required for logarithmic density.
 -/
 theorem Formalism.HF.apLogDensity : Formalism.HF.APLogDensity := by
   intro N _ a ha

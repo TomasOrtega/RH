@@ -8,10 +8,8 @@ noncomputable section
 
 namespace Formalism.HF.P
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sets have exactly the same prime elements, so their prime indicators agree at every integer. Their Dirichlet sums and normalized limits are identical.
 -/
 theorem dirDensity_congr {S T : Set ℕ} {δ : ℝ} (h : DirDensity S δ)
     (hST : ∀ p : ℕ, p.Prime → (p ∈ S ↔ p ∈ T)) : DirDensity T δ := by
@@ -23,8 +21,8 @@ theorem dirDensity_congr {S T : Set ℕ} {δ : ℝ} (h : DirDensity S δ)
   rw [← hset]
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given positive prime generates a nonzero prime ideal in the integers. In a principal ideal domain every nonzero prime ideal is maximal, giving the claim.
 -/
 theorem span_maximal (p : ℕ) (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ).IsMaximal := by
   have hprime : (span {(p : ℤ)} : Ideal ℤ).IsPrime :=
@@ -34,12 +32,8 @@ theorem span_maximal (p : ℕ) (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ).I
     exact_mod_cast hp.ne_zero
   exact hprime.isMaximal hne
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose first that every arithmetic Frobenius has sign vector g. Lying over for the integral extension of rings of integers supplies a prime above p, and the host Frobenius theorem supplies an arithmetic Frobenius there. Its coordinate formula identifies the signs of g with the quadratic character values. Conversely, if those values are the coordinates of g, the same formula applies to any arithmetic Frobenius above p. Equality in all three coordinates gives equality of sign vectors.
 -/
 theorem frob_iff_chi (q : Fin 3 → ℕ) (hq : Hyp3 q) (E : Type) [Field E] [NumberField E]
     (α : Fin 3 → E) (hE : IsHost q α) (g : Gal3) (p : ℕ) (hp : p.Prime)
@@ -68,10 +62,8 @@ end Formalism.HF.P
 
 namespace Formalism.HF
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+The arithmetic density theorem gives density one eighth for primes outside the three specified primes with the given quadratic character values. The host Frobenius equivalence identifies that set, on prime inputs, with the set of primes having the specified Frobenius sign vector. The two prime sums therefore have the same density.
 -/
 theorem hostDensity_of (hA : HostDensityArith) : HostDensity := by
   intro q hq E _ _ α hE g

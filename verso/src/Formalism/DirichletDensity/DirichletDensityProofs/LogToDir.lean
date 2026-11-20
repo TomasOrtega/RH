@@ -7,18 +7,14 @@ noncomputable section
 
 namespace Formalism.HF.P
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For positive integer n, log n is nonnegative and the denominator is positive. At zero the numerator is zero under the real-logarithm convention used here.
 -/
 lemma log_div_rpow_nonneg (n : ℕ) (x : ℝ) : 0 ≤ Real.log n / (n : ℝ) ^ x :=
   div_nonneg (Real.log_natCast_nonneg n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+Choose ε = (y − 1)/2 > 0. For positive n, the inequality log n ≤ nᵋ/ε bounds the summand by 1/(ε n raised to y − ε). The exponent y − ε is greater than one, so the comparison series converges. The zero term vanishes.
 -/
 lemma summable_log_div_rpow {y : ℝ} (hy : 1 < y) :
     Summable (fun n : ℕ => Real.log n / (n : ℝ) ^ y) := by
@@ -39,12 +35,8 @@ lemma summable_log_div_rpow {y : ℝ} (hy : 1 < y) :
         rw [Real.rpow_sub hn', inv_div]
         field_simp
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+If n is a prime belonging to S, then n is positive, and differentiating exp(−x log n) gives −log n times that function. For every other n the summand is identically zero, so its derivative is zero.
 -/
 lemma hasDerivAt_term (S : Set ℕ) (n : ℕ) (x : ℝ) :
     HasDerivAt (fun x : ℝ => {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ x) n)
@@ -64,8 +56,8 @@ lemma hasDerivAt_term (S : Set ℕ) (n : ℕ) (x : ℝ) :
   · simp only [Set.indicator_of_notMem h, neg_zero]
     exact hasDerivAt_const x 0
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Each summand is nonnegative and is at most the corresponding term of the convergent p-series with exponent x > 1. Comparison gives summability.
 -/
 lemma summable_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
     Summable (fun n : ℕ => {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ x) n) := by
@@ -74,12 +66,8 @@ lemma summable_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
   · calc _ ≤ 1 / (n:ℝ) ^ x := Set.indicator_le_self' (fun m _ => by positivity) n
       _ = _ := one_div _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose y strictly between one and x. For arguments above y, each summand has the termwise derivative given by the prime indicator times −log n divided by the corresponding power of n. Its absolute value is bounded by log n divided by nʸ for positive n, and the derivative at index zero vanishes. These bounds are summable. The original series converges at x, so the uniform derivative bound justifies termwise differentiation on the interval above y.
 -/
 lemma hasDerivAt_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
     HasDerivAt (fun x : ℝ => ∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ S}.indicator
@@ -107,10 +95,8 @@ lemma hasDerivAt_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
         (Real.rpow_le_rpow_of_exponent_le hn1 hz'.le)
   · exact summable_F S (by linarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+As x tends to one from above, x − 1 tends to zero through positive values. Its logarithm tends to negative infinity, and negating it gives the logarithm of the reciprocal, which tends to positive infinity.
 -/
 lemma tendsto_log_inv_sub_one :
     Tendsto (fun x : ℝ => Real.log (1 / (x - 1))) (𝓝[>] 1) atTop := by
@@ -125,38 +111,8 @@ lemma tendsto_log_inv_sub_one :
   refine h2.congr (fun x => ?_)
   simp only [Function.comp_apply, one_div, Real.log_inv]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+Let F(x) be the sum of p raised to −x over primes in S and let G(x) be the corresponding sum weighted by log p. Then F′ = −G. For every ε > 0 and x sufficiently close to one from above, the logarithmic density hypothesis bounds G(x) between (δ − ε)/(x − 1) and (δ + ε)/(x − 1). The derivative signs imply that F(x) plus (δ + ε) log(x − 1) is nondecreasing and F(x) plus (δ − ε) log(x − 1) is nonincreasing on a short interval. Comparing each with its value at a fixed right endpoint bounds F(x) between (δ − ε) log(1/(x − 1)) and (δ + ε) log(1/(x − 1)), up to additive constants. Divide by the logarithm, which tends to infinity, and let ε decrease to zero.
 -/
 theorem dirichlet_density_of_log_density (S : Set ℕ) (δ : ℝ) (h : LogDensity S δ) : DirDensity S δ := by
   unfold LogDensity at h
@@ -257,8 +213,8 @@ end Formalism.HF.P
 
 namespace Formalism.HF
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the conversion from logarithmic density to Dirichlet density to the given set S and its logarithmic density δ. The converted density has the same value δ.
 -/
 theorem logToDir : LogToDir := fun S δ h => Formalism.HF.P.dirichlet_density_of_log_density S δ h
 

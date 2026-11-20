@@ -8,10 +8,10 @@ namespace UpperTheory.Top
 
 open Formalism.BasicNotions Formalism.MainNotions
 
-/- English proof (translation)
-Take `⟨ε1, hε1, hA⟩` from `hN.and (hDIV.and (hEta.and (hIRR.and (hZ.and (hRk.and (hG.and (hS.and hGL)))))))`. Take `⟨ε3, hε3, hEx⟩` from `hEx`. Use `⟨eD, eL, min ε1 ε3, lt_min hε1 hε3, fun ε h0 hlt => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hA ε h0 (le_of_lt (lt_of_lt_of_le hlt (min_le_left _ _)))`. Take `⟨Fm, CH, hc, -, hL, hCh, hT, hDG⟩` from `hEx ε h0 (le_of_lt (lt_of_lt_of_le hlt (min_le_right _ _))) K`.
+/- English proof (authored)
+Combine the nine closed link conditions into one. Let ε₁ be its positive cutoff and ε₃ the positive cutoff for design existence. For 0 < ε < min(ε₁, ε₃), choose the threshold K given by the combined closed condition. Design existence above K produces a family in 𝒞′, together with its chosen data and size bounds. Map its class membership to 𝒞 to apply the closed conditions and to ℰ for the conclusion.
 
-Take `⟨aN, aD, aE, aI, aZ, aR, aG, aS, aGL⟩` from `hK Fm CH ⟨⟨⟨h1 Fm hc.1.1, hc.1.2⟩, hc.2⟩, ⟨CH, hCh⟩, hT, hDG⟩ hL`. Establish `hD` using `aD hT hDG aE (divinN_of_hypV Fm h0 (hV Fm (h2 Fm hc.1.1)) aN aZ)`. Conclude with `⟨Fm, h2 Fm hc.1.1, aGL hT hDG hCh ⟨aG, aS hT, aI, hD, J.linkMu_of_linkDIV Fm hD (aR hCh).1 (aR hCh).2 (muTu_of_tuSize Fm h0 hT) (J.muDGam_of_fact Fm hDG)⟩⟩`.
+The ℰ membership gives HypV. Use it with the N-link and the small-level rank equality to obtain divisibility in N. The closed divisibility condition, together with the eta and size inputs, then gives LinkDIVt. Combine this with the rank conditions and the two size estimates to obtain the μ-link. The global link now applies to the G, S, irreducibility, divisibility, and μ-links, producing the tied family required for connectedness.
 -/
 theorem topDesWin (𝒞 𝒞' ℰ : FamClass) (Cabs C0 eD eL : ℝ) (hEx : DesignExists (WithTw (WithSm 𝒞')) C0)
     (h1 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞' Fm → 𝒞 Fm) (h2 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞' Fm → ℰ Fm)

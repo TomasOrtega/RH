@@ -3,18 +3,10 @@ import Formalism.TruncatedSeriesCounting.StatementX
 
 namespace Formalism.TruncatedSeriesCounting.X
 
-/- English proof (translation)
-Introduce `ℓ hℓ H' H eW hH heW`. Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.aR Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.lam`. Establish `hℓ1 : (1 : ℝ) < ℓ` using `by exact_mod_cast (by omega : 1 < ℓ)`. Establish `hd : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hdiv : ((H' / (ℓ - 1) : ℕ) : ℝ) ≤ (H' : ℝ) / ((ℓ : ℝ) - 1)`.
+/- English proof (authored)
+Put d = ℓ−1 > 0. The natural-number quotient H′ / (ℓ−1) is at most H′/d in the reals. Combine it with the rational term in the bound on eW to get H′/d + H′ℓ/d² = H′(2ℓ−1)/d². This is at most H(2ℓ−1)/d² because H′ ≤ H.
 
-Establish `h` using `Nat.cast_div_le (m := H') (n := ℓ - 1) (α := ℝ)`. Rewrite `h` using `[Nat.cast_sub (by omega : 1 ≤ ℓ), Nat.cast_one]`. Then use the resulting hypothesis. Establish `hlog : Real.logb ℓ ((H' : ℝ) + 1) ≤ Real.logb ℓ (2 * (H : ℝ)) + 1`. Break down `Nat.eq_zero_or_pos H with h0 | hpos` into its components or cases. Substitute `h0` using the available equality.
-
-Establish `h0' : H' = 0` using `by omega`. Substitute `h0'` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : (H' : ℝ) + 1 ≤ 2 * H`. Establish `h2 : (H' : ℝ) ≤ H` using `by exact_mod_cast hH`.
-
-Establish `h3 : (1 : ℝ) ≤ H` using `by exact_mod_cast hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `Real.logb_le_logb_of_le hℓ1 (by positivity) h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfrac : (H' : ℝ) / ((ℓ : ℝ) - 1) + (H' : ℝ) * ℓ / ((ℓ : ℝ) - 1) ^ 2 ≤ (H : ℝ) * (2 * ℓ - 1) / ((ℓ : ℝ) - 1) ^ 2`.
-
-Establish `heq : (H' : ℝ) / ((ℓ : ℝ) - 1) + (H' : ℝ) * ℓ / ((ℓ : ℝ) - 1) ^ 2 = (H' : ℝ) * (2 * ℓ - 1) / ((ℓ : ℝ) - 1) ^ 2`. Use `hd.ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
-
-Apply `div_le_div_of_nonneg_right _ (pow_pos hd 2).le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hH) (by linarith)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+If H is positive, H′+1 ≤ 2H, so log base ℓ of H′+1 is at most log base ℓ of 2H. If H = 0, then H′ = 0 and the logarithmic bound with the added 1 holds under Lean’s real logarithm convention. Substitute these bounds, cancel the +1 and −1 from the left side, and use the definition of aR.
 -/
 theorem q_numerical_identity : QaNum := by
   intro ℓ hℓ H' H eW hH heW

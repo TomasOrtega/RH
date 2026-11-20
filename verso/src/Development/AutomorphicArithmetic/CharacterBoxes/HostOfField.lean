@@ -5,8 +5,8 @@ import Development.AutomorphicArithmetic.ShortNorms.hostExOneOf
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
-/- English proof (translation)
-The claim follows from `UpperTheory.T3.hostOfFieldOf UpperTheory.T3.shortNorm UpperTheory.T3.smallOne`.
+/- English proof (authored)
+Apply the host construction from field data. It takes two uniform short-norm inputs, shortNorm and smallOne. With those inputs fixed, the construction supplies the constants and, for each admissible field datum in range, a host together with the required sharing estimate.
 -/
 theorem UpperTheory.Top.hostOfField :
     ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ C0 → ∃ CT2 C8 c6 Cb x0 : ℝ, C0 ≤ C8 ∧ 0 < c6 ∧ 0 < Cb ∧
@@ -17,8 +17,8 @@ theorem UpperTheory.Top.hostOfField :
         R.toFrame.Shares H.TT (s.x ^ (-1 + s.eps)) :=
   UpperTheory.T3.hostOfFieldOf UpperTheory.T3.shortNorm UpperTheory.T3.smallOne
 
-/- English proof (translation)
-The claim follows from `UpperTheory.T3.supplyOfAdmOf UpperTheory.Top.hostOfField`.
+/- English proof (authored)
+The general supply theorem converts admissible rank data and a character window into host existence. Use hostOfField for the field-to-host construction it requires. The resulting hosts satisfy both the cyclic-level EAtH estimate and the VVle bound at the square root of the scale parameter.
 -/
 theorem UpperTheory.Top.supplyOfAdm :
     ∀ ψ : PChar, VWinAt ψ 401 →

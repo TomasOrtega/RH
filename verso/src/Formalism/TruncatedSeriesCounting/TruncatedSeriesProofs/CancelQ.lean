@@ -6,18 +6,10 @@ namespace Formalism.TruncatedSeriesCounting.R9
 
 open PowerSeries
 
-/- English proof (translation)
-Introduce `O _ _ a η b g hg`. Rewrite `hg`, the goal using `[Ideal.mem_span_pair]`. Take `⟨F, G, hFG⟩` from `hg`. Establish `hX : (X : PowerSeries O) ^ η ≠ 0` using `pow_ne_zero _ PowerSeries.X_ne_zero`. Distinguish the cases in `ha : a = 0`.
+/- English proof (authored)
+Write X^ηg = F C(a) + G X^(b+η), where C(a) is the constant series a. If a = 0, the first term vanishes. Cancel X^η, which is nonzero in the power series domain, to obtain g = G X^b.
 
-Substitute `ha` using the available equality. Use `⟨0, G, ?_⟩` and prove the remaining obligations. Establish `h1 : (X : PowerSeries O) ^ η * (G * X ^ b) = X ^ η * g`. Rewrite using `[← hFG, map_zero, mul_zero, zero_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[zero_mul, zero_add]`. Conclude with `mul_left_cancel₀ hX h1`. Establish `hdvd : (X : PowerSeries O) ^ η ∣ F`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`.
-
-Establish `h1 : (X : PowerSeries O) ^ η ∣ F * C a`. Establish `h0 : F * C a = X ^ η * (g - G * X ^ b)`. Rewrite using `[mul_sub, ← hFG, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0]`.
-
-Conclude with `dvd_mul_right _ _`. Rewrite `h1` using `[PowerSeries.X_pow_dvd_iff]`. Establish `h2` using `h1 m hm`. Rewrite `h2` using `[mul_comm, PowerSeries.coeff_C_mul]`. Conclude with `(mul_eq_zero.mp h2).resolve_left ha`.
-
-Take `⟨F', rfl⟩` from `hdvd`. Use `⟨F', G, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Rewrite using `[← hFG, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+For a ≠ 0, rearrange to get F C(a) = X^η(g − G X^b). Its coefficients of degree below η vanish. Each is a times the corresponding coefficient of F, so that coefficient of F vanishes in the domain. Thus F = X^ηF′. Substitute this into the original equality and cancel X^η to obtain g = F′ C(a) + G X^b, which proves the desired ideal membership.
 -/
 theorem mem_span_of_X_pow_mul : CancelQ := by
   intro O _ _ a η b g hg

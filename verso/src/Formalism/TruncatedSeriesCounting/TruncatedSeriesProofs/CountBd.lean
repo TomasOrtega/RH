@@ -8,8 +8,8 @@ namespace Formalism.TruncatedSeriesCounting.tableLineDegreeTwo
 
 open Formalism.WachCohomologyFacts
 
-/- English proof (translation)
-Rewrite using `[V2.ClN, Multiset.mem_filter]`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Unfold `V2.InWinN`. Simplify using `only [Bool.false_eq_true, if_false]`. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+For the false orientation, membership in the window requires h−η ≤ u ≤ h−1. The strict inequality u < h−η excludes u from the window. Since u belongs to U, it belongs to the filtered complement ClN.
 -/
 private lemma mem_cl {h η : ℕ} {U : Multiset ℤ} {u : ℤ} (hu : u ∈ U) (hc : u < (h : ℤ) - η) :
     u ∈ V2.ClN false h η U := by
@@ -19,8 +19,8 @@ private lemma mem_cl {h η : ℕ} {U : Multiset ℤ} {u : ℤ} (hu : u ∈ U) (h
   simp only [Bool.false_eq_true, if_false]
   omega
 
-/- English proof (translation)
-Use `hT3 u (mem_cl hu hc) k hk1 hk2` as an intermediate fact. Simplify `this` using `only [Bool.false_eq_true, if_false]`.
+/- English proof (authored)
+The element u lies in the false-orientation complement by mem_cl. Apply residue avoidance to u and k with the given lower and upper bounds on k. In this orientation the residue being tested is h−u.
 -/
 private lemma t3 {ℓ h η : ℕ} {σ : ℤ} {U : Multiset ℤ} (hT3 : V2.ResidueAvoidance ℓ false h η σ U) {u : ℤ}
     (hu : u ∈ U) (hc : u < (h : ℤ) - η) (k : ℤ) (hk1 : -2 * σ - 2 ≤ k)
@@ -28,14 +28,8 @@ private lemma t3 {ℓ h η : ℕ} {σ : ℤ} {U : Multiset ℤ} (hT3 : V2.Residu
   have := hT3 u (mem_cl hu hc) k hk1 hk2
   simpa only [Bool.false_eq_true, if_false] using this
 
-/- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[Finset.Icc_eq_empty (by omega)]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
-
-Establish `hs : Finset.Icc a (a - 1 + ((k + 1 : ℕ) : ℤ)) = insert (a + k) (Finset.Icc a (a - 1 + k))`. Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Finset.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
-
-Establish `hn : a + k ∉ Finset.Icc a (a - 1 + k)` using `by rw [Finset.mem_Icc]; omega`. Rewrite using `[hs, Finset.sum_insert hn, Finset.sum_insert hn]`. Establish `e1 : ((((a + ((k + 1 : ℕ) : ℤ)) : ℤ)) : ZMod ℓ) = ((((a + k : ℤ))) : ZMod ℓ) + 1` using `by push_cast; ring`. Rewrite using `[e1]`. Use `hrel ((((a + k : ℤ))) : ZMod ℓ)` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Induct on the interval length k. At length zero the interval is empty and both sides equal M(a). For length k+1, add the endpoint a+k to the previous interval. The local relation at that endpoint gives f(a+k) + M(a+k+1) = g(a+k) + M(a+k), with arguments read modulo ℓ. Use this identity to move the new boundary term back to a+k, then apply the induction hypothesis to the old interval.
 -/
 private lemma tele {ℓ : ℕ} (f g M : ZMod ℓ → ℕ) (hrel : ∀ x, f x + M (x + 1) = g x + M x)
     (a : ℤ) (k : ℕ) :

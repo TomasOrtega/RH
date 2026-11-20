@@ -208,21 +208,17 @@ import Development.AutomorphicArithmetic.CharacterBoxes.EveryCharacter
 import Development.AutomorphicArithmetic.ResidueCharacters.ClosedOfAll
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HypothesesV
 
-/- English proof (translation)
-Introduce `s hs h1` and use `by have := h 1 1 s hs (Or.inr h1) rwa [DirichletCharacter.LFunction_modOne_eq] at this`.
+/- English proof (authored)
+Take the unique character modulo 1. Its L-function is the Riemann zeta function. Apply the assumed nonvanishing to this character and the given point s. The hypothesis s ≠ 1 supplies the required disjunction even for the principal character.
 -/
 theorem UpperTheory.zeta_ne_zero_of_everyCharacter (h : UpperTheory.EveryCharacter) : ∀ s : ℂ, 1 / 2 < s.re → s ≠ 1 → riemannZeta s ≠ 0 := fun s hs h1 => by
   have := h 1 1 s hs (Or.inr h1)
   rwa [DirichletCharacter.LFunction_modOne_eq] at this
 
-/- English proof (translation)
-Introduce `s hs hn h1`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Establish `hs0 : s ≠ 0` using `by rintro rfl; rw [riemannZeta_zero] at hs; norm_num at hs`. Establish `h1s : (1 - s) ≠ 1` using `fun e => hs0 (by simpa using e)`.
+/- English proof (authored)
+Let s be a nontrivial zero of the zeta function, with s ≠ 1. The right half-plane nonvanishing just proved rules out Re(s) > 1/2. Suppose Re(s) < 1/2. The value ζ(0) = −1/2 gives s ≠ 0. Then 1 − s is distinct from both 0 and 1, and Re(1 − s) > 1/2.
 
-Establish `hz : riemannZeta (1 - s) ≠ 0` using `UpperTheory.zeta_ne_zero_of_everyCharacter h (1 - s) (by simp; linarith) h1s`. Establish `hc : completedRiemannZeta s = completedRiemannZeta (1 - s)` using `(completedRiemannZeta_one_sub s).symm`. Establish `h1s0 : (1 - s) ≠ 0` using `fun e => h1 (by linear_combination -e)`. Rewrite `hs` using `[riemannZeta_def_of_ne_zero hs0, div_eq_zero_iff]`. Break down `hs with hs | hs` into its components or cases.
-
-Conclude with `hz (by rw [riemannZeta_def_of_ne_zero h1s0, ← hc, hs, zero_div])`. Take `⟨n, hn'⟩` from `Complex.Gammaℝ_eq_zero_iff.1 hs`. Break down `n with _ | n` into its components or cases. Conclude with `hs0 (by simpa using hn')`. Conclude with `hn ⟨n, by rw [hn']; push_cast; ring⟩`.
-
-Conclude with `UpperTheory.zeta_ne_zero_of_everyCharacter h s hgt h1 hs`.
+Write ζ(s) as the completed zeta function divided by Γℝ(s). A zero of Γℝ occurs only at 0 or a negative even integer, and both possibilities are excluded here. Hence the completed zeta function vanishes at s. Its functional equation gives the same zero at 1 − s. The quotient formula there gives ζ(1 − s) = 0, contradicting right half-plane nonvanishing. Thus Re(s) = 1/2.
 -/
 theorem UpperTheory.riemannHypothesis_of_everyCharacter (h : UpperTheory.EveryCharacter) : RiemannHypothesis := by
   intro s hs hn h1

@@ -10,24 +10,10 @@ section Snake
 
 variable {O : Type} [CommRing O]
 
-/- English proof (translation)
-Establish `hF : LinearMap.range a ≤ (LinearMap.range b).comap f`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨f x, h1 x⟩`. Establish `hG : LinearMap.range b ≤ (LinearMap.range c).comap g`. Introduce and unpack `_ ⟨y, rfl⟩`.
+/- English proof (authored)
+The commutative squares induce maps A/a(A) → B/b(B) → C/c(C). The second map is surjective because g is. If f(x) = b(y), then c(g(y)) = g(f(x)) = 0. Injectivity of c gives g(y) = 0, so y = f(z) by exactness. Then f(x) = f(a(z)), and injectivity of f gives x = a(z). This proves injectivity of the first induced map.
 
-Conclude with `⟨g y, h2 y⟩`. Set `F` to `Submodule.mapQ (LinearMap.range a) (LinearMap.range b) f hF`. Set `G` to `Submodule.mapQ (LinearMap.range b) (LinearMap.range c) g hG`. Use `Module.length_eq_add_of_exact F G ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
-
-Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `only [F, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx`. Take `⟨y, hy⟩` from `hx`.
-
-Establish `hgy : g y = 0`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h2, hy, hfg.apply_apply_eq_zero, map_zero]`. Take `⟨z, rfl⟩` from `(hfg y).1 hgy`. Establish `: a z = x` using `hf (by rw [← h1, hy])`.
-
-Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨z, this⟩`. Introduce `w`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Take `⟨y, rfl⟩` from `hg w`.
-
-Conclude with `⟨Submodule.Quotient.mk y, by simp [G]⟩`. Introduce `w`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Simplify using `only [G, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨u, hu⟩`. Take `⟨v, rfl⟩` from `hg u`. Establish `: g (y - b v) = 0` using `by rw [map_sub, ← h2, hu, sub_self]`. Take `⟨z, hz⟩` from `(hfg _).1 this`. Use `⟨Submodule.Quotient.mk z, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [F, Submodule.mapQ_apply, hz]`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `⟨-v, by simp⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
-
-Simplify using `only [F, Submodule.mapQ_apply] at hz`. Rewrite `hz` using `[Submodule.Quotient.eq']`. Take `⟨t, ht⟩` from `hz`. Use `⟨g t, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ht, map_add, map_neg, hfg.apply_apply_eq_zero, neg_zero, zero_add]`.
+If a class represented by y lies in the kernel of the second map, write g(y) = c(u) and lift u to v in B. Then g(y−b(v)) = 0. Exactness writes y−b(v) as f(z), so the class of y comes from A/a(A). Conversely g f = 0 makes every image class vanish. Length additivity on the resulting short exact sequence gives the formula.
 -/
 theorem len_coker_add {A B C : Type} [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     [AddCommGroup C] [Module O C] (f : A →ₗ[O] B) (g : B →ₗ[O] C) (hf : Function.Injective f)
@@ -88,12 +74,8 @@ section Main
 
 variable {O : Type} [CommRing O] [IsDomain O]
 
-/- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1 : q x = ℓ • x`. Rewrite `hx` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hx`.
-
-Establish `h2 : ∀ k : ℕ, (q ^ k) x = ℓ ^ k • x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, h1, smul_smul, pow_succ]`.
-
-Establish `h3` using `h2 n`. Rewrite `h3` using `[hq, LinearMap.zero_apply]`. Conclude with `(smul_eq_zero.mp h3.symm).resolve_left (pow_ne_zero n hℓ)`.
+/- English proof (authored)
+Take x in the kernel of q−ℓ·id. Then q(x) = ℓx, and linearity gives q^k(x) = ℓ^k x by induction. At k = n the nilpotence hypothesis gives ℓ^n x = 0. Since ℓ^n is nonzero and the module is torsion-free, x = 0.
 -/
 theorem sub_smul_one_injective {M : Type} [AddCommGroup M] [Module O M] [IsTorsionFree O M]
     (ℓ : O) (hℓ : ℓ ≠ 0) (q : Module.End O M) (n : ℕ) (hq : q ^ n = 0) :
@@ -112,12 +94,8 @@ theorem sub_smul_one_injective {M : Type} [AddCommGroup M] [Module O M] [IsTorsi
   rw [hq, LinearMap.zero_apply] at h3
   exact (smul_eq_zero.mp h3.symm).resolve_left (pow_ne_zero n hℓ)
 
-/- English proof (translation)
-Set `e` to `(Module.finBasis O R).equivFun`. Establish `hmap : (LinearMap.range ((0 : Module.End O R) - ℓ • (1 : Module.End O R))).map (e : R →ₗ[O] (Fin (finrank O R) → O)) = Submodule.pi Set.univ (fun _ => Ideal.span {ℓ})`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, LinearMap.mem_range, Submodule.mem_pi, Set.mem_univ, true_implies, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩ i`. Conclude with `⟨-(e y i), by simp [mul_comm]⟩`. Introduce `h choose c hc using h`. Use `⟨_, ⟨e.symm (fun i => -c i), rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
-
-Express the relevant statement in the definitionally equal form `e (((0 : Module.End O R) - ℓ • (1 : Module.End O R)) (e.symm fun i => -c i)) i = v i`. Simplify using `[← hc, mul_comm]`. Rewrite using `[(Submodule.Quotient.equiv _ _ e hmap).length_eq, (Submodule.quotientPi _).length_eq, Module.length_pi_of_fintype]`. Simplify using `[Finset.sum_const, nsmul_eq_mul]`.
+/- English proof (authored)
+Choose a basis of R of cardinality r. In coordinates, the image of −ℓ·id is exactly the vectors whose entries are multiples of ℓ. Each such vector has a preimage by choosing a multiplier for every coordinate and negating it. The quotient is therefore the product of r copies of O/(ℓ). Add their lengths.
 -/
 theorem len_base (R : Type) [AddCommGroup R] [Module O R] [Module.Free O R] [Module.Finite O R]
     (ℓ : O) :
@@ -143,22 +121,10 @@ theorem len_base (R : Type) [AddCommGroup R] [Module O R] [Module.Free O R] [Mod
     Module.length_pi_of_fintype]
   simp [Finset.sum_const, nsmul_eq_mul]
 
-/- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ _ _ q hq`. Rewrite `hq` using `[zero_add, pow_one]`. Substitute `hq` using the available equality.
+/- English proof (authored)
+Induct on n. For n = 0, q = 0 and len_base applies. For the step, use the exact sequence ker q → R → im q, where the second map is q with its codomain restricted. The operator on the kernel is zero. The restriction to the image is killed by the preceding power, since every element of the image already has the form q(x). The three operators q−ℓ·id commute with the sequence, and the one on the image is injective by nilpotence and torsion-freeness.
 
-Conclude with `len_base R ℓ`. Consider the case `succ n ih`. Introduce `R _ _ _ _ q hq`. Establish `hK : ∀ x ∈ LinearMap.ker q, q x ∈ LinearMap.ker q` using `fun x hx => by`. Rewrite using `[LinearMap.mem_ker.mp hx]`.
-
-Conclude with `Submodule.zero_mem _`. Establish `hQ : ∀ x ∈ LinearMap.range q, q x ∈ LinearMap.range q` using `fun x _ => LinearMap.mem_range_self q x`. Set `qK` to `q.restrict hK`. Set `qQ` to `q.restrict hQ`. Establish `hqK : qK = 0`.
-
-Use extensionality with `⟨x, hx⟩`. Simplify `hx` using `[qK]`. Establish `key : ∀ (k : ℕ) (x : LinearMap.range q), (((qQ ^ k) x : LinearMap.range q) : R) = (q ^ k) (x : R)`. Introduce `k`. Proceed by induction on `k with`.
-
-Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ihk`. Introduce `x`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ihk]`.
-
-Both sides reduce to the same expression. Establish `hqQ : qQ ^ (n + 1) = 0`. Use extensionality with `⟨x, y, rfl⟩`. Rewrite using `[key, LinearMap.zero_apply, Submodule.coe_zero, ← Module.End.mul_apply, ← pow_succ, hq, LinearMap.zero_apply]`. Establish `hex : Function.Exact (LinearMap.ker q).subtype q.rangeRestrict` using `LinearMap.exact_iff.mpr (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype])`.
-
-Establish `hsn` using `len_coker_add (LinearMap.ker q).subtype q.rangeRestrict (LinearMap.ker q).injective_subtype q.surjective_rangeRestrict hex (qK - ℓ • (1 : Module.End O _)) (q - ℓ • (1 : Module.End O R)) (qQ - ℓ • (1 : Module.End O _)) (fun x => by simp [qK]) (fun y => by ext; simp [qQ]) (sub_smul …`. Rewrite using `[hsn, ih _ qK (by rw [hqK, zero_pow (Nat.succ_ne_zero _)]), ih _ qQ hqQ, ← add_mul, ← Nat.cast_add]`. Use `congr 2`. Establish `h1` using `(LinearMap.ker q).finrank_quotient_add_finrank`. Rewrite `h1` using `[LinearEquiv.finrank_eq q.quotKerEquivRange]`.
-
-Use linear arithmetic over natural numbers and integers.
+Apply len_coker_add, then apply the induction hypothesis to the kernel and image, which are finite free submodules over the principal ideal domain. Their ranks add to the rank of R, by the quotient–image isomorphism and rank additivity. The two length formulas combine into the claimed one.
 -/
 theorem len_main [IsPrincipalIdealRing O] (ℓ : O) (hℓ : ℓ ≠ 0) (n : ℕ) :
     ∀ (R : Type) [AddCommGroup R] [Module O R] [Module.Free O R] [Module.Finite O R]
@@ -212,8 +178,8 @@ theorem len_main [IsPrincipalIdealRing O] (ℓ : O) (hℓ : ℓ ≠ 0) (n : ℕ)
 
 end Main
 
-/- English proof (translation)
-Introduce `O _ _ _ R _ _ _ _ ℓ hℓ q hq`. Take `⟨n, hn⟩` from `hq`. Conclude with `len_main ℓ hℓ n R q (by rw [pow_succ, hn, zero_mul])`.
+/- English proof (authored)
+Choose an exponent n with q^n = 0. Then q^(n+1) is zero as well, so len_main applies at n with the given scalar and yields the desired length formula.
 -/
 theorem length_pi_zero_bound : LenPi0 := by
   intro O _ _ _ R _ _ _ _ ℓ hℓ q hq

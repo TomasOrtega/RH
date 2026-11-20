@@ -7,16 +7,10 @@ namespace Formalism.TruncatedSeriesCounting.X
 
 open PowerSeries
 
-/- English proof (translation)
-Introduce `O _ ℓ ε u y`. Establish `hsplit : ∃ W : PowerSeries O, (Formalism.WindowSums.p1 ℓ ε u) ^ y = (u * X ^ ℓ) ^ y + C (ℓ : O) * W`. Take `⟨V, hV⟩` from `sub_dvd_pow_sub_pow (Formalism.WindowSums.p1 ℓ ε u) (u * X ^ ℓ) y`. Use `⟨ε * V, ?_⟩` and prove the remaining obligations. Establish `: Formalism.WindowSums.p1 ℓ ε u - u * X ^ ℓ = C (ℓ : O) * ε` using `by unfold Formalism.WindowSums.p1; ring`.
+/- English proof (authored)
+The definition of p₁ gives p₁ − uX^ℓ = C(ℓ)ε. Since a−b divides a^y−b^y, write p₁^y = (uX^ℓ)^y + C(ℓ)W for some series W. The coefficient of degree ℓy in (uX^ℓ)^y is the constant coefficient of u raised to y. Thus the coefficient of p₁^y has the required congruence modulo ℓ.
 
-Rewrite `hV` using `[this]`. Take the linear combination `hV`. Take `⟨W, hW⟩` from `hsplit`. Establish `hc : coeff (ℓ * y) ((Formalism.WindowSums.p1 ℓ ε u) ^ y) = constantCoeff u ^ y + (ℓ : O) * coeff (ℓ * y) W`. Rewrite using `[hW, map_add, coeff_C_mul, mul_pow, ← pow_mul, mul_comm ℓ y]`.
-
-Use `coeff_mul_X_pow (u ^ y) (y * ℓ) 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this, coeff_zero_eq_constantCoeff, map_pow]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, add_sub_cancel_left, Ideal.mem_span_singleton]`.
-
-Conclude with `dvd_mul_right _ _`. Introduce `hloc hℓ hu`. Rewrite using `[hc]`. Establish `h0 : IsUnit (constantCoeff u ^ y)` using `(hu.map constantCoeff).pow y`. Establish `h1 : (ℓ : O) * coeff (ℓ * y) W ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).mpr hℓ)`.
-
-Assume the negation of the conclusion as `hne`. Establish `h2 : constantCoeff u ^ y + (ℓ : O) * coeff (ℓ * y) W ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hne`. Establish `h3` using `Ideal.sub_mem _ h2 h1`. Rewrite `h3` using `[add_sub_cancel_right]`. Conclude with `((IsLocalRing.mem_maximalIdeal _).mp h3) h0`.
+In the local-ring case, the constant coefficient of the unit u is a unit and remains one after taking the yth power. The correction term belongs to the maximal ideal because ℓ does. If the sum belonged to the maximal ideal, subtracting the correction would place that unit in the ideal, a contradiction. The coefficient is therefore a unit.
 -/
 theorem unit_coefficient_power_mod : UnitCoefficientPowerMod := by
   intro O _ ℓ ε u y

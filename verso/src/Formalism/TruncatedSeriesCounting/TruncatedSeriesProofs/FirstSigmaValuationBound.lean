@@ -7,8 +7,8 @@ namespace Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains
 
 open Finset
 
-/- English proof (translation)
-Rewrite using `[Finset.erase_union_distrib]`. Establish `h` using `Finset.sum_union_inter (s₁ := A.erase 0) (s₂ := B.erase 0) (f := f)`. Use `first`. Consider the case `omega`. Consider the case `(rw [← h]; exact Nat.le_add_right _ _)`.
+/- English proof (authored)
+Removing zero from the union gives the union of the two sets with zero removed. The sum over this union plus the sum over the intersection equals the two separate sums. The intersection sum is nonnegative, so it can be dropped on the left.
 -/
 private lemma sum_erase_union_le (f : ℤ → ℕ) (A B : Finset ℤ) :
     (∑ j ∈ (A ∪ B).erase 0, f j) ≤ (∑ j ∈ A.erase 0, f j) + ∑ j ∈ B.erase 0, f j := by
@@ -19,10 +19,8 @@ private lemma sum_erase_union_le (f : ℤ → ℕ) (A B : Finset ℤ) :
   | omega
   | (rw [← h]; exact Nat.le_add_right _ _)
 
-/- English proof (translation)
-Proceed by induction on `L with`. Consider the case `zero`. Simplify using `only [add_zero]`. Rewrite using `[Finset.Icc_eq_empty (by omega)]`. Simplify using the standard rewrite rules.
-
-Consider the case `succ L ih`. Rewrite using `[show m + (L + 1) = m + L + 1 by omega, Finset.sum_Icc_succ_top (by omega), Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero _), ← ih]`. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+At L = 0 the interval is empty. To increase L by one, add its new upper endpoint m+L+1 to the valuation sum. At the same time the factorial is multiplied by m+L+1. Valuations add under multiplication of these positive integers, so the induction identity is preserved.
 -/
 private lemma sum_Icc_padicValNat_add_factorial_eq (ℓ : ℕ) [Fact ℓ.Prime] (m L : ℕ) :
     (∑ n ∈ Finset.Icc (m + 1) (m + L), padicValNat ℓ n) + padicValNat ℓ m.factorial =
@@ -37,18 +35,16 @@ private lemma sum_Icc_padicValNat_add_factorial_eq (ℓ : ℕ) [Fact ℓ.Prime] 
       padicValNat.mul (by omega) (Nat.factorial_ne_zero _), ← ih]
     omega
 
-/- English proof (translation)
-Rewrite using `[sub_one_mul_padicValNat_factorial]`. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Use the factorial valuation formula (ℓ−1)vℓ(N!) = N − sℓ(N), where sℓ is the base-ℓ digit sum. Its nonnegativity gives the desired bound.
 -/
 private lemma sub_one_mul_padicValNat_factorial_le' (ℓ : ℕ) [Fact ℓ.Prime] (N : ℕ) :
     (ℓ - 1) * padicValNat ℓ N.factorial ≤ N := by
   rw [sub_one_mul_padicValNat_factorial]
   omega
 
-/- English proof (translation)
-Establish `h` using `Nat.add_choose_mul_factorial_mul_factorial m L`. Establish `hc : (m + L).choose L ≠ 0` using `(Nat.choose_pos (by omega)).ne'`. Establish `hlog : padicValNat ℓ ((m + L).choose L) ≤ Nat.log ℓ (m + L)`. Rewrite using `[← Nat.factorization_def _ (Fact.out : ℓ.Prime)]`. Conclude with `Nat.factorization_choose_le_log`.
-
-Rewrite using `[← h, padicValNat.mul (by positivity) (Nat.factorial_ne_zero _), padicValNat.mul hc (Nat.factorial_ne_zero _)]`. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Factor (m+L)! as the product of m!, L!, and the binomial coefficient choosing L from m+L. These factors are positive, so their valuations add. The valuation of the binomial coefficient is at most the integer logarithm of m+L by the prime-factorization bound for binomial coefficients. Add this bound to the other two valuations.
 -/
 private lemma padicValNat_factorial_add_le_add_log (ℓ : ℕ) [Fact ℓ.Prime] (m L : ℕ) :
     padicValNat ℓ (m + L).factorial ≤
@@ -62,66 +58,20 @@ private lemma padicValNat_factorial_add_le_add_log (ℓ : ℕ) [Fact ℓ.Prime] 
     padicValNat.mul hc (Nat.factorial_ne_zero _)]
   omega
 
-/- English proof (translation)
-Establish `h` using `sum_Icc_padicValNat_add_factorial_eq ℓ 0 L`. Simplify using `using h`.
+/- English proof (authored)
+Take m = 0 in the interval-factorial formula. The initial factorial is 0! = 1 with valuation zero, leaving the valuation of L! as the sum from 1 to L.
 -/
 private lemma sum_Icc_one_padicValNat_eq_factorial (ℓ : ℕ) [Fact ℓ.Prime] (L : ℕ) :
     (∑ n ∈ Finset.Icc 1 L, padicValNat ℓ n) = padicValNat ℓ L.factorial := by
   have h := sum_Icc_padicValNat_add_factorial_eq ℓ 0 L
   simpa using h
 
-/- English proof (translation)
-Introduce `ℓ _ h η S b a hab hbS`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hℓ2 : 2 ≤ ℓ` using `hℓ.two_le`. Establish `step1` using `sum_erase_union_le (padicValInt ℓ) (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a)) (Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b))`. Establish `hI1 : (∑ j ∈ (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a)).erase 0, padicValInt ℓ j) ≤ padicValNat ℓ (η - 1).factorial + padicValNat ℓ (η + a).factorial`.
+/- English proof (authored)
+Bound the sum on the union by the two interval sums with zero removed. On the first interval, reflect the negative integers and keep the positive ones. Valuation depends only on absolute value, so the two pieces are bounded by the factorial valuations at η−1 and η+a, using natural subtraction for η−1.
 
-Establish `hsub : (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a)).erase 0 ⊆ Finset.Icc (1 - (η : ℤ)) (-1) ∪ Finset.Icc 1 ((η : ℤ) + a)`. Introduce `j hj`. Simplify using `only [Finset.mem_erase, Finset.mem_Icc, Finset.mem_union] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Finset.Icc (1 - (η : ℤ)) (-1)) (Finset.Icc 1 ((η : ℤ) + a))`.
+The second interval lies entirely below zero because b ≥ 2a+η+1. Reflection gives the interval from m+1 through m+a+S, where m = b−a−1. Its valuation sum is vℓ((m+a+S)!)−vℓ(m!). The binomial coefficient bound gives at most vℓ((a+S)!) + logℓ(m+a+S), with the integer logarithm in this expression.
 
-Rewrite using `[Finset.disjoint_left]`. Introduce `j h1 h2`. Simplify using `only [Finset.mem_Icc] at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hneg : (∑ j ∈ Finset.Icc (1 - (η : ℤ)) (-1), padicValInt ℓ j) = ∑ n ∈ Finset.Icc 1 (η - 1), padicValNat ℓ n`.
-
-Apply `Finset.sum_nbij' (fun j : ℤ => ((-j).toNat : ℕ)) (fun n : ℕ => -(n : ℤ))` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `n hn`.
-
-Simplify using `only [Finset.mem_Icc] at hn ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj`. Apply the tactic sequence `try dsimp only`.
-
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `intro n hn try dsimp only`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj`.
-
-Apply the tactic sequence `try dsimp only`. Rewrite using `[padicValInt]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hpos : (∑ j ∈ Finset.Icc 1 ((η : ℤ) + a), padicValInt ℓ j) = ∑ n ∈ Finset.Icc 1 (η + a), padicValNat ℓ n`.
-
-Apply `Finset.sum_nbij' (fun j : ℤ => (j.toNat : ℕ)) (fun n : ℕ => (n : ℤ))` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `n hn`.
-
-Simplify using `only [Finset.mem_Icc] at hn ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj`. Apply the tactic sequence `try dsimp only`.
-
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `intro n hn try dsimp only`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj`.
-
-Apply the tactic sequence `try dsimp only`. Rewrite using `[padicValInt]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hI2 : (∑ j ∈ (Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b)).erase 0, padicValInt ℓ j) ≤ padicValNat ℓ (a + S).factorial + Nat.log ℓ (b - a - 1 + (a + S))`. Establish `heq : (∑ j ∈ Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b), padicValInt ℓ j) = ∑ n ∈ Finset.Icc (b - a - 1 + 1) (b - a - 1 + (a + S)), padicValNat ℓ n`. Apply `Finset.sum_nbij' (fun j : ℤ => ((-j).toNat : ℕ)) (fun n : ℕ => -(n : ℤ))` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj ⊢`.
-
-Use linear arithmetic over natural numbers and integers. Introduce `n hn`. Simplify using `only [Finset.mem_Icc] at hn ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`.
-
-Simplify using `only [Finset.mem_Icc] at hj`. Apply the tactic sequence `try dsimp only`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `intro n hn try dsimp only`. Use linear arithmetic over natural numbers and integers.
-
-Introduce `j hj`. Simplify using `only [Finset.mem_Icc] at hj`. Apply the tactic sequence `try dsimp only`. Rewrite using `[padicValInt]`. Use `congr 1`.
-
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `sum_Icc_padicValNat_add_factorial_eq ℓ (b - a - 1) (a + S)`. Establish `h2` using `padicValNat_factorial_add_le_add_log ℓ (b - a - 1) (a + S)`. Combine the equalities or inequalities in the displayed calculation. Establish `tot : (∑ j ∈ (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a) ∪ Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b)).erase 0, padicValInt ℓ j) ≤ padicValNat ℓ (η - 1).factorial + padicValNat ℓ (η + a).factorial + padicValNat ℓ (a + S).factorial + Nat.log ℓ (b - a - 1 + (a + S))`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hℓR : (1 : ℝ) < ℓ` using `by exact_mod_cast (show 1 < ℓ by omega)`. Establish `hpos : (0 : ℝ) < (ℓ : ℝ) - 1` using `by linarith`. Establish `hsubℓ : ((ℓ - 1 : ℕ) : ℝ) = (ℓ : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]`.
-
-Simplify using the standard rewrite rules. Establish `r : ∀ N : ℕ, ((ℓ : ℝ) - 1) * (padicValNat ℓ N.factorial : ℝ) ≤ (N : ℝ)`. Introduce `N`. Establish `c` using `sub_one_mul_padicValNat_factorial_le' ℓ N`. Establish `c' : ((ℓ - 1 : ℕ) : ℝ) * (padicValNat ℓ N.factorial : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast c`.
-
-Rewrite `c'` using `[hsubℓ]`. Then use the resulting hypothesis. Establish `hsum : (padicValNat ℓ (η - 1).factorial : ℝ) + (padicValNat ℓ (η + a).factorial : ℝ) + (padicValNat ℓ (a + S).factorial : ℝ) ≤ (2 * (a : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((ℓ : ℝ) - 1)`. Rewrite using `[le_div_iff₀ hpos]`. Establish `e1` using `r (η - 1)`. Establish `e2` using `r (η + a)`.
-
-Establish `e3` using `r (a + S)`. Establish `e4 : ((η - 1 : ℕ) : ℝ) ≤ (η : ℝ)` using `by exact_mod_cast Nat.sub_le η 1`. Move the coercions through the operations in `at e2 e3`. Use polynomial arithmetic with `[e1, e2, e3, e4]`. Establish `hlam0 : 0 ≤ lam ℓ (h + η)`.
-
-Unfold `lam`. Distinguish the cases in `h0 : h + η = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h1 : (1 : ℝ) ≤ ((h + η : ℕ) : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr h0`.
-
-Establish `h2 : (1 : ℝ) ≤ 2 * ((h + η : ℕ) : ℝ)` using `by linarith`. Use `Real.logb_nonneg hℓR h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : ((Nat.log ℓ (b - a - 1 + (a + S)) : ℕ) : ℝ) ≤ lam ℓ (h + η)`. Distinguish the cases in `hN : b - a - 1 + (a + S) = 0`.
-
-Rewrite using `[hN, Nat.log_zero_right]`. Simplify using `using hlam0`. Establish `hpow : ℓ ^ Nat.log ℓ (b - a - 1 + (a + S)) ≤ b - a - 1 + (a + S)` using `Nat.pow_log_le_self ℓ hN`. Establish `hNh : b - a - 1 + (a + S) ≤ 2 * (h + η)` using `by omega`. Establish `hNpos : (0 : ℝ) < ((b - a - 1 + (a + S) : ℕ) : ℝ)`.
-
-Conclude with `Nat.pos_of_ne_zero hN` after adjusting the coercions. Establish `h1 : ((Nat.log ℓ (b - a - 1 + (a + S)) : ℕ) : ℝ) ≤ Real.logb ℓ ((b - a - 1 + (a + S) : ℕ) : ℝ)`. Rewrite using `[Real.le_logb_iff_rpow_le hℓR hNpos, Real.rpow_natCast]`. Conclude with `hpow` after adjusting the coercions. Establish `h2 : Real.logb ℓ ((b - a - 1 + (a + S) : ℕ) : ℝ) ≤ Real.logb ℓ (2 * ((h + η : ℕ) : ℝ))`.
-
-Apply `Real.logb_le_logb_of_le hℓR hNpos` to reduce the goal to its premises. Conclude with `hNh` after adjusting the coercions. Unfold `lam`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans (Nat.cast_le.mpr tot) ?_` and prove the remaining obligations.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply vℓ(N!) ≤ N/(ℓ−1) to the three factorial terms. Their numerator is at most 2a+2η+S. The integer logarithm is bounded by lam(ℓ,h+η), since m+a+S ≤ b+S ≤ h and the nonzero argument case follows by taking logs of ℓ^logℓ(N) ≤ N. For a zero argument the integer logarithm is zero. Finally lam(ℓ,h+η) is nonnegative, so increasing the logarithmic allowance to twice this quantity gives the stated bound.
 -/
 theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
   intro ℓ _ h η S b a hab hbS

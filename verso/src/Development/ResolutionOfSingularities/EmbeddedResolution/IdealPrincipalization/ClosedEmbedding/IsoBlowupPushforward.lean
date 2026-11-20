@@ -14,16 +14,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The zero ideal pulls back to zero. The closed subscheme defined by the zero ideal is the entire scheme, so its inclusion is an isomorphism.
 -/
 private theorem isIso_subschemeι_comap_bot {X X' : Scheme.{u}} (π : X' ⟶ X) :
     IsIso ((⊥ : X.IdealSheafData).comap π).subschemeι := by
   rw [show (⊥ : X.IdealSheafData).comap π = ⊥ from by simp]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restricting an isomorphism to the inverse image of an open gives an isomorphism onto that open. The composite in the assertion is this restricted isomorphism followed by the given open inclusion. Precomposition by an isomorphism preserves the kernel ideal.
 -/
 theorem ker_preimage_ι_comp_of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) [IsIso f] (U : Y.Opens) :
     ((f ⁻¹ᵁ U).ι ≫ f).ker = U.ι.ker := by
@@ -31,10 +31,8 @@ theorem ker_preimage_ι_comp_of_isIso {X Y : Scheme.{u}} (f : X ⟶ Y) [IsIso f]
   rw [← (isPullback_morphismRestrict f U).w]
   exact Scheme.Hom.ker_comp_of_isIso ..
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each point of the open, choose a smaller open on which the section vanishes. Its germ at the point equals the germ of the restriction, so every germ is zero. Equality of sections in a sheaf follows from equality of their germs.
 -/
 theorem section_eq_zero_of_locally_zero {X : Scheme.{u}} (U : X.Opens)
     (s : X.presheaf.obj (op U))
@@ -51,8 +49,8 @@ theorem section_eq_zero_of_locally_zero {X : Scheme.{u}} (U : X.Opens)
   rw [map_zero]
   exact h1.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The two inclusions between the nested opens compose to the direct inclusion. Functoriality of the presheaf identifies the successive restriction maps with the direct restriction map. Evaluate the equality on the section.
 -/
 private theorem map_homOfLE_map_homOfLE {X : Scheme.{u}} {V V' V'' : X.Opens} (h1 : V' ≤ V) (h2 : V'' ≤ V')
     (s : Γ(X, V)) :
@@ -64,10 +62,8 @@ private theorem map_homOfLE_map_homOfLE {X : Scheme.{u}} {V V' V'' : X.Opens} (h
     rfl
   exact congrArg (fun φ : Γ(X, V) ⟶ Γ(X, V'') => (ConcreteCategory.hom φ) s) hcomp
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restricting a section on $V$ along the inclusion of $W$ gives its restriction to $V\cap W$, viewed on the open subscheme. By assumption this is zero. The smaller open $V'$ lies in that intersection, so the restriction to $V'$ factors through zero.
 -/
 private theorem map_eq_zero_of_app_ι_eq_zero {X : Scheme.{u}} (W V V' : X.Opens) (s : Γ(X, V))
     (hs : (W.ι.app V).hom s = 0) (h1 : V' ≤ V) (h2 : ∀ y : ↥X, y ∈ V' → y ∈ W) :
@@ -83,17 +79,15 @@ private theorem map_eq_zero_of_app_ι_eq_zero {X : Scheme.{u}} (W V V' : X.Opens
     exact hs
   rw [← map_homOfLE_map_homOfLE hT hle s, hzero, map_zero]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The sections on the basic open form an algebra over the sections on the containing open through the restriction map. Its structural ring map therefore sends the section to exactly its restriction.
 -/
 private theorem algebraMap_basicOpen {X : Scheme.{u}} {U : X.Opens} (f : Γ(X, U)) (t : Γ(X, U)) :
     algebraMap Γ(X, U) Γ(X, X.basicOpen f) t
       = X.presheaf.map (homOfLE (X.basicOpen_le f)).op t := rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open the support of the ideal is its common zero locus. A point in the basic open of a section belonging to the ideal is a point at which that section is invertible, so it cannot belong to the common zero locus.
 -/
 private theorem notMem_support_of_mem_basicOpen {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens)
     (f : Γ(X, U.1)) (hf : f ∈ I.ideal U) (y : ↥X) (hy : y ∈ X.basicOpen f) :
@@ -105,16 +99,8 @@ private theorem notMem_support_of_mem_basicOpen {X : Scheme.{u}} (I : X.IdealShe
   rw [Scheme.mem_zeroLocus_iff] at h2
   exact h2 f hf hy
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine basic open of $b$, the restriction of $f$ remains a nonzero divisor because the ring of sections is a localization. Its basic open is the intersection of the basic opens of $b$ and $f$, hence lies in $W$ and in $V$. The section vanishes on this intersection by the assumed vanishing over $W$. Thus the section on the basic open of $b$ becomes zero after localization at the restricted $f$. Some power of that nonzero divisor annihilates it, so the section was already zero there.
 -/
 private theorem map_basicOpen_eq_zero_of_app_ι_eq_zero {X : Scheme.{u}} (W V U₀ : X.Opens)
     (hU₀ : IsAffineOpen U₀)
@@ -158,12 +144,8 @@ private theorem map_basicOpen_eq_zero_of_app_ι_eq_zero {X : Scheme.{u}} (W V U�
   refine (mem_nonZeroDivisors_iff.mp hmem).1 (X.presheaf.map (homOfLE hbV).op s) ?_
   exact hm
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an affine-open section in the kernel, so it vanishes on the part outside the ideal's support. Near each point choose an affine open where the ideal is generated by a nonzero divisor $f$. Refine the intersection with the section's domain to a basic open in this neighborhood. The basic open of $f$ lies outside the support, and vanishing there implies vanishing on the smaller basic open by injectivity of localization at a nonzero divisor. The section is consequently zero near every point and hence zero. The kernel ideal is therefore zero.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.ker_supportCompl_ι_eq_bot {X : Scheme.{u}} {I : X.IdealSheafData}
     (h : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor I) :
@@ -187,8 +169,8 @@ theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.ke
   rw [hIf]
   exact Ideal.mem_span_singleton_self f
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the zero ideal still defines the entire blowup scheme. Its strict transform is the scheme-theoretic closure of the complement of the exceptional support. The exceptional ideal is locally generated by a nonzero divisor by the blowup property, so the ideal of this closure is zero by the kernel result for that complement.
 -/
 theorem strictTransform_bot_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {π : X' ⟶ X}
     {I : X.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf π I) :
@@ -197,18 +179,8 @@ theorem strictTransform_bot_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {π :
   rw [Blowup.strictTransform_eq_ker, Blowup.strictTransformImmersion_eq, Blowup.strictTransformOpens_eq]
   exact (ker_preimage_ι_comp_of_isIso _ _).trans h.1.ker_supportCompl_ι_eq_bot
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero comparison is the base isomorphism transported by the two initial isomorphisms. Inductively each next comparison is its pullback along a transition, hence is also an isomorphism and is a closed immersion. The initial and step compatibilities come from the strict pullback witness. Since the center pulls back along an isomorphism, its image along that isomorphism recovers the original center. All comparison kernels are zero, and the strict transform of the zero ideal under a blowup is zero, so the required kernel update also holds.
 -/
 theorem IsPushforwardBlowupSeq.of_isStrictPullback_of_isIso {X' X : Scheme.{u}} (φ : X' ⟶ X)
     [IsIso φ] [IsClosedImmersion φ] {B' : SequenceOfBlowups X'} {B : SequenceOfBlowups X}

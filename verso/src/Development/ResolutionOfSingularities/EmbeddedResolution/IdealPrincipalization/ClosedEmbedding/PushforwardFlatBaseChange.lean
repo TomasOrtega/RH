@@ -17,8 +17,8 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the upper-left scheme with the fiber product. The map to the upper right is the base change of the given flat map, up to this identification. Flatness is preserved by base change and by composition with an isomorphism.
 -/
 private theorem flat_of_isPullback {A B C D : Scheme.{u}}
     {a : A ⟶ B} {b : A ⟶ C} {c : B ⟶ D} {d : C ⟶ D}
@@ -29,8 +29,8 @@ private theorem flat_of_isPullback {A B C D : Scheme.{u}}
   rw [← sq.flip.isoPullback_hom_snd]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the pullback isomorphism to identify the map across the top with the base change of the closed immersion along the right-hand arrow. Base change and isomorphism preserve closed immersions.
 -/
 private theorem isClosedImmersion_of_isPullback {A B C D : Scheme.{u}}
     {a : A ⟶ B} {b : A ⟶ C} {c : B ⟶ D} {d : C ⟶ D}
@@ -40,12 +40,8 @@ private theorem isClosedImmersion_of_isPullback {A B C D : Scheme.{u}}
   rw [← sq.flip.isoPullback_hom_snd]
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the projections are the initial isomorphisms, so the assertion is the initial compatibility. At the next stage, express each projection as the adjacent transition followed by the preceding projection. Commute the comparison across that transition by the step hypothesis and apply induction to the preceding projections.
 -/
 theorem comp_projectionToBase_of_comp_blowupMorphism {S X : Scheme.{u}} (s : SequenceOfBlowups S) (t : SequenceOfBlowups X)
     (L : ℕ) (j : S ⟶ X) (σ : ∀ i : ℕ, i ≤ L → (s.schemeAt i ⟶ t.schemeAt i))
@@ -68,28 +64,8 @@ theorem comp_projectionToBase_of_comp_blowupMorphism {S X : Scheme.{u}} (s : Seq
 
 namespace IsPushforwardBlowupSeq
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove both required implications or components. A detailed English derivation is pending.
+/- English proof (authored)
+The given length equalities make the two new sequences have equal length. At each stage the strict comparisons give pullback squares over the bases, by composing their adjacent pullback squares. Lift the original closed immersion comparison to the new ambient stage using its pullback square and the base closed immersion square. Pullback pasting shows the lifted comparison is itself a base change of the old closed immersion. Its initial and step compatibilities follow by projecting to both factors of the relevant pullback. Its center formula follows because direct image along a closed immersion commutes with flat pullback. Finally its kernel is the flat pullback of the old kernel, and strict transform commutes with the flat pullback of the Noetherian blowup stages. This gives the required kernel formula at every step.
 -/
 theorem of_flat_isPullback {S X S' X' : Scheme.{u}}
     (j : S ⟶ X) (j' : S' ⟶ X') (g : X' ⟶ X) (p : S' ⟶ S)

@@ -15,12 +15,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback ideal is the kernel of the first projection of the fiber product with the closed subscheme. The factorization through the monomorphism defines a map from the closed subscheme to this fiber product. Its second projection is the identity, and its composite with the first projection is the given factorization. The second projection followed by the factorization equals the first projection by cancellation of the monomorphism. Thus the map to the fiber product and its second projection are inverse, and the two kernels agree.
 -/
 private theorem comap_eq_ker_of_mono {U V : Scheme.{u}} (j : U ⟶ V) [Mono j]
     (I : V.IdealSheafData) (lam : I.subscheme ⟶ U) (hlam : lam ≫ j = I.subschemeι) :
@@ -43,17 +39,15 @@ private theorem comap_eq_ker_of_mono {U V : Scheme.{u}} (j : U ⟶ V) [Mono j]
   rw [hc]
   exact (ker_eq_ker_of_isIso_comp lam (Limits.pullback.fst j I.subschemeι) e hefst).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The kernel of the composite is the image under the outer morphism of the inclusion's kernel. The kernel of the inclusion of the closed subscheme is its defining ideal. Substitution gives the direct image formula.
 -/
 theorem map_eq_ker_subschemeι_comp {U V : Scheme.{u}} (j : U ⟶ V) (K : U.IdealSheafData) :
     K.map j = Scheme.Hom.ker (K.subschemeι ≫ j) := by
   rw [Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel containment allows the closed subscheme cut out by $L$ to factor through the closed immersion. The kernel of the factorization is the pullback of $L$ along that immersion, hence is $K$. The composite of the subscheme defined by this kernel with the immersion has the same kernel as the original factorization followed by the immersion. That composite is the inclusion of the closed subscheme defined by $L$, whose kernel is $L$.
 -/
 theorem ker_subschemeι_comp_eq_of_ker_le {U V : Scheme.{u}} (j : U ⟶ V) [IsClosedImmersion j]
     (L : V.IdealSheafData) (hL : Scheme.Hom.ker j ≤ L) (K : U.IdealSheafData)
@@ -69,8 +63,8 @@ theorem ker_subschemeι_comp_eq_of_ker_le {U V : Scheme.{u}} (j : U ⟶ V) [IsCl
   rw [hK, hcomap, Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι,
     ← Scheme.Hom.ker_comp, hfac, Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is the scheme-theoretic closure of the inverse image off the center. The open used in this construction is the complement of the support of the pulled-back center. On that open, the inverse image is the closed subscheme defined by the restriction of the pulled-back ideal. Its inclusion into the open followed by the open inclusion has kernel equal to the strict-transform ideal.
 -/
 theorem strictTransform_eq_ker_complComapSupport {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -82,10 +76,8 @@ theorem strictTransform_eq_ker_complComapSupport {X X₁ : Scheme.{u}} (π : X�
     ← complComapSupport_eq]
   exact ker_ι_preimage_comp_subschemeι_eq_ker_comap (D.comap π) (complComapSupport π Z)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The commuting square identifies the pullback of the ambient image center to the new source with the pullback of the original center. Here pulling the image center back through the original closed immersion recovers its ideal. Supports of pulled-back ideals are inverse images of supports. Taking complements now identifies the two indicated opens.
 -/
 theorem preimage_complComapSupport_eq {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A') [IsClosedImmersion j]
     (Z : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)
@@ -107,10 +99,8 @@ theorem preimage_complComapSupport_eq {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ 
       = ⇑j₁.base ⁻¹' (((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π').support : Set A'₁)ᶜ := rfl
   rw [h1, coe_complComapSupport, h2, Set.preimage_compl]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the commuting square to the chosen target open and its inverse image. Pulling back the restricted ambient image ideal through the restricted immersion gives the restricted source ideal, since pulling the original image ideal back through its closed immersion recovers the original ideal. The assumed kernel containment then identifies the image of the resulting source subscheme in the target open with the subscheme given by the ambient restriction. Composing with the target open inclusion gives equality of their kernels in the ambient scheme.
 -/
 private theorem map_ker_subschemeι_comp_restrict {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j]
@@ -149,10 +139,8 @@ private theorem map_ker_subschemeι_comp_restrict {A A' A₁ A'₁ : Scheme.{u}}
       ((((Scheme.Hom.ker (D.subschemeι ≫ j)).comap π').comap V'.ι).subschemeι) V'.ι,
     Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the ambient open away from the center is the open away from the source center. On that ambient open, the kernel of the restricted closed immersion is the restriction of the pullback of the old immersion's kernel, by the strict-transform hypothesis. It is contained in the restricted pullback of the image ideal of $D$, because that image subscheme factors through the old closed immersion. The comparison for restricted image ideals now identifies the two inverse images off the centers after embedding into the ambient scheme. Taking the kernels of the resulting maps into that scheme identifies their scheme-theoretic closures, which define the strict transforms.
 -/
 theorem image_strictTransform_eq_strictTransform_image {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j] (Z D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)
@@ -190,8 +178,8 @@ theorem image_strictTransform_eq_strictTransform_image {A A' A₁ A'₁ : Scheme
   exact (strictTransform_eq_ker_complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))
     (Scheme.Hom.ker (D.subschemeι ≫ j))).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the images of the center, the ideal being transformed, and its strict transform as kernels of their subscheme inclusions followed by the closed immersions. The strict-transform hypothesis and the asserted equality then have exactly the form of the kernel comparison for strict transforms, which proves the result.
 -/
 theorem map_strictTransform_eq_strictTransform_map {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j] (Z D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)

@@ -16,12 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal defines the empty subscheme. Its composite map to the target is quasi-compact, since all inverse images are empty. The support of the kernel of that composite is the closure of its image, which is empty. Thus the image ideal is the unit ideal.
 -/
 private theorem imageIdealSheaf_top {S X : Scheme.{u}} (σ : S ⟶ X) :
     imageIdealSheaf σ (⊤ : S.IdealSheafData) = ⊤ := by
@@ -38,10 +34,8 @@ private theorem imageIdealSheaf_top {S X : Scheme.{u}} (σ : S ⟶ X) :
   rw [hs]
   simp
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the unit ideal is unit because its subscheme is empty. Conversely, pulling an image ideal back through the closed immersion recovers the original ideal. If the image is unit then so is its pullback.
 -/
 private theorem imageIdealSheaf_eq_top_iff {S X : Scheme.{u}} (σ : S ⟶ X) [IsClosedImmersion σ]
     (I : S.IdealSheafData) : imageIdealSheaf σ I = ⊤ ↔ I = ⊤ := by
@@ -54,16 +48,16 @@ private theorem imageIdealSheaf_eq_top_iff {S X : Scheme.{u}} (σ : S ⟶ X) [Is
   · rintro rfl
     exact imageIdealSheaf_top σ
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Replace the two equal indices by a common index. The inserted identification is the identity of that stage and leaves the projection unchanged.
 -/
 private theorem eqToHom_projectionToBase {Sc : Scheme.{u}} (t : SequenceOfBlowups Sc) {a a' : ℕ} (ha : a = a') :
     eqToHom (congrArg t.schemeAt ha) ≫ t.projectionToBase a' = t.projectionToBase a := by
   subst ha
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify the equal pairs of indices in the stage schemes. The inserted identification maps are then identities, and the displayed commutativity reduces to the given equality of composites.
 -/
 private theorem comp_eqToHom_comp_transitionMap {Sc A C : Scheme.{u}} (t : SequenceOfBlowups Sc) {a b a' b' : ℕ}
     (ha : a = a') (hb : b = b') (hab : a ≤ b) (hab' : a' ≤ b')
@@ -75,8 +69,8 @@ private theorem comp_eqToHom_comp_transitionMap {Sc A C : Scheme.{u}} (t : Seque
   subst hb
   simpa using H
 
-/- English proof (translation)
-Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Substitute the equality of indices. The appended map is then the identity of the target stage, so the composite is the given closed immersion.
 -/
 private theorem isClosedImmersion_comp_eqToHom {Sc A : Scheme.{u}} (t : SequenceOfBlowups Sc) {a a' : ℕ}
     (ha : a = a') (f : A ⟶ t.schemeAt a) (hf : IsClosedImmersion f) :
@@ -84,8 +78,8 @@ private theorem isClosedImmersion_comp_eqToHom {Sc A : Scheme.{u}} (t : Sequence
   subst ha
   simpa using hf
 
-/- English proof (translation)
-Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+After identifying the equal stage indices, the extra map is the identity. The two descriptions of the center therefore reduce to the given image-ideal equality.
 -/
 private theorem center_eq_imageIdealSheaf_comp_eqToHom {Sc A : Scheme.{u}} (t : SequenceOfBlowups Sc)
     (I : A.IdealSheafData) {a a' : ℕ} (ha : a = a') (f : A ⟶ t.schemeAt a)
@@ -94,8 +88,8 @@ private theorem center_eq_imageIdealSheaf_comp_eqToHom {Sc A : Scheme.{u}} (t : 
   subst ha
   simpa using hf
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify each of the equal indices in the source and target stages. The inserted maps are identities, so the new kernel and strict transform statements are exactly the ones in the hypothesis.
 -/
 private theorem ker_comp_eqToHom_eq_strictTransform {Sc A C : Scheme.{u}} (t : SequenceOfBlowups Sc)
     {a b a' b' : ℕ} (ha : a = a') (hb : b = b') (hab : a ≤ b) (hab' : a' ≤ b')
@@ -107,38 +101,8 @@ private theorem ker_comp_eqToHom_eq_strictTransform {Sc A C : Scheme.{u}} (t : S
   subst hb
   simpa using H
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+At every step the ambient center is the image of the source center, so either both centers are empty or both are nonempty. Consequently the retained indices and lengths after deleting empty-center steps agree. Use the old closed immersions at the retained indices. Their squares commute for arbitrary longer transitions by composition of adjacent squares, and the original centers and projection identities give the corresponding conditions at retained stages. For the kernel update, take the strict transform for the first blowup of a retained transition. Each subsequent step in that transition has empty center and is an isomorphism, so its strict transform is pullback. By compatibility with composition by isomorphisms, these pullbacks give the strict transform along the full retained transition. This verifies the last pushforward condition.
 -/
 theorem isPushforwardSequenceOfBlowups_withoutIsoBlowups {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     (B : SequenceOfBlowups S) (t : SequenceOfBlowups X)

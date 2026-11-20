@@ -15,27 +15,15 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace IsPushforwardBlowupSeq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The kernel ideal of a composite is the image under the second morphism of the first kernel ideal. That image ideal is defined by the kernel of the first kernel subscheme's inclusion followed by the second morphism. Combining these descriptions gives the result.
 -/
 private theorem ker_comp_eq_ker_subschemeι_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) :
     Scheme.Hom.ker (f ≫ g) = Scheme.Hom.ker ((Scheme.Hom.ker f).subschemeι ≫ g) :=
   (ker_comp_eq_imageIdealSheaf_ker f g).trans (imageIdealSheaf_eq_ker g f.ker)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two given length equalities give equal lengths for the first and third sequences. Compose the two closed immersions at each stage. Their initial and adjacent compatibilities compose, and functoriality of the image ideal shows that the last sequence's center is the image of the first center. For the strict transform condition, express the later kernel of the composite immersion as the image of the later kernel of the first immersion. In the middle sequence this latter kernel is a strict transform. The second immersion square identifies its image with the strict transform of the earlier image, since the later second immersion itself cuts out the strict transform of the earlier one. The earlier image equals the earlier composite kernel. This gives all the pushforward conditions.
 -/
 theorem comp {Y H X : Scheme.{u}} (σ : Y ⟶ H) [IsClosedImmersion σ]
     (ρ : H ⟶ X) [IsClosedImmersion ρ]
@@ -98,12 +86,8 @@ theorem comp {Y H X : Scheme.{u}} (σ : Y ⟶ H) [IsClosedImmersion σ]
           (Scheme.Hom.ker (a i hi.le ≫ b i hit.le))
     rw [hL, key, hC, hD]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the inverse stage isomorphisms from the new source to the old one. They commute with the initial identifications and transitions, and the adjacent squares are pullbacks because the comparison maps are isomorphisms. The center equalities transport under the inverse isomorphisms by functoriality of pullback. Thus the new source is a strict pullback of the old one over the identity of the base. Compose this comparison with the given pushforward, using that the identity followed by the closed immersion is the same closed immersion.
 -/
 theorem of_isomorphic_source {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     {s s' : SequenceOfBlowups S} {t : SequenceOfBlowups X}

@@ -32,8 +32,8 @@ private def chartOnOpenSubscheme {Y : Scheme.{u}} {k : Type u} [Field k] {q : Y 
   comp_struct := by rw [Category.assoc, c.comp_struct]
   isEtale := hEt
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate ideal is the pullback of the coordinate-subspace ideal along the chart map. Restricting it to the whole open subscheme pulls it back along the additional open inclusion. By functoriality this is pullback along the composite defining the new chart.
 -/
 private theorem restrictIdeal_top_coordIdeal {Y : Scheme.{u}} {k : Type u} [Field k]
     {q : Y ⟶ Spec (CommRingCat.of k)} {V : Y.Opens} {m : ℕ} (c : EtaleChart q V m)
@@ -43,16 +43,8 @@ private theorem restrictIdeal_top_coordIdeal {Y : Scheme.{u}} {k : Type u} [Fiel
   simp only [restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]
   exact (Scheme.IdealSheafData.comap_comp _ _ _).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At every point, membership in the support means that the coordinate germ generates a proper ideal, so the germ is never a unit. The coordinate's basic open is empty. On the affine scheme this makes the coordinate nilpotent. It is also a nonzero divisor by the étale coordinate property, so multiplication by a sufficiently high power can kill one only if one is zero. The resulting zero stalk at the given point contradicts the properness of the stalk ideal there.
 -/
 private theorem false_of_forall_mem_support_of_coordIdeal_singleton {Z : Scheme.{u}} {k : Type u} [Field k]
     (p : Z ⟶ Spec (CommRingCat.of k)) (hZ : IsAffineOpen (⊤ : Z.Opens)) {m : ℕ}
@@ -84,26 +76,8 @@ private theorem false_of_forall_mem_support_of_coordIdeal_singleton {Z : Scheme.
   rw [hstalk1]
   exact Submodule.zero_mem _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the support contains an irreducible component. Since there are finitely many components, irreducibility and maximality give a point of this component outside all other components. Choose an affine open around that point inside the given coordinate chart and disjoint from all other components. Every point of this affine open then lies in the component and in the support of the restricted ideal. Select one coordinate from its nonempty set of generators. The support of its principal coordinate ideal contains that of the restricted ideal, hence is the whole affine open. This contradicts the fact that a single étale coordinate cannot vanish everywhere on a nonempty affine chart.
 -/
 theorem nonzeroOnComponents_of_locally_eq_coordIdeal {Y : Scheme.{u}} {k : Type u} [Field k]
     (q : Y ⟶ Spec (CommRingCat.of k)) (K : Y.IdealSheafData)
@@ -197,16 +171,16 @@ abbrev hypersurfaceStructureMap (C : MaximalContactCover p τ I c) :
     C.hypersurfaceScheme ⟶ Spec (CommRingCat.of k) :=
   C.toCoverData.iInfImageIdeal.subschemeι ≫ C.projection ≫ p
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assembled ideal defines a smooth divisor for the composite map from the total space to the field. In particular, the divisor's closed subscheme is smooth under its induced structural map, which is the displayed map.
 -/
 theorem smooth_hypersurfaceStructureMap (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Smooth C.hypersurfaceStructureMap :=
   ((isSmoothDivisor_iff (C.projection ≫ p) C.toCoverData.iInfImageIdeal).mp
     C.isSmoothDivisor_iInfImageIdeal).2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The total disjoint union is affine and the defining hypersurface inclusion is a closed immersion, hence an affine morphism. Its source is therefore affine.
 -/
 theorem isAffine_hypersurfaceScheme (C : MaximalContactCover p τ I c) : IsAffine C.hypersurfaceScheme := by
   have : IsAffine C.toCoverData.disjointUnion := C.isAffine_disjointUnion
@@ -215,8 +189,8 @@ theorem isAffine_hypersurfaceScheme (C : MaximalContactCover p τ I c) : IsAffin
 instance instIsAffineHypScheme (C : MaximalContactCover p τ I c) : IsAffine C.hypersurfaceScheme :=
   C.isAffine_hypersurfaceScheme
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The fiber is a closed subscheme of the affine total disjoint union, since its inclusion is the base change of the original closed immersion. A closed subscheme of an affine scheme is affine.
 -/
 theorem isAffine_pullbackFiber (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     IsAffine C.pullbackFiber := by
@@ -228,12 +202,8 @@ instance instIsAffineStarFiber (C : MaximalContactCover p τ I c) [IsClosedImmer
     IsAffine C.pullbackFiber :=
   C.isAffine_pullbackFiber
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The Noetherian total space has finitely many irreducible components. At a point of the assembled ideal's support, choose a cover summand containing the point. Its local ideal cannot be unit, since that would put the point outside the support. The local ideal is therefore the ideal of the chosen single coordinate in the summand's étale chart. The criterion for locally nonempty coordinate ideals shows that the assembled support contains no component.
 -/
 theorem nonzeroOnComponents_iInfImageIdeal (C : MaximalContactCover p τ I c)
     [TopologicalSpace.NoetherianSpace ↥C.toCoverData.disjointUnion] :
@@ -253,18 +223,16 @@ theorem nonzeroOnComponents_iInfImageIdeal (C : MaximalContactCover p τ I c)
     rw [MaxContactReduction.FiniteOpenCoverWithIdeals.restrictIdeal_iInfImageIdeal_summandOpen, hch,
       MaxContactReduction.FiniteOpenCoverWithIdeals.summandEtaleChart_coordIdeal]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal on the hypersurface is the image of the pulled-back original ideal under the fiber inclusion. An image ideal contains the kernel of the morphism, since it contains the image of the zero ideal.
 -/
 theorem ker_pullbackFiberToHypersurface_le_idealOnHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     Scheme.Hom.ker C.pullbackFiberToHypersurface ≤ C.idealOnHypersurface := by
   rw [C.idealOnHypersurface_eq_imageIdealSheaf]
   exact ker_le_map_idealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At any point outside the kernel's support the kernel stalk is the unit ideal. The ideal on the hypersurface contains the kernel, so its stalk there is unit as well. This proves the required support containment.
 -/
 theorem support_idealOnHypersurface_subset_support_ker (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
@@ -280,10 +248,8 @@ theorem support_idealOnHypersurface_subset_support_ker (C : MaximalContactCover 
   rw [hker, top_le_iff] at h1
   exact hx' h1
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion of the fiber into the hypersurface has closed image, and that image equals the support of the kernel. Thus every support point is the image of a fiber point and admits the specified chart with a nonempty set of coordinate generators. The hypersurface has finitely many irreducible components by Noetherianity. Apply the local coordinate criterion to the kernel ideal.
 -/
 theorem nonzeroOnComponents_ker_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     [TopologicalSpace.NoetherianSpace ↥C.hypersurfaceScheme]
@@ -307,8 +273,8 @@ theorem nonzeroOnComponents_ker_pullbackFiberToHypersurface (C : MaximalContactC
   obtain ⟨W, hW, m, ch, S, hS, hres⟩ := hloc x
   exact ⟨W, hx ▸ hW, m, ch, S, hS, hres⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel support contains no irreducible component by the local coordinate condition. The support of the hypersurface ideal is contained in that kernel support, so it also contains no component.
 -/
 theorem nonzeroOnComponents_idealOnHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     [TopologicalSpace.NoetherianSpace ↥C.hypersurfaceScheme]
@@ -322,8 +288,8 @@ theorem nonzeroOnComponents_idealOnHypersurface (C : MaximalContactCover p τ I 
   intro T hT hTsub
   exact hker T hT (hTsub.trans (C.support_idealOnHypersurface_subset_support_ker))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total space is locally of finite type and quasi-compact over the field. The nonempty hypersurface is closed in it, and its inclusion's kernel is the assembled ideal, which has support containing no component. Apply the strict Krull dimension bound for such a closed immersion.
 -/
 theorem krullDimSucc_hypersurfaceScheme_lt (C : MaximalContactCover p τ I c)
     [AlgebraicGeometry.LocallyOfFiniteType p]

@@ -16,19 +16,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pulling back an ideal to its own zero subscheme gives the zero ideal. Equivalently, the pullback of its closed immersion along itself has identity first projection, whose kernel is zero.
 -/
 private theorem comap_subschemeι_self {W : Scheme.{u}} (J : W.IdealSheafData) :
     J.comap J.subschemeι = ⊥ := by
   simp [Scheme.IdealSheafData.comap]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The complement order embedding maps the indicated indices bijectively onto $S$ with $a$ removed. It is injective, and any element of $S$ different from $a$ has a preimage in the complement. Since $a$ belongs to $S$, erasing it reduces the cardinality by one.
 -/
 theorem card_complEmbPreimage (m : ℕ) (S : Finset (Fin m)) (a : Fin m) (ha : a ∈ S) :
     (complEmbPreimage m S a).card = S.card - 1 := by
@@ -52,15 +48,15 @@ namespace MaximalContactCover
 variable {X X' : Scheme.{u}} {k : Type u} [Field k] {p : X' ⟶ Spec (CommRingCat.of k)}
   {τ : X ⟶ X'} {I : X.IdealSheafData} {c : ℕ}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the fact that an ideal pulls back to zero on its defining closed subscheme to the covering hypersurface ideal.
 -/
 theorem comap_iInfImageIdeal_subschemeι_eq_bot (C : MaximalContactCover p τ I c) :
     C.toCoverData.iInfImageIdeal.comap C.toCoverData.iInfImageIdeal.subschemeι = ⊥ :=
   comap_subschemeι_self C.toCoverData.iInfImageIdeal
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The map from the fiber to the total space factors through the hypersurface inclusion. Its kernel is the direct image of the kernel of the map to the hypersurface. Since the inclusion is a closed immersion, pulling back this image along it recovers the kernel on the hypersurface.
 -/
 theorem ker_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     Scheme.Hom.ker C.pullbackFiberToHypersurface =
@@ -69,18 +65,8 @@ theorem ker_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsCl
   rw [C.pullbackFiberToHypersurface_comp_subschemeι] at h
   rw [h, Blowup.comap_map_of_isClosedImmersion]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a fiber point, choose the cover summand containing its image in the total space. The pullback square shows that its image in the original ambient scheme comes from the closed source, so this summand cannot be disjoint from the source. In its adapted chart the source fiber is defined by a coordinate set $S$ of size $c$, and the hypersurface is the coordinate $j$ in $S$. Restrict the chart to that hypersurface. The fiber kernel there is the restriction of the total-space fiber kernel and is generated by the remaining coordinates. Their indexing set is in bijection with $S$ with $j$ removed, giving the specified codimension $c-1$.
 -/
 theorem hasEtaleCoordCodim_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     HasEtaleCoordCodim (C.toCoverData.iInfImageIdeal.subschemeι ≫ C.projection ≫ p) C.pullbackFiberToHypersurface
@@ -137,14 +123,8 @@ theorem hasEtaleCoordCodim_pullbackFiberToHypersurface (C : MaximalContactCover 
       exact restrictIdeal_comap_subschemeι_eq_coordIdeal (C.toCoverData.summandEtaleChart i ch)
         hUaff (Scheme.Hom.ker C.pullbackFiberToTotal) C.toCoverData.iInfImageIdeal S j hZ hH
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the fiber's defining ideal with the assembled hypersurface ideal on each cover summand. On a disjoint summand both restrict to the unit ideal. On an adapted summand the fiber uses a coordinate set of size one, so its only coordinate is the chosen hypersurface coordinate and the two ideals agree there as well. The summands cover the total space, so the ideals agree globally. The kernel of the map into the hypersurface is the pullback of this ideal to its own zero subscheme and is zero. A closed immersion with zero kernel is an isomorphism.
 -/
 theorem isIso_pullbackFiberToHypersurface_of_eq_one (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] (hc : c = 1) :
     IsIso C.pullbackFiberToHypersurface := by

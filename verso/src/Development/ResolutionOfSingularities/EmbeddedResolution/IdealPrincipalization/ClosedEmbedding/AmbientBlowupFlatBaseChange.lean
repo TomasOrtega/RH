@@ -28,10 +28,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Form the stagewise flat base change of the ambient sequence over $X$ to $Y$. The ambient stages and their pullbacks are Noetherian, so the flat base-change theorem for pushforwards applies to the closed immersion square and the two strict comparisons. It identifies this base-changed ambient sequence as a pushforward of the given sequence on $S'$. The ambient construction over $Y$ is another pushforward of that same sequence. Pushforward uniqueness gives a sequence isomorphism between them, and transporting the strict pullback comparison along it proves the claim.
 -/
 theorem isStrictPullbackBlowupSeq_ambientBlowupSequence_of_flat
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -77,14 +75,8 @@ theorem isStrictPullbackBlowupSeq_ambientBlowupSequence_of_flat
       (isPushforwardBlowupSeq_ambientBlowupSequence ι' s' hres hno hs')
   exact IsStrictPullbackBlowupSeq.of_isomorphic_pullback hstrict hequiv
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The induced map from $S'$ to $S$ is flat because it is a base change of the ambient flat map. Form strict base changes of both original sequences. By flat base change of pushforwards, the strict ambient base change is a pushforward of the strict source base change. Removing empty-center steps preserves that pushforward relation. The resulting source sequence is isomorphic to the given sequence on $S'$, since both are pullbacks with empty centers omitted. Thus the pruned ambient base change is a pushforward of the given sequence on $S'$. Pushforward uniqueness identifies it with the ambient construction over $Y$. Transport the pullback comparison after removing empty steps across this isomorphism.
 -/
 theorem isPullbackBlowupSequence_ambientBlowupSequence_of_flat
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

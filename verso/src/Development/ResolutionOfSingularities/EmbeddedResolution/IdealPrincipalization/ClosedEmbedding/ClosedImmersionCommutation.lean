@@ -50,8 +50,8 @@ def AdmissibilityStableUnderSmoothPullback : Prop :=
       [AlgebraicGeometry.Smooth h] [AlgebraicGeometry.QuasiCompact q],
       h ≫ T.structMap = q → (T.pullbackAlong Y q h).IsAdmissible
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Take an admissible marked ideal with boundary and a smooth morphism over its base field whose source has quasi-compact structure map. The smooth pullback theorem for marked ideals with boundary shows that the pulled-back ideal and boundary satisfy the admissibility conditions. The resulting statement applies to every such input.
 -/
 theorem isAdmissible_pullbackAlong_of_smooth : AdmissibilityStableUnderSmoothPullback.{u} := by
   intro T hV Y q h hs hqc hq
@@ -59,8 +59,8 @@ theorem isAdmissible_pullbackAlong_of_smooth : AdmissibilityStableUnderSmoothPul
   have := hqc
   exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension-level construction agrees with the final maximum-order reduction at any level at least the dimension bound of the input scheme. Apply this stabilization to the marked triple with multiplicity one, whose underlying scheme is the given scheme.
 -/
 private theorem maxOrderReduction_outputLevelData_eq_markedBlowupSeq (rules : PrincipalizationRules.{u}) (k : Type u) [Field k]
     (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
@@ -68,8 +68,8 @@ private theorem maxOrderReduction_outputLevelData_eq_markedBlowupSeq (rules : Pr
     (rules.outputLevelData N).maxOrderRed (markedTripleOrderOne k X p I E) = rules.markedBlowupSeq k X p I E :=
   rules.outputLevelData_maxOrderReduction_eq_at_dim (markedTripleOrderOne k X p I E) h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Converting to data and back retains the length, stages, adjacent transitions, centers, and initial isomorphism. Take the identity isomorphism at each stage. These identities commute with the initial and adjacent maps and pull each center back to itself, giving the sequence isomorphism.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.Isomorphic s := by
@@ -81,8 +81,8 @@ private theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{
   · intro i hi
     exact Scheme.IdealSheafData.comap_id _
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the given equality of base embeddings. The pushforward relation is then the one already supplied.
 -/
 private theorem isPushforwardSequenceOfBlowups_congr_hom {S X : Scheme.{u}} {f g : S ⟶ X}
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -91,8 +91,8 @@ private theorem isPushforwardSequenceOfBlowups_congr_hom {S X : Scheme.{u}} {f g
   subst h
   exact hp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every stage up to the last is obtained by finitely many blowups of the Noetherian base, up to the initial isomorphism. The Noetherian stage theorem gives Noetherianity, which implies local Noetherianity.
 -/
 private theorem isLocallyNoetherian_schemeAt {X : Scheme.{u}} (s : SequenceOfBlowups X)
     [AlgebraicGeometry.IsNoetherian X] (i : ℕ) (hi : i ≤ s.length) :
@@ -100,12 +100,8 @@ private theorem isLocallyNoetherian_schemeAt {X : Scheme.{u}} (s : SequenceOfBlo
   have := isNoetherian_schemeAt s i hi
   infer_instance
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The support of the kernel is the image of the closed immersion. Every point of that image therefore has the indicated local coordinate description from a source point. Its coordinate set has size $c\geq 1$, so it is nonempty. The Noetherian ambient space has finitely many irreducible components, and the criterion for ideals locally generated by nonempty coordinate sets shows that the kernel support contains no component.
 -/
 private theorem nonzeroOnComponents_ker_of_hasEtaleCoordCodim {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X')
@@ -131,8 +127,8 @@ namespace MaximalContactCover
 variable {X X' : Scheme.{u}} {k : Type u} [Field k] {p : X' ⟶ Spec (CommRingCat.of k)}
   {τ : X ⟶ X'} {I : X.IdealSheafData} {c : ℕ}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map from the covering disjoint union to the field is locally of finite type, because the cover projection is étale and the ambient structure map is locally of finite type. The field is Noetherian, so the total scheme of this cover is Noetherian.
 -/
 theorem isNoetherian_disjointUnion [AlgebraicGeometry.LocallyOfFiniteType p]
     (C : MaximalContactCover p τ I c) :
@@ -144,8 +140,8 @@ instance instIsNoetherianTotal [AlgebraicGeometry.LocallyOfFiniteType p]
     AlgebraicGeometry.IsNoetherian C.toCoverData.disjointUnion :=
   isNoetherian_disjointUnion C
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The hypersurface is a closed subscheme of the Noetherian disjoint union of the cover. Its immersion is locally of finite type, which gives Noetherianity of the hypersurface.
 -/
 theorem isNoetherian_subscheme_iInfImageIdeal [AlgebraicGeometry.LocallyOfFiniteType p]
     (C : MaximalContactCover p τ I c) :
@@ -172,60 +168,14 @@ private def IsClosedEmbeddingCompatibleInCodim (rules : PrincipalizationRules.{u
       IsPushforwardBlowupSeq j (rules.markedBlowupSeq k X p I []).toSequenceOfBlowups
         (rules.markedBlowupSeq k X' p' (imageIdealSheaf j I) []).toSequenceOfBlowups
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
+/- English proof (authored)
+Induct on the positive coordinate codimension. Codimension zero cannot satisfy the positive codimension hypothesis. First, if the source is empty, its ideal has empty support and its ambient image ideal is the unit ideal. The two order-one cosupports are empty, so correctness gives zero-length sequences, which have the required pushforward relation.
 
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+For a nonempty source, take the finite maximal-contact cover of the ambient scheme by adapted étale charts. Let $W$ be the disjoint union of the cover, $S$ the pullback of the source to $W$, and $H$ the smooth hypersurface in $W$ assembled from the chosen coordinates. The map from $S$ to $W$ factors through $H$, and the ideal on $H$ is the image of the pulled-back source ideal. Its image on $W$ is the pullback of the original ambient ideal. Smooth pullback gives admissibility on $S$ and $W$. The ideal on $H$ is also admissible. When the original codimension is one, $S$ is isomorphic to $H$, so nonvanishing on components is transported from $S$. For higher codimension, the embedding of $S$ in $H$ is locally cut out by a nonempty set of coordinates, which gives nonvanishing on components there.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+Use correctness for smooth surjective pullback in codimension one to identify the sequence on $S$ as a strict pullback of the sequence on $H$ over their isomorphism. Such a strict pullback is a pushforward along the isomorphism. In higher codimension the map from $S$ to $H$ has coordinate codimension one less than the given immersion, so the induction hypothesis gives the corresponding pushforward. The ambient image ideal has order at most one since it contains the kernel of the original smooth closed immersion, whose order is bounded by one in adapted charts. This bound pulls back to $W$. Moreover, $H$ has strictly smaller dimension than $W$, since its smooth divisor contains no component. Choose a dimension level above all the schemes involved. The order-reduction pushforward property then uses the sequence on $H$ at the preceding level to give the order-reduction sequence on $W$. Stabilization identifies the input sequence with the final one on $H$, and the order bound identifies the output with the maximum-order reduction on $W$ up to isomorphism. Compose these two pushforwards to get the desired relation over the cover.
 
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+To descend it, first construct an ambient pushforward of the original source sequence. Its centers contain no component by admissibility and the center property of a marked sequence. After flat base change to $W$, it is a pushforward of the sequence on $S$ because the smooth surjective comparison from $S$ to the original source is a strict pullback of the source sequence. Pushforward uniqueness identifies this base change with the sequence on $W$ already obtained. The latter is also the strict pullback of the prescribed original ambient sequence. Descent along the smooth surjective cover identifies the two ambient sequences, and transport across that isomorphism proves the assertion.
 -/
 private theorem commutesWithClosedImmersion_forall_codim (rules : PrincipalizationRules.{u}) (hB : rules.ReducesInductivelyOnDimension)
     (hpv : AdmissibilityStableUnderSmoothPullback.{u}) : ∀ c : ℕ, IsClosedEmbeddingCompatibleInCodim rules c := by
@@ -499,16 +449,16 @@ private theorem commutesWithClosedImmersion_forall_codim (rules : Principalizati
         have hdesc := IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic ht' hSW huniq
         exact IsPushforwardBlowupSeq.of_isomorphic j hpf0 hdesc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For the given embedding, take its positive coordinate codimension and apply the codimension induction theorem. The smoothness, finiteness, structure-map compatibility, coordinate, and nonvanishing conditions are precisely the hypotheses for that result.
 -/
 theorem commutesWithClosedImmersion_of_isCorrect_of_smoothPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (hpv : AdmissibilityStableUnderSmoothPullback.{u}) : CommutesWithClosedImmersion.{u} B := by
   intro k ik icz X X' p ism ift iqc p' ism' ift' iqc' j ij hjp c hc hcod I hI hIim _ _
   exact commutesWithClosedImmersion_forall_codim B hB hpv c k icz X X' p p' j ism ift iqc ism' ift' iqc' hjp hc hcod I hI hIim
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility is stable under smooth pullback by the marked-ideal theorem. Supply that stability to the closed immersion compatibility result for the dimension-recursive rules.
 -/
 theorem commutesWithClosedImmersion_of_isCorrect (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension) :
     CommutesWithClosedImmersion.{u} B :=

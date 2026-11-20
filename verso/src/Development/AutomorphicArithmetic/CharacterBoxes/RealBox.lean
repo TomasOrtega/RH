@@ -3,8 +3,8 @@ import Development.AutomorphicArithmetic.CharacterBoxes.RealSplit
 
 open Formalism.HC UpperTheory.Top
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+A primitive host character is the primitive character associated to a character at the host conductor. Its modulus is therefore a conductor dividing that host level.
 -/
 private theorem UpperTheory.Top.realBox_level {φ : Frame} (H : HostRaw φ) (χ : PChar)
     (h : H.IsCharE χ.χ) : χ.N ∣ H.QS * H.q * H.d := by
@@ -13,32 +13,8 @@ private theorem UpperTheory.Top.realBox_level {φ : Frame} (H : HostRaw φ) (χ 
   subst hθ
   exact DirichletCharacter.conductor_dvd_level _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Decompose the real primitive character into a residual character of conductor dividing eight times the odd part of the selected modulus and optional quadratic twists at q and d. Neither q nor d divides the residual conductor because the host primes are odd and coprime to the selected modulus. At least one twist occurs by the hypothesis on the full conductor, and the d-twist occurs exactly when d divides that conductor. Coprimality with the pair modulus implies coprimality with the host conductor by the stated restriction on prime divisors. The twist formula thus satisfies the inducing condition for the good-pair zero box. For the conductor estimate, multiply the residual conductor bound by the upper exponential bounds for the primes that occur.
 -/
 private theorem UpperTheory.Top.realBox_main (M : ℕ) (φ : Frame) (H : HostRaw φ) (eps Y X : ℝ)
     (hpr : ∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * M) (hM : ordCompl[2] H.QS ∣ M) (hg : PairGood M eps Y X H.q H.d)
@@ -126,10 +102,8 @@ private theorem UpperTheory.Top.realBox_main (M : ℕ) (φ : Frame) (H : HostRaw
   rw [hjd]
   exact ⟨hbox, hbound⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
+/- English proof (authored)
+The preceding estimate gives the zero box and conductor bound for each real host character involving q or d. A real argument has height zero, so it lies within the height cutoff and the box gives the real nonvanishing statement.
 -/
 theorem UpperTheory.Top.realBox :
     ∀ (M : ℕ) (φ : Frame) (H : HostRaw φ) (eps Y X : ℝ), 0 < M → (∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * M) → ordCompl[2] H.QS ∣ M →

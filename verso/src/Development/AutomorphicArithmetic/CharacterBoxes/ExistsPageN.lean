@@ -48,12 +48,8 @@ def VWinAt (ψ : PChar) (Ct : ℝ) : Prop :=
 
 def VWin : Prop := ∀ ψ : PChar, VWinAt ψ 401
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression.
+/- English proof (authored)
+When t′ ≤ t, every local length in the shorter range is finite by the original finiteness assertion. Its summands are nonnegative, so the weighted sum over the shorter range is bounded by the original sum. Apply its bound by B and then B ≤ B′.
 -/
 theorem VVle.mono {E : Type} [Field E] [NumberField E] {t t' : ℕ} {B B' : ℝ} (h : VVle E t B) (ht : t' ≤ t) (hB : B ≤ B') :
     VVle E t' B' := by
@@ -71,12 +67,8 @@ theorem VVle.mono {E : Type} [Field E] [NumberField E] {t t' : ℕ} {B B' : ℝ}
   · intro e _ _
     positivity
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For x ≥ 1 put A = x raised to 2 + 8ε, which is at least one. Choose successive powers 2ⁿ ≤ A < 2ⁿ⁺¹. Taking e = n + 1 gives A ≤ 2ᵉ ≤ 2A. For x < 1 the condition imposes no restriction, so set e to zero there.
 -/
 theorem exists_pageN (eps : ℝ) (he : 0 < eps) : ∃ e : ℝ → ℕ, ∀ x ≥ (1 : ℝ), PageN eps x (e x) := by
   have : ∀ x : ℝ, ∃ e : ℕ, x ≥ 1 → PageN eps x e := by

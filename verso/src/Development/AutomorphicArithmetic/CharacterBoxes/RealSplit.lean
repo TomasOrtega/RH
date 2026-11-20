@@ -6,8 +6,8 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.TwistPrim
 
 open Formalism.HC UpperTheory.Top
 
-/- English proof (translation)
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+If the exponent is zero, retain the original primitive character and use the trivial power of the quadratic symbol. If it is one, twist by the quadratic character at the odd prime q. Since q does not divide the original conductor, the resulting character is primitive at the product modulus and has the stated values.
 -/
 private theorem UpperTheory.Top.realSplit_step (f q i : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ f) (hξ : ξ.IsPrimitive)
     (hq : q.Prime) (h2 : q ≠ 2) (hf : ¬ q ∣ f) (hi : i ≤ 1) :
@@ -18,8 +18,8 @@ private theorem UpperTheory.Top.realSplit_step (f q i : ℕ) [NeZero f] (ξ : Di
   · obtain ⟨ψ, h1, -, h3⟩ := QH.twist_prim f q ξ hξ hq h2 hf
     exact ⟨f * q, ψ, by simp, h1, fun n => by simpa using h3 n⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Coprimality makes the Jacobi symbol one or minus one. Each sign has square one, so the square of any of its powers is one.
 -/
 private theorem UpperTheory.Top.realSplit_J (q n i : ℕ) (h : n.Coprime q) : (QH.J q n ^ i) ^ 2 = 1 := by
   have h1 : jacobiSym (n : ℤ) q = 1 ∨ jacobiSym (n : ℤ) q = -1 :=
@@ -28,12 +28,8 @@ private theorem UpperTheory.Top.realSplit_J (q n i : ℕ) (h : n.Coprime q) : (Q
   unfold QH.J
   rcases h1 with h1 | h1 <;> simp [h1]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A nonunit has character value zero. A unit modulo c lifts to a unit modulo N₀ because c divides N₀. A natural representative of that lift is coprime to N₀ and reduces to the original unit. Apply the hypothesis to this representative.
 -/
 private theorem im_dirichletCharacter_eq_zero_of_coprime (c N₀ : ℕ) [NeZero c] [NeZero N₀] (ρ : DirichletCharacter ℂ c)
     (hc : c ∣ N₀) (h : ∀ n : ℕ, n.Coprime N₀ → (ρ n).im = 0) : ∀ x : ZMod c, (ρ x).im = 0 := by
@@ -50,40 +46,14 @@ private theorem im_dirichletCharacter_eq_zero_of_coprime (c N₀ : ℕ) [NeZero 
   · rw [MulChar.map_nonunit _ hx]
     simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The number z is real because its imaginary part vanishes. Both integer factors are also real, so their product with z has imaginary part zero.
 -/
 private theorem im_mul_intCast_eq_zero_of_im_eq_zero (z : ℂ) (hz : z.im = 0) (A B : ℤ) : (z * (A : ℂ) * (B : ℂ)).im = 0 := by
   simp [Complex.mul_im, hz]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the second alternative.
-
-Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+On units the real character takes values of modulus one, so its square is trivial. The real-conductor bound then shows that its conductor divides the product of eight times the odd part of S and the two odd primes q and d. The character decomposition gives a residual character and two quadratic powers with exponents zero or one. Replace the residual character by its primitive inducing character and twist successively at q and d. Each prime is coprime to the conductor at its step, so both twists are primitive. The resulting character agrees with the original on units at the common modulus, and uniqueness identifies their conductors and values. On those units the residual character is a real value times two real signs, since the signs are their own inverses. Lifting units from its conductor extends this real-valuedness to the primitive residual character, and its nonunit values are zero.
 -/
 private theorem exists_real_pchar_twist_decomposition (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N)
     (hχp : χ.IsPrimitive) (S q d : ℕ) (hreal' : ∀ x : ZMod N, (χ x).im = 0) (hS : 0 < S)
@@ -192,10 +162,8 @@ private theorem exists_real_pchar_twist_decomposition (N : ℕ) [NeZero N] (χ :
   rw [hψ2eq, hψ1eq]
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Apply the primitive real-character decomposition to the character underlying the given primitive record. It gives the two exponents, residual conductor, and value identity. Restricting the identity to arguments coprime to the original conductor gives the desired form.
 -/
 theorem UpperTheory.Top.realSplit :
     ∀ (χ : PChar) (S q d : ℕ), χ.IsReal → 0 < S → q.Prime → d.Prime → q ≠ 2 → d ≠ 2 → q ≠ d → Nat.Coprime S (q * d) → χ.N ∣ S * q * d →

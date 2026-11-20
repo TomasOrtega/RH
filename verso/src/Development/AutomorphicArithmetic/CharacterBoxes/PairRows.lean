@@ -6,8 +6,8 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.TwistPrim
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top
 
-/- English proof (translation)
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+For exponent zero, keep the original character. For exponent one, apply the primitive quadratic-twist formula at the odd prime q coprime to its conductor. In each case this gives both the asserted conductor and the values.
 -/
 private theorem boxes_step (f q i : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ f) (hξ : ξ.IsPrimitive)
     (hq : q.Prime) (h2 : q ≠ 2) (hf : ¬ q ∣ f) (hi : i ≤ 1) :
@@ -18,44 +18,8 @@ private theorem boxes_step (f q i : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ
   · obtain ⟨ψ, hψ, -, hn⟩ := QH.twist_prim f q ξ hξ hq h2 hf
     exact ⟨f * q, ψ, by simp, hψ, fun n => by simp [hn]⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Twist the primitive real character successively at q and d when the corresponding exponents are one. The primes are distinct and neither divides the initial conductor, which divides eight, so each nontrivial twist is primitive at the multiplied conductor. The resulting character agrees with any primitive inducing character of f on units modulo 8qd, since those units are odd. Uniqueness identifies the two characters. Its values are real, and its conductor is bounded by eight times the stated exponential factors for the primes that occur. On units modulo 2Mqd the same value formula gives the inducing condition for the good-pair zero box. Its height dominates Q since M ≥ 1.
 -/
 private theorem boxes_core {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h : PairGood M eps Y X q d)
     (ρ : Formalism.HC.PChar) (hρ : ρ.IsReal) (h8 : ρ.N ∣ 8) (i j : Fin 2) (hij : i ≠ 0 ∨ j ≠ 0) (f : ℕ → ℂ)
@@ -163,17 +127,15 @@ private theorem boxes_core {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h
       positivity
     nlinarith
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The denominator is odd, so its power of two has exponent zero. The factor at two in the Kronecker symbol is therefore one, leaving the Jacobi symbol.
 -/
 private theorem boxes_kron_odd (D : ℤ) (a : ℕ) (ha : a % 2 = 1) : GlobalTheoryTheory.kronSym D a = jacobiSym D a := by
   have h2 : ¬ 2 ∣ a := by omega
   simp [GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd h2]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For odd a the Kronecker symbol is the Jacobi symbol. Quadratic reciprocity for q congruent to three modulo four gives a sign determined by a modulo four. The factor from negating the numerator is the same sign, so their product is one.
 -/
 private theorem boxes_kron_neg (q a : ℕ) (hq : q % 4 = 3) (ha : a % 2 = 1) :
     GlobalTheoryTheory.kron (-(q : ℤ)) a = ((jacobiSym (a : ℤ) q : ℤ) : ℂ) := by
@@ -187,16 +149,8 @@ private theorem boxes_kron_neg (q a : ℕ) (hq : q % 4 = 3) (ha : a % 2 = 1) :
   rw [boxes_kron_odd _ _ ha, key]
 
 open DirichletCharacter in
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the quadratic character modulo eight with values given by the symbol at two. Its values are real. Any proper conductor would divide four, but the residue five is one modulo four and the character takes value minus one at five. Hence its conductor is eight. On odd inputs the standard formula for the Jacobi symbol at two identifies it with the stated function.
 -/
 private theorem real_character_mod_eight : ∃ ρ : Formalism.HC.PChar, ρ.IsReal ∧ ρ.N ∣ 8 ∧
     ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.chi8 a = ρ.val a := by
@@ -228,20 +182,8 @@ private theorem real_character_mod_eight : ∃ ρ : Formalism.HC.PChar, ρ.IsRea
     simp only [GlobalTheoryTheory.kron]
     rw [boxes_kron_odd _ _ ha, jacobiSym.at_two (Nat.odd_iff.mpr ha)]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The congruences of q and d make their Kronecker functions equal to the respective Jacobi symbols on odd inputs. For each of the three nonzero pairs of twist exponents, use the zero-box estimate first with the trivial residual character and then with the real character modulo eight. These are the six required functions, with the height factor for d determined by its exponent.
 -/
 private theorem boxq_of_pair {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h : PairGood M eps Y X q d) : Boxq Y eps q d := by
   have hw := h.pair
@@ -290,10 +232,8 @@ private theorem boxq_of_pair {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) 
     simp only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]
     try ring
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The odd denominator removes the factor at two from the Kronecker symbol. Since the denominator divides d + 1, the numerator −d is congruent to one, and the remaining Jacobi symbol equals one.
 -/
 private theorem qdRows_kron_odd {p d : ℕ} (hp : ¬ 2 ∣ p) (h : p ∣ d + 1) : GlobalTheoryTheory.kronSym (-(d : ℤ)) p = 1 := by
   rw [boxes_kron_odd _ _ (by omega)]
@@ -306,10 +246,8 @@ private theorem qdRows_kron_odd {p d : ℕ} (hp : ¬ 2 ∣ p) (h : p ∣ d + 1) 
     exact dvd_neg.mpr hd
   rw [jacobiSym.mod_left' hm, jacobiSym.one_left]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Evaluate the numerical expressions.
+/- English proof (authored)
+The congruence d ≡ 7 modulo sixteen gives −d ≡ 1 modulo eight and makes it odd. Thus the factor at two is one. The odd part of the denominator two is one, whose Jacobi factor is also one.
 -/
 private theorem qdRows_kron_two {d : ℕ} (h : d % 16 = 7) : GlobalTheoryTheory.kronSym (-(d : ℤ)) 2 = 1 := by
   have hf : (2 : ℕ).factorization 2 = 1 := Nat.Prime.factorization_self Nat.prime_two
@@ -319,25 +257,23 @@ private theorem qdRows_kron_two {d : ℕ} (h : d % 16 = 7) : GlobalTheoryTheory.
   have h3 : (d : ℤ) % 2 = 1 := by omega
   norm_num [h1, h2, h3, jacobiSym.one_right]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Exponentiation preserves the strict inequality. Since n is positive, exp(log n) = n, and exp(z/2) is the square root of exp z.
 -/
 private theorem qdRows_lo {z : ℝ} {n : ℕ} (hn : 0 < n) (h : z / 2 < Real.log n) : Real.sqrt (Real.exp z) < n := by
   rw [← Real.exp_half]
   calc Real.exp (z / 2) < Real.exp (Real.log n) := Real.exp_lt_exp.mpr h
     _ = n := Real.exp_log (by exact_mod_cast hn)
 
-/- English proof (translation)
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Apply the increasing exponential function to the logarithmic inequality and use exp(log n) = n for positive n.
 -/
 private theorem qdRows_up {z : ℝ} {n : ℕ} (hn : 0 < n) (h : Real.log n ≤ z) : (n : ℝ) ≤ Real.exp z := by
   calc (n : ℝ) = Real.exp (Real.log n) := (Real.exp_log (by exact_mod_cast hn)).symm
     _ ≤ Real.exp z := Real.exp_le_exp.mpr h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The window pair supplies the primality and congruences. Exponentiating each logarithmic bound gives the required upper and lower bounds on the primes. The divisibility of d + 1 gives the Kronecker value one at q and at each required odd prime. At two the congruence modulo sixteen gives value one. Attach the supplied bound for the logarithm of the host conductor.
 -/
 private theorem pairRow_of_pair {R : Ranks} (H : Host R) {eps Y : ℝ} (h : WinPair eps Y H.q H.d)
     (hN : Real.log (H.QS * H.q * H.d) ≤ 2 * Y ^ (eps / 5) * Real.log Y ^ 2) : PairRow Y eps H := by
@@ -358,18 +294,8 @@ private theorem pairRow_of_pair {R : Ranks} (H : Host R) {eps Y : ℝ} (h : WinP
     · exact qdRows_kron_odd (fun h2 => hp2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hp).mp h2).symm)
         (h.d_small p hp hp2 hpY)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+An integer coprime to 2Mqd is odd and coprime to 8qd. On it the inducing function agrees with the prescribed twist, and the principal character modulo M has value one. Therefore the good-pair estimate applies to this inducing character at x. The derivative term already has the desired bound. Since x ≥ 1 and ε > 0, increasing the exponent in the weighted sum estimate preserves the bound.
 -/
 private theorem qdq_core {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (hx : 1 ≤ x) (hY : Y ≤ x)
     (h : PairGood M eps Y x q d) (i j : Fin 2) (hij : i ≠ 0 ∨ j ≠ 0) (f : ℕ → ℂ)
@@ -406,14 +332,8 @@ private theorem qdq_core {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (h
   refine le_trans hg ?_
   exact Real.rpow_le_rpow_of_exponent_le hx (by linarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+On odd inputs the two Kronecker functions agree with the quadratic symbols at q and d. Apply the pointwise twist estimate to the q-twist, the d-twist, and their product, giving all three parts of the claim.
 -/
 private theorem qdq_of_pair {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (hx : 1 ≤ x) (hY : Y ≤ x)
     (h : PairGood M eps Y x q d) : QDq x eps 4 q d := by
@@ -439,10 +359,8 @@ private theorem qdq_of_pair {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps)
     simp only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]
     try ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The threshold gives 41000C ≤ lε² and l > 0. Multiplying by l and dividing by fifty gives 820Cl ≤ (lε/5)²/2. The exponential at the nonnegative argument lε/5 dominates this quadratic term.
 -/
 private theorem mul_le_exp_of_le_div_sq {eps C l : ℝ} (he : 0 < eps) (hC : 1 ≤ C) (hl : 41000 * C / eps ^ 2 ≤ l) :
     820 * C * l ≤ Real.exp (l * (eps / 5)) := by
@@ -455,24 +373,8 @@ private theorem mul_le_exp_of_le_div_sq {eps C l : ℝ} (he : 0 < eps) (hC : 1 �
   have h3 : 820 * C * l ≤ (l * (eps / 5)) ^ 2 / 2 := by nlinarith
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Choose x large enough that the window inequality log x ≤ C₀ log Y forces log Y to be at least two and at least 41000C₀/ε². The exponential estimate then gives 820C₀ log Y ≤ Y raised to ε/5. The rank and host bounds control the selected modulus by 2C₀ times x raised to 9/4, so its logarithm is at most 2C₀ + (9/4) log x. Add the upper logarithmic bounds for q and d from the window pair. Using log Y ≥ 2 and the exponential estimate, the sum is at most twice Y raised to ε/5 times the square of log Y. This is the conductor bound needed for the pair row. The good pair separately gives the weighted-sum estimates and zero boxes, and the host provides the two lower bounds involving the ranks.
 -/
 theorem UpperTheory.Top.pairRows :
     ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (H : Host R) (M : ℕ) (Y : ℝ), s.eps = eps → x0 ≤ s.x →

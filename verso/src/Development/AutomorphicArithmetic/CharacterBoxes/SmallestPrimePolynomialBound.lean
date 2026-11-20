@@ -7,16 +7,8 @@ namespace UpperTheory.Top.PolynomialHostPrimeBound
 
 open GlobalTheory.EX.DC
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let N be the product of the three conductor factors. The small-prime hypothesis supplies a prime congruent to one modulo the product of N and the auxiliary prime, so the least twisting prime is at most that prime. Bertrand's postulate bounds the auxiliary prime by twice the positive product of N and the two predecessor factors, since a prime above that product cannot divide it. Using N ≥ 2 and the two polynomial bounds gives a progression modulus at most N raised to 3 + 2C. The prime bound with exponent A gives the result.
 -/
 private theorem smallest_prime_polynomial_bound {A C : ℝ} (hA : 1 ≤ A)
     (hS : ∀ M : ℕ, 2 ≤ M → ∃ p : ℕ, p.Prime ∧ p % M = 1 ∧ (p : ℝ) ≤ (M : ℝ) ^ A)
@@ -72,18 +64,8 @@ private noncomputable def relevel {R : Ranks} (H : Host R) (hc : H.ccK = ⊤) (q
 end UpperTheory.Top.PolynomialHostPrimeBound
 
 open GlobalTheory.EX.DC UpperTheory.Top.PolynomialHostPrimeBound in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Use the exponent A from the small-prime hypothesis and enlarge the host valuation exponent to (3 + 2C₈)A. At each scale choose the existing host and take its least global twisting prime. It is congruent to one modulo the conductor and is therefore coprime to the selected modulus. Include it in the level primes. The original primes retain their splitting properties, and the new one splits by its congruence. The polynomial prime bound gives the required size, and the host requirement is preserved because the underlying data and twisting prime agree.
 -/
 theorem UpperTheory.Top.hostQ :
     SmallPrimeOne → ∀ (la : ℝ) (G : FReq), HostExW la G.req → DC.HostExQW la G.req := by

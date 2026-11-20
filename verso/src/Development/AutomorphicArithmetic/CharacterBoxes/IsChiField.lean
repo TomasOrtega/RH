@@ -2,22 +2,8 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC UpperTheory.Top
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the host cyclotomic embedding and its primitive root of order equal to the product of the three modulus factors. The tower and character moduli divide this product by the host assumptions and the kernel criterion. If an automorphism sends the primitive root to its ath power, preservation of primitivity implies that a is coprime to the order. Reduce a modulo the order to obtain the corresponding unit, which acts on the root by the same power. The host reciprocity formula identifies the induced action on the embedded host with the associated Artin element. The embedding is injective, so this action fixes the host pointwise exactly when the Artin element is trivial. Substitute the prescribed description of its kernel.
 -/
 theorem UpperTheory.Top.isChiField :
     ∀ (ψ : PChar) (φ : Frame) (H : HostRaw φ), KerChi ψ H → IsChiField ψ φ.e H.q H.d H.E := by

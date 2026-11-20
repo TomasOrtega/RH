@@ -2,10 +2,8 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since p divides d + 1, the integer −d is congruent to one modulo p. The Jacobi symbol depends only on this residue and takes the value one at numerator one.
 -/
 private theorem jac_neg_of_dvd {p d : ℕ} (h : p ∣ d + 1) : jacobiSym (-(d : ℤ)) p = 1 := by
   have h1 : (-(d : ℤ)) ≡ 1 [ZMOD (p : ℤ)] := by
@@ -17,10 +15,8 @@ private theorem jac_neg_of_dvd {p d : ℕ} (h : p ∣ d + 1) : jacobiSym (-(d : 
     exact h2
   rw [jacobiSym.mod_left' h1, jacobiSym.one_left]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Both moduli are odd. If a is one modulo four, quadratic reciprocity has positive sign and multiplication of the numerator by minus one also has positive sign. If a is three modulo four, quadratic reciprocity introduces a minus sign because n is three modulo four, and negating the numerator introduces a second minus sign. The signs cancel in both cases.
 -/
 private theorem jac_neg_recip {n a : ℕ} (hn : n % 4 = 3) (ha : Odd a) :
     jacobiSym (-(n : ℤ)) a = jacobiSym (a : ℤ) n := by
@@ -31,10 +27,8 @@ private theorem jac_neg_recip {n a : ℕ} (hn : n % 4 = 3) (ha : Odd a) :
   · rw [ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four h hn]
     ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The prime and congruence conditions of the window pair give the host prime data. The divisibility of d + 1 by q gives the required quadratic symbol at q, and the same argument gives the symbol one at every prescribed small odd prime. Since each of q and d is three modulo four, the reciprocity calculation applies to each with every odd numerator.
 -/
 theorem UpperTheory.Top.pairHyp :
     ∀ (eps Y : ℝ) (q d : ℕ), WinPair eps Y q d → HostHyp q d ∧

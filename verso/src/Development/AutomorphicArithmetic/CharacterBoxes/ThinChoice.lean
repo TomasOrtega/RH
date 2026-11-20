@@ -12,14 +12,8 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For every term in the range from one to the integer part of y, one has y/n ≥ 1. Thus the maximum weight equals y/n − 1. Substitute this equality in the finite sums and expand the matching principal and nonprincipal definitions, including the logarithmic derivative term in the latter case.
 -/
 private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) :
     Formalism.HC.An.gChi χ y = G0 χ y := by
@@ -43,8 +37,8 @@ private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharac
     unfold Formalism.HC.An.sumLamChi Gchi Formalism.HC.An.logDerivativeAtOne logDerivLAtOne
     rw [Finset.sum_congr rfl fun n hn => by rw [hmax n hn]]
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+A character whose square is trivial takes only the values zero, one, and minus one. Each has imaginary part zero.
 -/
 private theorem isReal_of_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h2 : χ ^ 2 = 1) (a : ZMod N) :
     (χ a).im = 0 := by
@@ -58,20 +52,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose the fixed exponent factor one half, and take the uniform thin-scale estimate with zero-free width the smaller of 1/400 and the small-conductor width. Each primitive character under consideration has conductor dividing the host conductor, so the assumed logarithmic bound controls its modulus. For a real character the conductor classification gives two possibilities. It is either bounded in terms of the odd part of the host modulus, where the small-zero estimate applies uniformly, or it is divisible by one of the two host primes, where the assumed zero box applies. The resulting real-zero condition permits the thin-scale estimate, and the two weighted character sums agree term by term.
 -/
 theorem thinChoice_host : ThinChoice := by
   intro eps he _

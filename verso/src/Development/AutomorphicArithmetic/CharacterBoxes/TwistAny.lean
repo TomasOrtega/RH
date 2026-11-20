@@ -3,16 +3,8 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Ine
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the frame character to the image of the selected modulus units in the second frame factor. Its kernel contains the kernel of the quotient map, because that kernel maps into the subgroup on which the frame character is trivial. The quotient map is surjective, so the restriction descends to a character of the quotient. Pull it back to the units modulo M. The pullback is trivial on the annihilator and hence belongs to the given character subgroup by duality. The compatibility of unit reduction with the quotient proves the value identity.
 -/
 private theorem exA {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) (e : ℕ)
     (θ : (AnyGrp.frame Ξ e).Char) (h1 : Frame.TrivialOnFirstFactor θ) :
@@ -52,12 +44,8 @@ private theorem exA {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ 
     rw [← hx, hρ]
     rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
-
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The square of the image of minus one is the image of one, hence one. Its complex value is therefore one or minus one. Take exponent zero in the first case and one in the second. The only integer units are one and minus one, so this exponent gives every value.
 -/
 private theorem exSign (f : ℤˣ →* ℂˣ) : ∃ i : Fin 2, f (-1) = (-1) ^ (i : ℕ) ∧
     ∀ s : ℤˣ, ((f s : ℂˣ) : ℂ) = (((s : ℤ) : ℤ) : ℂ) ^ (i : ℕ) := by
@@ -74,12 +62,8 @@ private theorem exSign (f : ℤˣ →* ℂˣ) : ∃ i : Fin 2, f (-1) = (-1) ^ (
     · simp
     · simp [h]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Membership in the annihilator makes the generator take the value one. Conversely, if the generator takes value one, every integer power of it takes value one, so the unit annihilates the whole cyclic subgroup.
 -/
 private theorem mem_ann_zpowers_iff_apply_eq_one {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (u : (ZMod M)ˣ) :
     u ∈ EvenGrp.ann (Subgroup.zpowers χ) ↔ χ u = 1 := by
@@ -98,8 +82,8 @@ private theorem mem_ann_zpowers_iff_apply_eq_one {M : ℕ} [NeZero M] (χ : Diri
     | mul x y _ _ hx hy => rw [MulChar.mul_apply, hx, hy, one_mul]
     | inv x _ hx => rw [MulChar.inv_apply_eq_inv', hx, inv_one]
 
-/- English proof (translation)
-Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The quotient class is trivial exactly when the reduced unit belongs to the annihilator of the cyclic subgroup. This is equivalent to the generator taking value one at that unit.
 -/
 private theorem xiW_zpowers_eq_one_iff_apply_unitsMap {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (e : ℕ)
     (u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ) :
@@ -107,16 +91,8 @@ private theorem xiW_zpowers_eq_one_iff_apply_unitsMap {M : ℕ} [NeZero M] (χ :
   change QuotientGroup.mk' _ (ZMod.unitsMap (Nat.dvd_lcm_right (2 ^ (e + 2)) M) u) = 1 ↔ _
   rw [QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, mem_ann_zpowers_iff_apply_eq_one]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Let Q be the selected modulus. A unit modulo M that is one modulo gcd(Q, M) lifts by the Chinese remainder theorem to an integer that is one modulo Q. This integer is coprime to the common multiple of M and the tower modulus, since the tower modulus divides Q. The defining kernel property of Q makes the lifted quotient class trivial. The generator therefore takes value one on the original unit. The character consequently factors modulo gcd(Q, M), and its primitivity forces that gcd to be M.
 -/
 private theorem dvd_lemma_3 {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (hχ : χ.IsPrimitive) (e : ℕ) :
     M ∣ EvenGrp.QS (Subgroup.zpowers χ) e := by
@@ -151,22 +127,8 @@ private theorem dvd_lemma_3 {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M)
   have h := Nat.gcd_dvd_left Q M
   rwa [hg] at h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
-
-Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The frame character restricted to the unit image pulls back to a character in the cyclic subgroup generated by ψ. Its restrictions to the two sign components are powers with exponents zero or one, and the second exponent also determines the required parity. For an integer coprime to the full conductor, the associated Artin element factors into the two sign components and the unit image. Its sign coordinates are the Jacobi symbols at q and d. The unit component gives the chosen character value because the common modulus divides the selected modulus. Multiplying the three values gives the twist.
 -/
 theorem UpperTheory.Top.twistAny :
     ∀ (ψ : PChar) (e q d : ℕ) (hH : HostHyp q d) (hc : Nat.Coprime ψ.N (q * d)) (he : 2 ≤ e)

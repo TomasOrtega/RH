@@ -11,22 +11,8 @@ namespace UpperTheory.Top
 
 open GlobalTheory.Fc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take the smaller of the two positive ε thresholds, then combine the two size conditions and take successive maxima of their bounds for the context constants. Choose a scale above the resulting thresholds for the host, objects, word codes, and small prime. The host construction supplies the rank data and the admissible host, and the word theorem supplies an injective code. For each index the object construction gives compatible arithmetic data, the required point, and its code. The common host data give the tie condition between points, and injectivity of the code gives the required compatibility of words. The host and object estimates give the pointwise duties, wall condition, and requested property, so these data form the claimed kit.
 -/
 theorem kitS : ∀ (Q : Par → PtProp) (la : ℝ) (G : FReq), DC.HostWW la G.req → ObjCP Q →
     KitCPW la (fun κ => ((withDuty (Q κ)).and DC.WallPt).and G.pt) := by

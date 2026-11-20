@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightWindowR
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsWeightsInWindows
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The varying coefficients of the standard context belong to its middle or last lists, whose entries are at least one. The three fixed coefficients are nonnegative by their specified values. This accounts for every coefficient of the window data.
 -/
 private theorem gk_nonneg {C : FC} (h : Std C) : C.GK.Nonneg := by
   obtain ⟨⟨f1, f2, f3, -⟩, -, -, -, -, -, -, -, -, -, -, -, -, -, hm, hl⟩ := h
@@ -18,8 +18,8 @@ private theorem gk_nonneg {C : FC} (h : Std C) : C.GK.Nonneg := by
   refine ⟨hm' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_, hl' _ ?_,
     by rw [f2]; norm_num, by rw [f3]; norm_num, by rw [f1]; norm_num, hl' _ ?_⟩ <;> simp [FC.cMid, FC.cLast]
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Each coordinate of either size requirement is at most the maximum of the two requirements. A context dominating those maxima therefore satisfies both separate size conditions.
 -/
 private theorem large_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large (K.sup K') CH) : C.Large K CH ∧ C.Large K' CH :=
   ⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc),
@@ -27,34 +27,14 @@ private theorem large_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Lar
    ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c hc),
     fun c hc => (le_max_right _ _).trans (h.2.2.2 c hc)⟩⟩
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify the hypotheses and the goal together.
+/- English proof (authored)
+A scale is determined by its real size, ε, and J. After these coordinates agree, its remaining fields express properties of the same coordinates, so the records agree.
 -/
 private theorem scale_ext {s s' : Scale} (h1 : s.x = s'.x) (h2 : s.eps = s'.eps) (h3 : s.J = s'.J) : s = s' := by
   cases s; cases s'; simp_all
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the smaller ε threshold from object existence and window closure. For each allowed ε, combine their context size requirements and take maxima of the object and numerical thresholds. Choose a common lower scale for host existence, object existence, the pointwise numerical data, window weights, and injective codes. At each permitted scale, use its host and weights to build a kit of points. At each point, a weight-vector witness yields weights satisfying the host window requirements. Assemble the kits into a family using the numerical data. Its size allows the window-closure theorem to supply the weight-vector witnesses at every sufficiently large scale in the specified windows. The matching point has the original size, ε, and J, so the resulting host property holds at the original scale.
 -/
 theorem UpperTheory.Top.hostWW :
     ∀ (Q : PtProp) (la : ℝ) (P : HostReq), 1 < la → DC.HostExQW la P → DC.ObjC Q → DC.WClosed → DC.HostWW la P := by

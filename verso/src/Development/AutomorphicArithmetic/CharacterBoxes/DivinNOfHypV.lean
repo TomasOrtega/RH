@@ -14,18 +14,8 @@ def FamilyClassConnected (ℰ : FamClass) : Prop :=
   ∃ eD eL ε₁ : ℝ, 0 < ε₁ ∧ ∀ eps : ℝ, 0 < eps → eps < ε₁ →
     ∃ Fm : FamP eps, ℰ Fm ∧ ∃ K cHH eK CL x0 : ℝ, ∀ x ≥ x0, x ∈ Fm.Win → ChainTied Fm eD eL K cHH eK CL x
 
-/- English proof (translation)
-Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For a prime l, finiteness of the local lengths identifies their values with the corresponding natural numbers. The coefficient in the target sum is either zero or the sum of those lengths times log l, so it is nonnegative and bounded by the given weighted local sum. Nonprime terms are zero. The hypothesis therefore bounds every finite subsum by B. A nonnegative family with bounded finite subsums is summable, and its sum is at most B. The local finiteness assertion follows directly from the same hypothesis.
 -/
 theorem vvRecord (D : D7) (B : ℝ) (h : VVle D.host.E D.R.t B) :
     ShaFinOdd D ∧ Summable (vvTerm D) ∧ ∑' l, vvTerm D l ≤ B := by
@@ -69,12 +59,8 @@ theorem vvRecord (D : D7) (B : ℝ) (h : VVle D.host.E D.R.t B) :
   intros
   exact h1 p e ‹_› ‹_›
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The logarithm is little-o of x raised to ε/2 when ε > 0. Above a suitable threshold with x ≥ 1, both sides are nonnegative and log x ≤ x raised to ε/2. Square this inequality.
 -/
 theorem log_sq_le_rpow {eps : ℝ} (h : 0 < eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Real.log x ^ 2 ≤ x ^ eps := by
@@ -93,20 +79,8 @@ theorem log_sq_le_rpow {eps : ℝ} (h : 0 < eps) :
   rw [h3]
   exact pow_le_pow_left₀ (Real.log_nonneg hx1) h2 2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Write y for x raised to ε. The linked estimate bounds the quantity by the original coefficient C times a combination of the baseline budget, the local-length bound, and the squared logarithm term. Here y ≥ 1 and the baseline budget dominates b because both rank factors are at least one. The rank identity rewrites the quadratic y term as y times the baseline budget, and the logarithm bound allows the other term to be bounded by y times its nonnegative budget. Replacing C by |C| in the nonnegative expression and using one additional copy of the resulting budget gives the coefficient |C| + 1.
 -/
 theorem divinN_at {D : D7} (L : SizeData₂ D) (j : ℕ) (C : ℝ) (hj : j ∈ SizeData₂.lifts D)
     (hN : LinkN_at L j C) (hs : Summable (vvTerm D)) (hb : ∑' l, vvTerm D l ≤ L.sc.b)
@@ -149,12 +123,8 @@ theorem divinN_at {D : D7} (L : SizeData₂ D) (j : ℕ) (C : ℝ) (hj : j ∈ S
   rw [h3]
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a common threshold for the local-length hypothesis, the link estimate, the rank identity, and the squared-logarithm estimate. At every scale beyond it, the local-length hypothesis gives finite local lengths and a summable record. Its bound is at most the scale budget since the square root of a number at least one is at most that number. Apply the pointwise divisibility estimate with the given link and rank identity to obtain the uniform coefficient |C| + 1.
 -/
 theorem divinN_of_hypV {eps : ℝ} (Fm : FamP eps) (heps : 0 < eps) (hV : HypV Fm.toFamCore) (hN : LinkN Fm) (hR : SmallLevelRankEq Fm) :
     DIVinN Fm := by

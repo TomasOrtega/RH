@@ -2,18 +2,8 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC UpperTheory.Top
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A bounded frame character is trivial on the first factor, so the twist hypothesis expresses it through a character of modulus ψ.N together with two quadratic exponents. The two exponents cannot both vanish. In the positive component that would make the primitive character one of the kept characters, and in the negative component it would contradict the required parity. Every integer coprime to the proposed modulus is also coprime to the host conductor, since the prime divisors of the extra factor all divide 2ψ.N. On those integers the primitive character therefore agrees with the twist.
 -/
 private theorem UpperTheory.Top.boundedTw_key (ψ : PChar) (φ : Frame) (H : HostRaw φ) (htw : TwistForm ψ H) (hdiv : ψ.N ∣ H.QS)
     (hpr : ∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * ψ.N) (θ : φ.Char) (hθ : θ ∈ H.Bounded (Level.cyc ψ).KEPT)
@@ -55,8 +45,8 @@ private theorem UpperTheory.Top.boundedTw_key (ψ : PChar) (φ : Frame) (H : Hos
     have hc : a.Coprime H.condN := Nat.Coprime.mul_right (Nat.Coprime.mul_right hQ hq) hd
     rw [hχ'.2 a hc, heq a hc]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the twist representation to each bounded frame character and its primitive inducing character. At the argument x the good-pair bounds apply because Y ≤ x. They bound the L-function and its logarithmic derivative at one. Since x ≥ 1, increasing the exponent in the pointwise bound preserves the inequality.
 -/
 theorem UpperTheory.Top.boundedTw :
     ∀ (ψ : PChar) (φ : Frame) (H : HostRaw φ) (eps Y x : ℝ), 0 < eps → 1 ≤ x → Y ≤ x → TwistForm ψ H → ψ.N ∣ H.QS →

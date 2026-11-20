@@ -10,56 +10,8 @@ set_option linter.unusedVariables false
 
 set_option maxHeartbeats 1000000 in
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Set E equal to n_T a times (1 + M²/k) plus M(B₀ + N_c), and set P = y_D y_L y E. The ratios M/k and b′k/a are at most one, and M b ≤ a. The nonnegative terms in E therefore give common bounds on n_T a, n_T a M²/k and the two M-weighted errors. Since y_D y_L y bounds each size factor, replace the nonnegative coefficients by their bounds using K and P. The count term is at most 4KP. The two divisor terms are at most 2KP and KP, the exponent term at most KP, and the first slope term at most 4KP. The word logarithm is at most P, and the loss term at most KP. The four-term local slope allowance is at most (5K² + K + 1)P, using b′ ≤ a/k in its term containing M². Applying the same bounds inside the logarithmic multiplier gives (5K² + 13K + 2Kg + 2)P before multiplication by 4 times the height logarithm. Now bound that logarithm by hy, the trace term by KP and the deletion factor by two. After collecting all contributions, use P ≤ yP. The coefficient of yP is at most 200(1 + K)²hg because h and g are at least one. This is at most y by assumption, yielding y²P, the stated right-hand side.
 -/
 theorem core_ineq {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp y yD yL K h g
     cDiv cE cH cCount cSlope cSl1 cLoss : ℝ}
@@ -257,10 +209,8 @@ theorem core_ineq {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp y yD yL K h g
   rw [hR]
   linarith only [T1, T2a, T2b, T3, T4, T5, FreeQuotientRank, T7, T8, hfin]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+If the index set is empty, the uniform mean is zero and the conclusion follows from the nonnegative bound. Otherwise sum the pointwise inequalities. The right side is the size of the index set times B. Divide by the positive cardinality.
 -/
 lemma umean_le_of_le {ι : Type} [Fintype ι] (X : ι → ℝ) (B : ℝ) (hB : 0 ≤ B) (h : ∀ i, X i ≤ B) :
     umean X ≤ B := by
@@ -273,10 +223,8 @@ lemma umean_le_of_le {ι : Type} [Fintype ι] (X : ι → ℝ) (B : ℝ) (hB : 0
       _ = B * (Fintype.card ι : ℝ) := by
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Since x ≥ 1 and c ≥ 0, the power x to c is at least one. Thus one plus that power is at most twice the power. Taking logarithms gives log(2) + c log(x). Use log(2) ≤ 1 ≤ y and log(x) ≤ y.
 -/
 lemma log_one_add_rpow_le {x c y : ℝ} (hx : 1 ≤ x) (hc : 0 ≤ c) (hlog : Real.log x ≤ y)
     (hy : 1 ≤ y) : Real.log (1 + x ^ c) ≤ (1 + c) * y := by
@@ -294,8 +242,8 @@ lemma log_one_add_rpow_le {x c y : ℝ} (hx : 1 ≤ x) (hc : 0 ≤ c) (hlog : Re
         linarith
     _ = (1 + c) * y := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Taking logarithms of the positive bound on k gives log(k) ≤ e log(x). Since e is nonnegative, this is at most ey, which is at most (1 + e)y because y is nonnegative.
 -/
 lemma log_le_of_le_rpow {x k e y : ℝ} (hx : 1 ≤ x) (he : 0 ≤ e) (hk : 0 < k) (hkx : k ≤ x ^ e)
     (hlog : Real.log x ≤ y) (hy : 1 ≤ y) : Real.log k ≤ (1 + e) * y := by
@@ -305,10 +253,8 @@ lemma log_le_of_le_rpow {x k e y : ℝ} (hx : 1 ≤ x) (he : 0 ≤ e) (hk : 0 < 
     _ ≤ e * y := by gcongr
     _ ≤ (1 + e) * y := by linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The logarithm of 2 lies between zero and one. Therefore k log(2) ≤ k for nonnegative k, and subtracting three times log(2) can only decrease the left side.
 -/
 lemma sub_three_mul_log_two_le {k : ℝ} (hk : 0 ≤ k) : (k - 3) * Real.log 2 ≤ k := by
   have hl2 : Real.log 2 ≤ 1 := by
@@ -318,8 +264,8 @@ lemma sub_three_mul_log_two_le {k : ℝ} (hk : 0 ≤ k) : (k - 3) * Real.log 2 �
   have := mul_nonneg hk (by linarith : 0 ≤ 1 - Real.log 2)
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The assumption gives 1 − d ≥ 1/2 > 0. Its reciprocal is nonnegative, and decreasing monotonicity of reciprocation bounds it by two.
 -/
 lemma inv_one_sub_le_two {d : ℝ} (hd : d ≤ 1 / 2) : 0 ≤ (1 - d)⁻¹ ∧ (1 - d)⁻¹ ≤ 2 := by
   have hd12 : (1 : ℝ) / 2 ≤ 1 - d := by linarith
@@ -328,24 +274,8 @@ lemma inv_one_sub_le_two {d : ℝ} (hd : d ≤ 1 / 2) : 0 ≤ (1 - d)⁻¹ ∧ (
   simpa using this
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Use x to the power ε, and the powers for the divisor and loss exponents, as the three size factors in the scalar estimate. They are at least one. The bounds on m and ε give m ≤ x, which together with the window inequalities gives m ≤ k and mb ≤ a. Sum the place weights to bound their total by twice the number of places times a. The word-size bound and the inequality for (k − 3)log(2) control the mean word logarithm. The logarithm and reciprocal estimates supply bounds for the remaining logarithms and the deletion factor. The large-x hypothesis supplies the required scalar lower bound, and the trace term is bounded by the window hypothesis. Apply the scalar estimate and combine the three ε factors with the divisor and loss powers to obtain the claimed exponent.
 -/
 theorem error_sizes : ErrorFormsUnderWindows := by
   intro U0 _ W _ _ Top _ m f D C Xpp eK K hW hX
@@ -407,10 +337,8 @@ theorem error_sizes : ErrorFormsUnderWindows := by
   unfold errorTermWith UBar5 MLo5 Data.Vvar Data.LoP ErrText
   exact this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+For ε > 0, log(x) grows more slowly than x to the power ε, so their desired inequality holds beyond some threshold. The same power tends to infinity, so it also eventually exceeds the fixed constant in the large-x conditions. Take a threshold where both inequalities hold.
 -/
 theorem large_x_eventually : LargeXEv := by
   intro ε K cHH eK hε
@@ -424,10 +352,8 @@ theorem large_x_eventually : LargeXEv := by
   obtain ⟨x0, hx0⟩ := Filter.eventually_atTop.1 (h1.and h2)
   exact ⟨x0, fun x hx => hx0 x hx⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the threshold at which the two large-x inequalities hold. Substitute the specified ε and height exponent for the corresponding data parameters. The size-window estimate then applies to every admissible input above that threshold.
 -/
 theorem error_sizes_eventually : ErrorFormsEventual := by
   intro ε K cHH eK hε
@@ -438,8 +364,8 @@ theorem error_sizes_eventually : ErrorFormsEventual := by
   rw [h1, h2]
   exact hx0 _ hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Every term outside the deletion multiplier is nonnegative by the hypotheses. Inside the multiplier the logarithmic contribution is nonnegative and the trace term is nonnegative. Multiplying their sum by a factor at least one leaves it at least as large as the trace term. Adding the other nonnegative terms preserves the inequality.
 -/
 theorem core_lower {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp yD yL
     cDiv cE cH cCount cSlope cSl1 cLoss : ℝ}
@@ -479,12 +405,8 @@ theorem core_lower {nT a b b' k L La B0 Nc M sA lW lk lH dI et Xpp yD yL
   have r3 := le_mul_of_one_le_left (add_nonneg r2 het) hdI
   linarith only [r1, r2, r3]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The window inequalities make the sizes, logarithms and constants nonnegative. The deletion parameter lies between zero and one, so its complementary reciprocal is at least one. The trace term is nonnegative as well. Expanding the full error identifies it with the scalar lower-bound expression under these conditions. The scalar estimate bounds the trace term by it.
 -/
 theorem error_lower_eta : TraceTermLeErrorTerm := by
   intro U0 _ W _ _ Top _ m f D C Xpp eK K hW hdel0
@@ -556,8 +478,8 @@ noncomputable def modelD (η : ℝ) : Data Unit (fun _ => Unit) Unit 1 1 where
 
 def modelC (cHH : ℝ) : Consts := ⟨1, 1, 1, 1, 1, 1, 1, 1, 1, cHH⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the model with x = 100000, ε = 1 and one word, one place and one factor. Its sizes satisfy the required inequalities by direct comparison, including k b′ = a and X″ = 3 ≤ a. The log of the word-set size is zero, while its upper bound is a positive coefficient times log(2). All fixed constants are one, so the remaining parameter conditions follow from the nonnegativity of η and the height exponent.
 -/
 lemma model_windows0 (η cHH : ℝ) (hη : 0 ≤ η) (hc : 0 ≤ cHH) :
     ErrWindows0 (modelD η) (modelC cHH) 3 1 1 := by
@@ -573,8 +495,8 @@ lemma model_windows0 (η cHH : ℝ) (hη : 0 ≤ η) (hc : 0 ≤ cHH) :
     exact mul_nonneg (by norm_num [modelD]) hl2
   · refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hc⟩ <;> norm_num [modelC]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Evaluate the numerical expressions.
+/- English proof (authored)
+Use the explicit model with η = 1/100000 and height exponent one. The basic window conditions hold, and the trace term equals one, meeting its size bound. For x = 100000 the logarithm is at most x and the fixed large-x constant is at most x. The chosen η is positive and the seven fixed coefficients are all one.
 -/
 theorem error_windows_model : ErrWindowsModel := by
   refine ⟨modelD (1 / 100000), modelC 1, 3, 1, 1,
@@ -585,14 +507,8 @@ theorem error_windows_model : ErrWindowsModel := by
     simpa [modelD] using this
   · norm_num [modelD, modelC, KBig]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+/- English proof (authored)
+Take the model with η = 1 and height exponent ten. It satisfies the weak windows and the large-x conditions at x = 100000. The trace term is x to the power ten, so the lower bound on the full error is at least that large. The proposed weak estimate would bound it above by x to the power five times 100003. But x to the power five exceeds 100003, so the proposed upper bound is strictly smaller than the trace term. This contradicts the estimate.
 -/
 theorem error_sizes_weak_false : ¬ ErrorFormsWeakWindowsFalse := by
   intro h
@@ -613,28 +529,8 @@ theorem error_sizes_weak_false : ¬ ErrorFormsWeakWindowsFalse := by
   simp only [modelD, modelC, CErr, ErrText, Data.nT, Real.sqrt_zero, Fintype.card_unit, e10, e5] at h3
   norm_num at h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Check the signs of the components of the expression. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For large x ≥ 1 put z equal to x to the power ε/3. Logarithmic growth gives (|e| + 1)log(x) ≤ z, and eventually 2z ≤ x to the power ε. Thus both log(x) and the extra logarithmic term together are at most x to the power ε, and x to the power e is at most exp(z). Write B = exp(x to the power ε) and X = exp(z). Then 1 ≤ X and X² ≤ B. The main size is xB, so its log is log(x) plus x to the power ε. Also k and n are at most X. The auxiliary size is xB/X, so multiplying it by k stays within xB. The final window simplifies to xnX, which is at most xX² ≤ xB. All the stated positivity conditions follow from the exponential formulas.
 -/
 theorem text_sizes_windows : TextSizesWindows := by
   intro ε e hε
@@ -697,16 +593,8 @@ theorem text_sizes_windows : TextSizesWindows := by
     gcongr
     exact (mul_le_mul_of_nonneg_right hnX hX0.le).trans hXX
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take a common threshold for the eventual error estimate and the bounds on the explicit size formulas. Substitute those formulas for b, a, b′ and the auxiliary window. The logarithmic identities and the extra logarithmic term bounds give the required estimates for the two log sizes. The other size-window conditions come directly from the hypotheses. Apply the eventual error estimate.
 -/
 theorem error_bound : ErrorFormsEventualUnderSizeParameters := by
   intro ε K cHH eK hε
@@ -740,20 +628,16 @@ theorem error_bound : ErrorFormsEventualUnderSizeParameters := by
 section
 open Formalism Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Keep the given size conditions and replace the error allowance by its displayed upper bound. The one condition involving that allowance then holds as an equality, and all other conditions are inherited.
 -/
 theorem size_windows_of_bracket : SizeWindowsOfBracket := by
   intro C ε x n nT nT2 m b k aE Err0 h
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, -, h16⟩ := h
   exact ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, le_refl _, h16⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the mean-bound theorem to the lattice data and bound its error by the size-window estimate. The bijection with the top set identifies the place count with its cardinality. The given bounds on the two auxiliary quantities then show that the size expression is at most the growth bracket. Multiply this comparison by the nonnegative power factor and use it in the leading-term estimate to obtain the growth conclusion.
 -/
 theorem joint_error_bound {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] :
     LeadingTermGrowthJoint (H := H) := by

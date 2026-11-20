@@ -19,8 +19,8 @@ open Classical in
 noncomputable def residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ) : Y.IdealSheafData :=
   if h : ∃ B : Y.IdealSheafData, F ^ m * B = A then h.choose else ⊤
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis supplies a residual ideal whose product with the given power is the original ideal. The residual construction chooses one such ideal, so it satisfies that identity.
 -/
 theorem pow_mul_residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ)
     (h : ∃ B : Y.IdealSheafData, F ^ m * B = A) : F ^ m * residualByPow A F m = A := by
@@ -28,8 +28,8 @@ theorem pow_mul_residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ
   rw [hx]
   exact h.choose_spec
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback along the identity fixes every ideal. Applying it in order to every entry therefore returns the original list.
 -/
 private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.IdealSheafData) :
     E.map (fun D => D.comap (𝟙 X)) = E := by
@@ -38,8 +38,8 @@ private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.Id
   | cons a t ih => simp [Scheme.IdealSheafData.comap_id]
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The exceptional ideal is the center ideal pulled back along the morphism. With the identity morphism this pullback equals the center ideal.
 -/
 theorem exceptionalIdeal_id {X : Scheme.{u}} (Z : X.IdealSheafData) :
     Blowup.exceptionalIdeal (𝟙 X) Z = Z := by
@@ -74,8 +74,8 @@ private def singleBlowupBoundary {X : Scheme.{u}} (Z : X.IdealSheafData) (E : Li
   | (_ + 1) =>
       E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The only index below one is zero. At that index the map is the canonical blowup projection of the given ideal, which has the required blowup property.
 -/
 private theorem isBlowupAlongIdealSheaf_singleBlowupMap {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) (hi : i < 1) :
     Blowup.IsBlowupAlongIdealSheaf (singleBlowupMap Z i) (singleBlowupCenter Z i) := by
@@ -91,8 +91,8 @@ private def singleBlowupSequenceData {X : Scheme.{u}} (Z : X.IdealSheafData) : B
   center := singleBlowupCenter Z
   isBlowup := fun i hi => isBlowupAlongIdealSheaf_singleBlowupMap Z i hi
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+At index zero the transition is the blowup projection and the preceding projection is the identity on the original scheme. At any later index the transition is the identity on the blowup and the preceding projection is the blowup projection. Both composites give the stated successor projection.
 -/
 private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) :
     singleBlowupProj Z (i + 1) = singleBlowupMap Z i ≫ singleBlowupProj Z i := by
@@ -104,8 +104,8 @@ private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i
       show Blowup.blowup.proj Z = 𝟙 (Blowup.blowup Z) ≫ Blowup.blowup.proj Z
       exact (Category.id_comp _).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The bound on the index forces it to be zero. There the center is the given ideal and the stage ideal is the original ideal pulled back along the identity. The asserted support containment is therefore the given order condition.
 -/
 private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hord : (Z.support : Set ↥X) ⊆ orderAtLeastLocus I m) :
@@ -117,8 +117,8 @@ private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.
   rw [Scheme.IdealSheafData.comap_id]
   exact hord
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The only active center is at index zero, and its stage projection is the identity. Its composite field map is the given smooth center map.
 -/
 private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData)
@@ -131,8 +131,8 @@ private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : 
   rw [Category.id_comp]
   exact hsm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The only index in range is zero. The initial projection is the identity and pulling back the original boundary along it leaves the list unchanged. Thus the crossing condition is exactly the original hypothesis.
 -/
 private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -145,8 +145,8 @@ private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Fi
   rw [map_comap_id_list_idealSheafData E, Category.id_comp]
   exact hsnc
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the only active index, zero, the exceptional ideal is the center pulled back to the blowup, and the preceding ideal is the original ideal. The successor ideal is chosen as a residual factor. The assumed divisibility ensures that multiplying this factor by the exceptional power gives the pulled-back original ideal.
 -/
 private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hdiv : ∃ B : (Blowup.blowup Z).IdealSheafData,
@@ -162,8 +162,8 @@ private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Sch
   rw [Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]
   exact pow_mul_residualByPow _ _ _ hdiv
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+There is only one active transition. The initial boundary is the original list, since its defining pullback is along the identity. The boundary on the blowup is defined by taking its strict transforms and appending the exceptional ideal, giving the successor identity.
 -/
 private theorem singleBlowupBoundary_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) :
@@ -211,52 +211,52 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
     (Z.comap (Blowup.blowup.proj Z)) ^ m * B = I.comap (Blowup.blowup.proj Z))
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The sequence data are defined with one active transition.
 -/
 theorem ofSingleBlowup_length :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.length = 1 := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The scheme assignment uses the blowup scheme at every positive index.
 -/
 theorem ofSingleBlowup_schemeAt_succ (i : ℕ) :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.obj (i + 1) = Blowup.blowup Z := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The scheme at index zero is defined to be the given original scheme.
 -/
 theorem ofSingleBlowup_schemeAt_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.obj 0 = X := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The transition at zero is defined to be the canonical map from the blowup of the given center to the original scheme.
 -/
 theorem ofSingleBlowup_blowupMorphism_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.map 0 = Blowup.blowup.proj Z := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The projection at the first positive stage is defined as the blowup projection.
 -/
 theorem ofSingleBlowup_projectionToBase_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).proj 1 = Blowup.blowup.proj Z := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The center assignment uses the given ideal at the initial stage.
 -/
 theorem ofSingleBlowup_center_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.center 0 = Z := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal at the positive stage is defined by taking a residual factor of the pulled-back original ideal with respect to the indicated power of the pulled-back center ideal.
 -/
 theorem ofSingleBlowup_ideal_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).ideal 1 =
       residualByPow (I.comap (Blowup.blowup.proj Z)) (Z.comap (Blowup.blowup.proj Z)) m := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At the positive stage the boundary consists of the strict transforms of the original list followed by the exceptional ideal of the blowup.
 -/
 theorem ofSingleBlowup_boundary_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).boundary 1 =

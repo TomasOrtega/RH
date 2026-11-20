@@ -16,16 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose an étale coordinate chart for the boundary at the image point. Pull its open back along the isomorphism and compose the restricted isomorphism of opens with the chart. The composite is étale and respects the new structure map. Keep the same assignment of coordinates to the boundary entries. Distinct assigned coordinates remain distinct, since pullback preserves the list's positions. An entry described by the unit ideal remains the unit ideal. An entry described by one coordinate ideal pulls back to that coordinate ideal under the composite chart, by functoriality of ideal pullback. This is the required local normal crossing presentation.
 -/
 theorem inStrictNormalCrossingPositionAt_comap_iso {X X₀ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (e : X₀ ≅ X) (E : List X.IdealSheafData) (x₀ : X₀)
@@ -61,12 +53,8 @@ theorem inStrictNormalCrossingPositionAt_comap_iso {X X₀ : Scheme.{u}} {k : Ty
     rw [hget]
     exact key
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
-
-Prove the second alternative.
+/- English proof (authored)
+The local chart transport gives strict normal crossing coordinates at every point of the new scheme. For any boundary entry these charts give either the unit ideal or the ideal of a single coordinate near each point. The local coordinate criterion makes each entry a smooth divisor. Along with the pointwise presentation, this gives strict normal crossing position globally.
 -/
 theorem inStrictNormalCrossingPosition_comp_iso_hom {X X₀ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (e : X₀ ≅ X) (E : List X.IdealSheafData)
@@ -91,25 +79,23 @@ namespace IdealBlowupSequence
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The projection of stage zero to the base is its chosen isomorphism with the original scheme. Following this with the original structure morphism gives the formula.
 -/
 theorem structureMorphism_zero (s : IdealBlowupSequence p I E) :
     s.structureMorphism 0 = s.toSequenceOfBlowups.isoZero.hom ≫ p := by
   rw [structureMorphism_def, SequenceOfBlowups.projectionToBase_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The projection of the successor stage to the base is its transition map followed by the preceding projection. Compose this identity with the original structure map to obtain the successor formula.
 -/
 theorem structureMorphism_succ (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.structureMorphism (i + 1) = s.toSequenceOfBlowups.transitionMapSucc i ≫ s.structureMorphism i := by
   rw [structureMorphism_def, structureMorphism_def, SequenceOfBlowups.blowupMorphism_eq_transitionMap, ← Category.assoc,
     SequenceOfBlowups.transitionMap_comp_projectionToBase]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage within the sequence. At zero the structure map is the original smooth map preceded by an isomorphism. For the successor, the preceding stage is smooth over the field by induction. Its center has strict normal crossings with the boundary, so the theorem for blowup of such a center gives smoothness of the successor over the field. The successor formula identifies its map with that composite.
 -/
 theorem smooth_structureMorphism [AlgebraicGeometry.Smooth p] (s : IdealBlowupSequence p I E) (i : ℕ)
     (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -128,12 +114,8 @@ theorem smooth_structureMorphism [AlgebraicGeometry.Smooth p] (s : IdealBlowupSe
     exact smooth_comp_of_isBlowupAlongIdealSheaf (s.hasStrictNormalCrossingsWith_center n hn)
       (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero, the boundary is pulled back from the original one along the isomorphism at stage zero, so it has strict normal crossing position. At a successor the underlying space is Noetherian by hypothesis. The preceding boundary has strict normal crossings by induction, and the current center satisfies the normal crossing condition with it. The blowup boundary theorem gives strict normal crossing position for the strict transforms with the exceptional divisor appended. This is exactly the successor boundary with its successor structure map.
 -/
 theorem inStrictNormalCrossingPosition_boundary [AlgebraicGeometry.Smooth p] (s : IdealBlowupSequence p I E)
     (hE : InStrictNormalCrossingPosition p E)
@@ -158,16 +140,16 @@ theorem inStrictNormalCrossingPosition_boundary [AlgebraicGeometry.Smooth p] (s 
     rw [structureMorphism_succ, s.boundary_succ_eq_map_strictTransform_append n hn]
     exact key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying sequence of blowups begins on a Noetherian scheme. The theorem on Noetherianity along blowup sequences applies to every stage up to its length.
 -/
 theorem isNoetherian_schemeAt [AlgebraicGeometry.IsNoetherian X] (s : IdealBlowupSequence p I E) (i : ℕ)
     (hi : i ≤ s.toSequenceOfBlowups.length) :
     AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt i) :=
   EmbeddedResolution.isNoetherian_schemeAt s.toSequenceOfBlowups i hi
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every actual stage of the sequence is Noetherian because the starting scheme is Noetherian, so its underlying space is Noetherian. These bounds supply the Noetherian hypotheses of the boundary induction theorem.
 -/
 theorem inStrictNormalCrossingPosition_boundary_of_isNoetherian [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.IsNoetherian X] (s : IdealBlowupSequence p I E) (hE : InStrictNormalCrossingPosition p E) :

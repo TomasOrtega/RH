@@ -22,8 +22,8 @@ namespace MarkedSequenceOfBlowups
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The projection at stage zero is the zero-stage transition followed by the chosen initial isomorphism. The transition from zero to itself is the identity because the sequence is a functor. Thus the projection is the chosen isomorphism.
 -/
 theorem projectionToBase_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.toSequenceOfBlowups.projectionToBase 0 = s.toSequenceOfBlowups.isoZero.hom := by
@@ -33,8 +33,8 @@ theorem projectionToBase_zero (s : MarkedSequenceOfBlowups p I m E) :
     rw [hid, CategoryTheory.Functor.map_id]
   rw [SequenceOfBlowups.projectionToBase_def, h0, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The successor projection is the transition to the preceding stage followed by its projection to the base. Evaluating the composite on the given point yields the displayed equality.
 -/
 theorem projectionToBase_succ_apply (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt (i + 1))) :
@@ -47,8 +47,8 @@ theorem projectionToBase_succ_apply (s : MarkedSequenceOfBlowups p I m E) (i : �
   rw [← h]
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The controlled-transform identity expresses the pulled-back ideal as the product of an exceptional factor and the successor ideal. An ideal product is contained in each factor, so the pulled-back ideal is contained in the successor ideal.
 -/
 theorem comap_ideal_le_ideal_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (hi : i < s.toSequenceOfBlowups.length) :
@@ -56,8 +56,8 @@ theorem comap_ideal_le_ideal_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ
   rw [← s.ideal_succ i hi]
   exact fun U => Ideal.mul_le_right
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back old ideal is contained in the successor ideal. Support reverses inclusion of ideals, so the successor support lies in the support of the pulled-back old ideal. The latter is the inverse image of the old support.
 -/
 theorem support_ideal_succ_subset_preimage (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (hi : i < s.toSequenceOfBlowups.length) :
@@ -70,8 +70,8 @@ theorem support_ideal_succ_subset_preimage (s : MarkedSequenceOfBlowups p I m E)
 
 end MarkedSequenceOfBlowups
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The field spectrum is Noetherian. Admissibility makes the structure morphism locally of finite type and quasi-compact, so the source is Noetherian by the finite-type theorem over a Noetherian base.
 -/
 theorem MarkedIdealWithBoundary.IsAdmissible.isNoetherian {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) :
     AlgebraicGeometry.IsNoetherian T.scheme := by

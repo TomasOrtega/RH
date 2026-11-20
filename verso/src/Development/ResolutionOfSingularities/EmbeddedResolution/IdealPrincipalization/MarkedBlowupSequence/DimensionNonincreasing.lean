@@ -21,20 +21,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A scheme isomorphism induces a homeomorphism of the underlying spaces. Their topological Krull dimensions agree, so applying the successor conversion gives equal dimension indices.
 -/
 private theorem krullDimSucc_eq_krullDimSucc_of_iso {X Y : Scheme.{u}} (e : X ≅ Y) :
     krullDimSucc X = krullDimSucc Y := by
   have f : ↥X ≃ₜ ↥Y := TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)
   rw [krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, topologicalKrullDim_eq_of_homeomorph f]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage of the marked sequence. At zero the scheme is isomorphic to the original ambient, so their dimension indices agree. At a successor the preceding marked ideal is admissible and its scheme is locally of finite type and quasi-compact over the field. The center has strict normal crossings with the boundary and the transition is its blowup. The blowup dimension inequality therefore bounds the successor dimension index by the preceding one. Compose with the induction bound.
 -/
 theorem dimensionNonincreasingAlongBlowups : DimensionNonincreasingAlongBlowups.{u} := by
   intro T hT s i
@@ -60,8 +56,8 @@ theorem dimensionNonincreasingAlongBlowups : DimensionNonincreasingAlongBlowups.
           (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hlt)
       exact le_trans hb (ih hn)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both list filters keep an entry exactly when its ideal differs from the unit ideal. They therefore produce the same sublist.
 -/
 private theorem nontrivialPart_eq_filterNeTop {X : Scheme.{u}} (E : List X.IdealSheafData) :
     MarkedIdealWithBoundary.nontrivialPart E = filterNeTop E := by
@@ -72,10 +68,8 @@ private theorem nontrivialPart_eq_filterNeTop {X : Scheme.{u}} (E : List X.Ideal
 
 namespace MarkedIdealWithBoundary
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Replacing the boundary retains the field, scheme, structure map, ideal and marking. The old and new lists agree after deleting unit ideals. The strict normal crossing criterion under this agreement therefore transfers the one admissibility condition involving the boundary. All other conditions are inherited.
 -/
 theorem validOfSameNontrivialBoundary : MarkedIdealWithBoundary.AdmissibleUnderBoundaryReplacement.{u} := by
   intro T E hV hEq

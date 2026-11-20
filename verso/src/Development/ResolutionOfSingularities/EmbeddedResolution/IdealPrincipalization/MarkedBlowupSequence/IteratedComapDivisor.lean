@@ -22,23 +22,21 @@ def iteratedComap {X : Scheme.{u}} (d : BlowupSequenceData X) (B : (d.obj 0).Ide
     (fun n ih => ih.comap (d.map n)) t
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Before any transition, the iterated pullback is defined to be the original divisor ideal.
 -/
 theorem iteratedComap_zero {X : Scheme.{u}} (d : BlowupSequenceData X) (B : (d.obj 0).IdealSheafData) :
     iteratedComap d B 0 = B := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The successor in the recursion pulls the preceding ideal back along the transition from the new stage, giving the displayed formula.
 -/
 theorem iteratedComap_succ {X : Scheme.{u}} (d : BlowupSequenceData X) (B : (d.obj 0).IdealSheafData)
     (t : ℕ) : iteratedComap d B (t + 1) = (iteratedComap d B t).comap (d.map t) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform support is the closure of the inverse image of the original support away from the center. That set is contained in the full inverse image of the support, which is closed. Its closure is therefore contained there as well.
 -/
 theorem support_strictTransform_subset_preimage {Y Y' : Scheme.{u}} [IsLocallyNoetherian Y']
     (π : Y' ⟶ Y) (Z D : Y.IdealSheafData) :
@@ -51,14 +49,8 @@ theorem support_strictTransform_subset_preimage {Y Y' : Scheme.{u}} [IsLocallyNo
   rw [support_strictTransform_eq_closure_sdiff π Z D, ← hpre]
   exact closure_minimal Set.sdiff_subset hclosed
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage up to the given bound. The initial divisor is smooth by hypothesis. At a successor, both ambient structural maps are smooth and the transition is a blowup whose center is disjoint from the preceding divisor. The smooth-divisor pullback theorem for a blowup away from the divisor applies. The recursion of the ideal and the formula for the successor structure map give the desired result.
 -/
 theorem isSmoothDivisor_iteratedComap {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (d : BlowupSequenceData X) (L : ℕ) (hL : L ≤ d.length)
@@ -90,16 +82,8 @@ theorem isSmoothDivisor_iteratedComap {k : Type u} [Field k] [CharZero k] {X : S
     rw [iteratedComap_succ, heq]
     exact key
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage, with the given product and disjointness as the initial case. At the next blowup the pulled-back divisor factor is disjoint from the center at the preceding stage. The strict transform of its product with the other ideal is therefore the strict transform of the other factor times the pullback of the divisor factor. This is the asserted new product by the two transform rules. The support of the strict transform of the other factor lies in its old support's inverse image, while the pulled-back divisor support is exactly its old support's inverse image. The old disjointness gives new disjointness.
 -/
 theorem strictTransform_eq_mul_iteratedComap {X : Scheme.{u}} (d : BlowupSequenceData X) (L : ℕ)
     (hnoeth : ∀ t, t ≤ L → IsLocallyNoetherian (d.obj t))
@@ -143,10 +127,8 @@ theorem strictTransform_eq_mul_iteratedComap {X : Scheme.{u}} (d : BlowupSequenc
     intro x hx hx'
     exact hdn (hsub hx) hx'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At each stage the transformed ideal factors as the prescribed smooth divisor times the iterated pullback of the initial divisor, with disjoint supports. The iterated pullback is a smooth divisor by the disjoint-center induction. The product of these two smooth divisors with disjoint supports is a smooth divisor, yielding the claim.
 -/
 theorem isSmoothDivisor_strictTransform_of_disjoint_center {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (d : BlowupSequenceData X) (L : ℕ) (hL : L ≤ d.length)

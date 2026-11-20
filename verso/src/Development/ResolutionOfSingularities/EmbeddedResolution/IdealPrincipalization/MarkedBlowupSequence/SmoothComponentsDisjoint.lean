@@ -13,8 +13,8 @@ def IrreducibleComponentsDisjointOfSmooth : Prop :=
     ∀ C₁ ∈ irreducibleComponents ↥X, ∀ C₂ ∈ irreducibleComponents ↥X,
       C₁ ≠ C₂ → Disjoint C₁ C₂
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every local ring of the smooth scheme over the field is a domain. If two irreducible components met at a point, the local ring there being a domain would force the two components to be equal. Thus distinct components are disjoint.
 -/
 theorem irreducibleComponentsDisjointOfSmooth : IrreducibleComponentsDisjointOfSmooth.{u} := by
   intro k _ X p hp C₁ h₁ C₂ h₂ hne
